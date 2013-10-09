@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Because yes]]></title>
-  <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: relations | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/relations/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
   <updated>2013-10-09T11:40:03+02:00</updated>
   <id>http://mmoreram.github.io/</id>
@@ -195,133 +195,6 @@ $this-&gt;entityManager-&gt;flush();
 <p>My conclusion would be something like &hellip; Know your model and scope, and give responsibilities accordingly.</p>
 
 <p>What do you think?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Dynamic routes in Symfony2]]></title>
-    <link href="http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2/"/>
-    <updated>2013-10-01T18:30:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2</id>
-    <content type="html"><![CDATA[<p>Given that most times we need to associate a static route entry with a method of a controller, it is normal for Symfony developers are used to working with the annotation @Route of FrameworkExtraBundle.</p>
-
-<p>In some cases, it will be interesting or necessary to work with the router to generate dynamic routes. This means that any bundle can generate a route from a service, defining both the name of the route as all the information necessary for the resolution of the route.</p>
-
-<p>Consider the following example</p>
-
-<pre><code>&lt;?php
-
-namespace Mmoreram\AcmeBundle\Router;
-
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-
-/**
- * Acme dynamic router
- */
-class AcmeRoutesLoader implements LoaderInterface
-{
-    /**
-     * @var boolean
-     * 
-     * Route is loaded
-     */
-    private $loaded = false;
-
-    /**
-     * Loads a resource.
-     *
-     * @param mixed  $resource The resource
-     * @param string $type     The resource type
-     * 
-     * @return RouteCollection
-     * 
-     * @throws RuntimeException Loader is added twice
-     */
-    public function load($resource, $type = null)
-    {
-        if ($this-&gt;loaded) {
-
-            throw new \RuntimeException('Do not add this loader twice');
-        }
-
-        $routes = new RouteCollection();
-
-        /**
-         * url('controller_name') will point AcmeController:methodAction()
-         */
-        $routes-&gt;add('controller_name', new Route('controller/route', array(
-            '_controller'   =&gt;  'AcmeBundle:Acme:method',
-        )));
-
-        $this-&gt;loaded = true;
-
-        return $routes;
-    }
-
-    /**
-     * Returns true if this class supports the given resource.
-     *
-     * @param mixed  $resource A resource
-     * @param string $type     The resource type
-     *
-     * @return boolean true if this class supports the given resource, false otherwise
-     */
-    public function supports($resource, $type = null)
-    {
-        return 'acme' === $type;
-    }
-
-    /**
-     * Gets the loader resolver.
-     *
-     * @return LoaderResolverInterface A LoaderResolverInterface instance
-     */
-    public function getResolver()
-    {
-    }
-
-    /**
-     * Sets the loader resolver.
-     *
-     * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
-     */
-    public function setResolver(LoaderResolverInterface $resolver)
-    {
-    }
-}
-</code></pre>
-
-<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should be defined once in all project.</p>
-
-<p>As any service, we must define this class in dependency injection with specific tag.</p>
-
-<pre><code>services:
-    acme.routes.loader:
-        class: Mmoreram\AcmeBundle\Router\AcmeRoutesLoader
-        tags:
-            - { name: routing.loader }
-</code></pre>
-
-<p>And finally we just need to make our project know where to build our route, so in <code>routing.yml</code> file we must add these lines.</p>
-
-<pre><code>acme_routes:
-    resource: .
-    type: acme
-</code></pre>
-
-<blockquote><p>At this point, type value must be the same as defined in Router service.</p></blockquote>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[First commit]]></title>
-    <link href="http://mmoreram.github.io/blog/2013/10/01/first-commit/"/>
-    <updated>2013-10-01T18:00:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2013/10/01/first-commit</id>
-    <content type="html"><![CDATA[<p>This is the first commit of this blog</p>
 ]]></content>
   </entry>
   

@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Because yes</title>
+  <title>Inverse associations in Doctrine2 models - Because yes</title>
   <meta name="author" content="Marc Morera">
 
   
@@ -19,7 +19,7 @@ class Country &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mmoreram.github.io/">
+  <link rel="canonical" href="http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,15 +67,12 @@ class Country &hellip;">
   <div id="body"   >
     <div id="main">
       <div id="content">
-	<div class="blog-index">
+	<div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/10/09/inverse-associations-in-doctrine2-models/">Inverse Associations in Doctrine2 Models</a></h1>
+      <h1 class="entry-title">Inverse Associations in Doctrine2 Models</h1>
     
     
       <p class="meta">
@@ -98,7 +95,7 @@ class Country &hellip;">
   </header>
 
 
-  <div class="entry-content"><p>Lets take a look some basic example about simple Doctrine2 relation.</p>
+<div class="entry-content"><p>Lets take a look some basic example about simple Doctrine2 relation.</p>
 
 <pre><code>/**
  * Country
@@ -276,167 +273,16 @@ $this-&gt;entityManager-&gt;flush();
 
 <p>What do you think?</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/01/dynamic-routes-in-symfony2/">Dynamic Routes in Symfony2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Marc Morera</span></span>
 
-<time datetime="2013-10-01T18:30:00+02:00" pubdate data-updated="true">Oct 1<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Given that most times we need to associate a static route entry with a method of a controller, it is normal for Symfony developers are used to working with the annotation @Route of FrameworkExtraBundle.</p>
-
-<p>In some cases, it will be interesting or necessary to work with the router to generate dynamic routes. This means that any bundle can generate a route from a service, defining both the name of the route as all the information necessary for the resolution of the route.</p>
-
-<p>Consider the following example</p>
-
-<pre><code>&lt;?php
-
-namespace Mmoreram\AcmeBundle\Router;
-
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-
-/**
- * Acme dynamic router
- */
-class AcmeRoutesLoader implements LoaderInterface
-{
-    /**
-     * @var boolean
-     * 
-     * Route is loaded
-     */
-    private $loaded = false;
-
-    /**
-     * Loads a resource.
-     *
-     * @param mixed  $resource The resource
-     * @param string $type     The resource type
-     * 
-     * @return RouteCollection
-     * 
-     * @throws RuntimeException Loader is added twice
-     */
-    public function load($resource, $type = null)
-    {
-        if ($this-&gt;loaded) {
-
-            throw new \RuntimeException('Do not add this loader twice');
-        }
-
-        $routes = new RouteCollection();
-
-        /**
-         * url('controller_name') will point AcmeController:methodAction()
-         */
-        $routes-&gt;add('controller_name', new Route('controller/route', array(
-            '_controller'   =&gt;  'AcmeBundle:Acme:method',
-        )));
-
-        $this-&gt;loaded = true;
-
-        return $routes;
-    }
-
-    /**
-     * Returns true if this class supports the given resource.
-     *
-     * @param mixed  $resource A resource
-     * @param string $type     The resource type
-     *
-     * @return boolean true if this class supports the given resource, false otherwise
-     */
-    public function supports($resource, $type = null)
-    {
-        return 'acme' === $type;
-    }
-
-    /**
-     * Gets the loader resolver.
-     *
-     * @return LoaderResolverInterface A LoaderResolverInterface instance
-     */
-    public function getResolver()
-    {
-    }
-
-    /**
-     * Sets the loader resolver.
-     *
-     * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
-     */
-    public function setResolver(LoaderResolverInterface $resolver)
-    {
-    }
-}
-</code></pre>
-
-<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should be defined once in all project.</p>
-
-<p>As any service, we must define this class in dependency injection with specific tag.</p>
-
-<pre><code>services:
-    acme.routes.loader:
-        class: Mmoreram\AcmeBundle\Router\AcmeRoutesLoader
-        tags:
-            - { name: routing.loader }
-</code></pre>
-
-<p>And finally we just need to make our project know where to build our route, so in <code>routing.yml</code> file we must add these lines.</p>
-
-<pre><code>acme_routes:
-    resource: .
-    type: acme
-</code></pre>
-
-<blockquote><p>At this point, type value must be the same as defined in Router service.</p></blockquote>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/01/first-commit/">First Commit</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -448,27 +294,40 @@ class AcmeRoutesLoader implements LoaderInterface
   
 
 
-<time datetime="2013-10-01T18:00:00+02:00" pubdate data-updated="true">Oct 1<span>st</span>, 2013</time>
-        
-      </p>
+<time datetime="2013-10-09T11:37:00+02:00" pubdate data-updated="true">Oct 9<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/doctrine/'>doctrine</a>, <a class='category' href='/blog/categories/relations/'>relations</a>, <a class='category' href='/blog/categories/symfony/'>symfony</a>
+  
+</span>
+
+
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>This is the first commit of this blog</p>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/10/01/dynamic-routes-in-symfony2/" title="Previous Post: Dynamic routes in Symfony2">&laquo; Dynamic routes in Symfony2</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -493,7 +352,7 @@ class AcmeRoutesLoader implements LoaderInterface
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/mmoreram">@mmoreram</a> on GitHub
@@ -525,6 +384,7 @@ class AcmeRoutesLoader implements LoaderInterface
 
   
 </aside>
+
 
       </div>
     </div>
