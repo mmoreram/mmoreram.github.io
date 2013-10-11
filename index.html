@@ -9,8 +9,10 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="Lets take a look some basic example about simple Doctrine2 relation. /** * Country * * @ORM\Entity * @ORM\Table(name="countries") */
-class Country &hellip;">
+  <meta name="description" content="ven this example $spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain); $france = new Country;
+$france-&gt;setName(' &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +83,127 @@ class Country &hellip;">
       <div id="content">
 	<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/11/flushing-doctrine2-entities/">Flushing Doctrine2 Entities</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-11T10:11:00+02:00" pubdate data-updated="true">Oct 11<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/10/11/flushing-doctrine2-entities/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>ven this example</p>
+
+<pre><code>$spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain);
+
+$france = new Country;
+$france-&gt;setName('france');
+$entityManager-&gt;persist($france);
+
+$entityManager-&gt;flush();
+</code></pre>
+
+<p>When we flush without defining any kind of parameter, all entities managed by EntityManager with changes will be flushed.<br/>
+To flush a specific entity managed by EntityManager we can just pass the entity as a parameter in the flush method</p>
+
+<pre><code>$spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain);
+
+$france = new Country;
+$france-&gt;setName('france');
+$entityManager-&gt;persist($france);
+
+/**
+ * At this point, I only want to flush $spain
+ */
+$entityManager-&gt;flush($spain);
+</code></pre>
+
+<p>To flush an array of entities managed by EntityManager we can pass the array as a parameter in the flush method</p>
+
+<pre><code>$spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain);
+
+$france = new Country;
+$france-&gt;setName('france');
+$entityManager-&gt;persist($france);
+
+$germany = new Country;
+$germany-&gt;setName('germany');
+$entityManager-&gt;persist($germany);
+
+/**
+ * At this point, I only want to flush $spain
+ */
+$entityManager-&gt;flush(array(
+    $spain,
+    $france,
+));
+</code></pre>
+
+<p>So, how about flushing an ArrayCollection of entities? Lets take a look at the UnitOfWork code where contains this logic.</p>
+
+<pre><code>if ($entity === null) {
+    $this-&gt;computeChangeSets();
+
+} elseif (is_object($entity)) {
+
+    $this-&gt;computeSingleEntityChangeSet($entity);
+} elseif (is_array($entity)) {
+
+    foreach ($entity as $object) {
+        $this-&gt;computeSingleEntityChangeSet($object);
+    }
+}
+</code></pre>
+
+<p>Considering that ArrayCollection is an object, this code should be changed to this code to also accept ArrayCollection and all iterable objects.</p>
+
+<pre><code>if ($entity === null) {
+    $this-&gt;computeChangeSets();
+
+} elseif (is_array($entity) || $entity instanceof IteratorAggregate) {
+
+    foreach ($entity as $object) {
+        $this-&gt;computeSingleEntityChangeSet($object);
+    }
+} elseif (is_object($entity)) {
+
+    $this-&gt;computeSingleEntityChangeSet($entity);
+}
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -492,6 +615,10 @@ class AcmeRoutesLoader implements LoaderInterface
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/11/flushing-doctrine2-entities/">Flushing Doctrine2 entities</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/10/09/inverse-associations-in-doctrine2-models/">Inverse associations in Doctrine2 models</a>
