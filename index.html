@@ -1,0 +1,727 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Because yes</title>
+  <meta name="author" content="Marc Morera">
+
+  
+  <meta name="description" content="Given this example $spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain); $france = new Country;
+$france-&gt;setName &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mmoreram.github.io/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Because yes" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic|Istok+Web:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41917921-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+  <div id="header-container">
+    <div id="header">
+      <div class="wrapper">
+        <header role="banner"><hgroup>
+  <h1><a href="/">Because yes</a></h1>
+</hgroup>
+
+</header>
+        <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mmoreram.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+      </div>
+    </div>
+  </div>
+  <div id="body"   >
+    <div id="main">
+      <div id="content">
+	<div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/11/flushing-doctrine2-entities/">Flushing Doctrine2 Entities</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-11T10:11:00+02:00" pubdate data-updated="true">Oct 11<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/10/11/flushing-doctrine2-entities/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Given this example</p>
+
+<pre><code>$spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain);
+
+$france = new Country;
+$france-&gt;setName('france');
+$entityManager-&gt;persist($france);
+
+$entityManager-&gt;flush();
+</code></pre>
+
+<p>When we flush without defining any kind of parameter, all entities managed by EntityManager with changes will be flushed.<br/>
+To flush a specific entity managed by EntityManager we can just pass the entity as a parameter in the flush method</p>
+
+<pre><code>$spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain);
+
+$france = new Country;
+$france-&gt;setName('france');
+$entityManager-&gt;persist($france);
+
+/**
+ * At this point, I only want to flush $spain
+ */
+$entityManager-&gt;flush($spain);
+</code></pre>
+
+<p>To flush an array of entities managed by EntityManager we can pass the array as a parameter in the flush method</p>
+
+<pre><code>$spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain);
+
+$france = new Country;
+$france-&gt;setName('france');
+$entityManager-&gt;persist($france);
+
+$germany = new Country;
+$germany-&gt;setName('germany');
+$entityManager-&gt;persist($germany);
+
+/**
+ * At this point, I only want to flush $spain
+ */
+$entityManager-&gt;flush(array(
+    $spain,
+    $france,
+));
+</code></pre>
+
+<p>So, how about flushing an ArrayCollection of entities? Lets take a look at the UnitOfWork code where contains this logic.</p>
+
+<pre><code>if ($entity === null) {
+    $this-&gt;computeChangeSets();
+
+} elseif (is_object($entity)) {
+
+    $this-&gt;computeSingleEntityChangeSet($entity);
+} elseif (is_array($entity)) {
+
+    foreach ($entity as $object) {
+        $this-&gt;computeSingleEntityChangeSet($object);
+    }
+}
+</code></pre>
+
+<p>Considering that ArrayCollection is an object, this code should be changed to this code to also accept ArrayCollection and all iterable objects.</p>
+
+<pre><code>if ($entity === null) {
+    $this-&gt;computeChangeSets();
+
+} elseif (is_array($entity) || $entity instanceof IteratorAggregate) {
+
+    foreach ($entity as $object) {
+        $this-&gt;computeSingleEntityChangeSet($object);
+    }
+} elseif (is_object($entity)) {
+
+    $this-&gt;computeSingleEntityChangeSet($entity);
+}
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/09/inverse-associations-in-doctrine2-models/">Inverse Associations in Doctrine2 Models</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-09T11:37:00+02:00" pubdate data-updated="true">Oct 9<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/10/09/inverse-associations-in-doctrine2-models/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Lets take a look some basic example about simple Doctrine2 relation.</p>
+
+<pre><code>/**
+ * Country
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="countries")
+ */
+class Country {
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Province", mappedBy="country")
+     */
+    protected $provinces;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this-&gt;provinces = new ArrayCollection;
+    }
+
+    /**
+     * Add province
+     *
+     * @param Province $province Province to add
+     *
+     * @return Country self Object
+     */
+    public function addProvince()
+    {
+        $this-&gt;provinces[] = $province;
+
+        return $this;
+    }
+}
+
+
+/**
+ * Province
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="provinces")
+ */
+class Province {
+
+    /**
+     * @var Country
+     *
+     * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
+     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
+     */
+    protected $country;
+
+    /**
+     * Set Country
+     *
+     * @param Country $country Country
+     *
+     * @return Province self Object
+     */
+    public function setCountry(Country $country)
+    {
+        $this-&gt;country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get the country
+     *
+     * @return Country
+     */
+    public function getCountry()
+    {
+        return $this-&gt;country;
+    }
+}
+</code></pre>
+
+<p>The reason for this post is to try to understand the direct impact of making an inversed relationship when we allocate a new province in a country.<br/>
+Given the model we have in the first instance, and given this piece of controller</p>
+
+<pre><code>$country = $this
+    -&gt;entityManager
+    -&gt;getRepository('AcmeCoreBundle:Country')
+    -&gt;findBy(1);
+
+$province = new Province();
+$province-&gt;setCountry($country);
+$this-&gt;entityManager-&gt;persist($province);
+$this-&gt;entityManager-&gt;flush();
+</code></pre>
+
+<p>In this case, when we assign the Country to the new Province, and given that the owning side of the association is Province, when you flush, the association persists in database, so that in future reference, we would have the desired results.<br/>
+The &ldquo;problem&rdquo; exists because our <code>EntityManager</code> works with internal cache. If after this assignment, and in the same request, we need to return all the provinces of the Country, in particular the Country with id 1, the returned collection will not contain the new Province if this data is already cached. This is because we have not perfomed reversed assignment. There are two ways of solving this.</p>
+
+<h3>Model owns the responsability of double assignment</h3>
+
+<p>We can resolve this giving model the responsability of double assignment.</p>
+
+<pre><code>/**
+ * Province
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="provinces")
+ */
+class Province {
+
+    /**
+     * @var Country
+     *
+     * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
+     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
+     */
+    protected $country;
+
+    /**
+     * Set Country
+     *
+     * @param Country $country Country
+     *
+     * @return Province self Object
+     */
+    public function setCountry(Country $country)
+    {
+        $this-&gt;country = $country;
+
+        /**
+         * We perform inversed assignment
+         */
+        $country-&gt;setProvince($this);
+
+        return $this;
+    }
+
+    /**
+     * Get the country
+     *
+     * @return Country
+     */
+    public function getCountry()
+    {
+        return $this-&gt;country;
+    }
+}
+</code></pre>
+
+<p>This has a good side and bad. On the one hand, is a completely transparent process so that the model handles internally to manage their relationships. It allows the driver to disengage completely from the model.
+On the other hand, we must bear in mind that <strong>will</strong> always done this inverse relationship. This can be a plus for a project, unless handled very large amounts of data.</p>
+
+<p>To give an example, we can imagine a Country with a million provinces. When charging Country in memory, while not run the <code>getProvinces ()</code> and since we work with lazy loading, we will have no memory problem. The problem comes when you add a new province to Country. As a collection, to add an item, doctrine do something like <code>getProvinces()</code> and then make `$provinces[] = $province;&lsquo;.  Keep in mind that loading in memory up to 1 million entities without any need is a non desired behaviour.</p>
+
+<h3>Controller ( each one ) owns the responsability of double assignment</h3>
+
+<p>In this case, controller need to perform inversed assignment.</p>
+
+<pre><code>$country = $this
+    -&gt;entityManager
+    -&gt;getRepository('AcmeCoreBundle:Country')
+    -&gt;findBy(1);
+
+$province = new Province();
+$province-&gt;setCountry($country);
+$country-&gt;addProvince($province);
+$this-&gt;entityManager-&gt;persist($province);
+$this-&gt;entityManager-&gt;flush();
+</code></pre>
+
+<p>You will choose if is the best option, so you have an idea about if all provinces are used later. If are used and a million Provinces are loaded, you will have the same problem as first case, but has nothing to do about this&hellip;</p>
+
+<p>My conclusion would be something like &hellip; Know your model and scope, and give responsibilities accordingly.</p>
+
+<p>What do you think?</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/01/dynamic-routes-in-symfony2/">Dynamic Routes in Symfony2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-01T18:30:00+02:00" pubdate data-updated="true">Oct 1<span>st</span>, 2013</time>
+        
+         | <a href="/blog/2013/10/01/dynamic-routes-in-symfony2/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Given that most times we need to associate a static route entry with a method of a controller, it is normal for Symfony developers are used to working with the annotation @Route of FrameworkExtraBundle.</p>
+
+<p>In some cases, it will be interesting or necessary to work with the router to generate dynamic routes. This means that any bundle can generate a route from a service, defining both the name of the route as all the information necessary for the resolution of the route.</p>
+
+<p>Consider the following example</p>
+
+<pre><code>&lt;?php
+
+namespace Mmoreram\AcmeBundle\Router;
+
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
+
+/**
+ * Acme dynamic router
+ */
+class AcmeRoutesLoader implements LoaderInterface
+{
+    /**
+     * @var boolean
+     * 
+     * Route is loaded
+     */
+    private $loaded = false;
+
+    /**
+     * Loads a resource.
+     *
+     * @param mixed  $resource The resource
+     * @param string $type     The resource type
+     * 
+     * @return RouteCollection
+     * 
+     * @throws RuntimeException Loader is added twice
+     */
+    public function load($resource, $type = null)
+    {
+        if ($this-&gt;loaded) {
+
+            throw new \RuntimeException('Do not add this loader twice');
+        }
+
+        $routes = new RouteCollection();
+
+        /**
+         * url('controller_name') will point AcmeController:methodAction()
+         */
+        $routes-&gt;add('controller_name', new Route('controller/route', array(
+            '_controller'   =&gt;  'AcmeBundle:Acme:method',
+        )));
+
+        $this-&gt;loaded = true;
+
+        return $routes;
+    }
+
+    /**
+     * Returns true if this class supports the given resource.
+     *
+     * @param mixed  $resource A resource
+     * @param string $type     The resource type
+     *
+     * @return boolean true if this class supports the given resource, false otherwise
+     */
+    public function supports($resource, $type = null)
+    {
+        return 'acme' === $type;
+    }
+
+    /**
+     * Gets the loader resolver.
+     *
+     * @return LoaderResolverInterface A LoaderResolverInterface instance
+     */
+    public function getResolver()
+    {
+    }
+
+    /**
+     * Sets the loader resolver.
+     *
+     * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
+     */
+    public function setResolver(LoaderResolverInterface $resolver)
+    {
+    }
+}
+</code></pre>
+
+<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should be defined once in all project.</p>
+
+<p>As any service, we must define this class in dependency injection with specific tag.</p>
+
+<pre><code>services:
+    acme.routes.loader:
+        class: Mmoreram\AcmeBundle\Router\AcmeRoutesLoader
+        tags:
+            - { name: routing.loader }
+</code></pre>
+
+<p>And finally we just need to make our project know where to build our route, so in <code>routing.yml</code> file we must add these lines.</p>
+
+<pre><code>acme_routes:
+    resource: .
+    type: acme
+</code></pre>
+
+<blockquote><p>At this point, type value must be the same as defined in Router service.</p></blockquote>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/01/first-commit/">First Commit</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-01T18:00:00+02:00" pubdate data-updated="true">Oct 1<span>st</span>, 2013</time>
+        
+         | <a href="/blog/2013/10/01/first-commit/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This is the first commit of this blog</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/11/flushing-doctrine2-entities/">Flushing Doctrine2 entities</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/09/inverse-associations-in-doctrine2-models/">Inverse associations in Doctrine2 models</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/01/dynamic-routes-in-symfony2/">Dynamic routes in Symfony2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/01/first-commit/">First commit</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mmoreram">@mmoreram</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mmoreram',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+      </div>
+    </div>
+    <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Marc Morera -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>.</span>
+</p>
+
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'mmoreram';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Because yes]]></title>
+  <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2013-10-11T10:15:53+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Flushing Doctrine2 entities]]></title>
+    <link href="http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities/"/>
+    <updated>2013-10-11T10:11:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities</id>
+    <content type="html"><![CDATA[<p>Given this example</p>
+
+<pre><code>$spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain);
+
+$france = new Country;
+$france-&gt;setName('france');
+$entityManager-&gt;persist($france);
+
+$entityManager-&gt;flush();
+</code></pre>
+
+<p>When we flush without defining any kind of parameter, all entities managed by EntityManager with changes will be flushed.<br/>
+To flush a specific entity managed by EntityManager we can just pass the entity as a parameter in the flush method</p>
+
+<pre><code>$spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain);
+
+$france = new Country;
+$france-&gt;setName('france');
+$entityManager-&gt;persist($france);
+
+/**
+ * At this point, I only want to flush $spain
+ */
+$entityManager-&gt;flush($spain);
+</code></pre>
+
+<p>To flush an array of entities managed by EntityManager we can pass the array as a parameter in the flush method</p>
+
+<pre><code>$spain = new Country;
+$spain-&gt;setName('spain');
+$entityManager-&gt;persist($spain);
+
+$france = new Country;
+$france-&gt;setName('france');
+$entityManager-&gt;persist($france);
+
+$germany = new Country;
+$germany-&gt;setName('germany');
+$entityManager-&gt;persist($germany);
+
+/**
+ * At this point, I only want to flush $spain
+ */
+$entityManager-&gt;flush(array(
+    $spain,
+    $france,
+));
+</code></pre>
+
+<p>So, how about flushing an ArrayCollection of entities? Lets take a look at the UnitOfWork code where contains this logic.</p>
+
+<pre><code>if ($entity === null) {
+    $this-&gt;computeChangeSets();
+
+} elseif (is_object($entity)) {
+
+    $this-&gt;computeSingleEntityChangeSet($entity);
+} elseif (is_array($entity)) {
+
+    foreach ($entity as $object) {
+        $this-&gt;computeSingleEntityChangeSet($object);
+    }
+}
+</code></pre>
+
+<p>Considering that ArrayCollection is an object, this code should be changed to this code to also accept ArrayCollection and all iterable objects.</p>
+
+<pre><code>if ($entity === null) {
+    $this-&gt;computeChangeSets();
+
+} elseif (is_array($entity) || $entity instanceof IteratorAggregate) {
+
+    foreach ($entity as $object) {
+        $this-&gt;computeSingleEntityChangeSet($object);
+    }
+} elseif (is_object($entity)) {
+
+    $this-&gt;computeSingleEntityChangeSet($entity);
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Inverse associations in Doctrine2 models]]></title>
+    <link href="http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/"/>
+    <updated>2013-10-09T11:37:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models</id>
+    <content type="html"><![CDATA[<p>Lets take a look some basic example about simple Doctrine2 relation.</p>
+
+<pre><code>/**
+ * Country
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="countries")
+ */
+class Country {
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Province", mappedBy="country")
+     */
+    protected $provinces;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this-&gt;provinces = new ArrayCollection;
+    }
+
+    /**
+     * Add province
+     *
+     * @param Province $province Province to add
+     *
+     * @return Country self Object
+     */
+    public function addProvince()
+    {
+        $this-&gt;provinces[] = $province;
+
+        return $this;
+    }
+}
+
+
+/**
+ * Province
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="provinces")
+ */
+class Province {
+
+    /**
+     * @var Country
+     *
+     * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
+     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
+     */
+    protected $country;
+
+    /**
+     * Set Country
+     *
+     * @param Country $country Country
+     *
+     * @return Province self Object
+     */
+    public function setCountry(Country $country)
+    {
+        $this-&gt;country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get the country
+     *
+     * @return Country
+     */
+    public function getCountry()
+    {
+        return $this-&gt;country;
+    }
+}
+</code></pre>
+
+<p>The reason for this post is to try to understand the direct impact of making an inversed relationship when we allocate a new province in a country.<br/>
+Given the model we have in the first instance, and given this piece of controller</p>
+
+<pre><code>$country = $this
+    -&gt;entityManager
+    -&gt;getRepository('AcmeCoreBundle:Country')
+    -&gt;findBy(1);
+
+$province = new Province();
+$province-&gt;setCountry($country);
+$this-&gt;entityManager-&gt;persist($province);
+$this-&gt;entityManager-&gt;flush();
+</code></pre>
+
+<p>In this case, when we assign the Country to the new Province, and given that the owning side of the association is Province, when you flush, the association persists in database, so that in future reference, we would have the desired results.<br/>
+The &ldquo;problem&rdquo; exists because our <code>EntityManager</code> works with internal cache. If after this assignment, and in the same request, we need to return all the provinces of the Country, in particular the Country with id 1, the returned collection will not contain the new Province if this data is already cached. This is because we have not perfomed reversed assignment. There are two ways of solving this.</p>
+
+<h3>Model owns the responsability of double assignment</h3>
+
+<p>We can resolve this giving model the responsability of double assignment.</p>
+
+<pre><code>/**
+ * Province
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="provinces")
+ */
+class Province {
+
+    /**
+     * @var Country
+     *
+     * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
+     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
+     */
+    protected $country;
+
+    /**
+     * Set Country
+     *
+     * @param Country $country Country
+     *
+     * @return Province self Object
+     */
+    public function setCountry(Country $country)
+    {
+        $this-&gt;country = $country;
+
+        /**
+         * We perform inversed assignment
+         */
+        $country-&gt;setProvince($this);
+
+        return $this;
+    }
+
+    /**
+     * Get the country
+     *
+     * @return Country
+     */
+    public function getCountry()
+    {
+        return $this-&gt;country;
+    }
+}
+</code></pre>
+
+<p>This has a good side and bad. On the one hand, is a completely transparent process so that the model handles internally to manage their relationships. It allows the driver to disengage completely from the model.
+On the other hand, we must bear in mind that <strong>will</strong> always done this inverse relationship. This can be a plus for a project, unless handled very large amounts of data.</p>
+
+<p>To give an example, we can imagine a Country with a million provinces. When charging Country in memory, while not run the <code>getProvinces ()</code> and since we work with lazy loading, we will have no memory problem. The problem comes when you add a new province to Country. As a collection, to add an item, doctrine do something like <code>getProvinces()</code> and then make `$provinces[] = $province;&lsquo;.  Keep in mind that loading in memory up to 1 million entities without any need is a non desired behaviour.</p>
+
+<h3>Controller ( each one ) owns the responsability of double assignment</h3>
+
+<p>In this case, controller need to perform inversed assignment.</p>
+
+<pre><code>$country = $this
+    -&gt;entityManager
+    -&gt;getRepository('AcmeCoreBundle:Country')
+    -&gt;findBy(1);
+
+$province = new Province();
+$province-&gt;setCountry($country);
+$country-&gt;addProvince($province);
+$this-&gt;entityManager-&gt;persist($province);
+$this-&gt;entityManager-&gt;flush();
+</code></pre>
+
+<p>You will choose if is the best option, so you have an idea about if all provinces are used later. If are used and a million Provinces are loaded, you will have the same problem as first case, but has nothing to do about this&hellip;</p>
+
+<p>My conclusion would be something like &hellip; Know your model and scope, and give responsibilities accordingly.</p>
+
+<p>What do you think?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Dynamic routes in Symfony2]]></title>
+    <link href="http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2/"/>
+    <updated>2013-10-01T18:30:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2</id>
+    <content type="html"><![CDATA[<p>Given that most times we need to associate a static route entry with a method of a controller, it is normal for Symfony developers are used to working with the annotation @Route of FrameworkExtraBundle.</p>
+
+<p>In some cases, it will be interesting or necessary to work with the router to generate dynamic routes. This means that any bundle can generate a route from a service, defining both the name of the route as all the information necessary for the resolution of the route.</p>
+
+<p>Consider the following example</p>
+
+<pre><code>&lt;?php
+
+namespace Mmoreram\AcmeBundle\Router;
+
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
+
+/**
+ * Acme dynamic router
+ */
+class AcmeRoutesLoader implements LoaderInterface
+{
+    /**
+     * @var boolean
+     * 
+     * Route is loaded
+     */
+    private $loaded = false;
+
+    /**
+     * Loads a resource.
+     *
+     * @param mixed  $resource The resource
+     * @param string $type     The resource type
+     * 
+     * @return RouteCollection
+     * 
+     * @throws RuntimeException Loader is added twice
+     */
+    public function load($resource, $type = null)
+    {
+        if ($this-&gt;loaded) {
+
+            throw new \RuntimeException('Do not add this loader twice');
+        }
+
+        $routes = new RouteCollection();
+
+        /**
+         * url('controller_name') will point AcmeController:methodAction()
+         */
+        $routes-&gt;add('controller_name', new Route('controller/route', array(
+            '_controller'   =&gt;  'AcmeBundle:Acme:method',
+        )));
+
+        $this-&gt;loaded = true;
+
+        return $routes;
+    }
+
+    /**
+     * Returns true if this class supports the given resource.
+     *
+     * @param mixed  $resource A resource
+     * @param string $type     The resource type
+     *
+     * @return boolean true if this class supports the given resource, false otherwise
+     */
+    public function supports($resource, $type = null)
+    {
+        return 'acme' === $type;
+    }
+
+    /**
+     * Gets the loader resolver.
+     *
+     * @return LoaderResolverInterface A LoaderResolverInterface instance
+     */
+    public function getResolver()
+    {
+    }
+
+    /**
+     * Sets the loader resolver.
+     *
+     * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
+     */
+    public function setResolver(LoaderResolverInterface $resolver)
+    {
+    }
+}
+</code></pre>
+
+<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should be defined once in all project.</p>
+
+<p>As any service, we must define this class in dependency injection with specific tag.</p>
+
+<pre><code>services:
+    acme.routes.loader:
+        class: Mmoreram\AcmeBundle\Router\AcmeRoutesLoader
+        tags:
+            - { name: routing.loader }
+</code></pre>
+
+<p>And finally we just need to make our project know where to build our route, so in <code>routing.yml</code> file we must add these lines.</p>
+
+<pre><code>acme_routes:
+    resource: .
+    type: acme
+</code></pre>
+
+<blockquote><p>At this point, type value must be the same as defined in Router service.</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[First commit]]></title>
+    <link href="http://mmoreram.github.io/blog/2013/10/01/first-commit/"/>
+    <updated>2013-10-01T18:00:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2013/10/01/first-commit</id>
+    <content type="html"><![CDATA[<p>This is the first commit of this blog</p>
+]]></content>
+  </entry>
+  
+</feed>

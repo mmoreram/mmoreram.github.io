@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Inverse associations in Doctrine2 models - Because yes</title>
+  <meta name="author" content="Marc Morera">
+
+  
+  <meta name="description" content="Lets take a look some basic example about simple Doctrine2 relation. /** * Country * * @ORM\Entity * @ORM\Table(name="countries") */
+class Country &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Because yes" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic|Istok+Web:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41917921-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+  <div id="header-container">
+    <div id="header">
+      <div class="wrapper">
+        <header role="banner"><hgroup>
+  <h1><a href="/">Because yes</a></h1>
+</hgroup>
+
+</header>
+        <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mmoreram.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+      </div>
+    </div>
+  </div>
+  <div id="body"   >
+    <div id="main">
+      <div id="content">
+	<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Inverse Associations in Doctrine2 Models</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-09T11:37:00+02:00" pubdate data-updated="true">Oct 9<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Lets take a look some basic example about simple Doctrine2 relation.</p>
+
+<pre><code>/**
+ * Country
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="countries")
+ */
+class Country {
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Province", mappedBy="country")
+     */
+    protected $provinces;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this-&gt;provinces = new ArrayCollection;
+    }
+
+    /**
+     * Add province
+     *
+     * @param Province $province Province to add
+     *
+     * @return Country self Object
+     */
+    public function addProvince()
+    {
+        $this-&gt;provinces[] = $province;
+
+        return $this;
+    }
+}
+
+
+/**
+ * Province
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="provinces")
+ */
+class Province {
+
+    /**
+     * @var Country
+     *
+     * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
+     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
+     */
+    protected $country;
+
+    /**
+     * Set Country
+     *
+     * @param Country $country Country
+     *
+     * @return Province self Object
+     */
+    public function setCountry(Country $country)
+    {
+        $this-&gt;country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get the country
+     *
+     * @return Country
+     */
+    public function getCountry()
+    {
+        return $this-&gt;country;
+    }
+}
+</code></pre>
+
+<p>The reason for this post is to try to understand the direct impact of making an inversed relationship when we allocate a new province in a country.<br/>
+Given the model we have in the first instance, and given this piece of controller</p>
+
+<pre><code>$country = $this
+    -&gt;entityManager
+    -&gt;getRepository('AcmeCoreBundle:Country')
+    -&gt;findBy(1);
+
+$province = new Province();
+$province-&gt;setCountry($country);
+$this-&gt;entityManager-&gt;persist($province);
+$this-&gt;entityManager-&gt;flush();
+</code></pre>
+
+<p>In this case, when we assign the Country to the new Province, and given that the owning side of the association is Province, when you flush, the association persists in database, so that in future reference, we would have the desired results.<br/>
+The &ldquo;problem&rdquo; exists because our <code>EntityManager</code> works with internal cache. If after this assignment, and in the same request, we need to return all the provinces of the Country, in particular the Country with id 1, the returned collection will not contain the new Province if this data is already cached. This is because we have not perfomed reversed assignment. There are two ways of solving this.</p>
+
+<h3>Model owns the responsability of double assignment</h3>
+
+<p>We can resolve this giving model the responsability of double assignment.</p>
+
+<pre><code>/**
+ * Province
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="provinces")
+ */
+class Province {
+
+    /**
+     * @var Country
+     *
+     * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
+     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
+     */
+    protected $country;
+
+    /**
+     * Set Country
+     *
+     * @param Country $country Country
+     *
+     * @return Province self Object
+     */
+    public function setCountry(Country $country)
+    {
+        $this-&gt;country = $country;
+
+        /**
+         * We perform inversed assignment
+         */
+        $country-&gt;setProvince($this);
+
+        return $this;
+    }
+
+    /**
+     * Get the country
+     *
+     * @return Country
+     */
+    public function getCountry()
+    {
+        return $this-&gt;country;
+    }
+}
+</code></pre>
+
+<p>This has a good side and bad. On the one hand, is a completely transparent process so that the model handles internally to manage their relationships. It allows the driver to disengage completely from the model.
+On the other hand, we must bear in mind that <strong>will</strong> always done this inverse relationship. This can be a plus for a project, unless handled very large amounts of data.</p>
+
+<p>To give an example, we can imagine a Country with a million provinces. When charging Country in memory, while not run the <code>getProvinces ()</code> and since we work with lazy loading, we will have no memory problem. The problem comes when you add a new province to Country. As a collection, to add an item, doctrine do something like <code>getProvinces()</code> and then make `$provinces[] = $province;&lsquo;.  Keep in mind that loading in memory up to 1 million entities without any need is a non desired behaviour.</p>
+
+<h3>Controller ( each one ) owns the responsability of double assignment</h3>
+
+<p>In this case, controller need to perform inversed assignment.</p>
+
+<pre><code>$country = $this
+    -&gt;entityManager
+    -&gt;getRepository('AcmeCoreBundle:Country')
+    -&gt;findBy(1);
+
+$province = new Province();
+$province-&gt;setCountry($country);
+$country-&gt;addProvince($province);
+$this-&gt;entityManager-&gt;persist($province);
+$this-&gt;entityManager-&gt;flush();
+</code></pre>
+
+<p>You will choose if is the best option, so you have an idea about if all provinces are used later. If are used and a million Provinces are loaded, you will have the same problem as first case, but has nothing to do about this&hellip;</p>
+
+<p>My conclusion would be something like &hellip; Know your model and scope, and give responsibilities accordingly.</p>
+
+<p>What do you think?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marc Morera</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-09T11:37:00+02:00" pubdate data-updated="true">Oct 9<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/doctrine/'>doctrine</a>, <a class='category' href='/blog/categories/relations/'>relations</a>, <a class='category' href='/blog/categories/symfony/'>symfony</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/10/01/dynamic-routes-in-symfony2/" title="Previous Post: Dynamic routes in Symfony2">&laquo; Dynamic routes in Symfony2</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/10/11/flushing-doctrine2-entities/" title="Next Post: Flushing Doctrine2 entities">Flushing Doctrine2 entities &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/11/flushing-doctrine2-entities/">Flushing Doctrine2 entities</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/09/inverse-associations-in-doctrine2-models/">Inverse associations in Doctrine2 models</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/01/dynamic-routes-in-symfony2/">Dynamic routes in Symfony2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/01/first-commit/">First commit</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/mmoreram">@mmoreram</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mmoreram',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+      </div>
+    </div>
+    <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Marc Morera -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>.</span>
+</p>
+
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'mmoreram';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/';
+        var disqus_url = 'http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>
