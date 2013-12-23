@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Factory | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/factory/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2013-12-23T12:12:24+01:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Factory pattern in Symfony2]]></title>
+    <link href="http://mmoreram.github.io/blog/2013/12/23/factory-pattern-in-symfony2/"/>
+    <updated>2013-12-23T12:10:00+01:00</updated>
+    <id>http://mmoreram.github.io/blog/2013/12/23/factory-pattern-in-symfony2</id>
+    <content type="html"><![CDATA[<h2>The pattern.</h2>
+
+<p>The factory pattern gives responsibility to create some instances of certain types to a class called factory. All possible classes that can instantiate the factory should always implement an interface, so we will be able to call certain methods, whether the class is. Let&rsquo;s see an specific and usable example.</p>
+
+<p>Tenemos una interficie para todas nuestras clases Logger. Todas ellas deben implementar el método Log.
+First of all, we have an interface called LoggerInterface. Is just an interface so just define all methods that implementations must implement.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>namespace My\Bundle\Namespace;</p>
+
+<p>/<em>*
+ * Interface for all loggers
+ </em>/
+interface LoggerInterface
+{</p>
+
+<pre><code>/**
+ * Logs message given as parameter
+ *
+ * @param string $message Message to log
+ *
+ * @return LoggerInterface self Object
+ */
+public function log($message);
+</code></pre>
+
+<p>}
+```</p>
+
+<p>On the one hand we have an implementation called FileLogger. This class just write given messages in a file.</p>
+
+<p>``` php
+&lt;/php</p>
+
+<p>namespace My\Bundle\Namespace;</p>
+
+<p>use My\Bundle\Namespace\LoggerInterface;</p>
+
+<p>/<em>*
+ * This class logs into specific file
+ </em>/
+class FileLogger implements LoggerInterface
+{</p>
+
+<p>   /**</p>
+
+<pre><code>* @var file path
+*
+* File path
+*/
+private $filepath = '/tmp/myfile.log';
+
+
+/**
+ * Logs message given as parameter
+ *
+ * @param string $message Message to log
+ *
+ * @return FileLogger self Object
+ */
+public function log($message)
+{
+    $this-&gt;file_put_contents($this-&gt;filepath, $message);
+
+    return $this;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>And on the other hand we have a ScreenLogger, that just echoes message as it comes.</p>
+
+<p>``` php
+&lt;/php</p>
+
+<p>namespace My\Bundle\Namespace;</p>
+
+<p>use My\Bundle\Namespace\LoggerInterface;</p>
+
+<p>/<em>*
+ * This class logs into specific file
+ </em>/
+class ScreenLogger implements LoggerInterface
+{</p>
+
+<pre><code>/**
+ * Logs message given as parameter
+ *
+ * @param string $message Message to log
+ *
+ * @return FileLogger self Object
+ */
+public function log($message)
+{
+    echo $message;
+
+    return $this;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Given a project we may want to specify using configurarion which Logger we want to use. Since we want to work with dependency injection component offered by Symfony2 framework, and any class where we will use our Logger is responsible for knowing as each instance of our Loggers, we need to create a Factory that is responsible for taking the setting you have specified, return us an instance of the class we want.</p>
+
+<p>Given this configuration</p>
+
+<p>``` yml</p>
+
+<h1>/app/config/config.yml</h1>
+
+<p>logger:</p>
+
+<pre><code>type: screen
+</code></pre>
+
+<p>```</p>
+
+<p>We define our factory service. As <code>type</code> configuration value is a free text value, if value do not references any Logger type we will throw an exception.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>namespace My\Bundle\Namespace;</p>
+
+<p>/<em>*
+ * This class is just a Logger factory
+ </em>/
+class LoggerFactory
+{</p>
+
+<pre><code>/**
+ * Create staticly desired Logger
+ *
+ * @param string $type Type of Logger to create
+ *
+ * @return LoggerInterface Logger instance
+ */
+static public function get($type)
+{
+    $instance = null;
+
+    switch ($type) {
+
+        case 'screen':
+            $instance = new ScreenLogger();
+            break;
+
+        case 'file':
+            $instance = new FileLogger();
+            break;
+
+        default:
+            throw new BadLoggerDefinitionException;
+    }
+
+    return $instance;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>And Factory dependency injection definition.. As factory must not be instanced to create a Logger ( <code>get</code> method is static ) we must use <code>factory_class</code> to define the Factory namespace.</p>
+
+<p>``` yml</p>
+
+<h1>/my/bundle/Namespace/Resources/config/services.yml</h1>
+
+<p>services:</p>
+
+<pre><code>my.logger:
+    class: My\Bundle\Namespace\LoggerInterface
+    factory_class: My\Bundle\Namespace\LoggerFactory
+    factory_method: get
+    arguments:
+        logger_type: %logger.type%
+
+my.service:
+    class: My\Bundle\Namespace\MyService
+    arguments:
+        my_logger: @my.logger
+</code></pre>
+
+<p>```</p>
+
+<h2>Prototyping</h2>
+
+<p>Let&rsquo;s take a look at Symfony2 component <a href="http://symfony.com/doc/current/components/finder.html">Finder</a> class. We have a class named Manager that uses this class.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>namespace My\Bundle\Namespace;</p>
+
+<p>use Symfony\Component\Finder\Finder;</p>
+
+<p>/<em>*
+ * This class is just a manager
+ </em>/
+class Manager
+{</p>
+
+<pre><code>/**
+ * Do something
+ */
+public function doSomething()
+{
+    $finder = new Finder();
+    $finder
+        -&gt;files()
+        -&gt;in(__DIR__);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Placing this <code>new Finder</code> inside Manager class, we assume that Manager has responsability to know how <code>Finder</code> must be built. This creates dependency between both objects, and that&rsquo;s wrong. So the point is that we should inject a new instance of <code>Finder</code> each time we call doSomething.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>namespace My\Bundle\Namespace;</p>
+
+<p>use Symfony\Component\Finder\Finder;</p>
+
+<p>/<em>*
+ * This class is just a manager
+ </em>/
+class Manager
+{</p>
+
+<pre><code>/**
+ * @var Finder
+ *
+ * Finder
+ */
+private $finder;
+
+
+/**
+ * Construct method
+ *
+ * @param Finder $finder Finder
+ */
+public function __construct(Finder $finder)
+{
+    $this-&gt;finder = $finder;
+}
+
+
+/**
+ * Do something
+ */
+public function doSomething()
+{
+    $this
+        -&gt;finder
+        -&gt;files()
+        -&gt;in(__DIR__);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>And how do we resolve this problem using Dependency Injection? Is as easy as creating a new service using Finder as class, with prototype scope.</p>
+
+<p>``` yml</p>
+
+<h1>/my/bundle/Namespace/Resources/config/services.yml</h1>
+
+<p>services:</p>
+
+<pre><code>my.finder:
+    class: Symfony\Component\Finder\Finder
+    scope: prototype
+
+my.manager:
+    class: My\Bundle\Namespace\Manager
+    arguments:
+        my_finder: @my.finder
+</code></pre>
+
+<p>```</p>
+
+<p>If we tale a look at <code>Finder</code> class we shall notice that have a static factory method inside. If we use Factory pattern using this method, we will instanciate a new <code>Finder</code> object the first time, but not the others.</p>
+]]></content>
+  </entry>
+  
+</feed>

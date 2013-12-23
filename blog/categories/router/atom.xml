@@ -4,7 +4,7 @@
   <title><![CDATA[Category: router | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/router/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2013-12-18T19:05:31+01:00</updated>
+  <updated>2013-12-23T12:12:24+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -24,108 +24,120 @@
 
 <p>Consider the following example</p>
 
-<pre><code>&lt;?php
+<p>``` php
+&lt;?php</p>
 
-namespace Mmoreram\AcmeBundle\Router;
+<p>namespace Mmoreram\AcmeBundle\Router;</p>
 
-use Symfony\Component\Config\Loader\LoaderInterface;
+<p>use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RouteCollection;</p>
+
+<p>/<em>*
+ * Acme dynamic router
+ </em>/
+class AcmeRoutesLoader implements LoaderInterface
+{</p>
+
+<pre><code>/**
+ * @var boolean
+ *
+ * Route is loaded
+ */
+private $loaded = false;
 
 /**
- * Acme dynamic router
+ * Loads a resource.
+ *
+ * @param mixed  $resource The resource
+ * @param string $type     The resource type
+ *
+ * @return RouteCollection
+ *
+ * @throws RuntimeException Loader is added twice
  */
-class AcmeRoutesLoader implements LoaderInterface
+public function load($resource, $type = null)
 {
-    /**
-     * @var boolean
-     * 
-     * Route is loaded
-     */
-    private $loaded = false;
+    if ($this-&gt;loaded) {
 
-    /**
-     * Loads a resource.
-     *
-     * @param mixed  $resource The resource
-     * @param string $type     The resource type
-     * 
-     * @return RouteCollection
-     * 
-     * @throws RuntimeException Loader is added twice
-     */
-    public function load($resource, $type = null)
-    {
-        if ($this-&gt;loaded) {
-
-            throw new \RuntimeException('Do not add this loader twice');
-        }
-
-        $routes = new RouteCollection();
-
-        /**
-         * url('controller_name') will point AcmeController:methodAction()
-         */
-        $routes-&gt;add('controller_name', new Route('controller/route', array(
-            '_controller'   =&gt;  'AcmeBundle:Acme:method',
-        )));
-
-        $this-&gt;loaded = true;
-
-        return $routes;
+        throw new \RuntimeException('Do not add this loader twice');
     }
 
-    /**
-     * Returns true if this class supports the given resource.
-     *
-     * @param mixed  $resource A resource
-     * @param string $type     The resource type
-     *
-     * @return boolean true if this class supports the given resource, false otherwise
-     */
-    public function supports($resource, $type = null)
-    {
-        return 'acme' === $type;
-    }
+    $routes = new RouteCollection();
 
     /**
-     * Gets the loader resolver.
-     *
-     * @return LoaderResolverInterface A LoaderResolverInterface instance
+     * url('controller_name') will point AcmeController:methodAction()
      */
-    public function getResolver()
-    {
-    }
+    $routes-&gt;add('controller_name', new Route('controller/route', array(
+        '_controller'   =&gt;  'AcmeBundle:Acme:method',
+    )));
 
-    /**
-     * Sets the loader resolver.
-     *
-     * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
-     */
-    public function setResolver(LoaderResolverInterface $resolver)
-    {
-    }
+    $this-&gt;loaded = true;
+
+    return $routes;
+}
+
+/**
+ * Returns true if this class supports the given resource.
+ *
+ * @param mixed  $resource A resource
+ * @param string $type     The resource type
+ *
+ * @return boolean true if this class supports the given resource, false otherwise
+ */
+public function supports($resource, $type = null)
+{
+    return 'acme' === $type;
+}
+
+/**
+ * Gets the loader resolver.
+ *
+ * @return LoaderResolverInterface A LoaderResolverInterface instance
+ */
+public function getResolver()
+{
+}
+
+/**
+ * Sets the loader resolver.
+ *
+ * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
+ */
+public function setResolver(LoaderResolverInterface $resolver)
+{
 }
 </code></pre>
+
+<p>}
+```</p>
 
 <p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should be defined once in all project.</p>
 
 <p>As any service, we must define this class in dependency injection with specific tag.</p>
 
-<pre><code>services:
-    acme.routes.loader:
-        class: Mmoreram\AcmeBundle\Router\AcmeRoutesLoader
-        tags:
-            - { name: routing.loader }
+<p>``` yml
+services:</p>
+
+<pre><code>acme.routes.loader:
+    class: Mmoreram\AcmeBundle\Router\AcmeRoutesLoader
+    tags:
+        - { name: routing.loader }
 </code></pre>
+
+<p>```</p>
 
 <p>And finally we just need to make our project know where to build our route, so in <code>routing.yml</code> file we must add these lines.</p>
 
-<pre><code>acme_routes:
-    resource: .
-    type: acme
+<p>``` yml
+acme_routes:</p>
+
+<pre><code>resource: .
+type: acme
 </code></pre>
+
+<p>```</p>
 
 <blockquote><p>At this point, type value must be the same as defined in Router service.</p></blockquote>
 ]]></content>

@@ -6,29 +6,33 @@
     </url>
     <url>
         <loc>http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2/</loc>
-        <lastmod>2013-10-01T18:58:33+02:00</lastmod>
+        <lastmod>2013-12-23T12:07:38+01:00</lastmod>
     </url>
     <url>
         <loc>
             http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/
         </loc>
-        <lastmod>2013-10-09T11:40:02+02:00</lastmod>
+        <lastmod>2013-12-23T12:07:38+01:00</lastmod>
     </url>
     <url>
         <loc>http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities/</loc>
-        <lastmod>2013-10-11T10:15:51+02:00</lastmod>
+        <lastmod>2013-12-23T12:02:26+01:00</lastmod>
     </url>
     <url>
         <loc>http://mmoreram.github.io/blog/2013/12/18/symfony-rocks/</loc>
         <lastmod>2013-12-18T19:03:43+01:00</lastmod>
     </url>
     <url>
+        <loc>http://mmoreram.github.io/blog/2013/12/23/factory-pattern-in-symfony2/</loc>
+        <lastmod>2013-12-23T12:11:52+01:00</lastmod>
+    </url>
+    <url>
         <loc>http://mmoreram.github.io/blog/archives/</loc>
-        <lastmod>2013-12-18T19:03:43+01:00</lastmod>
+        <lastmod>2013-12-23T12:11:52+01:00</lastmod>
     </url>
     <url>
         <loc>http://mmoreram.github.io/</loc>
-        <lastmod>2013-12-18T19:03:43+01:00</lastmod>
+        <lastmod>2013-12-23T12:11:52+01:00</lastmod>
     </url>
     <url>
         <loc>http://mmoreram.github.io/robots.txt</loc>

@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2013-12-18T19:05:31+01:00</updated>
+  <updated>2013-12-23T12:12:24+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,487 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Factory pattern in Symfony2]]></title>
+    <link href="http://mmoreram.github.io/blog/2013/12/23/factory-pattern-in-symfony2/"/>
+    <updated>2013-12-23T12:10:00+01:00</updated>
+    <id>http://mmoreram.github.io/blog/2013/12/23/factory-pattern-in-symfony2</id>
+    <content type="html"><![CDATA[<h2>The pattern.</h2>
+
+<p>The factory pattern gives responsibility to create some instances of certain types to a class called factory. All possible classes that can instantiate the factory should always implement an interface, so we will be able to call certain methods, whether the class is. Let&rsquo;s see an specific and usable example.</p>
+
+<p>Tenemos una interficie para todas nuestras clases Logger. Todas ellas deben implementar el método Log.
+First of all, we have an interface called LoggerInterface. Is just an interface so just define all methods that implementations must implement.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle\Namespace</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Interface for all loggers</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">interface</span> <span class="nx">LoggerInterface</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Logs message given as parameter</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param string $message Message to log</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return LoggerInterface self Object</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">log</span><span class="p">(</span><span class="nv">$message</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On the one hand we have an implementation called FileLogger. This class just write given messages in a file.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;/</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle\Namespace</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">My\Bundle\Namespace\LoggerInterface</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * This class logs into specific file</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">FileLogger</span> <span class="k">implements</span> <span class="nx">LoggerInterface</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="sd">/**</span>
+</span><span class='line'><span class="sd">    * @var file path</span>
+</span><span class='line'><span class="sd">    *</span>
+</span><span class='line'><span class="sd">    * File path</span>
+</span><span class='line'><span class="sd">    */</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$filepath</span> <span class="o">=</span> <span class="s1">&#39;/tmp/myfile.log&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Logs message given as parameter</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param string $message Message to log</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return FileLogger self Object</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">log</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file_put_contents</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">filepath</span><span class="p">,</span> <span class="nv">$message</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And on the other hand we have a ScreenLogger, that just echoes message as it comes.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;/</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle\Namespace</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">My\Bundle\Namespace\LoggerInterface</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * This class logs into specific file</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">ScreenLogger</span> <span class="k">implements</span> <span class="nx">LoggerInterface</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Logs message given as parameter</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param string $message Message to log</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return FileLogger self Object</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">log</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="nv">$message</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Given a project we may want to specify using configurarion which Logger we want to use. Since we want to work with dependency injection component offered by Symfony2 framework, and any class where we will use our Logger is responsible for knowing as each instance of our Loggers, we need to create a Factory that is responsible for taking the setting you have specified, return us an instance of the class we want.</p>
+
+<p>Given this configuration</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># /app/config/config.yml</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">logger</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">screen</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We define our factory service. As <code>type</code> configuration value is a free text value, if value do not references any Logger type we will throw an exception.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle\Namespace</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * This class is just a Logger factory</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">LoggerFactory</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Create staticly desired Logger</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param string $type Type of Logger to create</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return LoggerInterface Logger instance</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">static</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">get</span><span class="p">(</span><span class="nv">$type</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$instance</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">switch</span> <span class="p">(</span><span class="nv">$type</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">case</span> <span class="s1">&#39;screen&#39;</span><span class="o">:</span>
+</span><span class='line'>                <span class="nv">$instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ScreenLogger</span><span class="p">();</span>
+</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">case</span> <span class="s1">&#39;file&#39;</span><span class="o">:</span>
+</span><span class='line'>                <span class="nv">$instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FileLogger</span><span class="p">();</span>
+</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>                <span class="k">throw</span> <span class="k">new</span> <span class="nx">BadLoggerDefinitionException</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$instance</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And Factory dependency injection definition.. As factory must not be instanced to create a Logger ( <code>get</code> method is static ) we must use <code>factory_class</code> to define the Factory namespace.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># /my/bundle/Namespace/Resources/config/services.yml</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">my.logger</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\Namespace\LoggerInterface</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">factory_class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\Namespace\LoggerFactory</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">factory_method</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">get</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">logger_type</span><span class="p-Indicator">:</span> <span class="err">%</span><span class="l-Scalar-Plain">logger.type%</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">my.service</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\Namespace\MyService</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">my_logger</span><span class="p-Indicator">:</span> <span class="err">@</span><span class="l-Scalar-Plain">my.logger</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Prototyping</h2>
+
+<p>Let&rsquo;s take a look at Symfony2 component <a href="http://symfony.com/doc/current/components/finder.html">Finder</a> class. We have a class named Manager that uses this class.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle\Namespace</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Finder\Finder</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * This class is just a manager</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Manager</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Do something</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">doSomething</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$finder</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Finder</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$finder</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">files</span><span class="p">()</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">in</span><span class="p">(</span><span class="nx">__DIR__</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Placing this <code>new Finder</code> inside Manager class, we assume that Manager has responsability to know how <code>Finder</code> must be built. This creates dependency between both objects, and that&rsquo;s wrong. So the point is that we should inject a new instance of <code>Finder</code> each time we call doSomething.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle\Namespace</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Finder\Finder</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * This class is just a manager</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Manager</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var Finder</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Finder</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$finder</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Construct method</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param Finder $finder Finder</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Finder</span> <span class="nv">$finder</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">finder</span> <span class="o">=</span> <span class="nv">$finder</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Do something</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">doSomething</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">finder</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">files</span><span class="p">()</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">in</span><span class="p">(</span><span class="nx">__DIR__</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And how do we resolve this problem using Dependency Injection? Is as easy as creating a new service using Finder as class, with prototype scope.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># /my/bundle/Namespace/Resources/config/services.yml</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">my.finder</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Symfony\Component\Finder\Finder</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">scope</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">prototype</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">my.manager</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\Namespace\Manager</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">my_finder</span><span class="p-Indicator">:</span> <span class="err">@</span><span class="l-Scalar-Plain">my.finder</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If we tale a look at <code>Finder</code> class we shall notice that have a static factory method inside. If we use Factory pattern using this method, we will instanciate a new <code>Finder</code> object the first time, but not the others.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Symfony2]]></title>
@@ -41,88 +522,157 @@
     <id>http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities</id>
     <content type="html"><![CDATA[<p>Given this example</p>
 
-<pre><code>$spain = new Country;
-$spain-&gt;setName('spain');
-$entityManager-&gt;persist($spain);
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$spain</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$spain</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;spain&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$spain</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$france</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$france</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;france&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$france</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
-$france = new Country;
-$france-&gt;setName('france');
-$entityManager-&gt;persist($france);
-
-$entityManager-&gt;flush();
-</code></pre>
 
 <p>When we flush without defining any kind of parameter, all entities managed by EntityManager with changes will be flushed.<br/>
 To flush a specific entity managed by EntityManager we can just pass the entity as a parameter in the flush method</p>
 
-<pre><code>$spain = new Country;
-$spain-&gt;setName('spain');
-$entityManager-&gt;persist($spain);
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$spain</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$spain</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;spain&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$spain</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$france</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$france</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;france&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$france</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * At this point, I only want to flush $spain</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">(</span><span class="nv">$spain</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-$france = new Country;
-$france-&gt;setName('france');
-$entityManager-&gt;persist($france);
-
-/**
- * At this point, I only want to flush $spain
- */
-$entityManager-&gt;flush($spain);
-</code></pre>
 
 <p>To flush an array of entities managed by EntityManager we can pass the array as a parameter in the flush method</p>
 
-<pre><code>$spain = new Country;
-$spain-&gt;setName('spain');
-$entityManager-&gt;persist($spain);
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$spain</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$spain</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;spain&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$spain</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$france</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$france</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;france&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$france</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$germany</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$germany</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;germany&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$germany</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * At this point, I only want to flush $spain</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>    <span class="nv">$spain</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$france</span><span class="p">,</span>
+</span><span class='line'><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
 
-$france = new Country;
-$france-&gt;setName('france');
-$entityManager-&gt;persist($france);
-
-$germany = new Country;
-$germany-&gt;setName('germany');
-$entityManager-&gt;persist($germany);
-
-/**
- * At this point, I only want to flush $spain
- */
-$entityManager-&gt;flush(array(
-    $spain,
-    $france,
-));
-</code></pre>
 
 <p>So, how about flushing an ArrayCollection of entities? Lets take a look at the UnitOfWork code where contains this logic.</p>
 
-<pre><code>if ($entity === null) {
-    $this-&gt;computeChangeSets();
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nv">$entity</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeChangeSets</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_object</span><span class="p">(</span><span class="nv">$entity</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeSingleEntityChangeSet</span><span class="p">(</span><span class="nv">$entity</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$entity</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$entity</span> <span class="k">as</span> <span class="nv">$object</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeSingleEntityChangeSet</span><span class="p">(</span><span class="nv">$object</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-} elseif (is_object($entity)) {
-
-    $this-&gt;computeSingleEntityChangeSet($entity);
-} elseif (is_array($entity)) {
-
-    foreach ($entity as $object) {
-        $this-&gt;computeSingleEntityChangeSet($object);
-    }
-}
-</code></pre>
 
 <p>Considering that ArrayCollection is an object, this code should be changed to this code to also accept ArrayCollection and all iterable objects.</p>
 
-<pre><code>if ($entity === null) {
-    $this-&gt;computeChangeSets();
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nv">$entity</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeChangeSets</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$entity</span><span class="p">)</span> <span class="o">||</span> <span class="nv">$entity</span> <span class="nx">instanceof</span> <span class="nx">IteratorAggregate</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$entity</span> <span class="k">as</span> <span class="nv">$object</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeSingleEntityChangeSet</span><span class="p">(</span><span class="nv">$object</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_object</span><span class="p">(</span><span class="nv">$entity</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeSingleEntityChangeSet</span><span class="p">(</span><span class="nv">$entity</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-} elseif (is_array($entity) || $entity instanceof IteratorAggregate) {
-
-    foreach ($entity as $object) {
-        $this-&gt;computeSingleEntityChangeSet($object);
-    }
-} elseif (is_object($entity)) {
-
-    $this-&gt;computeSingleEntityChangeSet($entity);
-}
-</code></pre>
 ]]></content>
   </entry>
   
@@ -133,154 +683,291 @@ $entityManager-&gt;flush(array(
     <id>http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models</id>
     <content type="html"><![CDATA[<p>Lets take a look some basic example about simple Doctrine2 relation.</p>
 
-<pre><code>/**
- * Country
- *
- * @ORM\Entity
- * @ORM\Table(name="countries")
- */
-class Country {
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Country</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @ORM\Entity</span>
+</span><span class='line'><span class="sd"> * @ORM\Table(name=&quot;countries&quot;)</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Country</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var ArrayCollection</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @ORM\OneToMany(targetEntity=&quot;Province&quot;, mappedBy=&quot;country&quot;)</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$provinces</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Constructor</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">provinces</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ArrayCollection</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Add province</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param Province $province Province to add</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return Country self Object</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addProvince</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">provinces</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$province</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Province", mappedBy="country")
-     */
-    protected $provinces;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this-&gt;provinces = new ArrayCollection;
-    }
-
-    /**
-     * Add province
-     *
-     * @param Province $province Province to add
-     *
-     * @return Country self Object
-     */
-    public function addProvince()
-    {
-        $this-&gt;provinces[] = $province;
-
-        return $this;
-    }
-}
 
 
-/**
- * Province
- *
- * @ORM\Entity
- * @ORM\Table(name="provinces")
- */
-class Province {
 
-    /**
-     * @var Country
-     *
-     * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
-     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
-     */
-    protected $country;
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Province</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @ORM\Entity</span>
+</span><span class='line'><span class="sd"> * @ORM\Table(name=&quot;provinces&quot;)</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Province</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var Country</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @ORM\ManyToOne(targetEntity=&quot;Country&quot;, inversedBy=&quot;provinces&quot;)</span>
+</span><span class='line'><span class="sd">     * @ORM\JoinColumn(name=&quot;country_id&quot;, referencedColumnName=&quot;id&quot;, nullable=false)</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$country</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Set Country</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param Country $country Country</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return Province self Object</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setCountry</span><span class="p">(</span><span class="nx">Country</span> <span class="nv">$country</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">country</span> <span class="o">=</span> <span class="nv">$country</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Get the country</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return Country</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getCountry</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">country</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    /**
-     * Set Country
-     *
-     * @param Country $country Country
-     *
-     * @return Province self Object
-     */
-    public function setCountry(Country $country)
-    {
-        $this-&gt;country = $country;
 
-        return $this;
-    }
-
-    /**
-     * Get the country
-     *
-     * @return Country
-     */
-    public function getCountry()
-    {
-        return $this-&gt;country;
-    }
-}
-</code></pre>
-
-<p>The reason for this post is to try to understand the direct impact of making an inversed relationship when we allocate a new province in a country.<br/>
+<p>The reason for this post is to try to understand the direct impact of making an inversed relationship when we allocate a new province in a country.
 Given the model we have in the first instance, and given this piece of controller</p>
 
-<pre><code>$country = $this
-    -&gt;entityManager
-    -&gt;getRepository('AcmeCoreBundle:Country')
-    -&gt;findBy(1);
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$country</span> <span class="o">=</span> <span class="nv">$this</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">entityManager</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;AcmeCoreBundle:Country&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">findBy</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$province</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Province</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$province</span><span class="o">-&gt;</span><span class="na">setCountry</span><span class="p">(</span><span class="nv">$country</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$province</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">entityManager</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
-$province = new Province();
-$province-&gt;setCountry($country);
-$this-&gt;entityManager-&gt;persist($province);
-$this-&gt;entityManager-&gt;flush();
-</code></pre>
 
-<p>In this case, when we assign the Country to the new Province, and given that the owning side of the association is Province, when you flush, the association persists in database, so that in future reference, we would have the desired results.<br/>
+<p>In this case, when we assign the Country to the new Province, and given that the owning side of the association is Province, when you flush, the association persists in database, so that in future reference, we would have the desired results.
 The &ldquo;problem&rdquo; exists because our <code>EntityManager</code> works with internal cache. If after this assignment, and in the same request, we need to return all the provinces of the Country, in particular the Country with id 1, the returned collection will not contain the new Province if this data is already cached. This is because we have not perfomed reversed assignment. There are two ways of solving this.</p>
 
 <h3>Model owns the responsability of double assignment</h3>
 
 <p>We can resolve this giving model the responsability of double assignment.</p>
 
-<pre><code>/**
- * Province
- *
- * @ORM\Entity
- * @ORM\Table(name="provinces")
- */
-class Province {
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Province</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @ORM\Entity</span>
+</span><span class='line'><span class="sd"> * @ORM\Table(name=&quot;provinces&quot;)</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Province</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var Country</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @ORM\ManyToOne(targetEntity=&quot;Country&quot;, inversedBy=&quot;provinces&quot;)</span>
+</span><span class='line'><span class="sd">     * @ORM\JoinColumn(name=&quot;country_id&quot;, referencedColumnName=&quot;id&quot;, nullable=false)</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$country</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Set Country</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param Country $country Country</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return Province self Object</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setCountry</span><span class="p">(</span><span class="nx">Country</span> <span class="nv">$country</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">country</span> <span class="o">=</span> <span class="nv">$country</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * We perform inversed assignment</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="nv">$country</span><span class="o">-&gt;</span><span class="na">setProvince</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Get the country</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return Country</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getCountry</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">country</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    /**
-     * @var Country
-     *
-     * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
-     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
-     */
-    protected $country;
-
-    /**
-     * Set Country
-     *
-     * @param Country $country Country
-     *
-     * @return Province self Object
-     */
-    public function setCountry(Country $country)
-    {
-        $this-&gt;country = $country;
-
-        /**
-         * We perform inversed assignment
-         */
-        $country-&gt;setProvince($this);
-
-        return $this;
-    }
-
-    /**
-     * Get the country
-     *
-     * @return Country
-     */
-    public function getCountry()
-    {
-        return $this-&gt;country;
-    }
-}
-</code></pre>
 
 <p>This has a good side and bad. On the one hand, is a completely transparent process so that the model handles internally to manage their relationships. It allows the driver to disengage completely from the model.
 On the other hand, we must bear in mind that <strong>will</strong> always done this inverse relationship. This can be a plus for a project, unless handled very large amounts of data.</p>
@@ -291,17 +978,28 @@ On the other hand, we must bear in mind that <strong>will</strong> always done t
 
 <p>In this case, controller need to perform inversed assignment.</p>
 
-<pre><code>$country = $this
-    -&gt;entityManager
-    -&gt;getRepository('AcmeCoreBundle:Country')
-    -&gt;findBy(1);
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$country</span> <span class="o">=</span> <span class="nv">$this</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">entityManager</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;AcmeCoreBundle:Country&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">findBy</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$province</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Province</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$province</span><span class="o">-&gt;</span><span class="na">setCountry</span><span class="p">(</span><span class="nv">$country</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$country</span><span class="o">-&gt;</span><span class="na">addProvince</span><span class="p">(</span><span class="nv">$province</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$province</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">entityManager</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
-$province = new Province();
-$province-&gt;setCountry($country);
-$country-&gt;addProvince($province);
-$this-&gt;entityManager-&gt;persist($province);
-$this-&gt;entityManager-&gt;flush();
-</code></pre>
 
 <p>You will choose if is the best option, so you have an idea about if all provinces are used later. If are used and a million Provinces are loaded, you will have the same problem as first case, but has nothing to do about this&hellip;</p>
 
@@ -322,108 +1020,202 @@ $this-&gt;entityManager-&gt;flush();
 
 <p>Consider the following example</p>
 
-<pre><code>&lt;?php
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">Mmoreram\AcmeBundle\Router</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Config\Loader\LoaderInterface</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Config\Loader\LoaderResolverInterface</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Routing\Route</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Routing\RouteCollection</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Acme dynamic router</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">AcmeRoutesLoader</span> <span class="k">implements</span> <span class="nx">LoaderInterface</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var boolean</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Route is loaded</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$loaded</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Loads a resource.</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param mixed  $resource The resource</span>
+</span><span class='line'><span class="sd">     * @param string $type     The resource type</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return RouteCollection</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @throws RuntimeException Loader is added twice</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">load</span><span class="p">(</span><span class="nv">$resource</span><span class="p">,</span> <span class="nv">$type</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">loaded</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nx">\RuntimeException</span><span class="p">(</span><span class="s1">&#39;Do not add this loader twice&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$routes</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RouteCollection</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * url(&#39;controller_name&#39;) will point AcmeController:methodAction()</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;controller_name&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">(</span><span class="s1">&#39;controller/route&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="s1">&#39;_controller&#39;</span>   <span class="o">=&gt;</span>  <span class="s1">&#39;AcmeBundle:Acme:method&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="p">)));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">loaded</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$routes</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Returns true if this class supports the given resource.</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param mixed  $resource A resource</span>
+</span><span class='line'><span class="sd">     * @param string $type     The resource type</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return boolean true if this class supports the given resource, false otherwise</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">supports</span><span class="p">(</span><span class="nv">$resource</span><span class="p">,</span> <span class="nv">$type</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;acme&#39;</span> <span class="o">===</span> <span class="nv">$type</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Gets the loader resolver.</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return LoaderResolverInterface A LoaderResolverInterface instance</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getResolver</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Sets the loader resolver.</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setResolver</span><span class="p">(</span><span class="nx">LoaderResolverInterface</span> <span class="nv">$resolver</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-namespace Mmoreram\AcmeBundle\Router;
-
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-
-/**
- * Acme dynamic router
- */
-class AcmeRoutesLoader implements LoaderInterface
-{
-    /**
-     * @var boolean
-     * 
-     * Route is loaded
-     */
-    private $loaded = false;
-
-    /**
-     * Loads a resource.
-     *
-     * @param mixed  $resource The resource
-     * @param string $type     The resource type
-     * 
-     * @return RouteCollection
-     * 
-     * @throws RuntimeException Loader is added twice
-     */
-    public function load($resource, $type = null)
-    {
-        if ($this-&gt;loaded) {
-
-            throw new \RuntimeException('Do not add this loader twice');
-        }
-
-        $routes = new RouteCollection();
-
-        /**
-         * url('controller_name') will point AcmeController:methodAction()
-         */
-        $routes-&gt;add('controller_name', new Route('controller/route', array(
-            '_controller'   =&gt;  'AcmeBundle:Acme:method',
-        )));
-
-        $this-&gt;loaded = true;
-
-        return $routes;
-    }
-
-    /**
-     * Returns true if this class supports the given resource.
-     *
-     * @param mixed  $resource A resource
-     * @param string $type     The resource type
-     *
-     * @return boolean true if this class supports the given resource, false otherwise
-     */
-    public function supports($resource, $type = null)
-    {
-        return 'acme' === $type;
-    }
-
-    /**
-     * Gets the loader resolver.
-     *
-     * @return LoaderResolverInterface A LoaderResolverInterface instance
-     */
-    public function getResolver()
-    {
-    }
-
-    /**
-     * Sets the loader resolver.
-     *
-     * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
-     */
-    public function setResolver(LoaderResolverInterface $resolver)
-    {
-    }
-}
-</code></pre>
 
 <p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should be defined once in all project.</p>
 
 <p>As any service, we must define this class in dependency injection with specific tag.</p>
 
-<pre><code>services:
-    acme.routes.loader:
-        class: Mmoreram\AcmeBundle\Router\AcmeRoutesLoader
-        tags:
-            - { name: routing.loader }
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">acme.routes.loader</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Mmoreram\AcmeBundle\Router\AcmeRoutesLoader</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="p-Indicator">{</span> <span class="nv">name</span><span class="p-Indicator">:</span> <span class="nv">routing.loader</span> <span class="p-Indicator">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>And finally we just need to make our project know where to build our route, so in <code>routing.yml</code> file we must add these lines.</p>
 
-<pre><code>acme_routes:
-    resource: .
-    type: acme
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">acme_routes</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">resource</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">.</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">acme</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <blockquote><p>At this point, type value must be the same as defined in Router service.</p></blockquote>
 ]]></content>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: flush | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/flush/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2013-12-18T19:05:31+01:00</updated>
+  <updated>2013-12-23T12:12:24+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -20,88 +20,108 @@
     <id>http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities</id>
     <content type="html"><![CDATA[<p>Given this example</p>
 
-<pre><code>$spain = new Country;
-$spain-&gt;setName('spain');
-$entityManager-&gt;persist($spain);
+<p>``` php
+$spain = new Country;
+$spain->setName(&lsquo;spain&rsquo;);
+$entityManager->persist($spain);</p>
 
-$france = new Country;
-$france-&gt;setName('france');
-$entityManager-&gt;persist($france);
+<p>$france = new Country;
+$france->setName(&lsquo;france&rsquo;);
+$entityManager->persist($france);</p>
 
-$entityManager-&gt;flush();
-</code></pre>
+<p>$entityManager->flush();
+```</p>
 
 <p>When we flush without defining any kind of parameter, all entities managed by EntityManager with changes will be flushed.<br/>
 To flush a specific entity managed by EntityManager we can just pass the entity as a parameter in the flush method</p>
 
-<pre><code>$spain = new Country;
-$spain-&gt;setName('spain');
-$entityManager-&gt;persist($spain);
+<p>``` php
+$spain = new Country;
+$spain->setName(&lsquo;spain&rsquo;);
+$entityManager->persist($spain);</p>
 
-$france = new Country;
-$france-&gt;setName('france');
-$entityManager-&gt;persist($france);
+<p>$france = new Country;
+$france->setName(&lsquo;france&rsquo;);
+$entityManager->persist($france);</p>
 
-/**
+<p>/<em>*
  * At this point, I only want to flush $spain
- */
-$entityManager-&gt;flush($spain);
-</code></pre>
+ </em>/
+$entityManager->flush($spain);
+```</p>
 
 <p>To flush an array of entities managed by EntityManager we can pass the array as a parameter in the flush method</p>
 
-<pre><code>$spain = new Country;
-$spain-&gt;setName('spain');
-$entityManager-&gt;persist($spain);
+<p>``` php
+$spain = new Country;
+$spain->setName(&lsquo;spain&rsquo;);
+$entityManager->persist($spain);</p>
 
-$france = new Country;
-$france-&gt;setName('france');
-$entityManager-&gt;persist($france);
+<p>$france = new Country;
+$france->setName(&lsquo;france&rsquo;);
+$entityManager->persist($france);</p>
 
-$germany = new Country;
-$germany-&gt;setName('germany');
-$entityManager-&gt;persist($germany);
+<p>$germany = new Country;
+$germany->setName(&lsquo;germany&rsquo;);
+$entityManager->persist($germany);</p>
 
-/**
+<p>/<em>*
  * At this point, I only want to flush $spain
- */
-$entityManager-&gt;flush(array(
-    $spain,
-    $france,
-));
+ </em>/
+$entityManager->flush(array(</p>
+
+<pre><code>$spain,
+$france,
 </code></pre>
+
+<p>));
+```</p>
 
 <p>So, how about flushing an ArrayCollection of entities? Lets take a look at the UnitOfWork code where contains this logic.</p>
 
-<pre><code>if ($entity === null) {
-    $this-&gt;computeChangeSets();
+<p>``` php
+if ($entity === null) {</p>
 
-} elseif (is_object($entity)) {
+<pre><code>$this-&gt;computeChangeSets();
+</code></pre>
 
-    $this-&gt;computeSingleEntityChangeSet($entity);
-} elseif (is_array($entity)) {
+<p>} elseif (is_object($entity)) {</p>
 
-    foreach ($entity as $object) {
-        $this-&gt;computeSingleEntityChangeSet($object);
-    }
+<pre><code>$this-&gt;computeSingleEntityChangeSet($entity);
+</code></pre>
+
+<p>} elseif (is_array($entity)) {</p>
+
+<pre><code>foreach ($entity as $object) {
+    $this-&gt;computeSingleEntityChangeSet($object);
 }
 </code></pre>
+
+<p>}
+```</p>
 
 <p>Considering that ArrayCollection is an object, this code should be changed to this code to also accept ArrayCollection and all iterable objects.</p>
 
-<pre><code>if ($entity === null) {
-    $this-&gt;computeChangeSets();
+<p>``` php
+if ($entity === null) {</p>
 
-} elseif (is_array($entity) || $entity instanceof IteratorAggregate) {
+<pre><code>$this-&gt;computeChangeSets();
+</code></pre>
 
-    foreach ($entity as $object) {
-        $this-&gt;computeSingleEntityChangeSet($object);
-    }
-} elseif (is_object($entity)) {
+<p>} elseif (is_array($entity) || $entity instanceof IteratorAggregate) {</p>
 
-    $this-&gt;computeSingleEntityChangeSet($entity);
+<pre><code>foreach ($entity as $object) {
+    $this-&gt;computeSingleEntityChangeSet($object);
 }
 </code></pre>
+
+<p>} elseif (is_object($entity)) {</p>
+
+<pre><code>$this-&gt;computeSingleEntityChangeSet($entity);
+</code></pre>
+
+<p>}
+```</p>
 ]]></content>
   </entry>
   

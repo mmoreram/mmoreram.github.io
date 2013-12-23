@@ -4,7 +4,7 @@
   <title><![CDATA[Category: relations | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/relations/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2013-12-18T19:05:31+01:00</updated>
+  <updated>2013-12-23T12:12:24+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -20,154 +20,166 @@
     <id>http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models</id>
     <content type="html"><![CDATA[<p>Lets take a look some basic example about simple Doctrine2 relation.</p>
 
-<pre><code>/**
+<p>``` php
+/<em>*
  * Country
  *
  * @ORM\Entity
- * @ORM\Table(name="countries")
+ * @ORM\Table(name=&ldquo;countries&rdquo;)
+ </em>/
+class Country {</p>
+
+<pre><code>/**
+ * @var ArrayCollection
+ *
+ * @ORM\OneToMany(targetEntity="Province", mappedBy="country")
  */
-class Country {
-
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Province", mappedBy="country")
-     */
-    protected $provinces;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this-&gt;provinces = new ArrayCollection;
-    }
-
-    /**
-     * Add province
-     *
-     * @param Province $province Province to add
-     *
-     * @return Country self Object
-     */
-    public function addProvince()
-    {
-        $this-&gt;provinces[] = $province;
-
-        return $this;
-    }
-}
-
+protected $provinces;
 
 /**
+ * Constructor
+ */
+public function __construct()
+{
+    $this-&gt;provinces = new ArrayCollection;
+}
+
+/**
+ * Add province
+ *
+ * @param Province $province Province to add
+ *
+ * @return Country self Object
+ */
+public function addProvince()
+{
+    $this-&gt;provinces[] = $province;
+
+    return $this;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>``` php
+/<em>*
  * Province
  *
  * @ORM\Entity
- * @ORM\Table(name="provinces")
+ * @ORM\Table(name=&ldquo;provinces&rdquo;)
+ </em>/
+class Province {</p>
+
+<pre><code>/**
+ * @var Country
+ *
+ * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
+ * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
  */
-class Province {
+protected $country;
 
-    /**
-     * @var Country
-     *
-     * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
-     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
-     */
-    protected $country;
+/**
+ * Set Country
+ *
+ * @param Country $country Country
+ *
+ * @return Province self Object
+ */
+public function setCountry(Country $country)
+{
+    $this-&gt;country = $country;
 
-    /**
-     * Set Country
-     *
-     * @param Country $country Country
-     *
-     * @return Province self Object
-     */
-    public function setCountry(Country $country)
-    {
-        $this-&gt;country = $country;
+    return $this;
+}
 
-        return $this;
-    }
-
-    /**
-     * Get the country
-     *
-     * @return Country
-     */
-    public function getCountry()
-    {
-        return $this-&gt;country;
-    }
+/**
+ * Get the country
+ *
+ * @return Country
+ */
+public function getCountry()
+{
+    return $this-&gt;country;
 }
 </code></pre>
 
-<p>The reason for this post is to try to understand the direct impact of making an inversed relationship when we allocate a new province in a country.<br/>
+<p>}
+```</p>
+
+<p>The reason for this post is to try to understand the direct impact of making an inversed relationship when we allocate a new province in a country.
 Given the model we have in the first instance, and given this piece of controller</p>
 
-<pre><code>$country = $this
-    -&gt;entityManager
-    -&gt;getRepository('AcmeCoreBundle:Country')
-    -&gt;findBy(1);
+<p>``` php
+$country = $this</p>
 
-$province = new Province();
-$province-&gt;setCountry($country);
-$this-&gt;entityManager-&gt;persist($province);
-$this-&gt;entityManager-&gt;flush();
+<pre><code>-&gt;entityManager
+-&gt;getRepository('AcmeCoreBundle:Country')
+-&gt;findBy(1);
 </code></pre>
 
-<p>In this case, when we assign the Country to the new Province, and given that the owning side of the association is Province, when you flush, the association persists in database, so that in future reference, we would have the desired results.<br/>
+<p>$province = new Province();
+$province->setCountry($country);
+$this->entityManager->persist($province);
+$this->entityManager->flush();
+```</p>
+
+<p>In this case, when we assign the Country to the new Province, and given that the owning side of the association is Province, when you flush, the association persists in database, so that in future reference, we would have the desired results.
 The &ldquo;problem&rdquo; exists because our <code>EntityManager</code> works with internal cache. If after this assignment, and in the same request, we need to return all the provinces of the Country, in particular the Country with id 1, the returned collection will not contain the new Province if this data is already cached. This is because we have not perfomed reversed assignment. There are two ways of solving this.</p>
 
 <h3>Model owns the responsability of double assignment</h3>
 
 <p>We can resolve this giving model the responsability of double assignment.</p>
 
-<pre><code>/**
+<p>``` php
+/<em>*
  * Province
  *
  * @ORM\Entity
- * @ORM\Table(name="provinces")
+ * @ORM\Table(name=&ldquo;provinces&rdquo;)
+ </em>/
+class Province {</p>
+
+<pre><code>/**
+ * @var Country
+ *
+ * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
+ * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
  */
-class Province {
+protected $country;
+
+/**
+ * Set Country
+ *
+ * @param Country $country Country
+ *
+ * @return Province self Object
+ */
+public function setCountry(Country $country)
+{
+    $this-&gt;country = $country;
 
     /**
-     * @var Country
-     *
-     * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
-     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
+     * We perform inversed assignment
      */
-    protected $country;
+    $country-&gt;setProvince($this);
 
-    /**
-     * Set Country
-     *
-     * @param Country $country Country
-     *
-     * @return Province self Object
-     */
-    public function setCountry(Country $country)
-    {
-        $this-&gt;country = $country;
+    return $this;
+}
 
-        /**
-         * We perform inversed assignment
-         */
-        $country-&gt;setProvince($this);
-
-        return $this;
-    }
-
-    /**
-     * Get the country
-     *
-     * @return Country
-     */
-    public function getCountry()
-    {
-        return $this-&gt;country;
-    }
+/**
+ * Get the country
+ *
+ * @return Country
+ */
+public function getCountry()
+{
+    return $this-&gt;country;
 }
 </code></pre>
+
+<p>}
+```</p>
 
 <p>This has a good side and bad. On the one hand, is a completely transparent process so that the model handles internally to manage their relationships. It allows the driver to disengage completely from the model.
 On the other hand, we must bear in mind that <strong>will</strong> always done this inverse relationship. This can be a plus for a project, unless handled very large amounts of data.</p>
@@ -178,17 +190,20 @@ On the other hand, we must bear in mind that <strong>will</strong> always done t
 
 <p>In this case, controller need to perform inversed assignment.</p>
 
-<pre><code>$country = $this
-    -&gt;entityManager
-    -&gt;getRepository('AcmeCoreBundle:Country')
-    -&gt;findBy(1);
+<p>``` php
+$country = $this</p>
 
-$province = new Province();
-$province-&gt;setCountry($country);
-$country-&gt;addProvince($province);
-$this-&gt;entityManager-&gt;persist($province);
-$this-&gt;entityManager-&gt;flush();
+<pre><code>-&gt;entityManager
+-&gt;getRepository('AcmeCoreBundle:Country')
+-&gt;findBy(1);
 </code></pre>
+
+<p>$province = new Province();
+$province->setCountry($country);
+$country->addProvince($province);
+$this->entityManager->persist($province);
+$this->entityManager->flush();
+```</p>
 
 <p>You will choose if is the best option, so you have an idea about if all provinces are used later. If are used and a million Provinces are loaded, you will have the same problem as first case, but has nothing to do about this&hellip;</p>
 
