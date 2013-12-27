@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Factory | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/factory/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2013-12-23T12:12:24+01:00</updated>
+  <updated>2013-12-27T11:36:38+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -22,8 +22,7 @@
 
 <p>The factory pattern gives responsibility to create some instances of certain types to a class called factory. All possible classes that can instantiate the factory should always implement an interface, so we will be able to call certain methods, whether the class is. Let&rsquo;s see an specific and usable example.</p>
 
-<p>Tenemos una interficie para todas nuestras clases Logger. Todas ellas deben implementar el método Log.
-First of all, we have an interface called LoggerInterface. Is just an interface so just define all methods that implementations must implement.</p>
+<p>First of all, we have an interface called LoggerInterface. Is just an interface so just define all methods that implementations must implement.</p>
 
 <p>``` php
 &lt;?php</p>
