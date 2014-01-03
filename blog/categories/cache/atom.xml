@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cache | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/cache/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-01-03T15:22:49+01:00</updated>
+  <updated>2014-01-03T15:24:29+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Cache clear in Symfony2]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/01/03/cache-clear-in-symfony2/"/>
+    <title type="html"><![CDATA[Cache clear en Symfony2]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2/"/>
     <updated>2014-01-03T15:11:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/01/03/cache-clear-in-symfony2</id>
+    <id>http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2</id>
     <content type="html"><![CDATA[<p>Vacía la caché de Symfony, y la vuelve a crear ( sino se especifica lo contrario )</p>
 
 <p><code>bash
