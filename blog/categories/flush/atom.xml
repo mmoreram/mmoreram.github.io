@@ -4,7 +4,7 @@
   <title><![CDATA[Category: flush | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/flush/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-01-03T15:24:29+01:00</updated>
+  <updated>2014-02-11T20:43:28+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -32,8 +32,10 @@ $entityManager->persist($france);</p>
 <p>$entityManager->flush();
 ```</p>
 
-<p>When we flush without defining any kind of parameter, all entities managed by EntityManager with changes will be flushed.<br/>
-To flush a specific entity managed by EntityManager we can just pass the entity as a parameter in the flush method</p>
+<p>When we flush without defining any kind of parameter, all entities managed by
+EntityManager with changes will be flushed.<br/>
+To flush a specific entity managed by EntityManager we can just pass the entity
+as a parameter in the flush method</p>
 
 <p>``` php
 $spain = new Country;
@@ -50,7 +52,8 @@ $entityManager->persist($france);</p>
 $entityManager->flush($spain);
 ```</p>
 
-<p>To flush an array of entities managed by EntityManager we can pass the array as a parameter in the flush method</p>
+<p>To flush an array of entities managed by EntityManager we can pass the array as
+a parameter in the flush method</p>
 
 <p>``` php
 $spain = new Country;
@@ -77,7 +80,8 @@ $france,
 <p>));
 ```</p>
 
-<p>So, how about flushing an ArrayCollection of entities? Lets take a look at the UnitOfWork code where contains this logic.</p>
+<p>So, how about flushing an ArrayCollection of entities? Lets take a look at the
+UnitOfWork code where contains this logic.</p>
 
 <p>``` php
 if ($entity === null) {</p>
@@ -100,7 +104,8 @@ if ($entity === null) {</p>
 <p>}
 ```</p>
 
-<p>Considering that ArrayCollection is an object, this code should be changed to this code to also accept ArrayCollection and all iterable objects.</p>
+<p>Considering that ArrayCollection is an object, this code should be changed to
+this code to also accept ArrayCollection and all iterable objects.</p>
 
 <p>``` php
 if ($entity === null) {</p>

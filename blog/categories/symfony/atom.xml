@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Symfony | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/symfony/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-01-03T15:24:29+01:00</updated>
+  <updated>2014-02-11T20:43:28+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -14,23 +14,251 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Custom controller annotations]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/02/11/custom-controller-annotations/"/>
+    <updated>2014-02-11T20:21:00+01:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/02/11/custom-controller-annotations</id>
+    <content type="html"><![CDATA[<p>The goal is easy: To provide a very intuitive and easy way of creating
+controller annotations in Symfony2.</p>
+
+<p><a href="https://github.com/mmoreram/ControllerExtraBundle">ControllerExtraBundle</a>
+is both a set of annotations and a platform for creating new custom ones.
+Actually, the bundle can create a new Entity, like ParamConverter does, with in
+this case is just an empty Entity. The bundle also can create FormTypes, Forms
+and FormViews with several options. Can also automate the doctrine <code>flush()</code>
+action after the method execution or log something before / after every desired
+action.</p>
+
+<p>Bundle is still being tested in production environments, all feedback will be
+very very useful.</p>
+
+<p>Let&rsquo;s see how can we create our Annotations.</p>
+
+<ul>
+<li>Annotation</li>
+<li>Resolver</li>
+<li>Definition</li>
+<li>Registration</li>
+</ul>
+
+
+<h2>Annotation</h2>
+
+<p>The annotation object. You need to define the fields your custom annotation
+will contain.
+Must extends <code>Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation</code>
+abstract class.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>namespace My\Bundle\Annotation;</p>
+
+<p>use Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation;</p>
+
+<p>/<em>*
+ * Entity annotation driver
+ *
+ * @Annotation
+ </em>/
+class MyCustomAnnotation extends Annotation
+{</p>
+
+<pre><code>/**
+ * @var string
+ *
+ * Dummy field
+ */
+private $field;
+
+
+/**
+ * Get Dummy field
+ *
+ * @return string Dummy field
+ */
+public function getField()
+{
+    return $this-&gt;field;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>Resolver</h2>
+
+<p>Once you have defined your own annotation, you have to resolve how this
+annotation works in a controller. You can manage this using a Resolver. Must
+extend <code>Mmoreram\ControllerExtraBundle\Resolver\Interfaces\AnnotationResolverInterface;</code>
+abstract class.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>namespace My\Bundle\Resolver;</p>
+
+<p>use Symfony\Component\HttpFoundation\Request;
+use Mmoreram\ControllerExtraBundle\Resolver\Interfaces\AnnotationResolverInterface;
+use Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation;</p>
+
+<p>/<em>*
+ * MyCustomAnnotation Resolver
+ </em>/
+class MyCustomAnnotationResolver implements AnnotationResolverInterface
+{</p>
+
+<pre><code>/**
+ * Specific annotation evaluation.
+ * This method MUST be implemented because is defined in the interface
+ *
+ * @param Request          $request    Request
+ * @param Annotation       $annotation Annotation
+ * @param ReflectionMethod $method     Method
+ *
+ * @return MyCustomAnnotationResolver self Object
+ */
+public function evaluateAnnotation(
+                                    Request $request, 
+                                    Annotation $annotation, 
+                                    ReflectionMethod $method )
+{
+    /**
+     * You can now manage your annotation.
+     * You can acced to its fields using public methods.
+     * 
+     * Annotation fields can be public and can be acceded directly,
+     * but is better for testing to use getters; they can be mocked.
+     */
+    $field = $annotation-&gt;getField();
+
+    /**
+     * You can also access to existing method parameters.
+     * 
+     * Available parameters are:
+     * 
+     * # ParamConverter parameters ( See `resolver_priority` config value )
+     * # All method defined parameters, included Request object if is set.
+     */
+    $entity = $request-&gt;attributes-&gt;get('entity');
+
+    /**
+     * And you can now place new elements in the controller action.
+     * In this example we are creating new method parameter
+     * called $myNewField with some value
+     */
+    $request-&gt;attributes-&gt;set(
+        'myNewField',
+        new $field()
+    );
+
+    return $this;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This class will be defined as a service, so this method is computed just
+before executing current controller. You can also subscribe to some kernel
+events and do whatever you need to do ( You can check
+<code>Mmoreram\ControllerExtraBundle\Resolver\LogAnnotationResolver</code> for some
+examples.</p>
+
+<h2>Definition</h2>
+
+<p>Once Resolver is done, we need to define our service as an Annotation
+Resolver. We will use a custom <code>tag</code>.</p>
+
+<p>``` yml
+parameters:</p>
+
+<pre><code>#
+# Resolvers
+#
+my.bundle.resolvers.my_custom_annotation_resolver.class: My\Bundle\Resolver\MyCustomAnnotationResolver
+</code></pre>
+
+<p>services:</p>
+
+<pre><code>#
+# Resolvers
+#
+my.bundle.resolvers.my_custom_annotation_resolver:
+    class: %my.bundle.resolvers.my_custom_annotation_resolver.class%
+    tags:
+        - { name: controller_extra.annotation }
+</code></pre>
+
+<p>```</p>
+
+<h2>Registration</h2>
+
+<p>We need to register our annotation inside our application. We can just do it in
+the <code>boot()</code> method of <code>bundle.php</code> file.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>namespace My\Bundle;</p>
+
+<p>use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Doctrine\Common\Annotations\AnnotationRegistry;</p>
+
+<p>/<em>*
+ * MyBundle
+ </em>/
+class ControllerExtraBundle extends Bundle
+{</p>
+
+<pre><code>/**
+ * Boots the Bundle.
+ */
+public function boot()
+{
+    $kernel = $this-&gt;container-&gt;get('kernel');
+
+    AnnotationRegistry::registerFile($kernel
+        -&gt;locateResource("@MyBundle/Annotation/MyCustomAnnotation.php")
+    );
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p><em>Et voilà!</em>  We can now use our custom Annotation in our project controllers.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Cache clear en Symfony2]]></title>
     <link href="http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2/"/>
     <updated>2014-01-03T15:11:00+01:00</updated>
     <id>http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2</id>
-    <content type="html"><![CDATA[<p>Vacía la caché de Symfony, y la vuelve a crear ( sino se especifica lo contrario )</p>
+    <content type="html"><![CDATA[<p>Vacía la caché de Symfony, y la vuelve a crear (sino se especifica lo contrario)</p>
 
 <p><code>bash
 $ php app/console cache:clear [--no-warmup] [--no-optional-warmers]
 </code></p>
 
-<p>Curioso comando existente en el framework Symfony2 desde sus inicios, y poco utilizado por los proyectos. En realidad, he visto pocos proyectos que utilizen este comando en los scripts de deploy, por lo que lo más habitual que veremos es el clásico</p>
+<p>Curioso comando existente en el framework Symfony2 desde sus inicios, y poco
+utilizado por los proyectos. En realidad, he visto pocos proyectos que utilizen
+este comando en los scripts de deploy, por lo que lo más habitual que veremos es
+el clásico</p>
 
 <p><code>bash
 $ rm -Rf app/cache/*
 </code></p>
 
-<p>Pero es correcta esta práctica? Aunque parezca la forma más ágil de limpiar cache, tengamos en cuenta que Symfony2 tiene procesos internos que muchos de nosotros desconocemos por completo. Cuando ejecutamos el comando para vaciar caché ( con la opción <code>--no-warmup</code> ) no tan solo vaciamos el directorio caché sino que el framework ejecuta el método <code>clear()</code> de todos los servicios que implementan la interface <code>Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface</code> cuya definición incorporen el tag <code>kernel.cache_clearer</code>.</p>
+<p>Pero es correcta esta práctica? Aunque parezca la forma más ágil de limpiar
+cache, tengamos en cuenta que Symfony2 tiene procesos internos que muchos de
+nosotros desconocemos por completo. Cuando ejecutamos el comando para vaciar
+caché ( con la opción <code>--no-warmup</code> ) no tan solo vaciamos el directorio caché
+sino que el framework ejecuta el método <code>clear()</code> de todos los servicios que
+implementan la interface
+<code>Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface</code> cuya
+definición incorporen el tag <code>kernel.cache_clearer</code>.</p>
 
 <p>En otras palabras.</p>
 
@@ -45,11 +273,16 @@ services:</p>
 
 <p>```</p>
 
-<p>Encontraréis mas información y especificación de estos tags <a href="http://symfony.com/doc/current/reference/dic_tags.html#kernel-cache-clearer">aqui</a>.</p>
+<p>Encontraréis mas información y especificación de estos tags
+<a href="http://symfony.com/doc/current/reference/dic_tags.html#kernel-cache-clearer">aqui</a>.</p>
 
 <h2>Reflexión</h2>
 
-<p>En realidad es importante fijarse en la opción <code>--no-warmup</code> ya que es la que cambia el comportamiento del comando. Cuando trabajamos en entornos de producción, necesitamos que, en tiempo de deploy, nuestra aplicación tenga el mínimo tiempo de downtime. Esto se consigue reduciendo al máximo el tiempo en que una caché está vacía.</p>
+<p>En realidad es importante fijarse en la opción <code>--no-warmup</code> ya que es la que
+cambia el comportamiento del comando. Cuando trabajamos en entornos de
+producción, necesitamos que, en tiempo de deploy, nuestra aplicación tenga el
+mínimo tiempo de downtime. Esto se consigue reduciendo al máximo el tiempo en
+que una caché está vacía.</p>
 
 <h3>Tabla básica de tiempos</h3>
 
@@ -65,15 +298,25 @@ services:</p>
 
 <h3>Problema 1</h3>
 
-<p>Entre los tiempos 3 y 8, tenemos que /cache está vacía. Tenemos que tener en cuenta que estamos en un entorno de producción, por lo que mientras hacemos el proceso de deployment, nuestros servidores deben estar sirviendo peticiones en todo momento.</p>
+<p>Entre los tiempos 3 y 8, tenemos que /cache está vacía. Tenemos que tener en
+cuenta que estamos en un entorno de producción, por lo que mientras hacemos el
+proceso de deployment, nuestros servidores deben estar sirviendo peticiones en
+todo momento.</p>
 
-<p>Dado este caso, cada una de las peticiones se dará cuenta que la caché está vacía, por lo que intentará volverla a montar desde cero. Deberíamos tener en cuenta, entonces, que entre los tiempos 3 y 8, nuestro servicio estará caido.</p>
+<p>Dado este caso, cada una de las peticiones se dará cuenta que la caché está
+vacía, por lo que intentará volverla a montar desde cero. Deberíamos tener en
+cuenta, entonces, que entre los tiempos 3 y 8, nuestro servicio estará caido.</p>
 
-<p>De este análisis sacamos que debemos minimizar al máximo el tiempo pasado entre el clear de la caché a invalidar y el switch a la nueva, o sea, reducir este intervalo en el que nuestra caché está vacía.</p>
+<p>De este análisis sacamos que debemos minimizar al máximo el tiempo pasado entre
+el clear de la caché a invalidar y el switch a la nueva, o sea, reducir este
+intervalo en el que nuestra caché está vacía.</p>
 
-<p>Hace pocos dias propuse un <a href="https://github.com/symfony/symfony/pull/9930">PR a FrameworkBundle</a> para gestionar esto.</p>
+<p>Hace pocos dias propuse un
+<a href="https://github.com/symfony/symfony/pull/9930">PR a FrameworkBundle</a> para
+gestionar esto.</p>
 
-<p>Lo único que hace es cambiar el orden entre el warm up de la nueva caché y el clear de la vieja.</p>
+<p>Lo único que hace es cambiar el orden entre el warm up de la nueva caché y el
+clear de la vieja.</p>
 
 <blockquote><ul>
 <li>[1]   Repository status: S1, Cache status: C1</li>
@@ -87,15 +330,21 @@ services:</p>
 
 <p>Downtime 2</p></blockquote>
 
-<p>En este punto podemos ver que la ventana que separa el clear de la caché antigua y el switch con la nueva solo es de dos unidades de tiempo, entre los tiempos 6 y 8. Ahora se nos plantea otro problema.</p>
+<p>En este punto podemos ver que la ventana que separa el clear de la caché antigua
+y el switch con la nueva solo es de dos unidades de tiempo, entre los tiempos 6
+y 8. Ahora se nos plantea otro problema.</p>
 
 <h3>Problema 2</h3>
 
-<p>Hemos minimizado al máximo el tiempo de switch entre las dos caches, pero seguimos teniendo una ventana de 5 unidades de tiempo entre que el repositorio está en un estado S2 y la caché en un estado C1.</p>
+<p>Hemos minimizado al máximo el tiempo de switch entre las dos caches, pero
+seguimos teniendo una ventana de 5 unidades de tiempo entre que el repositorio
+está en un estado S2 y la caché en un estado C1.</p>
 
 <blockquote><p>Real downtime 5</p></blockquote>
 
-<p>En realidad, dado este análisis solo podríamos actuar de una sola forma, y es trabajar con un deployment paralelo ( como hace el warmup del cache:clear ). Esto significa que nunca deployamos sobre nuestra instalación activa</p>
+<p>En realidad, dado este análisis solo podríamos actuar de una sola forma, y es
+trabajar con un deployment paralelo ( como hace el warmup del cache:clear ).
+Esto significa que nunca deployamos sobre nuestra instalación activa</p>
 
 <blockquote><ul>
 <li>[1]   Repository status: S1, Cache status: C1 en /project</li>
@@ -109,11 +358,15 @@ services:</p>
 
 <h3>Problema 3</h3>
 
-<p>En este caso es probable que nuestro proceso de deploy nos modifique elementos externos, como puede ser ( y probablemente sea ) <code>mysql</code>. Entonces tendremos una ventana bastante grande donde el modelo deployado en mysql que haga S2 no se asemeje al modelo Doctrine de S1.</p>
+<p>En este caso es probable que nuestro proceso de deploy nos modifique elementos
+externos, como puede ser ( y probablemente sea ) <code>mysql</code>. Entonces tendremos una
+ventana bastante grande donde el modelo deployado en mysql que haga S2 no se
+asemeje al modelo Doctrine de S1.</p>
 
 <blockquote><p>Downtime: X</p></blockquote>
 
-<p>So what? Como lo hacéis vosotros? Ya es por sondear un poco hacia donde tira la gente&hellip;</p>
+<p>So what? Como lo hacéis vosotros? Ya es por sondear un poco hacia donde tira la
+gente&hellip;</p>
 ]]></content>
   </entry>
   
@@ -122,9 +375,14 @@ services:</p>
     <link href="http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2/"/>
     <updated>2013-10-01T18:30:00+02:00</updated>
     <id>http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2</id>
-    <content type="html"><![CDATA[<p>Given that most times we need to associate a static route entry with a method of a controller, it is normal for Symfony developers are used to working with the annotation @Route of FrameworkExtraBundle.</p>
+    <content type="html"><![CDATA[<p>Given that most times we need to associate a static route entry with a method of
+a controller, it is normal for Symfony developers are used to working with the
+annotation @Route of FrameworkExtraBundle.</p>
 
-<p>In some cases, it will be interesting or necessary to work with the router to generate dynamic routes. This means that any bundle can generate a route from a service, defining both the name of the route as all the information necessary for the resolution of the route.</p>
+<p>In some cases, it will be interesting or necessary to work with the router to
+generate dynamic routes. This means that any bundle can generate a route from a
+service, defining both the name of the route as all the information necessary
+for the resolution of the route.</p>
 
 <p>Consider the following example</p>
 
@@ -188,7 +446,7 @@ public function load($resource, $type = null)
  * @param mixed  $resource A resource
  * @param string $type     The resource type
  *
- * @return boolean true if this class supports the given resource, false otherwise
+ * @return boolean This class supports the given resource
  */
 public function supports($resource, $type = null)
 {
@@ -207,7 +465,7 @@ public function getResolver()
 /**
  * Sets the loader resolver.
  *
- * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
+ * @param LoaderResolverInterface $resolver A LoaderResolverInterface
  */
 public function setResolver(LoaderResolverInterface $resolver)
 {
@@ -217,9 +475,11 @@ public function setResolver(LoaderResolverInterface $resolver)
 <p>}
 ```</p>
 
-<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should be defined once in all project.</p>
+<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should
+be defined once in all project.</p>
 
-<p>As any service, we must define this class in dependency injection with specific tag.</p>
+<p>As any service, we must define this class in dependency injection with specific
+tag.</p>
 
 <p>``` yml
 services:</p>
@@ -232,7 +492,8 @@ services:</p>
 
 <p>```</p>
 
-<p>And finally we just need to make our project know where to build our route, so in <code>routing.yml</code> file we must add these lines.</p>
+<p>And finally we just need to make our project know where to build our route, so
+in <code>routing.yml</code> file we must add these lines.</p>
 
 <p>``` yml
 acme_routes:</p>

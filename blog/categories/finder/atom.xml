@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Finder | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/finder/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-01-03T15:24:29+01:00</updated>
+  <updated>2014-02-11T20:43:28+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -20,9 +20,13 @@
     <id>http://mmoreram.github.io/blog/2013/12/23/factory-pattern-in-symfony2</id>
     <content type="html"><![CDATA[<h2>The pattern.</h2>
 
-<p>The factory pattern gives responsibility to create some instances of certain types to a class called factory. All possible classes that can instantiate the factory should always implement an interface, so we will be able to call certain methods, whether the class is. Let&rsquo;s see an specific and usable example.</p>
+<p>The factory pattern gives responsibility to create some instances of certain
+types to a class called factory. All possible classes that can instantiate the
+factory should always implement an interface, so we will be able to call certain
+methods, whether the class is. Let&rsquo;s see an specific and usable example.</p>
 
-<p>First of all, we have an interface called LoggerInterface. Is just an interface so just define all methods that implementations must implement.</p>
+<p>First of all, we have an interface called LoggerInterface. Is just an interface
+so just define all methods that implementations must implement.</p>
 
 <p>``` php
 &lt;?php</p>
@@ -48,7 +52,8 @@ public function log($message);
 <p>}
 ```</p>
 
-<p>On the one hand we have an implementation called FileLogger. This class just write given messages in a file.</p>
+<p>On the one hand we have an implementation called FileLogger. This class just
+write given messages in a file.</p>
 
 <p>``` php
 &lt;/php</p>
@@ -90,7 +95,8 @@ public function log($message)
 <p>}
 ```</p>
 
-<p>And on the other hand we have a ScreenLogger, that just echoes message as it comes.</p>
+<p>And on the other hand we have a ScreenLogger, that just echoes message as it
+comes.</p>
 
 <p>``` php
 &lt;/php</p>
@@ -123,7 +129,12 @@ public function log($message)
 <p>}
 ```</p>
 
-<p>Given a project we may want to specify using configurarion which Logger we want to use. Since we want to work with dependency injection component offered by Symfony2 framework, and any class where we will use our Logger is responsible for knowing as each instance of our Loggers, we need to create a Factory that is responsible for taking the setting you have specified, return us an instance of the class we want.</p>
+<p>Given a project we may want to specify using configurarion which Logger we want
+to use. Since we want to work with dependency injection component offered by
+Symfony2 framework, and any class where we will use our Logger is responsible
+for knowing as each instance of our Loggers, we need to create a Factory that
+is responsible for taking the setting you have specified, return us an
+instance of the class we want.</p>
 
 <p>Given this configuration</p>
 
@@ -138,7 +149,8 @@ public function log($message)
 
 <p>```</p>
 
-<p>We define our factory service. As <code>type</code> configuration value is a free text value, if value do not references any Logger type we will throw an exception.</p>
+<p>We define our factory service. As <code>type</code> configuration value is a free text
+value, if value do not references any Logger type we will throw an exception.</p>
 
 <p>``` php
 &lt;?php</p>
@@ -183,7 +195,9 @@ static public function get($type)
 <p>}
 ```</p>
 
-<p>And Factory dependency injection definition.. As factory must not be instanced to create a Logger ( <code>get</code> method is static ) we must use <code>factory_class</code> to define the Factory namespace.</p>
+<p>And Factory dependency injection definition.. As factory must not be instanced
+to create a Logger ( <code>get</code> method is static ) we must use <code>factory_class</code> to
+define the Factory namespace.</p>
 
 <p>``` yml</p>
 
@@ -208,7 +222,9 @@ my.service:
 
 <h2>Prototyping</h2>
 
-<p>Let&rsquo;s take a look at Symfony2 component <a href="http://symfony.com/doc/current/components/finder.html">Finder</a> class. We have a class named Manager that uses this class.</p>
+<p>Let&rsquo;s take a look at Symfony2 component
+<a href="http://symfony.com/doc/current/components/finder.html">Finder</a> class. We have a
+class named Manager that uses this class.</p>
 
 <p>``` php
 &lt;?php</p>
@@ -238,7 +254,10 @@ public function doSomething()
 <p>}
 ```</p>
 
-<p>Placing this <code>new Finder</code> inside Manager class, we assume that Manager has responsability to know how <code>Finder</code> must be built. This creates dependency between both objects, and that&rsquo;s wrong. So the point is that we should inject a new instance of <code>Finder</code> each time we call doSomething.</p>
+<p>Placing this <code>new Finder</code> inside Manager class, we assume that Manager has
+responsability to know how <code>Finder</code> must be built. This creates dependency
+between both objects, and that&rsquo;s wrong. So the point is that we should inject a
+new instance of <code>Finder</code> each time we call doSomething.</p>
 
 <p>``` php
 &lt;?php</p>
@@ -287,7 +306,8 @@ public function doSomething()
 <p>}
 ```</p>
 
-<p>And how do we resolve this problem using Dependency Injection? Is as easy as creating a new service using Finder as class, with prototype scope.</p>
+<p>And how do we resolve this problem using Dependency Injection? Is as easy as
+creating a new service using Finder as class, with prototype scope.</p>
 
 <p>``` yml</p>
 
@@ -307,7 +327,9 @@ my.manager:
 
 <p>```</p>
 
-<p>If we tale a look at <code>Finder</code> class we shall notice that have a static factory method inside. If we use Factory pattern using this method, we will instanciate a new <code>Finder</code> object the first time, but not the others.</p>
+<p>If we tale a look at <code>Finder</code> class we shall notice that have a static factory
+method inside. If we use Factory pattern using this method, we will instanciate
+a new <code>Finder</code> object the first time, but not the others.</p>
 ]]></content>
   </entry>
   

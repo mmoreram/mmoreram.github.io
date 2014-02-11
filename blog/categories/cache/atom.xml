@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cache | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/cache/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-01-03T15:24:29+01:00</updated>
+  <updated>2014-02-11T20:43:28+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -18,19 +18,29 @@
     <link href="http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2/"/>
     <updated>2014-01-03T15:11:00+01:00</updated>
     <id>http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2</id>
-    <content type="html"><![CDATA[<p>Vacía la caché de Symfony, y la vuelve a crear ( sino se especifica lo contrario )</p>
+    <content type="html"><![CDATA[<p>Vacía la caché de Symfony, y la vuelve a crear (sino se especifica lo contrario)</p>
 
 <p><code>bash
 $ php app/console cache:clear [--no-warmup] [--no-optional-warmers]
 </code></p>
 
-<p>Curioso comando existente en el framework Symfony2 desde sus inicios, y poco utilizado por los proyectos. En realidad, he visto pocos proyectos que utilizen este comando en los scripts de deploy, por lo que lo más habitual que veremos es el clásico</p>
+<p>Curioso comando existente en el framework Symfony2 desde sus inicios, y poco
+utilizado por los proyectos. En realidad, he visto pocos proyectos que utilizen
+este comando en los scripts de deploy, por lo que lo más habitual que veremos es
+el clásico</p>
 
 <p><code>bash
 $ rm -Rf app/cache/*
 </code></p>
 
-<p>Pero es correcta esta práctica? Aunque parezca la forma más ágil de limpiar cache, tengamos en cuenta que Symfony2 tiene procesos internos que muchos de nosotros desconocemos por completo. Cuando ejecutamos el comando para vaciar caché ( con la opción <code>--no-warmup</code> ) no tan solo vaciamos el directorio caché sino que el framework ejecuta el método <code>clear()</code> de todos los servicios que implementan la interface <code>Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface</code> cuya definición incorporen el tag <code>kernel.cache_clearer</code>.</p>
+<p>Pero es correcta esta práctica? Aunque parezca la forma más ágil de limpiar
+cache, tengamos en cuenta que Symfony2 tiene procesos internos que muchos de
+nosotros desconocemos por completo. Cuando ejecutamos el comando para vaciar
+caché ( con la opción <code>--no-warmup</code> ) no tan solo vaciamos el directorio caché
+sino que el framework ejecuta el método <code>clear()</code> de todos los servicios que
+implementan la interface
+<code>Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface</code> cuya
+definición incorporen el tag <code>kernel.cache_clearer</code>.</p>
 
 <p>En otras palabras.</p>
 
@@ -45,11 +55,16 @@ services:</p>
 
 <p>```</p>
 
-<p>Encontraréis mas información y especificación de estos tags <a href="http://symfony.com/doc/current/reference/dic_tags.html#kernel-cache-clearer">aqui</a>.</p>
+<p>Encontraréis mas información y especificación de estos tags
+<a href="http://symfony.com/doc/current/reference/dic_tags.html#kernel-cache-clearer">aqui</a>.</p>
 
 <h2>Reflexión</h2>
 
-<p>En realidad es importante fijarse en la opción <code>--no-warmup</code> ya que es la que cambia el comportamiento del comando. Cuando trabajamos en entornos de producción, necesitamos que, en tiempo de deploy, nuestra aplicación tenga el mínimo tiempo de downtime. Esto se consigue reduciendo al máximo el tiempo en que una caché está vacía.</p>
+<p>En realidad es importante fijarse en la opción <code>--no-warmup</code> ya que es la que
+cambia el comportamiento del comando. Cuando trabajamos en entornos de
+producción, necesitamos que, en tiempo de deploy, nuestra aplicación tenga el
+mínimo tiempo de downtime. Esto se consigue reduciendo al máximo el tiempo en
+que una caché está vacía.</p>
 
 <h3>Tabla básica de tiempos</h3>
 
@@ -65,15 +80,25 @@ services:</p>
 
 <h3>Problema 1</h3>
 
-<p>Entre los tiempos 3 y 8, tenemos que /cache está vacía. Tenemos que tener en cuenta que estamos en un entorno de producción, por lo que mientras hacemos el proceso de deployment, nuestros servidores deben estar sirviendo peticiones en todo momento.</p>
+<p>Entre los tiempos 3 y 8, tenemos que /cache está vacía. Tenemos que tener en
+cuenta que estamos en un entorno de producción, por lo que mientras hacemos el
+proceso de deployment, nuestros servidores deben estar sirviendo peticiones en
+todo momento.</p>
 
-<p>Dado este caso, cada una de las peticiones se dará cuenta que la caché está vacía, por lo que intentará volverla a montar desde cero. Deberíamos tener en cuenta, entonces, que entre los tiempos 3 y 8, nuestro servicio estará caido.</p>
+<p>Dado este caso, cada una de las peticiones se dará cuenta que la caché está
+vacía, por lo que intentará volverla a montar desde cero. Deberíamos tener en
+cuenta, entonces, que entre los tiempos 3 y 8, nuestro servicio estará caido.</p>
 
-<p>De este análisis sacamos que debemos minimizar al máximo el tiempo pasado entre el clear de la caché a invalidar y el switch a la nueva, o sea, reducir este intervalo en el que nuestra caché está vacía.</p>
+<p>De este análisis sacamos que debemos minimizar al máximo el tiempo pasado entre
+el clear de la caché a invalidar y el switch a la nueva, o sea, reducir este
+intervalo en el que nuestra caché está vacía.</p>
 
-<p>Hace pocos dias propuse un <a href="https://github.com/symfony/symfony/pull/9930">PR a FrameworkBundle</a> para gestionar esto.</p>
+<p>Hace pocos dias propuse un
+<a href="https://github.com/symfony/symfony/pull/9930">PR a FrameworkBundle</a> para
+gestionar esto.</p>
 
-<p>Lo único que hace es cambiar el orden entre el warm up de la nueva caché y el clear de la vieja.</p>
+<p>Lo único que hace es cambiar el orden entre el warm up de la nueva caché y el
+clear de la vieja.</p>
 
 <blockquote><ul>
 <li>[1]   Repository status: S1, Cache status: C1</li>
@@ -87,15 +112,21 @@ services:</p>
 
 <p>Downtime 2</p></blockquote>
 
-<p>En este punto podemos ver que la ventana que separa el clear de la caché antigua y el switch con la nueva solo es de dos unidades de tiempo, entre los tiempos 6 y 8. Ahora se nos plantea otro problema.</p>
+<p>En este punto podemos ver que la ventana que separa el clear de la caché antigua
+y el switch con la nueva solo es de dos unidades de tiempo, entre los tiempos 6
+y 8. Ahora se nos plantea otro problema.</p>
 
 <h3>Problema 2</h3>
 
-<p>Hemos minimizado al máximo el tiempo de switch entre las dos caches, pero seguimos teniendo una ventana de 5 unidades de tiempo entre que el repositorio está en un estado S2 y la caché en un estado C1.</p>
+<p>Hemos minimizado al máximo el tiempo de switch entre las dos caches, pero
+seguimos teniendo una ventana de 5 unidades de tiempo entre que el repositorio
+está en un estado S2 y la caché en un estado C1.</p>
 
 <blockquote><p>Real downtime 5</p></blockquote>
 
-<p>En realidad, dado este análisis solo podríamos actuar de una sola forma, y es trabajar con un deployment paralelo ( como hace el warmup del cache:clear ). Esto significa que nunca deployamos sobre nuestra instalación activa</p>
+<p>En realidad, dado este análisis solo podríamos actuar de una sola forma, y es
+trabajar con un deployment paralelo ( como hace el warmup del cache:clear ).
+Esto significa que nunca deployamos sobre nuestra instalación activa</p>
 
 <blockquote><ul>
 <li>[1]   Repository status: S1, Cache status: C1 en /project</li>
@@ -109,11 +140,15 @@ services:</p>
 
 <h3>Problema 3</h3>
 
-<p>En este caso es probable que nuestro proceso de deploy nos modifique elementos externos, como puede ser ( y probablemente sea ) <code>mysql</code>. Entonces tendremos una ventana bastante grande donde el modelo deployado en mysql que haga S2 no se asemeje al modelo Doctrine de S1.</p>
+<p>En este caso es probable que nuestro proceso de deploy nos modifique elementos
+externos, como puede ser ( y probablemente sea ) <code>mysql</code>. Entonces tendremos una
+ventana bastante grande donde el modelo deployado en mysql que haga S2 no se
+asemeje al modelo Doctrine de S1.</p>
 
 <blockquote><p>Downtime: X</p></blockquote>
 
-<p>So what? Como lo hacéis vosotros? Ya es por sondear un poco hacia donde tira la gente&hellip;</p>
+<p>So what? Como lo hacéis vosotros? Ya es por sondear un poco hacia donde tira la
+gente&hellip;</p>
 ]]></content>
   </entry>
   

@@ -142,8 +142,10 @@ $entityManager-&gt;persist($spain); $france = new &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>When we flush without defining any kind of parameter, all entities managed by EntityManager with changes will be flushed.<br/>
-To flush a specific entity managed by EntityManager we can just pass the entity as a parameter in the flush method</p>
+<p>When we flush without defining any kind of parameter, all entities managed by
+EntityManager with changes will be flushed.<br/>
+To flush a specific entity managed by EntityManager we can just pass the entity
+as a parameter in the flush method</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -172,7 +174,8 @@ To flush a specific entity managed by EntityManager we can just pass the entity 
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>To flush an array of entities managed by EntityManager we can pass the array as a parameter in the flush method</p>
+<p>To flush an array of entities managed by EntityManager we can pass the array as
+a parameter in the flush method</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -215,7 +218,8 @@ To flush a specific entity managed by EntityManager we can just pass the entity 
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>So, how about flushing an ArrayCollection of entities? Lets take a look at the UnitOfWork code where contains this logic.</p>
+<p>So, how about flushing an ArrayCollection of entities? Lets take a look at the
+UnitOfWork code where contains this logic.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -244,7 +248,8 @@ To flush a specific entity managed by EntityManager we can just pass the entity 
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Considering that ArrayCollection is an object, this code should be changed to this code to also accept ArrayCollection and all iterable objects.</p>
+<p>Considering that ArrayCollection is an object, this code should be changed to
+this code to also accept ArrayCollection and all iterable objects.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -343,6 +348,10 @@ To flush a specific entity managed by EntityManager we can just pass the entity 
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/11/custom-controller-annotations/">Custom controller annotations</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/03/cache-clear-en-symfony2/">Cache clear en Symfony2</a>
       </li>
     
@@ -356,10 +365,6 @@ To flush a specific entity managed by EntityManager we can just pass the entity 
     
       <li class="post">
         <a href="/blog/2013/10/11/flushing-doctrine2-entities/">Flushing Doctrine2 entities</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/09/inverse-associations-in-doctrine2-models/">Inverse associations in Doctrine2 models</a>
       </li>
     
   </ul>

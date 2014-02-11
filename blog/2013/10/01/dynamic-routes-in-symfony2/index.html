@@ -9,7 +9,8 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="Given that most times we need to associate a static route entry with a method of a controller, it is normal for Symfony developers are used to &hellip;">
+  <meta name="description" content="Given that most times we need to associate a static route entry with a method of
+a controller, it is normal for Symfony developers are used to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -108,9 +109,14 @@
   </header>
 
 
-<div class="entry-content"><p>Given that most times we need to associate a static route entry with a method of a controller, it is normal for Symfony developers are used to working with the annotation @Route of FrameworkExtraBundle.</p>
+<div class="entry-content"><p>Given that most times we need to associate a static route entry with a method of
+a controller, it is normal for Symfony developers are used to working with the
+annotation @Route of FrameworkExtraBundle.</p>
 
-<p>In some cases, it will be interesting or necessary to work with the router to generate dynamic routes. This means that any bundle can generate a route from a service, defining both the name of the route as all the information necessary for the resolution of the route.</p>
+<p>In some cases, it will be interesting or necessary to work with the router to
+generate dynamic routes. This means that any bundle can generate a route from a
+service, defining both the name of the route as all the information necessary
+for the resolution of the route.</p>
 
 <p>Consider the following example</p>
 
@@ -255,7 +261,7 @@
 </span><span class='line'><span class="sd">     * @param mixed  $resource A resource</span>
 </span><span class='line'><span class="sd">     * @param string $type     The resource type</span>
 </span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return boolean true if this class supports the given resource, false otherwise</span>
+</span><span class='line'><span class="sd">     * @return boolean This class supports the given resource</span>
 </span><span class='line'><span class="sd">     */</span>
 </span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">supports</span><span class="p">(</span><span class="nv">$resource</span><span class="p">,</span> <span class="nv">$type</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
 </span><span class='line'>    <span class="p">{</span>
@@ -274,7 +280,7 @@
 </span><span class='line'>    <span class="sd">/**</span>
 </span><span class='line'><span class="sd">     * Sets the loader resolver.</span>
 </span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance</span>
+</span><span class='line'><span class="sd">     * @param LoaderResolverInterface $resolver A LoaderResolverInterface</span>
 </span><span class='line'><span class="sd">     */</span>
 </span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setResolver</span><span class="p">(</span><span class="nx">LoaderResolverInterface</span> <span class="nv">$resolver</span><span class="p">)</span>
 </span><span class='line'>    <span class="p">{</span>
@@ -283,9 +289,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should be defined once in all project.</p>
+<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should
+be defined once in all project.</p>
 
-<p>As any service, we must define this class in dependency injection with specific tag.</p>
+<p>As any service, we must define this class in dependency injection with specific
+tag.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -300,7 +308,8 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>And finally we just need to make our project know where to build our route, so in <code>routing.yml</code> file we must add these lines.</p>
+<p>And finally we just need to make our project know where to build our route, so
+in <code>routing.yml</code> file we must add these lines.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -383,6 +392,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/11/custom-controller-annotations/">Custom controller annotations</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/03/cache-clear-en-symfony2/">Cache clear en Symfony2</a>
       </li>
     
@@ -396,10 +409,6 @@
     
       <li class="post">
         <a href="/blog/2013/10/11/flushing-doctrine2-entities/">Flushing Doctrine2 entities</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/09/inverse-associations-in-doctrine2-models/">Inverse associations in Doctrine2 models</a>
       </li>
     
   </ul>

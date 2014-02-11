@@ -9,8 +9,8 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="Vacía la caché de Symfony, y la vuelve a crear ( sino se especifica lo contrario ) 1
-$ php app/console cache:clear [--no-warmup] [--no-optional- &hellip;">
+  <meta name="description" content="Vacía la caché de Symfony, y la vuelve a crear (sino se especifica lo contrario) 1
+$ php app/console cache:clear [--no-warmup] [--no-optional-warmers &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -109,21 +109,31 @@ $ php app/console cache:clear [--no-warmup] [--no-optional- &hellip;">
   </header>
 
 
-<div class="entry-content"><p>Vacía la caché de Symfony, y la vuelve a crear ( sino se especifica lo contrario )</p>
+<div class="entry-content"><p>Vacía la caché de Symfony, y la vuelve a crear (sino se especifica lo contrario)</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php app/console cache:clear <span class="o">[</span>--no-warmup<span class="o">]</span> <span class="o">[</span>--no-optional-warmers<span class="o">]</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Curioso comando existente en el framework Symfony2 desde sus inicios, y poco utilizado por los proyectos. En realidad, he visto pocos proyectos que utilizen este comando en los scripts de deploy, por lo que lo más habitual que veremos es el clásico</p>
+<p>Curioso comando existente en el framework Symfony2 desde sus inicios, y poco
+utilizado por los proyectos. En realidad, he visto pocos proyectos que utilizen
+este comando en los scripts de deploy, por lo que lo más habitual que veremos es
+el clásico</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rm -Rf app/cache/*
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Pero es correcta esta práctica? Aunque parezca la forma más ágil de limpiar cache, tengamos en cuenta que Symfony2 tiene procesos internos que muchos de nosotros desconocemos por completo. Cuando ejecutamos el comando para vaciar caché ( con la opción <code>--no-warmup</code> ) no tan solo vaciamos el directorio caché sino que el framework ejecuta el método <code>clear()</code> de todos los servicios que implementan la interface <code>Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface</code> cuya definición incorporen el tag <code>kernel.cache_clearer</code>.</p>
+<p>Pero es correcta esta práctica? Aunque parezca la forma más ágil de limpiar
+cache, tengamos en cuenta que Symfony2 tiene procesos internos que muchos de
+nosotros desconocemos por completo. Cuando ejecutamos el comando para vaciar
+caché ( con la opción <code>--no-warmup</code> ) no tan solo vaciamos el directorio caché
+sino que el framework ejecuta el método <code>clear()</code> de todos los servicios que
+implementan la interface
+<code>Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface</code> cuya
+definición incorporen el tag <code>kernel.cache_clearer</code>.</p>
 
 <p>En otras palabras.</p>
 
@@ -140,11 +150,16 @@ $ php app/console cache:clear [--no-warmup] [--no-optional- &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Encontraréis mas información y especificación de estos tags <a href="http://symfony.com/doc/current/reference/dic_tags.html#kernel-cache-clearer">aqui</a>.</p>
+<p>Encontraréis mas información y especificación de estos tags
+<a href="http://symfony.com/doc/current/reference/dic_tags.html#kernel-cache-clearer">aqui</a>.</p>
 
 <h2>Reflexión</h2>
 
-<p>En realidad es importante fijarse en la opción <code>--no-warmup</code> ya que es la que cambia el comportamiento del comando. Cuando trabajamos en entornos de producción, necesitamos que, en tiempo de deploy, nuestra aplicación tenga el mínimo tiempo de downtime. Esto se consigue reduciendo al máximo el tiempo en que una caché está vacía.</p>
+<p>En realidad es importante fijarse en la opción <code>--no-warmup</code> ya que es la que
+cambia el comportamiento del comando. Cuando trabajamos en entornos de
+producción, necesitamos que, en tiempo de deploy, nuestra aplicación tenga el
+mínimo tiempo de downtime. Esto se consigue reduciendo al máximo el tiempo en
+que una caché está vacía.</p>
 
 <h3>Tabla básica de tiempos</h3>
 
@@ -160,15 +175,25 @@ $ php app/console cache:clear [--no-warmup] [--no-optional- &hellip;">
 
 <h3>Problema 1</h3>
 
-<p>Entre los tiempos 3 y 8, tenemos que /cache está vacía. Tenemos que tener en cuenta que estamos en un entorno de producción, por lo que mientras hacemos el proceso de deployment, nuestros servidores deben estar sirviendo peticiones en todo momento.</p>
+<p>Entre los tiempos 3 y 8, tenemos que /cache está vacía. Tenemos que tener en
+cuenta que estamos en un entorno de producción, por lo que mientras hacemos el
+proceso de deployment, nuestros servidores deben estar sirviendo peticiones en
+todo momento.</p>
 
-<p>Dado este caso, cada una de las peticiones se dará cuenta que la caché está vacía, por lo que intentará volverla a montar desde cero. Deberíamos tener en cuenta, entonces, que entre los tiempos 3 y 8, nuestro servicio estará caido.</p>
+<p>Dado este caso, cada una de las peticiones se dará cuenta que la caché está
+vacía, por lo que intentará volverla a montar desde cero. Deberíamos tener en
+cuenta, entonces, que entre los tiempos 3 y 8, nuestro servicio estará caido.</p>
 
-<p>De este análisis sacamos que debemos minimizar al máximo el tiempo pasado entre el clear de la caché a invalidar y el switch a la nueva, o sea, reducir este intervalo en el que nuestra caché está vacía.</p>
+<p>De este análisis sacamos que debemos minimizar al máximo el tiempo pasado entre
+el clear de la caché a invalidar y el switch a la nueva, o sea, reducir este
+intervalo en el que nuestra caché está vacía.</p>
 
-<p>Hace pocos dias propuse un <a href="https://github.com/symfony/symfony/pull/9930">PR a FrameworkBundle</a> para gestionar esto.</p>
+<p>Hace pocos dias propuse un
+<a href="https://github.com/symfony/symfony/pull/9930">PR a FrameworkBundle</a> para
+gestionar esto.</p>
 
-<p>Lo único que hace es cambiar el orden entre el warm up de la nueva caché y el clear de la vieja.</p>
+<p>Lo único que hace es cambiar el orden entre el warm up de la nueva caché y el
+clear de la vieja.</p>
 
 <blockquote><ul>
 <li>[1]   Repository status: S1, Cache status: C1</li>
@@ -182,15 +207,21 @@ $ php app/console cache:clear [--no-warmup] [--no-optional- &hellip;">
 
 <p>Downtime 2</p></blockquote>
 
-<p>En este punto podemos ver que la ventana que separa el clear de la caché antigua y el switch con la nueva solo es de dos unidades de tiempo, entre los tiempos 6 y 8. Ahora se nos plantea otro problema.</p>
+<p>En este punto podemos ver que la ventana que separa el clear de la caché antigua
+y el switch con la nueva solo es de dos unidades de tiempo, entre los tiempos 6
+y 8. Ahora se nos plantea otro problema.</p>
 
 <h3>Problema 2</h3>
 
-<p>Hemos minimizado al máximo el tiempo de switch entre las dos caches, pero seguimos teniendo una ventana de 5 unidades de tiempo entre que el repositorio está en un estado S2 y la caché en un estado C1.</p>
+<p>Hemos minimizado al máximo el tiempo de switch entre las dos caches, pero
+seguimos teniendo una ventana de 5 unidades de tiempo entre que el repositorio
+está en un estado S2 y la caché en un estado C1.</p>
 
 <blockquote><p>Real downtime 5</p></blockquote>
 
-<p>En realidad, dado este análisis solo podríamos actuar de una sola forma, y es trabajar con un deployment paralelo ( como hace el warmup del cache:clear ). Esto significa que nunca deployamos sobre nuestra instalación activa</p>
+<p>En realidad, dado este análisis solo podríamos actuar de una sola forma, y es
+trabajar con un deployment paralelo ( como hace el warmup del cache:clear ).
+Esto significa que nunca deployamos sobre nuestra instalación activa</p>
 
 <blockquote><ul>
 <li>[1]   Repository status: S1, Cache status: C1 en /project</li>
@@ -204,11 +235,15 @@ $ php app/console cache:clear [--no-warmup] [--no-optional- &hellip;">
 
 <h3>Problema 3</h3>
 
-<p>En este caso es probable que nuestro proceso de deploy nos modifique elementos externos, como puede ser ( y probablemente sea ) <code>mysql</code>. Entonces tendremos una ventana bastante grande donde el modelo deployado en mysql que haga S2 no se asemeje al modelo Doctrine de S1.</p>
+<p>En este caso es probable que nuestro proceso de deploy nos modifique elementos
+externos, como puede ser ( y probablemente sea ) <code>mysql</code>. Entonces tendremos una
+ventana bastante grande donde el modelo deployado en mysql que haga S2 no se
+asemeje al modelo Doctrine de S1.</p>
 
 <blockquote><p>Downtime: X</p></blockquote>
 
-<p>So what? Como lo hacéis vosotros? Ya es por sondear un poco hacia donde tira la gente&hellip;</p>
+<p>So what? Como lo hacéis vosotros? Ya es por sondear un poco hacia donde tira la
+gente&hellip;</p>
 </div>
 
 
@@ -259,6 +294,8 @@ $ php app/console cache:clear [--no-warmup] [--no-optional- &hellip;">
         <a class="basic-alignment left" href="/blog/2013/12/23/factory-pattern-in-symfony2/" title="Previous Post: Factory pattern in Symfony2">&laquo; Factory pattern in Symfony2</a>
       
       
+        <a class="basic-alignment right" href="/blog/2014/02/11/custom-controller-annotations/" title="Next Post: Custom controller annotations">Custom controller annotations &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -278,6 +315,10 @@ $ php app/console cache:clear [--no-warmup] [--no-optional- &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/11/custom-controller-annotations/">Custom controller annotations</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/03/cache-clear-en-symfony2/">Cache clear en Symfony2</a>
       </li>
     
@@ -291,10 +332,6 @@ $ php app/console cache:clear [--no-warmup] [--no-optional- &hellip;">
     
       <li class="post">
         <a href="/blog/2013/10/11/flushing-doctrine2-entities/">Flushing Doctrine2 entities</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/09/inverse-associations-in-doctrine2-models/">Inverse associations in Doctrine2 models</a>
       </li>
     
   </ul>

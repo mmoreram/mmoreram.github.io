@@ -4,7 +4,7 @@
   <title><![CDATA[Category: router | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/router/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-01-03T15:24:29+01:00</updated>
+  <updated>2014-02-11T20:43:28+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -18,9 +18,14 @@
     <link href="http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2/"/>
     <updated>2013-10-01T18:30:00+02:00</updated>
     <id>http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2</id>
-    <content type="html"><![CDATA[<p>Given that most times we need to associate a static route entry with a method of a controller, it is normal for Symfony developers are used to working with the annotation @Route of FrameworkExtraBundle.</p>
+    <content type="html"><![CDATA[<p>Given that most times we need to associate a static route entry with a method of
+a controller, it is normal for Symfony developers are used to working with the
+annotation @Route of FrameworkExtraBundle.</p>
 
-<p>In some cases, it will be interesting or necessary to work with the router to generate dynamic routes. This means that any bundle can generate a route from a service, defining both the name of the route as all the information necessary for the resolution of the route.</p>
+<p>In some cases, it will be interesting or necessary to work with the router to
+generate dynamic routes. This means that any bundle can generate a route from a
+service, defining both the name of the route as all the information necessary
+for the resolution of the route.</p>
 
 <p>Consider the following example</p>
 
@@ -84,7 +89,7 @@ public function load($resource, $type = null)
  * @param mixed  $resource A resource
  * @param string $type     The resource type
  *
- * @return boolean true if this class supports the given resource, false otherwise
+ * @return boolean This class supports the given resource
  */
 public function supports($resource, $type = null)
 {
@@ -103,7 +108,7 @@ public function getResolver()
 /**
  * Sets the loader resolver.
  *
- * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
+ * @param LoaderResolverInterface $resolver A LoaderResolverInterface
  */
 public function setResolver(LoaderResolverInterface $resolver)
 {
@@ -113,9 +118,11 @@ public function setResolver(LoaderResolverInterface $resolver)
 <p>}
 ```</p>
 
-<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should be defined once in all project.</p>
+<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should
+be defined once in all project.</p>
 
-<p>As any service, we must define this class in dependency injection with specific tag.</p>
+<p>As any service, we must define this class in dependency injection with specific
+tag.</p>
 
 <p>``` yml
 services:</p>
@@ -128,7 +135,8 @@ services:</p>
 
 <p>```</p>
 
-<p>And finally we just need to make our project know where to build our route, so in <code>routing.yml</code> file we must add these lines.</p>
+<p>And finally we just need to make our project know where to build our route, so
+in <code>routing.yml</code> file we must add these lines.</p>
 
 <p>``` yml
 acme_routes:</p>
