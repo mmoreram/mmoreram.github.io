@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Symfony2 - Because yes</title>
+  <title>Elcodi, una nueva aventura en Symfony2 - Because yes</title>
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="No es de extrañar que alguien llegue a considerarme un pequeño obsesionado de
-Symfony. Y dado que toda obsesión es mala, puedo asegurar que lo mío no &hellip;">
+  <meta name="description" content="Ciertos cambios están por llegar. Y parece ser que son cambios buenos. Llevo
+unas cuantas semanas sin escribir en el blog, y la verdad es que me sabe &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@ Symfony. Y dado que toda obsesión es mala, puedo asegurar que lo mío no &helli
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mmoreram.github.io/blog/2013/12/18/symfony-rocks/">
+  <link rel="canonical" href="http://mmoreram.github.io/blog/2014/04/17/elcodi/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -84,7 +84,7 @@ Symfony. Y dado que toda obsesión es mala, puedo asegurar que lo mío no &helli
   
   <header>
     
-      <h1 class="entry-title">Symfony2</h1>
+      <h1 class="entry-title">Elcodi, Una Nueva Aventura en Symfony2</h1>
     
     
       <p class="meta">
@@ -100,7 +100,7 @@ Symfony. Y dado que toda obsesión es mala, puedo asegurar que lo mío no &helli
   
 
 
-<time datetime="2013-12-18T19:01:00+01:00" pubdate data-updated="true">Dec 18<span>th</span>, 2013</time>
+<time datetime="2014-04-17T12:46:00+02:00" pubdate data-updated="true">Apr 17<span>th</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -109,48 +109,79 @@ Symfony. Y dado que toda obsesión es mala, puedo asegurar que lo mío no &helli
   </header>
 
 
-<div class="entry-content"><p>No es de extrañar que alguien llegue a considerarme un pequeño obsesionado de
-Symfony. Y dado que toda obsesión es mala, puedo asegurar que lo mío no es
-obsesión, sino predilección, estima y adulación. Y es que realmente todo mi
-desarrollo profesional en estos momentos gira alrededor de esta tecnología,
-siendo más que una tecnología una forma de vida, de pensar y de solucionar
-ciertos problemas. Lo curioso es que no tan solo enfocados a entornos web,
-sino a entornos puramente tecnologicos.</p>
+<div class="entry-content"><p>Ciertos cambios están por llegar. Y parece ser que son cambios buenos. Llevo
+unas cuantas semanas sin escribir en el blog, y la verdad es que me sabe mal.
+Me gusta contar cosas que me van sucediendo en la empresa. Problemas que nos
+vamos encontrando y soluciones que se me van ocurriendo. El problema es que
+llevo unos meses muy centrado en el proyecto que justo hoy lanzamos al mundo.
+Es un proyecto inicialmente de desarrolladores para desarrolladores, centrado en
+cubrir necesidades reales de los developers destinados a diseñar y
+programar ecommerces.</p>
 
-<p>Asi como muchas tecnologías tan solo requieren de un buen manual estructurado y
-simplificado, con esto no basta cuando deseas trabajar en un framework de estas
-características. Y es que saber trabajar en equipo de forma ordenada, pautada y
-comunicativa es algo demasiado básico como para ser descuidada. Reflexionando,
-la comunidad Symfony2 a día de hoy es monstruosa. Y creciendo. Por algo será.</p>
+<p>Es cierto que tenemos muchísimas plataformas y opciones para desarrollar
+ecommerces alrededor del mundo. Podría enumerar unos cuantos, y probablemente
+todos tengan unas métricas y unos KPIs magníficos.</p>
 
-<p>Issues abiertas, comentadas, revisadas y resueltas cada día es lo que
-escandaliza positivamente de un framework en el que en cada release se posiciona
-como número uno para los proyectos más ambiciosos y escalables. Y cada linea de
-código pasa a ser una linea objetivamente esencial y perfecta. Tal vez la
-palabra que lo define es Arte.</p>
+<p>Los problemas de estas plataformas es que son completamente B2B, por lo que tienen sentido cuando
+el usuario final simplemente debe tener una buena interfaz de administración,
+de instalación y de configuración; y que cuando los departamentos técnicos quieren
+desarrollar, tanto horizontalmente ( nuevas funcionalidades de
+aquello que ya se está utilizando, o simplemente customizar ) como verticalmente
+( nuevas funcionalidades ), estas plataformas B2B se quedan
+cortas, por lo que la empresa tiene que desembolsar una cantidad enorme de
+dinero en un refáctoring, o simplemente, se debe empezar a todar el código
+existente, ensuciándolo y haciendo peligrar su integridad.</p>
 
-<p>Y es que el camino de este framework puede estar bastante difuminado en el
-horizonte, pero si una cosa está clara es que tenemos Symfony para rato, y eso
-me anima a crecer como desarrollador para tener capacidad de comprender poco a
-poco cada trozo de código, cada feature y cada implementación.</p>
+<p>Estas plataformas no suelen estar testeadas, por lo que cada línea que se añade
+es una línea potencialmente dañina para todo el sistema, con lo que cada
+desarrollo sobre estas plataformas suelen derivar en problemas colaterales
+en la propia experiencia de usuario.</p>
 
-<p>A nivel de arquitectura la verdad es que tiene su que. Muchísimos patrones son
-utilizados en simbiosis con metodologias de toda la vida. Cada componente esta
-desacoplado tanto como sea posible de los demás, y está documentado bastante
-bien ( la comunidad sigue desarrollando la misma documentación a la par que el
-propio código, lo cual aporta crecimiento a la par ). Aprender Symfony2 y saber
-utilizarlo más allá que &ldquo;Funcionar, funciona&rdquo; te aporta a medio y largo plazo un
-conocimiento muy extenso, no tanto de la estructura de clases y de
-funcionalidades del propio framework, sino también una capacidad de análisis y
-de respuesta a ciertos problemas, utilizando de forma funcional estos patrones
-aprendidos y utilizados de forma recurrente.</p>
+<p>Desde mi punto de vista, en los tiempos que corren, esto es inaceptable.</p>
 
-<p>Y es que los patrones de arquitectura utilizados en este framework son bastante
-esenciales en la mente de cualquier buen programador que se precie. Simplemente
-se trata de buscar como los demás han solucionado ciertos problemas específicos,
-utilizando términos como CompilerPass, Tags o Dependency Injection.</p>
+<p>Nosotros proponemos una plataforma pensada para los desarrolladores, pensada
+y profundamente reflexionada. Esto no implica que el código deba estar bien
+en una primera instancia, simplemente nuestra declaración de intenciones es
+llevar el proyecto a un punto donde las empresas puedan confiar en el proyecto
+para construir el suyo propio.</p>
 
-<p>Para empezar, <a href="http://symfony.com/">Symfony</a></p>
+<p>Os presentamos <a href="http://elcodi.io">Elcodi</a>.</p>
+
+<p>En un planteamiento dividido en fases, justo estamos naciendo. Tenemos muy claro
+cual es nuestro roadmap, por lo que en los próximos meses se desarrollaran las
+principales features a nivel de core, así como la robustez necesaria como para
+poder lidiar con colaboradores externos, que les guste el proyecto en su estado
+inicial y que quieran acomparnos en este viaje, destinado a mejorar el estilo de
+vida de los developers.</p>
+
+<p>La plataforma está basada en Symfony2, y siguiendo la filosofía definida por el
+propio framework, hemos enfocado la mayor parte de la arquitectura utilizando
+una fuerte capa de eventos, desacoplando la mayoría de comportamientos y
+componentes completamente.</p>
+
+<p>Si eres programador Symfony, te propongo que almenos le eches un vistazo.
+Verás errores, mil cosas a desarrollar y mil cosas a mejorar, pero como todo
+proyecto, nuestra mayor ambición es la propia construcción del mismo, por lo que
+es cuestión de meses, ganas y desarrollo.</p>
+
+<p>Otro de nuestros objetivos es llegar a construir una buena documentación.
+Tenemos esencialmente tres líneas de documentación en mente. Por un lado</p>
+
+<p>queremos transmitir a los demás nuestra filosofía. La dirección que, sin duda
+alguna, tomará el proyecto, independientemente de la implementación que este
+adquiera en un momento dado. Es importante definir esto inicialmente porque al
+final nos vincula muchísimo al target al que vamos destinados.</p>
+
+<p>La documentación es algo lento, también sujeta a colaboraciones, y en principio
+estará inicialmente solo en inglés.</p>
+
+<p>Finalmente decir que elcodi.com es una empresa en plena expansión. Tenemos
+buenas previsiones de crecimiento por lo que tenemos una garantía que lo que hoy
+con tanta ilusión estamos empezando, no dejará de crecer.</p>
+
+<p>Queremos que sea útil, queremos que nuestra propuesta esté a juicio de todo el
+mundo y que saque vuestras críticas mas constructivas, solo así podremos
+realmente hacer un proyecto interesante para todos.</p>
 </div>
 
 
@@ -173,12 +204,12 @@ utilizando términos como CompilerPass, Tags o Dependency Injection.</p>
   
 
 
-<time datetime="2013-12-18T19:01:00+01:00" pubdate data-updated="true">Dec 18<span>th</span>, 2013</time>
+<time datetime="2014-04-17T12:46:00+02:00" pubdate data-updated="true">Apr 17<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/symfony2/'>symfony2</a>
+    <a class='category' href='/blog/categories/elcodi/'>Elcodi</a>, <a class='category' href='/blog/categories/symfony/'>Symfony</a>
   
 </span>
 
@@ -187,7 +218,7 @@ utilizando términos como CompilerPass, Tags o Dependency Injection.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2013/12/18/symfony-rocks/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2013/12/18/symfony-rocks/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2014/04/17/elcodi/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2014/04/17/elcodi/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -198,10 +229,8 @@ utilizando términos como CompilerPass, Tags o Dependency Injection.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/10/11/flushing-doctrine2-entities/" title="Previous Post: Flushing Doctrine2 entities">&laquo; Flushing Doctrine2 entities</a>
+        <a class="basic-alignment left" href="/blog/2014/02/11/custom-controller-annotations/" title="Previous Post: Custom controller annotations">&laquo; Custom controller annotations</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/12/23/factory-pattern-in-symfony2/" title="Next Post: Factory pattern in Symfony2">Factory pattern in Symfony2 &raquo;</a>
       
     </p>
   </footer>
@@ -296,8 +325,8 @@ utilizando términos como CompilerPass, Tags o Dependency Injection.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mmoreram.github.io/blog/2013/12/18/symfony-rocks/';
-        var disqus_url = 'http://mmoreram.github.io/blog/2013/12/18/symfony-rocks/';
+        var disqus_identifier = 'http://mmoreram.github.io/blog/2014/04/17/elcodi/';
+        var disqus_url = 'http://mmoreram.github.io/blog/2014/04/17/elcodi/';
         var disqus_script = 'embed.js';
       
     (function () {

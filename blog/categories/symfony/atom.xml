@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Symfony | Because yes]]></title>
+  <title><![CDATA[Category: symfony | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/symfony/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-02-11T20:43:28+01:00</updated>
+  <updated>2014-04-17T15:51:52+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -14,143 +14,163 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Custom controller annotations]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/02/11/custom-controller-annotations/"/>
-    <updated>2014-02-11T20:21:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/02/11/custom-controller-annotations</id>
-    <content type="html"><![CDATA[<p>The goal is easy: To provide a very intuitive and easy way of creating
-controller annotations in Symfony2.</p>
-
-<p><a href="https://github.com/mmoreram/ControllerExtraBundle">ControllerExtraBundle</a>
-is both a set of annotations and a platform for creating new custom ones.
-Actually, the bundle can create a new Entity, like ParamConverter does, with in
-this case is just an empty Entity. The bundle also can create FormTypes, Forms
-and FormViews with several options. Can also automate the doctrine <code>flush()</code>
-action after the method execution or log something before / after every desired
-action.</p>
-
-<p>Bundle is still being tested in production environments, all feedback will be
-very very useful.</p>
-
-<p>Let&rsquo;s see how can we create our Annotations.</p>
-
-<ul>
-<li>Annotation</li>
-<li>Resolver</li>
-<li>Definition</li>
-<li>Registration</li>
-</ul>
-
-
-<h2>Annotation</h2>
-
-<p>The annotation object. You need to define the fields your custom annotation
-will contain.
-Must extends <code>Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation</code>
-abstract class.</p>
+    <title type="html"><![CDATA[Flushing Doctrine2 entities]]></title>
+    <link href="http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities/"/>
+    <updated>2013-10-11T10:11:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities</id>
+    <content type="html"><![CDATA[<p>Given this example</p>
 
 <p>``` php
-&lt;?php</p>
+$spain = new Country;
+$spain->setName(&lsquo;spain&rsquo;);
+$entityManager->persist($spain);</p>
 
-<p>namespace My\Bundle\Annotation;</p>
+<p>$france = new Country;
+$france->setName(&lsquo;france&rsquo;);
+$entityManager->persist($france);</p>
 
-<p>use Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation;</p>
+<p>$entityManager->flush();
+```</p>
+
+<p>When we flush without defining any kind of parameter, all entities managed by
+EntityManager with changes will be flushed.<br/>
+To flush a specific entity managed by EntityManager we can just pass the entity
+as a parameter in the flush method</p>
+
+<p>``` php
+$spain = new Country;
+$spain->setName(&lsquo;spain&rsquo;);
+$entityManager->persist($spain);</p>
+
+<p>$france = new Country;
+$france->setName(&lsquo;france&rsquo;);
+$entityManager->persist($france);</p>
 
 <p>/<em>*
- * Entity annotation driver
- *
- * @Annotation
+ * At this point, I only want to flush $spain
  </em>/
-class MyCustomAnnotation extends Annotation
-{</p>
+$entityManager->flush($spain);
+```</p>
 
-<pre><code>/**
- * @var string
- *
- * Dummy field
- */
-private $field;
+<p>To flush an array of entities managed by EntityManager we can pass the array as
+a parameter in the flush method</p>
 
+<p>``` php
+$spain = new Country;
+$spain->setName(&lsquo;spain&rsquo;);
+$entityManager->persist($spain);</p>
 
-/**
- * Get Dummy field
- *
- * @return string Dummy field
- */
-public function getField()
-{
-    return $this-&gt;field;
+<p>$france = new Country;
+$france->setName(&lsquo;france&rsquo;);
+$entityManager->persist($france);</p>
+
+<p>$germany = new Country;
+$germany->setName(&lsquo;germany&rsquo;);
+$entityManager->persist($germany);</p>
+
+<p>/<em>*
+ * At this point, I only want to flush $spain
+ </em>/
+$entityManager->flush(array(</p>
+
+<pre><code>$spain,
+$france,
+</code></pre>
+
+<p>));
+```</p>
+
+<p>So, how about flushing an ArrayCollection of entities? Lets take a look at the
+UnitOfWork code where contains this logic.</p>
+
+<p>``` php
+if ($entity === null) {</p>
+
+<pre><code>$this-&gt;computeChangeSets();
+</code></pre>
+
+<p>} elseif (is_object($entity)) {</p>
+
+<pre><code>$this-&gt;computeSingleEntityChangeSet($entity);
+</code></pre>
+
+<p>} elseif (is_array($entity)) {</p>
+
+<pre><code>foreach ($entity as $object) {
+    $this-&gt;computeSingleEntityChangeSet($object);
 }
 </code></pre>
 
 <p>}
 ```</p>
 
-<h2>Resolver</h2>
-
-<p>Once you have defined your own annotation, you have to resolve how this
-annotation works in a controller. You can manage this using a Resolver. Must
-extend <code>Mmoreram\ControllerExtraBundle\Resolver\Interfaces\AnnotationResolverInterface;</code>
-abstract class.</p>
+<p>Considering that ArrayCollection is an object, this code should be changed to
+this code to also accept ArrayCollection and all iterable objects.</p>
 
 <p>``` php
-&lt;?php</p>
+if ($entity === null) {</p>
 
-<p>namespace My\Bundle\Resolver;</p>
+<pre><code>$this-&gt;computeChangeSets();
+</code></pre>
 
-<p>use Symfony\Component\HttpFoundation\Request;
-use Mmoreram\ControllerExtraBundle\Resolver\Interfaces\AnnotationResolverInterface;
-use Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation;</p>
+<p>} elseif (is_array($entity) || $entity instanceof IteratorAggregate) {</p>
 
-<p>/<em>*
- * MyCustomAnnotation Resolver
+<pre><code>foreach ($entity as $object) {
+    $this-&gt;computeSingleEntityChangeSet($object);
+}
+</code></pre>
+
+<p>} elseif (is_object($entity)) {</p>
+
+<pre><code>$this-&gt;computeSingleEntityChangeSet($entity);
+</code></pre>
+
+<p>}
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Inverse associations in Doctrine2 models]]></title>
+    <link href="http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/"/>
+    <updated>2013-10-09T11:37:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models</id>
+    <content type="html"><![CDATA[<p>Lets take a look some basic example about simple Doctrine2 relation.</p>
+
+<p>``` php
+/<em>*
+ * Country
+ *
+ * @ORM\Entity
+ * @ORM\Table(name=&ldquo;countries&rdquo;)
  </em>/
-class MyCustomAnnotationResolver implements AnnotationResolverInterface
-{</p>
+class Country {</p>
 
 <pre><code>/**
- * Specific annotation evaluation.
- * This method MUST be implemented because is defined in the interface
+ * @var ArrayCollection
  *
- * @param Request          $request    Request
- * @param Annotation       $annotation Annotation
- * @param ReflectionMethod $method     Method
- *
- * @return MyCustomAnnotationResolver self Object
+ * @ORM\OneToMany(targetEntity="Province", mappedBy="country")
  */
-public function evaluateAnnotation(
-                                    Request $request, 
-                                    Annotation $annotation, 
-                                    ReflectionMethod $method )
+protected $provinces;
+
+/**
+ * Constructor
+ */
+public function __construct()
 {
-    /**
-     * You can now manage your annotation.
-     * You can acced to its fields using public methods.
-     * 
-     * Annotation fields can be public and can be acceded directly,
-     * but is better for testing to use getters; they can be mocked.
-     */
-    $field = $annotation-&gt;getField();
+    $this-&gt;provinces = new ArrayCollection;
+}
 
-    /**
-     * You can also access to existing method parameters.
-     * 
-     * Available parameters are:
-     * 
-     * # ParamConverter parameters ( See `resolver_priority` config value )
-     * # All method defined parameters, included Request object if is set.
-     */
-    $entity = $request-&gt;attributes-&gt;get('entity');
-
-    /**
-     * And you can now place new elements in the controller action.
-     * In this example we are creating new method parameter
-     * called $myNewField with some value
-     */
-    $request-&gt;attributes-&gt;set(
-        'myNewField',
-        new $field()
-    );
+/**
+ * Add province
+ *
+ * @param Province $province Province to add
+ *
+ * @return Country self Object
+ */
+public function addProvince()
+{
+    $this-&gt;provinces[] = $province;
 
     return $this;
 }
@@ -159,352 +179,177 @@ public function evaluateAnnotation(
 <p>}
 ```</p>
 
-<p>This class will be defined as a service, so this method is computed just
-before executing current controller. You can also subscribe to some kernel
-events and do whatever you need to do ( You can check
-<code>Mmoreram\ControllerExtraBundle\Resolver\LogAnnotationResolver</code> for some
-examples.</p>
-
-<h2>Definition</h2>
-
-<p>Once Resolver is done, we need to define our service as an Annotation
-Resolver. We will use a custom <code>tag</code>.</p>
-
-<p>``` yml
-parameters:</p>
-
-<pre><code>#
-# Resolvers
-#
-my.bundle.resolvers.my_custom_annotation_resolver.class: My\Bundle\Resolver\MyCustomAnnotationResolver
-</code></pre>
-
-<p>services:</p>
-
-<pre><code>#
-# Resolvers
-#
-my.bundle.resolvers.my_custom_annotation_resolver:
-    class: %my.bundle.resolvers.my_custom_annotation_resolver.class%
-    tags:
-        - { name: controller_extra.annotation }
-</code></pre>
-
-<p>```</p>
-
-<h2>Registration</h2>
-
-<p>We need to register our annotation inside our application. We can just do it in
-the <code>boot()</code> method of <code>bundle.php</code> file.</p>
-
 <p>``` php
-&lt;?php</p>
-
-<p>namespace My\Bundle;</p>
-
-<p>use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Doctrine\Common\Annotations\AnnotationRegistry;</p>
-
-<p>/<em>*
- * MyBundle
+/<em>*
+ * Province
+ *
+ * @ORM\Entity
+ * @ORM\Table(name=&ldquo;provinces&rdquo;)
  </em>/
-class ControllerExtraBundle extends Bundle
-{</p>
+class Province {</p>
 
 <pre><code>/**
- * Boots the Bundle.
+ * @var Country
+ *
+ * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
+ * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
  */
-public function boot()
-{
-    $kernel = $this-&gt;container-&gt;get('kernel');
+protected $country;
 
-    AnnotationRegistry::registerFile($kernel
-        -&gt;locateResource("@MyBundle/Annotation/MyCustomAnnotation.php")
-    );
+/**
+ * Set Country
+ *
+ * @param Country $country Country
+ *
+ * @return Province self Object
+ */
+public function setCountry(Country $country)
+{
+    $this-&gt;country = $country;
+
+    return $this;
+}
+
+/**
+ * Get the country
+ *
+ * @return Country
+ */
+public function getCountry()
+{
+    return $this-&gt;country;
 }
 </code></pre>
 
 <p>}
 ```</p>
 
-<p><em>Et voilà!</em>  We can now use our custom Annotation in our project controllers.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Cache clear en Symfony2]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2/"/>
-    <updated>2014-01-03T15:11:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2</id>
-    <content type="html"><![CDATA[<p>Vacía la caché de Symfony, y la vuelve a crear (sino se especifica lo contrario)</p>
-
-<p><code>bash
-$ php app/console cache:clear [--no-warmup] [--no-optional-warmers]
-</code></p>
-
-<p>Curioso comando existente en el framework Symfony2 desde sus inicios, y poco
-utilizado por los proyectos. En realidad, he visto pocos proyectos que utilizen
-este comando en los scripts de deploy, por lo que lo más habitual que veremos es
-el clásico</p>
-
-<p><code>bash
-$ rm -Rf app/cache/*
-</code></p>
-
-<p>Pero es correcta esta práctica? Aunque parezca la forma más ágil de limpiar
-cache, tengamos en cuenta que Symfony2 tiene procesos internos que muchos de
-nosotros desconocemos por completo. Cuando ejecutamos el comando para vaciar
-caché ( con la opción <code>--no-warmup</code> ) no tan solo vaciamos el directorio caché
-sino que el framework ejecuta el método <code>clear()</code> de todos los servicios que
-implementan la interface
-<code>Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface</code> cuya
-definición incorporen el tag <code>kernel.cache_clearer</code>.</p>
-
-<p>En otras palabras.</p>
-
-<p>``` yml
-services:</p>
-
-<pre><code>my_cache_clearer:
-    class: Acme\MainBundle\Cache\MyClearer
-    tags:
-        - { name: kernel.cache_clearer }
-</code></pre>
-
-<p>```</p>
-
-<p>Encontraréis mas información y especificación de estos tags
-<a href="http://symfony.com/doc/current/reference/dic_tags.html#kernel-cache-clearer">aqui</a>.</p>
-
-<h2>Reflexión</h2>
-
-<p>En realidad es importante fijarse en la opción <code>--no-warmup</code> ya que es la que
-cambia el comportamiento del comando. Cuando trabajamos en entornos de
-producción, necesitamos que, en tiempo de deploy, nuestra aplicación tenga el
-mínimo tiempo de downtime. Esto se consigue reduciendo al máximo el tiempo en
-que una caché está vacía.</p>
-
-<h3>Tabla básica de tiempos</h3>
-
-<blockquote><ul>
-<li>[1]   Repository status: S1, Cache status: C1</li>
-<li>[1-3] Deploy S1 &ndash;> S2</li>
-<li>[3-4] Clear cache C1 from /cache</li>
-<li>[4-7] Warm up new cache C2 into /cache_new</li>
-<li>[7-8] Swap cache C1 &ndash;> C2. Rename /cache_new to /cache</li>
-<li>[8]   Repository status: S2, Cache status: C2</li>
-</ul>
-</blockquote>
-
-<h3>Problema 1</h3>
-
-<p>Entre los tiempos 3 y 8, tenemos que /cache está vacía. Tenemos que tener en
-cuenta que estamos en un entorno de producción, por lo que mientras hacemos el
-proceso de deployment, nuestros servidores deben estar sirviendo peticiones en
-todo momento.</p>
-
-<p>Dado este caso, cada una de las peticiones se dará cuenta que la caché está
-vacía, por lo que intentará volverla a montar desde cero. Deberíamos tener en
-cuenta, entonces, que entre los tiempos 3 y 8, nuestro servicio estará caido.</p>
-
-<p>De este análisis sacamos que debemos minimizar al máximo el tiempo pasado entre
-el clear de la caché a invalidar y el switch a la nueva, o sea, reducir este
-intervalo en el que nuestra caché está vacía.</p>
-
-<p>Hace pocos dias propuse un
-<a href="https://github.com/symfony/symfony/pull/9930">PR a FrameworkBundle</a> para
-gestionar esto.</p>
-
-<p>Lo único que hace es cambiar el orden entre el warm up de la nueva caché y el
-clear de la vieja.</p>
-
-<blockquote><ul>
-<li>[1]   Repository status: S1, Cache status: C1</li>
-<li>[1-3] Deploy S1 &ndash;> S2</li>
-<li>[3-6] Warm up new cache C2 into /cache_new</li>
-<li>[6-7] Clear cache C1 from /cache</li>
-<li>[7-8] Swap cache C1 &ndash;> C2. Rename /cache_new to /cache</li>
-<li>[8]   Repository status: S2, Cache status: C2</li>
-</ul>
-
-
-<p>Downtime 2</p></blockquote>
-
-<p>En este punto podemos ver que la ventana que separa el clear de la caché antigua
-y el switch con la nueva solo es de dos unidades de tiempo, entre los tiempos 6
-y 8. Ahora se nos plantea otro problema.</p>
-
-<h3>Problema 2</h3>
-
-<p>Hemos minimizado al máximo el tiempo de switch entre las dos caches, pero
-seguimos teniendo una ventana de 5 unidades de tiempo entre que el repositorio
-está en un estado S2 y la caché en un estado C1.</p>
-
-<blockquote><p>Real downtime 5</p></blockquote>
-
-<p>En realidad, dado este análisis solo podríamos actuar de una sola forma, y es
-trabajar con un deployment paralelo ( como hace el warmup del cache:clear ).
-Esto significa que nunca deployamos sobre nuestra instalación activa</p>
-
-<blockquote><ul>
-<li>[1]   Repository status: S1, Cache status: C1 en /project</li>
-<li>[1-8] Deployment Repository + cache:clear en /project_warmup</li>
-<li>[8]   Repository status: S2, Cache status: C2 en /project_warmup</li>
-<li>[8-9] Swap repository S1 &ndash;> S2. Rename /project to /project_warmup</li>
-</ul>
-
-
-<p>Downtime: 0</p></blockquote>
-
-<h3>Problema 3</h3>
-
-<p>En este caso es probable que nuestro proceso de deploy nos modifique elementos
-externos, como puede ser ( y probablemente sea ) <code>mysql</code>. Entonces tendremos una
-ventana bastante grande donde el modelo deployado en mysql que haga S2 no se
-asemeje al modelo Doctrine de S1.</p>
-
-<blockquote><p>Downtime: X</p></blockquote>
-
-<p>So what? Como lo hacéis vosotros? Ya es por sondear un poco hacia donde tira la
-gente&hellip;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Dynamic routes in Symfony2]]></title>
-    <link href="http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2/"/>
-    <updated>2013-10-01T18:30:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2</id>
-    <content type="html"><![CDATA[<p>Given that most times we need to associate a static route entry with a method of
-a controller, it is normal for Symfony developers are used to working with the
-annotation @Route of FrameworkExtraBundle.</p>
-
-<p>In some cases, it will be interesting or necessary to work with the router to
-generate dynamic routes. This means that any bundle can generate a route from a
-service, defining both the name of the route as all the information necessary
-for the resolution of the route.</p>
-
-<p>Consider the following example</p>
+<p>The reason for this post is to try to understand the direct impact of making an
+inversed relationship when we allocate a new province in a country.
+Given the model we have in the first instance, and given this piece of
+controller</p>
 
 <p>``` php
-&lt;?php</p>
+$country = $this</p>
 
-<p>namespace Mmoreram\AcmeBundle\Router;</p>
+<pre><code>-&gt;entityManager
+-&gt;getRepository('AcmeCoreBundle:Country')
+-&gt;findBy(1);
+</code></pre>
 
-<p>use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;</p>
+<p>$province = new Province();
+$province->setCountry($country);
+$this->entityManager->persist($province);
+$this->entityManager->flush();
+```</p>
 
-<p>/<em>*
- * Acme dynamic router
+<p>In this case, when we assign the Country to the new Province, and given that the
+owning side of the association is Province, when you flush, the association
+persists in database, so that in future reference, we would have the desired
+results.<br/>
+The &ldquo;problem&rdquo; exists because our <code>EntityManager</code> works with internal cache.
+If after this assignment, and in the same request, we need to return all the
+provinces of the Country, in particular the Country with id 1, the returned
+collection will not contain the new Province if this data is already cached.
+This is because we have not perfomed reversed assignment. There are two ways of
+solving this.</p>
+
+<h3>Model owns the responsability of double assignment</h3>
+
+<p>We can resolve this giving model the responsability of double assignment.</p>
+
+<p>``` php
+/<em>*
+ * Province
+ *
+ * @ORM\Entity
+ * @ORM\Table(name=&ldquo;provinces&rdquo;)
  </em>/
-class AcmeRoutesLoader implements LoaderInterface
-{</p>
+class Province {</p>
 
 <pre><code>/**
- * @var boolean
+ * @var Country
  *
- * Route is loaded
+ * @ORM\ManyToOne(targetEntity="Country", inversedBy="provinces")
+ * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=false)
  */
-private $loaded = false;
+protected $country;
 
 /**
- * Loads a resource.
+ * Set Country
  *
- * @param mixed  $resource The resource
- * @param string $type     The resource type
+ * @param Country $country Country
  *
- * @return RouteCollection
- *
- * @throws RuntimeException Loader is added twice
+ * @return Province self Object
  */
-public function load($resource, $type = null)
+public function setCountry(Country $country)
 {
-    if ($this-&gt;loaded) {
-
-        throw new \RuntimeException('Do not add this loader twice');
-    }
-
-    $routes = new RouteCollection();
+    $this-&gt;country = $country;
 
     /**
-     * url('controller_name') will point AcmeController:methodAction()
+     * We perform inversed assignment
      */
-    $routes-&gt;add('controller_name', new Route('controller/route', array(
-        '_controller'   =&gt;  'AcmeBundle:Acme:method',
-    )));
+    $country-&gt;setProvince($this);
 
-    $this-&gt;loaded = true;
-
-    return $routes;
+    return $this;
 }
 
 /**
- * Returns true if this class supports the given resource.
+ * Get the country
  *
- * @param mixed  $resource A resource
- * @param string $type     The resource type
- *
- * @return boolean This class supports the given resource
+ * @return Country
  */
-public function supports($resource, $type = null)
+public function getCountry()
 {
-    return 'acme' === $type;
-}
-
-/**
- * Gets the loader resolver.
- *
- * @return LoaderResolverInterface A LoaderResolverInterface instance
- */
-public function getResolver()
-{
-}
-
-/**
- * Sets the loader resolver.
- *
- * @param LoaderResolverInterface $resolver A LoaderResolverInterface
- */
-public function setResolver(LoaderResolverInterface $resolver)
-{
+    return $this-&gt;country;
 }
 </code></pre>
 
 <p>}
 ```</p>
 
-<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should
-be defined once in all project.</p>
+<p>This has a good side and bad. On the one hand, is a completely transparent
+process so that the model handles internally to manage their relationships.
+It allows the driver to disengage completely from the model.
+On the other hand, we must bear in mind that <strong>will</strong> always done this inverse
+relationship. This can be a plus for a project, unless handled very large
+amounts of data.<br/>
+To give an example, we can imagine a Country with a million provinces.
+When charging Country in memory, while not run the <code>getProvinces ()</code> and since
+we work with lazy loading, we will have no memory problem. The problem comes
+when you add a new province to Country. As a collection, to add an item,
+doctrine do something like <code>getProvinces()</code> and then make
+`$provinces[] = $province;&lsquo;.  Keep in mind that loading in memory up to 1
+million entities without any need is a non desired behaviour.</p>
 
-<p>As any service, we must define this class in dependency injection with specific
-tag.</p>
+<h3>Controller ( each one ) owns the responsability of double assignment</h3>
 
-<p>``` yml
-services:</p>
+<p>In this case, controller need to perform inversed assignment.</p>
 
-<pre><code>acme.routes.loader:
-    class: Mmoreram\AcmeBundle\Router\AcmeRoutesLoader
-    tags:
-        - { name: routing.loader }
+<p>``` php
+$country = $this</p>
+
+<pre><code>-&gt;entityManager
+-&gt;getRepository('AcmeCoreBundle:Country')
+-&gt;findBy(1);
 </code></pre>
 
-<p>```</p>
+<p>$province = new Province();
+$province->setCountry($country);
+$country->addProvince($province);
+$this->entityManager->persist($province);
+$this->entityManager->flush();
+```</p>
 
-<p>And finally we just need to make our project know where to build our route, so
-in <code>routing.yml</code> file we must add these lines.</p>
+<p>You will choose if is the best option, so you have an idea about if all
+provinces are used later. If are used and a million Provinces are loaded,
+you will have the same problem as first case, but has nothing to do about
+this&hellip;</p>
 
-<p>``` yml
-acme_routes:</p>
+<p>My conclusion would be something like &hellip; Know your model and scope, and give
+responsibilities accordingly.</p>
 
-<pre><code>resource: .
-type: acme
-</code></pre>
-
-<p>```</p>
-
-<blockquote><p>At this point, type value must be the same as defined in Router service.</p></blockquote>
+<p>What do you think?</p>
 ]]></content>
   </entry>
   
