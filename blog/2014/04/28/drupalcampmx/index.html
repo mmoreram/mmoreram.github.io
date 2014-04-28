@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Camino hacia Drupal8 - Because yes</title>
+  <meta name="author" content="Marc Morera">
+
+  
+  <meta name="description" content="Debo reconocer que 12 horas de avión son muchas horas. Sobretodo porque, aún
+teniendo formas de distraerse ( Asumo de raiz que no se puede dormir& &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mmoreram.github.io/blog/2014/04/28/drupalcampmx/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Because yes" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic|Istok+Web:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41917921-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+  <div id="header-container">
+    <div id="header">
+      <div class="wrapper">
+        <header role="banner"><hgroup>
+  <h1><a href="/">Because yes</a></h1>
+</hgroup>
+
+</header>
+        <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mmoreram.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+      </div>
+    </div>
+  </div>
+  <div id="body"   >
+    <div id="main">
+      <div id="content">
+	<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Camino Hacia Drupal8</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-28T16:27:00+02:00" pubdate data-updated="true">Apr 28<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Debo reconocer que 12 horas de avión son muchas horas. Sobretodo porque, aún
+teniendo formas de distraerse ( Asumo de raiz que no se puede dormir&hellip; Podría
+enumerar infinidad de razones&hellip; niños gritando, llorando o jugando, asientos
+muy pequeños para la gente alta como yo&hellip; ) el reconocido JetLag desgasta toda
+la semana posterior al viaje.</p>
+
+<p>El tema es que, a pesar de todo, cuando la razón del viaje no es otra que
+conocer compañeros nuevos, conocer una comunidad, una cultura, un país, una
+gastronomía, unas costumbres&hellip; cuando la razón es mucho más que un simple
+viaje de placer, estas horas pesadas pasan a ser lo de menos.</p>
+
+<p>Hoy he vuelto de México tras una maravillosa semana en el DF, exactamente en el
+DrupalCamp México 2014. Mi misión, hablar de Symfony a una comunidad que todavía
+no lo tiene claro, viendo como su proyecto evoluciona a otro nivel.</p>
+
+<p>Os pongo en contexto.</p>
+
+<p>Drupal es un proyecto escrito en PHP4. Como wordpress, su core y su filosofía
+se basas en un sistema de módulos instalables, reemplazando lo que nosotros
+llamamos <em>Event Layer</em> por los ya mas que personalmente olvidados <em>Hooks</em>.
+El código está lleno de los llamados Drupalismos, un término creado y designado
+a los <em>Coding Standards</em>, tanto en su forma como en su estructura en el cual se
+basa todo el proyecto.</p>
+
+<p>Personalmente, muy mejorable.</p>
+
+<p>Quiero aclarar de raiz que todo lo que añado a continuación es una simple
+opinión. Mi punto de vista sobre el contexto social que se vive en todo el
+continente latinoamericano, y en toda la comunidad Drupal.</p>
+
+<p>Siguiendo con el contexto, la versión estable de drupal actual es la 7. Drupal7
+es, ha sido y será la última major release Drupal en lenguaje PHP4,
+así que en la nueva versión, Drupal8, algunos módulos de Symfony2 se añadirán
+como dependencias. Encontramos algo tan útil como el EventDispatcher ( En
+Drupal8 aún coexistirán tanto los Hooks como el EventDispatcher, y en la versión
+Drupal9, los hooks se eliminarán de forma completa y permanente ), el Routing,
+el HttpFoundation, el HttpKernel, el DependencyInjection&hellip;</p>
+
+<p>Al parecer tal decisión ha dividido la comunidad en dos.</p>
+
+<p>Por un lado tenemos la gente que no quiere pasar a Drupal8, alegando complejidad
+demasiado elevada en la transición y un BC completo en ambas versiones. En este
+colectivo se ha fundado el proyecto <a href="http://backdropcms.org/">Backdrop</a>, un CMS
+evolucionado de Drupal7, con la misma filosofía de arquitectura, y con un cambio
+en la forma de trabajar ( Sistema de releases, de features ) y por consiguiente,
+con una comunidad estructurada.</p>
+
+<p>Por otro lado tenemos a los que ven a Drupal8 como una posibilidad para
+renovarse, para aventurarse en lo desconocido, aprender y resolver aquella deuda
+técnica que han generado durante tanto años, apostando tal vez demasiado por la
+flexibilidad que propone Drupal desde hace tiempo.</p>
+
+<p>Yo les conocí, a ambos, en el mismo lugar.</p>
+
+<p>En este post quiero defender la evolución de un colectivo, la evolución de
+personas que muy honradamente quieren ganarse la vida, y a la par, aprender a
+programar utilizando las últimas tendencias en diseño, los patrones más
+innovadores, apostando por un modelo sostenible, colaborativo y
+completamente escalable.</p>
+
+<p>Yo creo en el crecimiento personal como parte de un crecimiento superior, el de
+una comunidad. Les conocí en el Camp y me transmitieron ganas de aprender, ganas
+de adquirir conocimientos que, aparentemente, tanto cuesta adquirir. Tengo que
+admitir que defender el primer colectivo es una cuestión de mediocridad muy
+lícita ( como toda alternativa en el momento que, almenos a uno, le soluciona
+un problema ). Defender el mero hecho de no evolucionar, me hace reflexionar
+en que tal vez no se den cuenta que solo ellos son capaces de cambiar
+el mundo, y estando en sus manos este cambio tan grande, deciden quedarse con lo
+que &ldquo;ya funciona&rdquo;. El &ldquo;ya está bien, para que cambiarlo&rdquo; no forma parte de
+mi filosofía profesional, y por lo tanto, es imposible que llegue a lidiar
+con ella.</p>
+
+<p>Todo gran cambio requiere de un gran sacrificio. Todo gran aprendizaje requiere
+un gran cambio, por lo que sacrificarte solo aporta nutrirse de nuevas opciones,
+herramientas para el buen escultor, cuya ambición no es otra que tallar la
+figura perfecta.</p>
+
+<p>Señores de <em>backdrop</em>, ustedes solo quieren seguir dotando a una comunidad
+gigante con un palo de madera para tallar figuras renacentistas. Me parece
+ridículo. Me parece prehistórico.</p>
+
+<p>El hombre tuvo que aprender a hacer fuego de una simple rama, y ahora somos una
+sociedad avanzada, en gran parte, por que podemos iluminar una habitación oscura
+de la forma más primitiva.</p>
+
+<p>Señores de <em>backdrop</em>, ustedes quieren seguir aceptando que PHP4 es válido, y no
+lo es. Si fuera por PHP4, si fuera por la negación de la evolución cuando la POO
+apareció antaño, hoy en día seríamos incapaces de hablar de Dependency
+Injection, de arquitecturas hexagonales y de patrones de diseño avanzados, cuya
+función desde el mismo día de su proposición no ha sido otra que hacer
+evolucionar al pensador, al escultor, al programador.</p>
+
+<p>Y creo que lo ha conseguido, con creces.</p>
+
+<p>Y es que todo ser humano es simple. Si damos opciones, elige mal. Si proponemos
+efectivamente el hecho de seguir siendo mediocre, el ser humano verá en esta
+opción su zona de comfort, y no evolucionará.</p>
+
+<p>Por qué no utilizan esta energía para mover masas? Por qué no utilizan esta
+fuerza que tan bien utilizan en quejarse, para ser el referente de un pueblo en
+su camino hacia un nuevo punto de partida?</p>
+
+<p>Finalmente, un mensaje al desarrollador Drupal indeciso. ¿Por qué teniendo
+herramientas para hacer catedrales magníficas, se empeñan en hacer chozas de
+madera? ¿Por qué no pasar al siguiente nivel?</p>
+
+<p>Pues exactamente están en esta posición. ¿Acaso se creen que se hallarán solos en
+este mar llamado desconocimiento? Tienen la oportunidad de crecer juntos como
+comunidad hacia un objetivo común, mejorar, sea como sea. Yo no lo pensaría mas
+de dos veces&hellip;</p>
+
+<p>Sean valientes, interés es el pretexto del conocimiento y del éxito, así que les
+animo a que den una oportunidad al progreso, a su capacidad, a que
+Drupal8 y Symfony sean su tarjeta de embarque para su éxito personal y
+profesional, así como un acceso directo a una comunidad proactiva y
+colaborativa.</p>
+
+<p>Aquí estaremos los que ya hemos sufrido para que su camino sea un poco más leve.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marc Morera</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-28T16:27:00+02:00" pubdate data-updated="true">Apr 28<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backdrop/'>Backdrop</a>, <a class='category' href='/blog/categories/drupal/'>Drupal</a>, <a class='category' href='/blog/categories/drupalcamp/'>Drupalcamp</a>, <a class='category' href='/blog/categories/mexico/'>México</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2014/04/28/drupalcampmx/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2014/04/28/drupalcampmx/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/04/17/elcodi/" title="Previous Post: Elcodi, una nueva aventura en Symfony2">&laquo; Elcodi, una nueva aventura en Symfony2</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/28/drupalcampmx/">Camino hacia Drupal8</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/17/elcodi/">Elcodi, una nueva aventura en Symfony2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/11/custom-controller-annotations/">Custom controller annotations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/03/cache-clear-en-symfony2/">Cache clear en Symfony2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/23/factory-pattern-in-symfony2/">Factory pattern in Symfony2</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/mmoreram">@mmoreram</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mmoreram',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+      </div>
+    </div>
+    <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Marc Morera -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>.</span>
+</p>
+
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'mmoreram';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mmoreram.github.io/blog/2014/04/28/drupalcampmx/';
+        var disqus_url = 'http://mmoreram.github.io/blog/2014/04/28/drupalcampmx/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>
