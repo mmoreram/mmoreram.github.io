@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-04-29T16:27:44+02:00</updated>
+  <updated>2014-05-05T13:19:28+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,167 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ParamConverter... mala idea]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/05/05/paramconverter-una-mala-idea/"/>
+    <updated>2014-05-05T13:18:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/05/05/paramconverter-una-mala-idea</id>
+    <content type="html"><![CDATA[<p>Este problema ocurre en proyectos abiertos, open source. Para proyectos privados
+donde Cart siempre será Cart, no creo que deba ser de su preocupación.</p>
+
+<p>Cada vez tenemos más en mente trabajar con módulos que sean reutilizables. Las
+buenas prácticas pasan por trabajar con interfaces y dar pie a que, el usuario
+que tan amablemente está reutilizando nuestro código, pueda definir su dominio
+según su especificación. Esto pasa, claro, por pensar que una entidad no siempre
+será la misma entidad, el mismo objeto.</p>
+
+<p>Me explicaré.</p>
+
+<p>La buena práctica sugiere que cuando definimos una entidad con sus relaciones,
+utilizemos un ResolveTargetEntityListener. Lo que hace este listener es, una vez
+se han definido las relaciones utilizando interfaces, se resuelven éstas y se
+sustituyen por entidades reales ( evidentemente por entidades que implementan
+tales interfaces ).</p>
+
+<p>Cuando se sigue esta estrategia, es natural definir tanto el namespace como
+el factory de la entidad que estás utilizando en un parámetro de bundle, por lo
+que se puede sobrescribir fácilmente en cada uno de los proyectos.</p>
+
+<p>Vemos un ejemplo.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">Elcodi\CartBundle\Entity\Cart</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">entity</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">repositoryClass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Repository\CartRepository</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">table</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cart</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">oneToOne</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">order</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">targetEntity</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Entity\Interfaces\OrderInterface</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">mappedBy</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cart</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En este caso, la relación con Order es débil, ya que la proponemos con cualquier
+entidad que implemente OrderInterface. Solo hace falta que el
+ResolveTargetEntityListener proponga una implementación para OrderInterface, en
+nuestro caso, <code>Elcodi\CartBundle\Entity\Order</code>.</p>
+
+<p>En nuestro config, definimos los namespaces de las entidades con las que vamos a
+trabajar.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">parameters</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># Entities</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">elcodi.core.cart.entity.cart.class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Entity\Cart</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">elcodi.core.cart.entity.order.class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Entity\Order</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># Factories</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">elcodi.core.cart.factory.cart.class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Factory\CartFactory</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">elcodi.core.cart.factory.order.class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Factory\OrderFactory</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Este escenario anuncia lo que el título de este post enuncia. Hardcodear el
+namespace de una entidad en alguna parte, rompe toda esta estrategia. Si
+trabajamos de esta forma &ldquo;abstracta&rdquo; no nos podemos permitir el lujo de marcar
+con sangre que una entidad siempre será de un tipo específico, y es, en
+realidad, lo que obliga el ParamConverter</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\Route</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * @Route(&quot;/cart/{id}&quot;)</span>
+</span><span class='line'><span class="sd"> * @ParamConverter(&quot;cart&quot;, class=&quot;ElcodiCartBundle:Cart&quot;)</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">showAction</span><span class="p">(</span><span class="nx">Post</span> <span class="nv">$post</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Proposición</p>
+
+<p>Para que el ParamConverter funcionara de tal forma que pudiéramos salvar este
+problema, deberíamos poder definir nuestra entidad con un parameter. Algo así:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\Route</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * @Route(&quot;/cart/{id}&quot;)</span>
+</span><span class='line'><span class="sd"> * @ParamConverter(&quot;cart&quot;, class=&quot;%elcodi.core.cart.entity.cart.class%&quot;)</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">showAction</span><span class="p">(</span><span class="nx">Post</span> <span class="nv">$post</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Esto implica que se debería inyectar el Container entero en el servicio que
+trabaja los paramconverter de Doctrine, y que deberíamos checkear siempre si
+el parámetro que se pasa es un namespace o un nombre de un parámetro.</p>
+
+<p>Tal vez tendría sentido poder trabajar con ExpressionLanguage, pero el problema
+es que añades una relación mas al bundle, por lo que no creo que les guste a los
+autores del bundle ( SensioLabs ).</p>
+
+<p>Con este post no quiero abrir un debate sobre si las annotations están bien o
+no. Soy el primero que las he defendido en su momento, otorgando siempre su
+utilidad en ciertos entornos y en ciertos casos. Ahora que empiezo a trabajar en
+un entorno 100% OpenSource ya no valen tanto como antes.</p>
+
+<p>Que creéis al respecto? Olvidaríais las annotations al 100 en entornos Open
+Source?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Elcodi, a new Symfony adventure]]></title>

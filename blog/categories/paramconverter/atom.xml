@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: paramconverter | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/paramconverter/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-05-05T13:19:28+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ParamConverter... mala idea]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/05/05/paramconverter-una-mala-idea/"/>
+    <updated>2014-05-05T13:18:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/05/05/paramconverter-una-mala-idea</id>
+    <content type="html"><![CDATA[<p>Este problema ocurre en proyectos abiertos, open source. Para proyectos privados
+donde Cart siempre será Cart, no creo que deba ser de su preocupación.</p>
+
+<p>Cada vez tenemos más en mente trabajar con módulos que sean reutilizables. Las
+buenas prácticas pasan por trabajar con interfaces y dar pie a que, el usuario
+que tan amablemente está reutilizando nuestro código, pueda definir su dominio
+según su especificación. Esto pasa, claro, por pensar que una entidad no siempre
+será la misma entidad, el mismo objeto.</p>
+
+<p>Me explicaré.</p>
+
+<p>La buena práctica sugiere que cuando definimos una entidad con sus relaciones,
+utilizemos un ResolveTargetEntityListener. Lo que hace este listener es, una vez
+se han definido las relaciones utilizando interfaces, se resuelven éstas y se
+sustituyen por entidades reales ( evidentemente por entidades que implementan
+tales interfaces ).</p>
+
+<p>Cuando se sigue esta estrategia, es natural definir tanto el namespace como
+el factory de la entidad que estás utilizando en un parámetro de bundle, por lo
+que se puede sobrescribir fácilmente en cada uno de los proyectos.</p>
+
+<p>Vemos un ejemplo.</p>
+
+<p>``` yml</p>
+
+<p>Elcodi\CartBundle\Entity\Cart:</p>
+
+<pre><code>type: entity
+repositoryClass: Elcodi\CartBundle\Repository\CartRepository
+table: cart
+
+oneToOne:
+    order:
+        targetEntity: Elcodi\CartBundle\Entity\Interfaces\OrderInterface
+        mappedBy: cart
+</code></pre>
+
+<p>```</p>
+
+<p>En este caso, la relación con Order es débil, ya que la proponemos con cualquier
+entidad que implemente OrderInterface. Solo hace falta que el
+ResolveTargetEntityListener proponga una implementación para OrderInterface, en
+nuestro caso, <code>Elcodi\CartBundle\Entity\Order</code>.</p>
+
+<p>En nuestro config, definimos los namespaces de las entidades con las que vamos a
+trabajar.</p>
+
+<p>``` yml</p>
+
+<p>parameters:</p>
+
+<pre><code>#
+# Entities
+#
+elcodi.core.cart.entity.cart.class: Elcodi\CartBundle\Entity\Cart
+elcodi.core.cart.entity.order.class: Elcodi\CartBundle\Entity\Order
+
+#
+# Factories
+#
+elcodi.core.cart.factory.cart.class: Elcodi\CartBundle\Factory\CartFactory
+elcodi.core.cart.factory.order.class: Elcodi\CartBundle\Factory\OrderFactory
+</code></pre>
+
+<p>```</p>
+
+<p>Este escenario anuncia lo que el título de este post enuncia. Hardcodear el
+namespace de una entidad en alguna parte, rompe toda esta estrategia. Si
+trabajamos de esta forma &ldquo;abstracta&rdquo; no nos podemos permitir el lujo de marcar
+con sangre que una entidad siempre será de un tipo específico, y es, en
+realidad, lo que obliga el ParamConverter</p>
+
+<p>``` php</p>
+
+<p>use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;</p>
+
+<p>/<em>*
+ * @Route(&ldquo;/cart/{id}&rdquo;)
+ * @ParamConverter(&ldquo;cart&rdquo;, class=&ldquo;ElcodiCartBundle:Cart&rdquo;)
+ </em>/
+public function showAction(Post $post)
+{
+}</p>
+
+<p>```</p>
+
+<p>Proposición</p>
+
+<p>Para que el ParamConverter funcionara de tal forma que pudiéramos salvar este
+problema, deberíamos poder definir nuestra entidad con un parameter. Algo así:</p>
+
+<p>``` php</p>
+
+<p>use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;</p>
+
+<p>/<em>*
+ * @Route(&ldquo;/cart/{id}&rdquo;)
+ * @ParamConverter(&ldquo;cart&rdquo;, class=&ldquo;%elcodi.core.cart.entity.cart.class%&rdquo;)
+ </em>/
+public function showAction(Post $post)
+{
+}</p>
+
+<p>```</p>
+
+<p>Esto implica que se debería inyectar el Container entero en el servicio que
+trabaja los paramconverter de Doctrine, y que deberíamos checkear siempre si
+el parámetro que se pasa es un namespace o un nombre de un parámetro.</p>
+
+<p>Tal vez tendría sentido poder trabajar con ExpressionLanguage, pero el problema
+es que añades una relación mas al bundle, por lo que no creo que les guste a los
+autores del bundle ( SensioLabs ).</p>
+
+<p>Con este post no quiero abrir un debate sobre si las annotations están bien o
+no. Soy el primero que las he defendido en su momento, otorgando siempre su
+utilidad en ciertos entornos y en ciertos casos. Ahora que empiezo a trabajar en
+un entorno 100% OpenSource ya no valen tanto como antes.</p>
+
+<p>Que creéis al respecto? Olvidaríais las annotations al 100 en entornos Open
+Source?</p>
+]]></content>
+  </entry>
+  
+</feed>
