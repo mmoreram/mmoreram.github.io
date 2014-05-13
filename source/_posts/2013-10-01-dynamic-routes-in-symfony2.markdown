@@ -9,9 +9,14 @@ categories:
     - dynamic
 ---
 
-Given that most times we need to associate a static route entry with a method of a controller, it is normal for Symfony developers are used to working with the annotation @Route of FrameworkExtraBundle.
+Given that most times we need to associate a static route entry with a method of
+a controller, it is normal for Symfony developers are used to working with the
+annotation @Route of FrameworkExtraBundle.
 
-In some cases, it will be interesting or necessary to work with the router to generate dynamic routes. This means that any bundle can generate a route from a service, defining both the name of the route as all the information necessary for the resolution of the route.
+In some cases, it will be interesting or necessary to work with the router to
+generate dynamic routes. This means that any bundle can generate a route from a
+service, defining both the name of the route as all the information necessary
+for the resolution of the route.
 
 Consider the following example
 
@@ -74,7 +79,7 @@ class AcmeRoutesLoader implements LoaderInterface
      * @param mixed  $resource A resource
      * @param string $type     The resource type
      *
-     * @return boolean true if this class supports the given resource, false otherwise
+     * @return boolean This class supports the given resource
      */
     public function supports($resource, $type = null)
     {
@@ -93,7 +98,7 @@ class AcmeRoutesLoader implements LoaderInterface
     /**
      * Sets the loader resolver.
      *
-     * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
+     * @param LoaderResolverInterface $resolver A LoaderResolverInterface
      */
     public function setResolver(LoaderResolverInterface $resolver)
     {
@@ -101,9 +106,11 @@ class AcmeRoutesLoader implements LoaderInterface
 }
 ```
 
-In method `supports()`, `$type` value can be any desired value, and only should be defined once in all project.
+In method `supports()`, `$type` value can be any desired value, and only should
+be defined once in all project.  
 
-As any service, we must define this class in dependency injection with specific tag.
+As any service, we must define this class in dependency injection with specific
+tag.
 
 ``` yml
 services:
@@ -113,7 +120,8 @@ services:
             - { name: routing.loader }
 ```
 
-And finally we just need to make our project know where to build our route, so in `routing.yml` file we must add these lines.
+And finally we just need to make our project know where to build our route, so
+in `routing.yml` file we must add these lines.
 
 ``` yml
 acme_routes:

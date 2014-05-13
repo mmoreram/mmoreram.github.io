@@ -12,9 +12,13 @@ categories:
 
 ## The pattern.
 
-The factory pattern gives responsibility to create some instances of certain types to a class called factory. All possible classes that can instantiate the factory should always implement an interface, so we will be able to call certain methods, whether the class is. Let's see an specific and usable example.
+The factory pattern gives responsibility to create some instances of certain
+types to a class called factory. All possible classes that can instantiate the
+factory should always implement an interface, so we will be able to call certain
+methods, whether the class is. Let's see an specific and usable example.
 
-First of all, we have an interface called LoggerInterface. Is just an interface so just define all methods that implementations must implement.
+First of all, we have an interface called LoggerInterface. Is just an interface
+so just define all methods that implementations must implement.
 
 ``` php
 <?php
@@ -37,7 +41,8 @@ interface LoggerInterface
 }
 ```
 
-On the one hand we have an implementation called FileLogger. This class just write given messages in a file.
+On the one hand we have an implementation called FileLogger. This class just
+write given messages in a file.
 
 ``` php
 </php
@@ -76,7 +81,8 @@ class FileLogger implements LoggerInterface
 }
 ```
 
-And on the other hand we have a ScreenLogger, that just echoes message as it comes.
+And on the other hand we have a ScreenLogger, that just echoes message as it
+comes.
 
 ``` php
 </php
@@ -107,7 +113,12 @@ class ScreenLogger implements LoggerInterface
 }
 ```
 
-Given a project we may want to specify using configurarion which Logger we want to use. Since we want to work with dependency injection component offered by Symfony2 framework, and any class where we will use our Logger is responsible for knowing as each instance of our Loggers, we need to create a Factory that is responsible for taking the setting you have specified, return us an instance of the class we want.
+Given a project we may want to specify using configurarion which Logger we want
+to use. Since we want to work with dependency injection component offered by
+Symfony2 framework, and any class where we will use our Logger is responsible
+for knowing as each instance of our Loggers, we need to create a Factory that
+is responsible for taking the setting you have specified, return us an
+instance of the class we want.
 
 Given this configuration
 
@@ -118,7 +129,8 @@ logger:
     type: screen
 ```
 
-We define our factory service. As `type` configuration value is a free text value, if value do not references any Logger type we will throw an exception.
+We define our factory service. As `type` configuration value is a free text
+value, if value do not references any Logger type we will throw an exception.
 
 ``` php
 <?php
@@ -160,7 +172,9 @@ class LoggerFactory
 }
 ```
 
-And Factory dependency injection definition.. As factory must not be instanced to create a Logger ( `get` method is static ) we must use `factory_class` to define the Factory namespace.
+And Factory dependency injection definition.. As factory must not be instanced
+to create a Logger ( `get` method is static ) we must use `factory_class` to
+define the Factory namespace.
 
 ``` yml
 # /my/bundle/Namespace/Resources/config/services.yml
@@ -181,7 +195,9 @@ services:
 
 ## Prototyping
 
-Let's take a look at Symfony2 component [Finder](http://symfony.com/doc/current/components/finder.html) class. We have a class named Manager that uses this class.
+Let's take a look at Symfony2 component
+[Finder](http://symfony.com/doc/current/components/finder.html) class. We have a
+class named Manager that uses this class.
 
 ``` php
 <?php
@@ -209,7 +225,10 @@ class Manager
 }
 ```
 
-Placing this `new Finder` inside Manager class, we assume that Manager has responsability to know how `Finder` must be built. This creates dependency between both objects, and that's wrong. So the point is that we should inject a new instance of `Finder` each time we call doSomething.
+Placing this `new Finder` inside Manager class, we assume that Manager has
+responsability to know how `Finder` must be built. This creates dependency
+between both objects, and that's wrong. So the point is that we should inject a
+new instance of `Finder` each time we call doSomething.
 
 
 ``` php
@@ -257,7 +276,8 @@ class Manager
 }
 ```
 
-And how do we resolve this problem using Dependency Injection? Is as easy as creating a new service using Finder as class, with prototype scope.
+And how do we resolve this problem using Dependency Injection? Is as easy as
+creating a new service using Finder as class, with prototype scope.
 
 ``` yml
 # /my/bundle/Namespace/Resources/config/services.yml
@@ -273,4 +293,6 @@ services:
             my_finder: @my.finder
 ```
 
-If we tale a look at `Finder` class we shall notice that have a static factory method inside. If we use Factory pattern using this method, we will instanciate a new `Finder` object the first time, but not the others.
+If we tale a look at `Finder` class we shall notice that have a static factory
+method inside. If we use Factory pattern using this method, we will instanciate
+a new `Finder` object the first time, but not the others.

@@ -1,0 +1,79 @@
+---
+layout: post
+title: "Elcodi, a new Symfony adventure"
+date: 2014-04-29 16:10
+comments: true
+categories: 
+    - elcodi
+    - symfony
+    - ecommerce
+---
+
+Some changes are about to come. And it seems that they are good 
+changes. I haven’t written in my blog for a few weeks, and the truth is 
+I feel bad about it. I like to write about the things that happen to me at 
+the company; about the problems we find and the solutions I come up 
+with. The thing is that, for some months now, I’ve been really focused 
+on the project that we are launching to the world today. Initially, it is 
+a project by developers for developers, focused on meeting the actual 
+needs of developers who design and program e-commerce.
+
+It is true that we have plenty of platforms and options to develop e-
+commerce around the world. I could name a few, and probably they all 
+have outstanding metrics and KPIs.
+
+The problem with these platforms is that they are entirely B2B, so 
+they only make sense when the end user just needs to have a good 
+management, installation and configuration interface; and when 
+technical departments want to develop, both horizontally (new features 
+for things already in use, or just customization) and vertically (new 
+features), these B2B platforms fall short, and so the company must 
+either pay a lot of money in refactoring, or the existing code must be 
+touched, contaminating it and putting its integrity at risk.
+
+These platforms are usually not tested, and so each line added is
+potentially harmful for the whole system. Then, each development
+on these platforms usually results in collateral problems in the user
+experience itself.
+
+As I see it, this is unacceptable in our times.
+We propose a platform conceived for developers, thought of and deeply 
+reflected on. This does not mean that the code is right from the very 
+start; our declaration of intent is simply to take this project to a certain 
+point where companies can trust in the project in order to build their 
+own.
+
+We present you [Elcodi](http://elcodi.io).
+
+We are just beginning to emerge with an approach divided into phases. 
+Our roadmap is very clear to us, and so in the next few months we 
+will develop the main features at a core level, as well as the necessary 
+robustness in order to deal with any outsourcers who like the project in 
+its initial stage and wish to join us in this journey, aimed at improving 
+the lifestyle of developers.
+
+The platform is based on Symfony2 and, following the philosophy 
+defined by its own framework, we have focused most of the 
+architecture by using a strong layer of events, fully uncoupling most 
+behaviours and components.
+
+If you are a Symfony programmer, I suggest that you check it out. You 
+will see errors, a thousand things left to develop and to improve; but, 
+like with all projects, our greatest ambition is its own construction; 
+therefore, it’s a matter of months, energy and development.
+Another of our objectives is building a good documentation. 
+
+Essentially, we have three documentation lines in mind. Firstly, we 
+want to communicate our philosophy to other people; the direction 
+the project will undoubtedly take, regardless of its implementation 
+in a given moment. It is important to define this from the beginning, 
+because to a great extent it links us to our target audience.
+Documentation is a slow process, which is also subject to collaboration, 
+and at first it will be in English only.
+
+Finally, I should say that elcodi.com is a rapidly expanding company. 
+We have good growth projections, and so we are certain that what we 
+are starting today with such enthusiasm will not cease to grow.
+We want it to be useful; we want our proposal to be seen by everybody, 
+to get your most constructive criticism, since only in this way we can 
+really make an interesting project for us all.

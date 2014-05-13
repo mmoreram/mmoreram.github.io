@@ -1,0 +1,83 @@
+---
+layout: post
+title: "Elcodi, una nueva aventura en Symfony2"
+date: 2014-04-17 12:46
+comments: true
+categories: 
+- Elcodi
+- Symfony
+---
+
+Ciertos cambios están por llegar. Y parece ser que son cambios buenos. Llevo
+unas cuantas semanas sin escribir en el blog, y la verdad es que me sabe mal.
+Me gusta contar cosas que me van sucediendo en la empresa. Problemas que nos
+vamos encontrando y soluciones que se me van ocurriendo. El problema es que
+llevo unos meses muy centrado en el proyecto que justo hoy lanzamos al mundo.
+Es un proyecto inicialmente de desarrolladores para desarrolladores, centrado en
+cubrir necesidades reales de los developers destinados a diseñar y
+programar ecommerces.
+
+Es cierto que tenemos muchísimas plataformas y opciones para desarrollar
+ecommerces alrededor del mundo. Podría enumerar unos cuantos, y probablemente
+todos tengan unas métricas y unos KPIs magníficos.
+ 
+Los problemas de estas plataformas es que son completamente B2B, por lo que tienen sentido cuando
+el usuario final simplemente debe tener una buena interfaz de administración, 
+de instalación y de configuración; y que cuando los departamentos técnicos quieren
+desarrollar, tanto horizontalmente ( nuevas funcionalidades de
+aquello que ya se está utilizando, o simplemente customizar ) como verticalmente
+( nuevas funcionalidades ), estas plataformas B2B se quedan
+cortas, por lo que la empresa tiene que desembolsar una cantidad enorme de
+dinero en un refáctoring, o simplemente, se debe empezar a todar el código
+existente, ensuciándolo y haciendo peligrar su integridad.
+
+Estas plataformas no suelen estar testeadas, por lo que cada línea que se añade
+es una línea potencialmente dañina para todo el sistema, con lo que cada
+desarrollo sobre estas plataformas suelen derivar en problemas colaterales
+en la propia experiencia de usuario.
+
+Desde mi punto de vista, en los tiempos que corren, esto es inaceptable.
+
+Nosotros proponemos una plataforma pensada para los desarrolladores, pensada
+y profundamente reflexionada. Esto no implica que el código deba estar bien
+en una primera instancia, simplemente nuestra declaración de intenciones es
+llevar el proyecto a un punto donde las empresas puedan confiar en el proyecto
+para construir el suyo propio.
+
+Os presentamos [Elcodi](http://elcodi.io).
+
+En un planteamiento dividido en fases, justo estamos naciendo. Tenemos muy claro
+cual es nuestro roadmap, por lo que en los próximos meses se desarrollaran las 
+principales features a nivel de core, así como la robustez necesaria como para
+poder lidiar con colaboradores externos, que les guste el proyecto en su estado
+inicial y que quieran acomparnos en este viaje, destinado a mejorar el estilo de
+vida de los developers.
+
+La plataforma está basada en Symfony2, y siguiendo la filosofía definida por el
+propio framework, hemos enfocado la mayor parte de la arquitectura utilizando
+una fuerte capa de eventos, desacoplando la mayoría de comportamientos y
+componentes completamente.
+
+Si eres programador Symfony, te propongo que almenos le eches un vistazo.
+Verás errores, mil cosas a desarrollar y mil cosas a mejorar, pero como todo
+proyecto, nuestra mayor ambición es la propia construcción del mismo, por lo que
+es cuestión de meses, ganas y desarrollo.
+
+Otro de nuestros objetivos es llegar a construir una buena documentación. 
+Tenemos esencialmente tres líneas de documentación en mente. Por un lado
+
+queremos transmitir a los demás nuestra filosofía. La dirección que, sin duda
+alguna, tomará el proyecto, independientemente de la implementación que este 
+adquiera en un momento dado. Es importante definir esto inicialmente porque al
+final nos vincula muchísimo al target al que vamos destinados.
+
+La documentación es algo lento, también sujeta a colaboraciones, y en principio
+estará inicialmente solo en inglés.
+
+Finalmente decir que elcodi.com es una empresa en plena expansión. Tenemos
+buenas previsiones de crecimiento por lo que tenemos una garantía que lo que hoy
+con tanta ilusión estamos empezando, no dejará de crecer. 
+
+Queremos que sea útil, queremos que nuestra propuesta esté a juicio de todo el
+mundo y que saque vuestras críticas mas constructivas, solo así podremos
+realmente hacer un proyecto interesante para todos.

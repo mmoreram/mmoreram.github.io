@@ -22,8 +22,10 @@ $entityManager->persist($france);
 $entityManager->flush();
 ```
 
-When we flush without defining any kind of parameter, all entities managed by EntityManager with changes will be flushed.  
-To flush a specific entity managed by EntityManager we can just pass the entity as a parameter in the flush method
+When we flush without defining any kind of parameter, all entities managed by
+EntityManager with changes will be flushed.  
+To flush a specific entity managed by EntityManager we can just pass the entity
+as a parameter in the flush method
 
 ``` php
 $spain = new Country;
@@ -40,7 +42,8 @@ $entityManager->persist($france);
 $entityManager->flush($spain);
 ```
 
-To flush an array of entities managed by EntityManager we can pass the array as a parameter in the flush method
+To flush an array of entities managed by EntityManager we can pass the array as
+a parameter in the flush method
 
 ``` php
 $spain = new Country;
@@ -64,7 +67,8 @@ $entityManager->flush(array(
 ));
 ```
 
-So, how about flushing an ArrayCollection of entities? Lets take a look at the UnitOfWork code where contains this logic.
+So, how about flushing an ArrayCollection of entities? Lets take a look at the
+UnitOfWork code where contains this logic.
 
 ``` php
 if ($entity === null) {
@@ -81,7 +85,8 @@ if ($entity === null) {
 }
 ```
 
-Considering that ArrayCollection is an object, this code should be changed to this code to also accept ArrayCollection and all iterable objects.
+Considering that ArrayCollection is an object, this code should be changed to
+this code to also accept ArrayCollection and all iterable objects.
 
 ``` php
 if ($entity === null) {
