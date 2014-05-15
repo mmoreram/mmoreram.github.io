@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-05-05T13:19:28+02:00</updated>
+  <updated>2014-05-15T17:52:21+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,106 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[What makes Elcodi different?]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different/"/>
+    <updated>2014-05-15T17:40:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different</id>
+    <content type="html"><![CDATA[<p>Well, the league of web development, in which we play, is a fussy league, I
+started to recieve the first questions about the project I find myself
+developing&hellip; ¿ Why a new project called Elcodi wants to cover the needs of
+ecommerce when there is something similar called Sylius?</p>
+
+<p>Although I twitt that I would write a comparison between both platforms, I
+firmly believe that it is absurd to compare both of them, since Sylius is a
+very mature project and has lots of features we do not have ( nor will we have
+short-term ). So, this post is nothing more than a declaration of intentions
+about why we have decided to start a separated project from the existing
+options.</p>
+
+<p>Firstly,  I want to mention my complete respect to Sylius. It&rsquo;s a project
+builded from many different contributors, and I do not want to compare their
+results with our ambition at all. I think both are two projects with two
+different perspectives, and since one of our most important value ​​is humility
+as a team, we start as a small project. Ambitious, but for now, small.</p>
+
+<p>Secondly,  I want to talk with the community through what are the three basic
+paws in our project. All three are equally important and we strongly believe
+that one feeds the other. We are very strict on these three aspects, and  it
+will remain as it is throughout the years.</p>
+
+<h2>Event-Driven Design</h2>
+
+<p>Elcodi is a completely event-oriented project. All components have a set of
+events, especially designed to customize the behavior of a specific action.</p>
+
+<p>Without giving importance to this point means that many people will have to fork
+the project itself to implement their behavior, and this is not a good
+philosophy. A third component should behave as such, giving capacity as high as
+possible to be customized.</p>
+
+<h2>Clean Code</h2>
+
+<p>Our first and most important objective is to provide developers with a set of
+useful tools for working their own implementations. We do not claim to be the
+idyllic and immediate solution for all existing projects, but our goal, more or
+less realistic, is to provide a completely customizable to those recurring
+problems in all projects style solution.</p>
+
+<p>For example , we can not solve all management Carta for obvious reasons: Each
+project has its own unique business needs. What we can do is to propose a
+simple common behavior, thus, giving the opportunity to evolve offering a
+completely customizable domain model, giving the opportunity to extend the
+behavior with proposed events and offering a decent and growing documentation.</p>
+
+<p>In my view, and because realistically, the real needs are demanded by a host of
+different profiles, we take care of our programming style, designing clean code,
+standardizing styles and understanding everything we do. We do not position
+ourselves in relation to any extreme programming philosophy, always chasing the
+latest trends. We just want to create a nice project, both for developers who
+want something small and stable as for those who believe that the project will
+grow much.</p>
+
+<h2>Projection executive</h2>
+
+<p>We are a technology project, but first and foremost we are a company. This means
+that even we have aspiration to be fully open source, we have a business model
+behind, defined by a financial structure and economic forecasting constantly
+growing.
+As you can see on our website , our key role in the process is the Market. One
+of the great advantages that event-driven architecture gives us is that it can
+fit very easily as a decoupled processing module.</p>
+
+<p>Actually, the point of this distinctive feature is that we do not base the
+development of the project only on &ldquo;free time reviewers&rdquo; but professional people
+will be responsible for developing the project, to train people interested and
+manage the quality of extensions that appear on the market. A very positive
+point about the scheme.</p>
+
+<p>At the same time, the developer who wants to base its implementation on Elcodi
+will have minimal confidence that there will probably be modules as solutions
+to their needs. At least this is our projection , a complete win-win.</p>
+
+<h2>Final thoughts</h2>
+
+<p>I repeat. In no time we want to compete with anyone. I understand that every
+project has its trajectory. Ours is this. The collaboration between projects is
+essential, and we have a strong commitment to work to collaborate with other
+projects, because at last, after all, a win-win all :)</p>
+
+<p>Coming soon we will draw a public roadmap , as well as a set of training modules
+for people who want to learn some tidbits of web architecture and want to know a
+little more about our project.</p>
+
+<p>Obviously, if you want to know about project&rsquo;s updates, you can follow our
+activities in <a href="http://twitter.com/elcodi_dev">Twitter &ndash; @elcodi_dev</a> or
+follow our development in <a href="http://github.com/elcodi">Github &ndash; @elcodi</a>.
+Obviously we want people to try , question , discuss constructively and give us
+reviews on our implementations. The contributions and contributors to the
+project will be well received and appreciated :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ParamConverter... mala idea]]></title>
