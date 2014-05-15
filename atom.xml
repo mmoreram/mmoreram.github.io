@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-05-15T18:04:09+02:00</updated>
+  <updated>2014-05-15T19:04:36+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,113 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[What makes Elcodi different?]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different/"/>
+    <updated>2014-05-15T17:40:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different</id>
+    <content type="html"><![CDATA[<p>Well, the league of web development, in which we play, is a fussy league, I
+started to recieve the first questions about the project I find myself
+developing&hellip; ¿ Why a new project called Elcodi wants to cover the needs of
+ecommerce when there is something similar called Sylius?</p>
+
+<p>Although I twitt that I would write a comparison between both platforms, I
+firmly believe that it is absurd to compare them, since Sylius is a
+very mature project and has lots of features we do not have ( nor will we have
+short-term ). So, this post is nothing more than a declaration of intentions
+about why we have decided to start a separated project from the existing
+options.</p>
+
+<p>Firstly, I want to express complete respect to Sylius. It&rsquo;s a project
+built by many different contributors, and I do not want to compare their
+results with our ambitions at all. I think they both are projects with
+different perspectives, and since one of our most important value ​​is humility,
+we start as a small project. Ambitious, but for now, small.</p>
+
+<p>Secondly, I&rsquo;d like to share with the community what I think are the three basic
+pillars in our project. All three are equally important and we strongly believe
+that one feeds the others. We are very strict on these three aspects, and it
+will remain as it is throughout the years.</p>
+
+<h2>Event-Driven Design</h2>
+
+<p>Elcodi is a completely event-oriented project. All components have a set of
+events, especially designed to customize the behavior of a specific action.</p>
+
+<p>Not giving importance to this point means that many people will have to fork
+the project itself to implement their own behaviors, and this is not a good
+philosophy. A third party component should behave as such, giving a high degree
+of customization.</p>
+
+<h2>Clean Code</h2>
+
+<p>Our first and most important objective is to provide developers with a set of
+useful tools for working their own implementations. We do not claim to be the
+all-purpose and immediate solution for existing projects. Our desire is to
+provide a completely customizable workbench in order to solve those recurring
+ecommerce projects problems.</p>
+
+<p>For example, we can not deliver an all-inclusive Cart management solution for obvious reasons: each
+project has its own unique business needs. What we can do is to propose a
+simple common behavior, thus giving the opportunity to evolve by offering a
+completely customizable model, giving the opportunity to extend behaviors thanks
+to the proposed event structure and by offering a decent and growing documentation.</p>
+
+<p>In my view, realistically, since real needs generate from a heterogeneous community
+composed by people with different levels of skills and experience, we will just
+collect these needs. Consequently, we will take care of the programming style,
+clean code design and standardization so that every line of code can be understood
+by everyone.
+We are not die hard fans or disciples of any specific software development process
+or methodology, we won&rsquo;t be relentlessy chasing latest trends just for the sake of it.
+We just want to create a valuable project, both for developers who
+want something nifty and stable for small quick project and for those who believe
+that their e-commerce will grow much.</p>
+
+<p>Working on an Elcodi based project must be fun and healthy.</p>
+
+<h2>Business perspective</h2>
+
+<p>We are a technology project, but first and foremost we are a company. This means
+that though we aspire to be fully open source, we do have business model
+behind, defined by a financial structure, which is based on constant growing.</p>
+
+<p>As you can see on our website, our key role in the process is the Market. As said,
+one of the great advantages that event-driven architecture gives us is that it can
+easily be extended: third party modules will be simple to integrate.</p>
+
+<p>Moreover, a professional team of developers will be responsible for the project,
+to train interested people and review the quality of the extensions submitted
+to the market.</p>
+
+<p>At the same time, developers who wants to base their implementations on Elcodi
+will likely find it easy to cover their needs, through open-source modules, market
+extensions or by coding the solutions themselves (and of course selling it in the
+Market if it complies with Elcodi code rules!)</p>
+
+<p>Let me call this escenarios a win-win.</p>
+
+<h2>Final thoughts</h2>
+
+<p>I repeat myself. We do not want to compete with anyone. I understand that every
+project has its trajectory. What appears in this post is our. Cross-project
+collaboration is  essential, and we will commit to work alongside other projects,
+because at last, everyone gains :)</p>
+
+<p>Soon we will publish a roadmap, as well as a set of training modules
+for people who want to learn some cookie recipes of web architecture and a
+little more about our project.</p>
+
+<p>If you want to know about project updates, follow our activities in
+<a href="http://twitter.com/elcodi_dev">Twitter &ndash; @elcodi_dev</a> or follow Elcodi
+development in <a href="http://github.com/elcodi/elcodi">Github &ndash; @elcodi</a>.</p>
+
+<p>Obviously we want people to clone the project, inspect it, question us, discuss
+constructively and give us reviews on our implementations. Contributions to the
+project will be well received and appreciated :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ParamConverter... mala idea]]></title>

@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>What makes Elcodi different? - Because yes</title>
+  <meta name="author" content="Marc Morera">
+
+  
+  <meta name="description" content="Well, the league of web development, in which we play, is a fussy league, I
+started to recieve the first questions about the project I find myself &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Because yes" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic|Istok+Web:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41917921-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+  <div id="header-container">
+    <div id="header">
+      <div class="wrapper">
+        <header role="banner"><hgroup>
+  <h1><a href="/">Because yes</a></h1>
+</hgroup>
+
+</header>
+        <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mmoreram.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+      </div>
+    </div>
+  </div>
+  <div id="body"   >
+    <div id="main">
+      <div id="content">
+	<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">What Makes Elcodi Different?</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-15T17:40:00+02:00" pubdate data-updated="true">May 15<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Well, the league of web development, in which we play, is a fussy league, I
+started to recieve the first questions about the project I find myself
+developing&hellip; ¿ Why a new project called Elcodi wants to cover the needs of
+ecommerce when there is something similar called Sylius?</p>
+
+<p>Although I twitt that I would write a comparison between both platforms, I
+firmly believe that it is absurd to compare them, since Sylius is a
+very mature project and has lots of features we do not have ( nor will we have
+short-term ). So, this post is nothing more than a declaration of intentions
+about why we have decided to start a separated project from the existing
+options.</p>
+
+<p>Firstly, I want to express complete respect to Sylius. It&rsquo;s a project
+built by many different contributors, and I do not want to compare their
+results with our ambitions at all. I think they both are projects with
+different perspectives, and since one of our most important value ​​is humility,
+we start as a small project. Ambitious, but for now, small.</p>
+
+<p>Secondly, I&rsquo;d like to share with the community what I think are the three basic
+pillars in our project. All three are equally important and we strongly believe
+that one feeds the others. We are very strict on these three aspects, and it
+will remain as it is throughout the years.</p>
+
+<h2>Event-Driven Design</h2>
+
+<p>Elcodi is a completely event-oriented project. All components have a set of
+events, especially designed to customize the behavior of a specific action.</p>
+
+<p>Not giving importance to this point means that many people will have to fork
+the project itself to implement their own behaviors, and this is not a good
+philosophy. A third party component should behave as such, giving a high degree
+of customization.</p>
+
+<h2>Clean Code</h2>
+
+<p>Our first and most important objective is to provide developers with a set of
+useful tools for working their own implementations. We do not claim to be the
+all-purpose and immediate solution for existing projects. Our desire is to
+provide a completely customizable workbench in order to solve those recurring
+ecommerce projects problems.</p>
+
+<p>For example, we can not deliver an all-inclusive Cart management solution for obvious reasons: each
+project has its own unique business needs. What we can do is to propose a
+simple common behavior, thus giving the opportunity to evolve by offering a
+completely customizable model, giving the opportunity to extend behaviors thanks
+to the proposed event structure and by offering a decent and growing documentation.</p>
+
+<p>In my view, realistically, since real needs generate from a heterogeneous community
+composed by people with different levels of skills and experience, we will just
+collect these needs. Consequently, we will take care of the programming style,
+clean code design and standardization so that every line of code can be understood
+by everyone.
+We are not die hard fans or disciples of any specific software development process
+or methodology, we won&rsquo;t be relentlessy chasing latest trends just for the sake of it.
+We just want to create a valuable project, both for developers who
+want something nifty and stable for small quick project and for those who believe
+that their e-commerce will grow much.</p>
+
+<p>Working on an Elcodi based project must be fun and healthy.</p>
+
+<h2>Business perspective</h2>
+
+<p>We are a technology project, but first and foremost we are a company. This means
+that though we aspire to be fully open source, we do have business model
+behind, defined by a financial structure, which is based on constant growing.</p>
+
+<p>As you can see on our website, our key role in the process is the Market. As said,
+one of the great advantages that event-driven architecture gives us is that it can
+easily be extended: third party modules will be simple to integrate.</p>
+
+<p>Moreover, a professional team of developers will be responsible for the project,
+to train interested people and review the quality of the extensions submitted
+to the market.</p>
+
+<p>At the same time, developers who wants to base their implementations on Elcodi
+will likely find it easy to cover their needs, through open-source modules, market
+extensions or by coding the solutions themselves (and of course selling it in the
+Market if it complies with Elcodi code rules!)</p>
+
+<p>Let me call this escenarios a win-win.</p>
+
+<h2>Final thoughts</h2>
+
+<p>I repeat myself. We do not want to compete with anyone. I understand that every
+project has its trajectory. What appears in this post is our. Cross-project
+collaboration is  essential, and we will commit to work alongside other projects,
+because at last, everyone gains :)</p>
+
+<p>Soon we will publish a roadmap, as well as a set of training modules
+for people who want to learn some cookie recipes of web architecture and a
+little more about our project.</p>
+
+<p>If you want to know about project updates, follow our activities in
+<a href="http://twitter.com/elcodi_dev">Twitter &ndash; @elcodi_dev</a> or follow Elcodi
+development in <a href="http://github.com/elcodi/elcodi">Github &ndash; @elcodi</a>.</p>
+
+<p>Obviously we want people to clone the project, inspect it, question us, discuss
+constructively and give us reviews on our implementations. Contributions to the
+project will be well received and appreciated :)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marc Morera</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-15T17:40:00+02:00" pubdate data-updated="true">May 15<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ecommerce/'>Ecommerce</a>, <a class='category' href='/blog/categories/elcodi/'>Elcodi</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/05/05/paramconverter-una-mala-idea/" title="Previous Post: ParamConverter... mala idea">&laquo; ParamConverter... mala idea</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/05/15/what-makes-elcodi-different/">What makes Elcodi different?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/05/paramconverter-una-mala-idea/">ParamConverter... mala idea</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/29/elcodi-a-new-symfony-adventure/">Elcodi, a new Symfony adventure</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/28/camino-hacia-drupal8/">Camino hacia Drupal8</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/17/elcodi/">Elcodi, una nueva aventura en Symfony2</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/mmoreram">@mmoreram</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mmoreram',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+      </div>
+    </div>
+    <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Marc Morera -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>.</span>
+</p>
+
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'mmoreram';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different/';
+        var disqus_url = 'http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>
