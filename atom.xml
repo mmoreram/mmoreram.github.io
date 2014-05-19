@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-05-15T19:04:36+02:00</updated>
+  <updated>2014-05-19T17:11:31+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,113 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Restrospectiva de un ponente]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/05/19/restrospectiva/"/>
+    <updated>2014-05-19T13:27:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/05/19/restrospectiva</id>
+    <content type="html"><![CDATA[<p>Este fin de semana ha sido la DrupalCamp de Valencia. Tuve la suerte de ser uno
+de los seleccionados para hacer una de las ponencias que tengo preparadas, con
+título <em>El efecto &lsquo;este código es una basura&rsquo;</em>. Esta ponencia, preparada
+esencialmente como mezcla entre show y realidad, resultó exitosa en el entorno
+de confianza para el que fue creado, un entorno de amigos con los que comparto
+experiencias, y practicamente mi vida en la oficina. El problema es que no lo
+resultó tanto en un entorno un poco más desconocido como puede ser el de una
+ponencia pública, donde no sabes quien te está escuchando.</p>
+
+<p>Aquí están mis conclusiones y alguna que otra aclaración respecto mi ponencia.
+Espero que sirva para otra gente que se hayan encontrado en mi misma situación
+o que se vayan a encontrar, desafortunadamente, en un futuro.</p>
+
+<h3>Deja clara tu intención</h3>
+
+<p>Es importante que, antes de empezar, la gente sepa lo que va a encontrarse. Si
+tu charla es un tanto distinta a las demás, cuenta el porqué y evita sorpresas
+de última hora, como que el público no sepa encajar ( por falta de información )
+lo que estás explicando, como lo estás haciendo, o el punto de vista que estás
+tomando.</p>
+
+<p>Para mi, y tras la experiencia de ayer, es el punto más importante a tener en
+cuenta.</p>
+
+<p>En mi caso, hice una disertación completamente dramática. En ningún caso, y aún
+estando en un evento de Drupal donde tendría sentido que hablara de Drupal,
+quise enfocar mis críticas a ningún perfil en general, ni en ningún framework,
+ni en ningún lenguaje.</p>
+
+<p>Mi postura en toda la charla fue una simple abstracción y exageración ( no tan
+exagerada ) de lo que uno se encuentra en la mayoría de empresas, profesionales
+y humanos, porque al fin y al cabo, es lo que somos: humanos.</p>
+
+<p>Una de las consecuencias de representar a esta sociedad es la necesidad de tener
+la misma jerga que ella, en cuyo caso, no podemos dejar de pensar en palabrotas
+o palabras mal sonantes ( Muchas veces dejando el respeto de lado ).</p>
+
+<p>Esta fue mi intención ayer por la tarde, ponerme en la piel de todos y cada uno
+de nosotros en nuestra intimidad ( almenos, la mayoría, en mi opinión ) y
+analizar o ejemplificar como somos con lo que encontramos, y ver que aún siendo
+críticos destructivos con las lineas de código que encontramos a nuestro paso, y
+aún no entendiéndolas en mayor medida, somos nosotros mismos los primeros que
+cometemos los mismos errores una y otra vez.</p>
+
+<p>En la charla tuve distintos puntos de autocrítica, cosas que he hecho yo mismo
+y cosas que he tenido que cambiar con el paso del tiempo, así que si en algún
+momento fui crítico apuntando con el dedo, fue a mi persona.</p>
+
+<h3>Tu charla nunca gustará a todo el mundo</h3>
+
+<p>Miguel me lo decía, y suerte tengo de Miguel muchas veces, porque la perspectiva
+que me suele dar él, poca gente me la da. <em>You know&hellip;</em></p>
+
+<p>Al finalizar la disertación, con, por cierto, bastantes risas y algún que otro
+aplauso, pensé que había sido un éxito. Para mi un éxito no es haber cambiado
+la mentalidad de nadie, pues reconozco que soy el primer al que le cuesta
+cambiar un hábito tan profundo como la calidad de tu propio código. Para mi, el
+hecho que una de mis charlas sea un éxito es la suma de dos puntos:</p>
+
+<ul>
+<li>Que la gente se ría. Importante. La risa y el buen rollo es el calzador mágico
+para que las palabras, aún siendo duras, suenen constructivas. En consecuencia
+es la herramienta perfecta para proponer y compartir tu forma de pensar.</li>
+<li>Que el mensaje llegue de alguna forma. La que sea, pero que llegue. La forma de ayer, la forma que creo que
+puede llegar el mensaje de aceptar que la mayor parte de nuestro código no tiene
+el rigor necesario, es haciendo uso de la ridiculización, la crítica y la jerga
+convencional, social y humana. Estoy orgulloso de mi planteamiento, pues es la forma en la que
+concebí inicialmente la estructura del mensaje.</li>
+</ul>
+
+
+<p>Mi sorpresa fue cuando varias personas luego me comentaron su desagrado. Entonces me dio que pensar
+y llegué a todas estas conclusiones. También me consta que a la mayoría de las personas
+le gustó lo que vio ( al menos eso me han contado, de aquí a que sea verdad ya, es otro mundo ).</p>
+
+<p>Aún así, quiero pedir mis disculpas a todos aquellos que creyeron que era un ataque directo
+a alguien, pues no fue así. Respeto a todo el mundo, haga lo que haga, y mucho mas si lo que hace
+con ilusión. Respeto aún mucho más a todos aquellos que, y no conformándose con lo que tienen
+buscan mucho más, aprendiendo lo que se pueda aprender de la mejor forma.</p>
+
+<h3>Mejoras propuestas en mis charlas</h3>
+
+<p>Me gusta hablar y no creo hacerlo mal. Reconozco que una de mis conclusiones impulsivas al
+principio fue descansar de ponencias por un tiempo, pero es algo que necesito hacer
+para equilibrar otra parte de mi trabajo.</p>
+
+<p>A partir de ahora voy a cuidar mucho más las palabras que utilizo siempre que haga una
+presentación, voy a comunicar muy bien el enfoque que voy a dar en las charlas y
+intentaré, sin perder el buen humor con el que creo que no podría vivir, que sean
+igual de dinámicas hasta ahora.</p>
+
+<p>La ponencia en si, he pedido que no la publiquen por razones obvias ( No se si
+me harán caso ).</p>
+
+<h3>Últimos pensamientos</h3>
+
+<p>Poco más a añadir, creo que de los errores uno aprende, y agradezco tanto a todos los que
+escucharon mi charla y se llevaron algo positivo a casa, como a los que no les gustó,
+me lo hicieron saber y me hicieron reflexionar.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[What makes Elcodi different?]]></title>
