@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ExpressionLanguage | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/expressionlanguage/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-05-20T16:02:21+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Sobre reglas y ExpressionLanguage]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/05/20/about-rules-and-expression-language/"/>
+    <updated>2014-05-20T14:00:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/05/20/about-rules-and-expression-language</id>
+    <content type="html"><![CDATA[<blockquote><p>You can read an english translation in <a href="http://blog.elcodi.io">Elcodi blog</a></p></blockquote>
+
+<p>Esta implementación trabaja con el ExpressionLanguage de Symfony.</p>
+
+<p>Para instalarlo o entender como funciona, así como para descubrir la syntaxis de
+las Expressions puedes utilizar la
+<a href="http://symfony.com/doc/current/components/expression_language/index.html">Documentación oficial del Componente</a></p>
+
+<h3>Nuestras necesidades</h3>
+
+<p>En realidad podríamos decir que estamos ante uno de los mayores problemas que ha
+sufrido cualquier programador que se haya dedicado mínimamente al ecommerce:
+Las reglas de acción. El ejemplo más significativo son los cupones. Cuándo un
+cupón es válido? Y dado que hay una cantidad bestial de distintos cupones y
+distintas lógicas de aplicación, y dado que estas son distintas y própias de
+cada uno de los proyectos&hellip; como se puede abstraer la lógica para que se pueda
+hacer algo &ldquo;neutral&rdquo; y lo suficientemente flexible para que todo el mundo lo
+pueda utilizar?</p>
+
+<p>Pues esta es una de nuestras preocupaciones principales, ya que la solución a
+esta pregunta, de rebote, nos soluciones otros problema paralelos, como por
+ejemplo cuando se aplican ciertas acciones, o hasta generar un eventDispatcher
+muy flexible, que active cierto evento en cierto punto de la request, si aplica
+un conjunto de condiciones.</p>
+
+<h3>Nuestro propósito</h3>
+
+<p><a href="https://github.com/elcodi/RuleBundle">Elcodi RuleBundle</a></p>
+
+<p>Nuestra propuesta no es demasiado compleja.</p>
+
+<p>Partimos de un modelo completamente desacoplado y standalone. El motor de reglas
+proporciona una gestión de las mismas independientemente de donde se quieran
+utilizar, ya que la única misión para este módulo es devolver <code>true</code> o <code>false</code>.</p>
+
+<p>En este caso hemos tratado con dos tipos de reglas, las Rules y las RuleGroups.
+El sentido de la primera es simple, una regla simple que, evaluada, devuelve un
+booleano. El sentido de la segunda es en cambio, agrupar Rules, de tal forma
+que si decidimos aplicar un conjunto de reglas unidas, podamos trabajar con el
+conjunto directamente, y asociarlo a un comportamiento.</p>
+
+<p>Dado este modelo, es bastante evidente que requiere de un Composite Pattern para
+que sea más fácil trabajar, ya que este nos proporciona una sola entidad,
+independientemente que sea Rule o RuleGroup, y le da un comportamiento común a
+ambos, que es al fín y al cabo, el mas importante: Evalúate.</p>
+
+<h3>Utilizando composite pattern con Doctrine</h3>
+
+<p>La primera pregunta que nos viene a la cabeza es&hellip; De que se trata el Composite
+Pattern?</p>
+
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Composite_UML_class_diagram_%28fixed%29.svg/900px-Composite_UML_class_diagram_%28fixed%29.svg.png" title="composite pattern" alt="Composite pattern" /></p>
+
+<p>En este caso tenemos que tanto Leaf como Composite son dos entidades distintas.
+Leaf sería nuestro Rule y Composite sería nuestro RuleGroup. Podemos ver que,
+como ambos extienden de un objeto abstracto llamado Component, se puede forzar
+que ambos tengan un comportamiento común. En esta gráfica, el abstracto define
+un método y lo implementa, dando un comportamiento por defecto y dando la
+oportunidad de sobreescribir este comportamiento. En nuestro caso, <code>operation()</code>
+responde a la necesidad de devolver todas las expressions del objeto (En el
+caso de Rule, una sola expression, en el caso de RuleGroup, todas las
+expressions de sus hijos), por lo que se ha definido el método como abstracto,
+así cada entidad debe implementar el método a su modo.</p>
+
+<p>Finalmente, y lo que define realmente a este patrón, es que Composite
+(RuleGroup) tiene un conjunto de hijos (en nuestro caso Rules) que tanto
+pueden ser del tipo Rule o del tipo RuleGroup, por lo que la relación se hace
+directamente con el Abstracto.</p>
+
+<p>Esta implementación permite que, cuando se pide las Expression de un RuleGroup,
+esta te devuelva la de todos sus hijos, sean Rule o RuleGroup, ya que ambos
+elementos implementan el mismo método.</p>
+
+<p>Doctrine te permite hacer esta implementación utilizando el STI (Single Table
+Inheritance) o el CTI (Class Table Inheritance). En este caso, y para
+ahorrarnos demasiadas joins, hemos tratado la implementación con STI.</p>
+
+<p>Definimos la entidad Rule</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * This file is part of the Elcodi package.
+ </em>/</p>
+
+<p>namespace Elcodi\RuleBundle\Entity;</p>
+
+<p>/<em>*
+ * Class Rule
+ </em>/
+class Rule extends AbstractRule implements RuleInterface
+{</p>
+
+<pre><code>/**
+ * @var ExpressionInterface
+ *
+ * Expression
+ */
+protected $expression;
+
+/**
+ * Specific class parameters, getters and setters
+ */
+
+/**
+ * Return all object contained expressions
+ *
+ * @return ArrayCollection Collection of expressions
+ */
+public function getExpressionCollection()
+{
+    return new ArrayCollection(array($this-&gt;getExpression()));
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Definimos la entidad RuleGroup</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * This file is part of the Elcodi package.
+ </em>/</p>
+
+<p>namespace Elcodi\RuleBundle\Entity;</p>
+
+<p>/<em>*
+ * Class RuleGroup
+ </em>/
+class RuleGroup extends AbstractRule implements RuleGroupInterface
+{</p>
+
+<pre><code>/**
+ * @var Collection
+ *
+ * Rules
+ */
+protected $rules;
+
+/**
+ * Specific class parameters, getters and setters
+ */
+
+/**
+ * Return all object contained expressions
+ *
+ * @return ArrayCollection Collection of expressions
+ */
+public function getExpressionCollection()
+{
+    $expressions = array();
+
+    /**
+     * @var AbstractRuleInterface $rule
+     */
+    foreach ($this-&gt;getRules() as $rule) {
+
+        $expressions = array_merge(
+            $expressions,
+            $rule-&gt;getExpressionCollection()-&gt;toArray()
+        );
+    }
+
+    return new ArrayCollection($expressions);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Y finalmente la clase abstracta</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * This file is part of the Elcodi package.
+ </em>/</p>
+
+<p>namespace Elcodi\RuleBundle\Entity\Abstracts;</p>
+
+<p>/<em>*
+ * Class AbstractRule
+ </em>/
+abstract class AbstractRule extends AbstractEntity
+{</p>
+
+<pre><code>/**
+ * Specific class parameters, getters and setters
+ */
+
+/**
+ * Return all object contained expressions
+ *
+ * @return Collection Collection of expressions
+ */
+abstract public function getExpressionCollection();
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Ambas clases implementan a su modo el método <code>getExpressionCollection()</code> por lo
+que cuando se trate con un ArrayCollection devuelto por Doctrine, todas las
+instancias tendrán el método.</p>
+
+<p>```php
+&lt;?php</p>
+
+<p>/<em>*
+* @var Collection $rules
+</em>/
+foreach ($rules as $rule) {</p>
+
+<p>   /**</p>
+
+<pre><code>* @var AbstractRule $rule
+*/
+</code></pre>
+
+<p>   $expressionCollection = $rule->getExpressionCollection();
+   &hellip;
+}
+```</p>
+
+<p>Una vez tenemos las clases, debemos mapearlas a Doctrine.</p>
+
+<p>Mapeamos la clase Rule, con una relación unidireccional con Expression</p>
+
+<p>``` yml
+Elcodi\RuleBundle\Entity\Rule:</p>
+
+<pre><code>type: entity
+repositoryClass: Elcodi\RuleBundle\Repository\RuleRepository
+table: rule
+
+oneToOne:
+    expression:
+        targetEntity: Elcodi\RuleBundle\Entity\Expression
+        cascade: [ all ]
+</code></pre>
+
+<p>```</p>
+
+<p>Mapeamos la clase RuleGroup, con una relación ManyToMany unidireccional (No nos
+interesa saber <code>parents()</code>) con AbstractRule</p>
+
+<p>``` yml
+Elcodi\RuleBundle\Entity\RuleGroup:</p>
+
+<pre><code>type: entity
+repositoryClass: Elcodi\RuleBundle\Repository\RuleGroupRepository
+table: rule_group
+
+manyToMany:
+    rules:
+        targetEntity: Elcodi\RuleBundle\Entity\Abstracts\AbstractRule
+        joinTable:
+            name: rule_group_rule
+            joinColumns:
+                rule_group_id:
+                    referencedColumnName: id
+            inverseJoinColumns:
+                rule_id:
+                    referencedColumnName: id
+</code></pre>
+
+<p>```</p>
+
+<p>Y finalmente generamos el mapeo de la clase abstracta</p>
+
+<p>``` yml
+Elcodi\RuleBundle\Entity\Abstracts\AbstractRule:</p>
+
+<pre><code>type: entity
+repositoryClass: Elcodi\RuleBundle\Repository\AbstractRuleRepository
+inheritanceType: single_table
+discriminatorColumn:
+    name: discr
+    type: string
+discriminatorMap:
+    rule: Elcodi\RuleBundle\Entity\Rule
+    rule_group: Elcodi\RuleBundle\Entity\RuleGroup
+fields:
+    ...
+</code></pre>
+
+<p>```</p>
+
+<p>Esta configuración creará una sola tabla, con un campo dedicado a decirle a
+Doctrine de que tipo es la fila en cuestión.</p>
+
+<p>Llegados a este punto, tenemos una implementación para poder asignar a cualquier
+entidad una relación con Rules, teniendo solucionado, almenos a nivel de dominio
+y de implementación el concepto &ldquo;Regla de Reglas&rdquo;, pero ahora falta solucionar
+el cómo se ejecutan estas reglas y el contexto en el que lo hacen.</p>
+
+<h3>Configuración de contexto y customización</h3>
+
+<p>Definamos contexto en el que una regla se ejecuta como el conjunto de elementos
+en el que la regla tiene acceso en el momento de la ejecución.</p>
+
+<p>Ya que el motor trabaja utilizando el ExpressionLanguage de Symfony, hemos
+utilizado su forma de contextualizar una evaluación.</p>
+
+<p>``` php
+$language = new ExpressionLanguage();</p>
+
+<p>class Apple
+{</p>
+
+<pre><code>public $variety;
+</code></pre>
+
+<p>}</p>
+
+<p>$apple = new Apple();
+$apple->variety = &lsquo;Honeycrisp&rsquo;;</p>
+
+<p>$this->assertTrue($language->evaluate(</p>
+
+<pre><code>'fruit.variety === "Honeycrisp"',
+array(
+    'fruit' =&gt; $apple,
+)
+</code></pre>
+
+<p>));
+```</p>
+
+<p>En este caso, ejecutamos la expresión &ldquo;fruit.variety&rdquo; en un contexto donde
+<code>fruit</code> es nuestra instancia de <code>Apple</code>, por lo que este assert resolvería como
+<code>true</code>.</p>
+
+<p>En el caso siguiente, y teniendo la misma expresión, al tener una
+contextualización distinta, no tendríamos el resultado esperado, pues devolvería
+<code>false</code></p>
+
+<p>``` php
+$language = new ExpressionLanguage();</p>
+
+<p>class Apple
+{</p>
+
+<pre><code>public $variety;
+</code></pre>
+
+<p>}</p>
+
+<p>$apple = new Apple();
+$apple->variety = &lsquo;Arlet&rsquo;;</p>
+
+<p>$this->assertTrue($language->evaluate(</p>
+
+<pre><code>'fruit.variety === "Honeycrisp"',
+array(
+    'fruit' =&gt; $apple,
+)
+</code></pre>
+
+<p>));
+```</p>
+
+<p>Hay dos tipos de contextualizaciones, las que responden a una request (En toda
+las evaluaciones dada una request se setean unos valores globales,
+independientemente de la ejecución) y las que responden a cada llamada del
+manager.</p>
+
+<p>En este caso se trata de una contextualización de llamada, pues en esta
+evaluación, <code>customer</code> responde a $myCustomer.</p>
+
+<p>``` php</p>
+
+<p>/<em>*
+ * Rule with code &ldquo;somecode&rdquo; has this expression assigned:
+ * &ldquo;customer.id in [1..100]&rdquo;
+ </em>/
+$myCustomer = &hellip;;
+$ruleManager = $this->container->get(&lsquo;rule_manager&rsquo;);
+$result = $ruleManager->evaluateByCode(&lsquo;somecode&rsquo;, array(</p>
+
+<pre><code>'customer'  =&gt;  $myCustomer
+</code></pre>
+
+<p>));
+```</p>
+
+<p>Es posible pero que tengamos servicios, por ejemplo, a los que queramos acceder
+de forma reiterada, y que haya una forma independiente de acceder a ellos, por
+ejemplo, el <code>entity_manager</code>.</p>
+
+<p>``` php</p>
+
+<p>/<em>*
+ * Rule with code &ldquo;somecode&rdquo; has this expression assigned:
+ * &ldquo;customer_wrapper.getCustomer().getId() in [1..100]&rdquo;
+ </em>/</p>
+
+<p>$ruleManager = $this->container->get(&lsquo;rule_manager&rsquo;);
+$result = $ruleManager->evaluateByCode(&lsquo;somecode&rsquo;);
+```</p>
+
+<p><code>customer_wrapper</code> en realidad es un servicio que, a su forma, nos instancia un
+Customer recuperable mediante el método <code>getCustomer</code>. No debemos pasarlo cada
+vez que queremos evaluar una Expresión, así que podemos considerarla como parte
+del contexto global.</p>
+
+<p>Como podemos añadir valores a este contexto global? Pues implementando un
+<code>ContextConfigurationInterface</code>.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * This file is part of the Elcodi package.
+ </em>/</p>
+
+<p>namespace Elcodi\RuleBundle\Configuration;</p>
+
+<p>use Doctrine\Common\Persistence\ObjectManager;</p>
+
+<p>use Elcodi\RuleBundle\Configuration\Interfaces\ContextConfigurationInterface;
+use Elcodi\RuleBundle\Services\Interfaces\ContextAwareInterface;</p>
+
+<p>/<em>*
+ * Class ContextConfiguration
+ </em>/
+class ContextConfiguration implements ContextConfigurationInterface
+{</p>
+
+<pre><code>/**
+ * @var ObjectManager
+ *
+ * Object manager
+ */
+protected $objectManager;
+
+/**
+ * Construct method
+ *
+ * @param ObjectManager $objectManager Object manager
+ */
+public function __construct(ObjectManager $objectManager)
+{
+    $this-&gt;objectManager = $objectManager;
+}
+
+/**
+ * @param ContextAwareInterface $contextAware
+ */
+public function configureContext(ContextAwareInterface $contextAware)
+{
+    $contextAware-&gt;addContextElement('manager', $this-&gt;objectManager);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Podemos observar que en este caso estamos contextualizando todo el gestor de
+expresiones con el <code>EntityManager</code> respondiendo al valor <code>manager</code>, así que
+si en una Expression tenemos a expresión <code>manager.getRepository("...")</code> podremos
+acceder perfectamente al EntityManager.</p>
+
+<p>Finalmente, y para terminar de añadir este valor al contexto, debemos definir
+esta clase como servicio utilizando un tag específico.</p>
+
+<p>``` yml
+services:</p>
+
+<pre><code>elcodi.core.rule.configuration.context:
+    class: %elcodi.core.rule.configuration.context.class%
+    arguments:
+        entity_manager: @doctrine.orm.entity_manager
+    tags:
+        - { name: elcodi.rule_context_configuration }
+</code></pre>
+
+<p>```</p>
+
+<h3>Configuración de ExpressionLanguage y customización</h3>
+
+<p>Otra de las facilidades que nos brinda el ExpressionLanguage es la capacidad de
+crear funciones. En este caso podemos agregar nuevas funcionalidades al
+ExpressionLanguage del sistema de Reglas implementando
+<code>ExpressionLanguageConfigurationInterface</code></p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * This file is part of the Elcodi package.
+ </em>/</p>
+
+<p>namespace Elcodi\RuleBundle\Configuration;</p>
+
+<p>use Symfony\Component\DependencyInjection\ContainerInterface;</p>
+
+<p>use Elcodi\RuleBundle\Configuration\Interfaces\ExpressionLanguageConfigurationInterface;
+use Elcodi\RuleBundle\Services\Interfaces\ExpressionLanguageAwareInterface;</p>
+
+<p>/<em>*
+ * Class ExpressionLanguageConfiguration
+ </em>/
+class ExpressionLanguageConfiguration implements ExpressionLanguageConfigurationInterface
+{</p>
+
+<pre><code>/**
+ * @var ContainerInterface
+ *
+ * Container
+ */
+protected $container;
+
+/**
+ * Construct method
+ *
+ * @param ContainerInterface $container Container
+ */
+public function __construct(ContainerInterface $container)
+{
+    $this-&gt;container = $container;
+}
+
+/**
+ * Configures expression language
+ *
+ * @param ExpressionLanguageAwareInterface $expressionLanguageAware Expression Language aware
+ */
+public function configureExpressionLanguage(ExpressionLanguageAwareInterface $expressionLanguageAware)
+{
+    $expressionLanguage = $expressionLanguageAware-&gt;getExpressionLanguage();
+    $expressionLanguage
+        -&gt;register('service', function ($arg) {
+            return sprintf('$this-&gt;get(%s)', $arg);
+        }, function (array $variables, $value) {
+            return $this-&gt;container-&gt;get($value);
+        });
+
+    $expressionLanguage
+        -&gt;register('parameter', function ($arg) {
+            return sprintf('$this-&gt;getParameter(%s)', $arg);
+        }, function (array $variables, $value) {
+            return $this-&gt;container-&gt;getParameter($value);
+        });
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Vemos que hemos añadido el mismo comportamiento que tiene el ExpressionLanguage
+cuando se utiliza en las definiciones del DependencyInjection. Se agregan dos
+funciones nuevas y ambas requieren del container entero, por lo que se tiene que
+definir esta clase como servicio, añadiendo de nuevo un tag específico.</p>
+
+<p>``` yml
+services:</p>
+
+<pre><code>elcodi.core.rule.configuration.expression_language:
+    class: %elcodi.core.rule.configuration.expression_language.class%
+    arguments:
+        service_container: @service_container
+    tags:
+        - { name: elcodi.rule_expression_language_configuration }
+</code></pre>
+
+<p>```</p>
+
+<p>De esta forma, podríamos ejecutar esta expresión
+<code>service("my_service")-&gt;getValue(parameter("my_value"))</code> sin tener una Exception
+del tipo SyntaxException.</p>
+
+<p>El RuleManager controla cuando una expresión tiene una exceptión del tipo
+SyntaxException ya que tiene todo el contenido de evaluación dentro de un
+try/catch. El sentido de esto es que en caso que una expresión tenga un error
+porque, o bien el modelo ha cambiado o la propia implementación, debería seguir
+funcionando, evidentemente devolviendo <code>false</code> como resultado.</p>
+
+<h3>Cupones y Reglas</h3>
+
+<p>Dado que aún no tenemos implementado las reglas en los cupones, vamos a enumerar
+a nivel teórico como debería ser el comportamiento de este caso a nivel de
+ejemplificación.</p>
+
+<h4>Prerequisitos</h4>
+
+<ul>
+<li>Tenemos una relación entre Coupon y AbstractRule de ManyToMany (Un Coupon puede
+tener tantos cupones como quiera, y una Regla puede estar en mas de un Cupón)</li>
+<li>El usuario, a partir del código de un cupón, intenta aplicar un descuento a su
+carrito. El cupón en cuestión tiene asignadas 3 Rules.</li>
+</ul>
+
+
+<h4>Paso a paso</h4>
+
+<ul>
+<li>El usuario aplica el cupón</li>
+<li>Mediante el couponManager, se intenta aplicar el cupón al cart.</li>
+<li>Se dispara un evento PreApplyToCart</li>
+<li>Hay un eventListener suscrito a este evento que busca todas las Rules del cart
+y las evalúa</li>
+<li>Si una de ellas devuelve <code>false</code>, la evaluación conjunta devolverá <code>false</code>, por lo
+que se devolverá una Exception específica</li>
+<li>Por contra, si devuelve <code>true</code>, seguirá con el proceso natural (Se aplicará el
+cupón)</li>
+</ul>
+
+
+<h3>Conclusiones</h3>
+
+<p><code>RuleBundle</code> es una herramienta muy potente, no solo para trabajar con Reglas de
+cupones sino también para poder gestionar otras necesidades como Campañas de
+descuento, Grupos de usuarios, reglas de cart y reglas de producto.</p>
+
+<p>Como siempre, esta es una aproximación a la solución, pues estamos abiertos a
+debate, mejoras y <a href="https://github.com/elcodi/elcodi/tree/master/src/Elcodi/RuleBundle">contribuciones</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>
