@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: modas | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/modas/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-05-22T12:30:14+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Las modas y sus modelos me tienen frito]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos/"/>
+    <updated>2014-05-22T12:27:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos</id>
+    <content type="html"><![CDATA[<p>Las modas y sus modelos me tienen frito.</p>
+
+<p>Empiezo así mi post porque no sabría como empezarlo sin ser más directo.
+Me tienen frito.</p>
+
+<p>Parece que, a pesar de intentar sacar el pecho cuando alguien se mete con
+nuestro trabajo, no tenemos personalidad alguna. Parece que nuestra voz no es
+otra cosa que un pequeño altavoz, muchas veces rallado y penetrante, cuyo único
+objetivo a lo largo del día es, o bien repetir lo que dicen algunas
+personalidades, o tratar de imbéciles a los que no piensan igual. Nada más.</p>
+
+<p>Yo soy un gran fan del clean code. No, no me he leido el libro ( Creo que me
+repito, pero por si acaso ) y no por esto no puedo corroborar que me ayuda
+trabajar de esta forma, y podría llegar a demostrar la cantidad de horas que
+me he ahorrado escribiendo mi código bien a la primera.</p>
+
+<p>Ahora bien, tenemos claro que muchas cosas de las que hacemos, las hacemos por
+algo? O justamente las hacemos porque lo ha dicho el CTO de no se donde? Es
+decir, tenemos control real sobre nuestra infrastuctura, habiendo diseñado
+nuestro código conforme a nuestras necesidades reales? O simplemente hemos hecho
+el estúpido y vago ejercicio de leernos cuatro libros, visto cuatro charlas y
+aceptar que en sus frases no hay nada más que la verdad, copiando sobre el papel
+cada idea transmitida por el escritor u orador?</p>
+
+<p>Esto lo suelo pensar mucho, y más ahora que dedico mi tiempo laboral a un
+proyecto opensource. Mis movimientos, mis decisiones, afectan no tan solo a mi
+proyecto, sino a miles de ellos (Almenos, espero, en un futuro no muy lejano).
+Tengo las mismas necesidades que cualquier otro programador a cargo de otro tipo
+de proyecto?</p>
+
+<p>Pues yo creo que no.</p>
+
+<p>En nuestro proyecto vamos a tomar decisiones sin basarnos en las modas baratas
+(Que no inútiles) que salen continuamente. Baratas porque cuestan muy pocos
+comentarios hacerlas pasar de un valor popular incalculable a tener una pésima
+valoración, siendo estos comentarios frecuentemente ajenos a nuestros intereses.</p>
+
+<p>Hay que pensar las cosas, discutirlas y identificar sus porqués Pero no os
+equivoquéis. El porqué de las cosas es algo relativo, no absoluto. El por qué
+tengo que implementar ciertos patrones en mi proyecto, no puedo ni apenas
+discutirlo con una persona que desconoce completamente tu modelo de negocio,
+tus necesidades comerciales, tus direcciones técnicas. Estas decisiones solo las
+puedes tomar tu y tu equipo.</p>
+
+<p>Eso significa que tenemos que dejar de escuchar? Para nada. En escuchar, hablar,
+compartir y enseñar está el verdadero valor del progreso y de nuestro trabajo,
+pero no podemos quedarnos en este punto, no podemos aceptar que todo lo que dice
+una persona con más de medio millón de followers en el twitter es algo que,
+seguro, funcionará en mi proyecto.</p>
+
+<p>Hay que pensar las cosas. Y cuando piensas, aprendes. Y aprendiendo, progresas.
+Y un día te encuentras que tienes todas las herramientas para poder decidir con
+mucha más precisión&hellip; Tanta precisión que resulta que la gente empieza a
+escucharte&hellip; Y un día te levantas de la cama y ya tienes medio millón de
+followers en el Twitter, y te das cuenta que todo lo que dices, sirve de
+referencia para muchísima gente, y en consecuencia para las direcciones técnicas
+de muchos proyectos.</p>
+
+<p>Y te acuerdas de todo esto, y en lugar de decir &ldquo;Esto hay que hacerlo así, o lo
+estás haciendo mal&rdquo;, acabas transformando tu discurso en &ldquo;Si tenéis este
+problema, podéis solucionarlo así. A mí me ha funcionado, espero que a vosotros
+también&rdquo;.</p>
+
+<p>De momento, y mientras esto no sea así, las modas y sus modelos me tienen frito.</p>
+]]></content>
+  </entry>
+  
+</feed>
