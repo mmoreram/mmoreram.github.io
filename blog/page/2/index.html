@@ -9,8 +9,8 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="The pattern. The factory pattern gives responsibility to create some instances of certain
-types to a class called factory. All possible classes that &hellip;">
+  <meta name="description" content="Vacía la caché de Symfony, y la vuelve a crear (sino se especifica lo contrario) 1
+$ php app/console cache:clear [--no-warmup] [--no-optional-warmers &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,178 @@ types to a class called factory. All possible classes that &hellip;">
       <div id="content">
 	<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/03/cache-clear-en-symfony2/">Cache Clear en Symfony2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-03T15:11:00+01:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2014</time>
+        
+         | <a href="/blog/2014/01/03/cache-clear-en-symfony2/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Vacía la caché de Symfony, y la vuelve a crear (sino se especifica lo contrario)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php app/console cache:clear <span class="o">[</span>--no-warmup<span class="o">]</span> <span class="o">[</span>--no-optional-warmers<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Curioso comando existente en el framework Symfony2 desde sus inicios, y poco
+utilizado por los proyectos. En realidad, he visto pocos proyectos que utilizen
+este comando en los scripts de deploy, por lo que lo más habitual que veremos es
+el clásico</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rm -Rf app/cache/*
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pero es correcta esta práctica? Aunque parezca la forma más ágil de limpiar
+cache, tengamos en cuenta que Symfony2 tiene procesos internos que muchos de
+nosotros desconocemos por completo. Cuando ejecutamos el comando para vaciar
+caché ( con la opción <code>--no-warmup</code> ) no tan solo vaciamos el directorio caché
+sino que el framework ejecuta el método <code>clear()</code> de todos los servicios que
+implementan la interface
+<code>Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface</code> cuya
+definición incorporen el tag <code>kernel.cache_clearer</code>.</p>
+
+<p>En otras palabras.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">my_cache_clearer</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Acme\MainBundle\Cache\MyClearer</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="p-Indicator">{</span> <span class="nv">name</span><span class="p-Indicator">:</span> <span class="nv">kernel.cache_clearer</span> <span class="p-Indicator">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Encontraréis mas información y especificación de estos tags
+<a href="http://symfony.com/doc/current/reference/dic_tags.html#kernel-cache-clearer">aqui</a>.</p>
+
+<h2>Reflexión</h2>
+
+<p>En realidad es importante fijarse en la opción <code>--no-warmup</code> ya que es la que
+cambia el comportamiento del comando. Cuando trabajamos en entornos de
+producción, necesitamos que, en tiempo de deploy, nuestra aplicación tenga el
+mínimo tiempo de downtime. Esto se consigue reduciendo al máximo el tiempo en
+que una caché está vacía.</p>
+
+<h3>Tabla básica de tiempos</h3>
+
+<blockquote><ul>
+<li>[1]   Repository status: S1, Cache status: C1</li>
+<li>[1-3] Deploy S1 &ndash;> S2</li>
+<li>[3-4] Clear cache C1 from /cache</li>
+<li>[4-7] Warm up new cache C2 into /cache_new</li>
+<li>[7-8] Swap cache C1 &ndash;> C2. Rename /cache_new to /cache</li>
+<li>[8]   Repository status: S2, Cache status: C2</li>
+</ul>
+</blockquote>
+
+<h3>Problema 1</h3>
+
+<p>Entre los tiempos 3 y 8, tenemos que /cache está vacía. Tenemos que tener en
+cuenta que estamos en un entorno de producción, por lo que mientras hacemos el
+proceso de deployment, nuestros servidores deben estar sirviendo peticiones en
+todo momento.</p>
+
+<p>Dado este caso, cada una de las peticiones se dará cuenta que la caché está
+vacía, por lo que intentará volverla a montar desde cero. Deberíamos tener en
+cuenta, entonces, que entre los tiempos 3 y 8, nuestro servicio estará caido.</p>
+
+<p>De este análisis sacamos que debemos minimizar al máximo el tiempo pasado entre
+el clear de la caché a invalidar y el switch a la nueva, o sea, reducir este
+intervalo en el que nuestra caché está vacía.</p>
+
+<p>Hace pocos dias propuse un
+<a href="https://github.com/symfony/symfony/pull/9930">PR a FrameworkBundle</a> para
+gestionar esto.</p>
+
+<p>Lo único que hace es cambiar el orden entre el warm up de la nueva caché y el
+clear de la vieja.</p>
+
+<blockquote><ul>
+<li>[1]   Repository status: S1, Cache status: C1</li>
+<li>[1-3] Deploy S1 &ndash;> S2</li>
+<li>[3-6] Warm up new cache C2 into /cache_new</li>
+<li>[6-7] Clear cache C1 from /cache</li>
+<li>[7-8] Swap cache C1 &ndash;> C2. Rename /cache_new to /cache</li>
+<li>[8]   Repository status: S2, Cache status: C2</li>
+</ul>
+
+
+<p>Downtime 2</p></blockquote>
+
+<p>En este punto podemos ver que la ventana que separa el clear de la caché antigua
+y el switch con la nueva solo es de dos unidades de tiempo, entre los tiempos 6
+y 8. Ahora se nos plantea otro problema.</p>
+
+<h3>Problema 2</h3>
+
+<p>Hemos minimizado al máximo el tiempo de switch entre las dos caches, pero
+seguimos teniendo una ventana de 5 unidades de tiempo entre que el repositorio
+está en un estado S2 y la caché en un estado C1.</p>
+
+<blockquote><p>Real downtime 5</p></blockquote>
+
+<p>En realidad, dado este análisis solo podríamos actuar de una sola forma, y es
+trabajar con un deployment paralelo ( como hace el warmup del cache:clear ).
+Esto significa que nunca deployamos sobre nuestra instalación activa</p>
+
+<blockquote><ul>
+<li>[1]   Repository status: S1, Cache status: C1 en /project</li>
+<li>[1-8] Deployment Repository + cache:clear en /project_warmup</li>
+<li>[8]   Repository status: S2, Cache status: C2 en /project_warmup</li>
+<li>[8-9] Swap repository S1 &ndash;> S2. Rename /project to /project_warmup</li>
+</ul>
+
+
+<p>Downtime: 0</p></blockquote>
+
+<h3>Problema 3</h3>
+
+<p>En este caso es probable que nuestro proceso de deploy nos modifique elementos
+externos, como puede ser ( y probablemente sea ) <code>mysql</code>. Entonces tendremos una
+ventana bastante grande donde el modelo deployado en mysql que haga S2 no se
+asemeje al modelo Doctrine de S1.</p>
+
+<blockquote><p>Downtime: X</p></blockquote>
+
+<p>So what? Como lo hacéis vosotros? Ya es por sondear un poco hacia donde tira la
+gente&hellip;</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1574,6 +1746,10 @@ in <code>routing.yml</code> file we must add these lines.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/06/25/symfony-barcelona/">Symfony Barcelona</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos/">Las modas y sus modelos me tienen frito</a>
       </li>
     
@@ -1587,10 +1763,6 @@ in <code>routing.yml</code> file we must add these lines.</p>
     
       <li class="post">
         <a href="/blog/2014/05/15/what-makes-elcodi-different/">What makes Elcodi different?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/05/paramconverter-una-mala-idea/">ParamConverter&#8230; mala idea</a>
       </li>
     
   </ul>
