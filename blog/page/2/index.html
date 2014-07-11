@@ -9,8 +9,9 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="Vacía la caché de Symfony, y la vuelve a crear (sino se especifica lo contrario) 1
-$ php app/console cache:clear [--no-warmup] [--no-optional-warmers &hellip;">
+  <meta name="description" content="The goal is easy: To provide a very intuitive and easy way of creating
+controller annotations in Symfony2. ControllerExtraBundle
+is both a set of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +82,376 @@ $ php app/console cache:clear [--no-warmup] [--no-optional-warmers &hellip;">
       <div id="content">
 	<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/11/custom-controller-annotations/">Custom Controller Annotations</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-11T20:21:00+01:00" pubdate data-updated="true">Feb 11<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/02/11/custom-controller-annotations/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The goal is easy: To provide a very intuitive and easy way of creating
+controller annotations in Symfony2.</p>
+
+<p><a href="https://github.com/mmoreram/ControllerExtraBundle">ControllerExtraBundle</a>
+is both a set of annotations and a platform for creating new custom ones.
+Actually, the bundle can create a new Entity, like ParamConverter does, with in
+this case is just an empty Entity. The bundle also can create FormTypes, Forms
+and FormViews with several options. Can also automate the doctrine <code>flush()</code>
+action after the method execution or log something before / after every desired
+action.</p>
+
+<p>Bundle is still being tested in production environments, all feedback will be
+very very useful.</p>
+
+<p>Let&rsquo;s see how can we create our Annotations.</p>
+
+<ul>
+<li>Annotation</li>
+<li>Resolver</li>
+<li>Definition</li>
+<li>Registration</li>
+</ul>
+
+
+<h2>Annotation</h2>
+
+<p>The annotation object. You need to define the fields your custom annotation
+will contain.
+Must extends <code>Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation</code>
+abstract class.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle\Annotation</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Entity annotation driver</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @Annotation</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MyCustomAnnotation</span> <span class="k">extends</span> <span class="nx">Annotation</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var string</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Dummy field</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$field</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Get Dummy field</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return string Dummy field</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getField</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">field</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Resolver</h2>
+
+<p>Once you have defined your own annotation, you have to resolve how this
+annotation works in a controller. You can manage this using a Resolver. Must
+extend <code>Mmoreram\ControllerExtraBundle\Resolver\Interfaces\AnnotationResolverInterface;</code>
+abstract class.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle\Resolver</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Resolver\Interfaces\AnnotationResolverInterface</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * MyCustomAnnotation Resolver</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MyCustomAnnotationResolver</span> <span class="k">implements</span> <span class="nx">AnnotationResolverInterface</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Specific annotation evaluation.</span>
+</span><span class='line'><span class="sd">     * This method MUST be implemented because is defined in the interface</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param Request          $request    Request</span>
+</span><span class='line'><span class="sd">     * @param Annotation       $annotation Annotation</span>
+</span><span class='line'><span class="sd">     * @param ReflectionMethod $method     Method</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return MyCustomAnnotationResolver self Object</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">evaluateAnnotation</span><span class="p">(</span>
+</span><span class='line'>                                        <span class="nx">Request</span> <span class="nv">$request</span><span class="p">,</span>
+</span><span class='line'>                                        <span class="nx">Annotation</span> <span class="nv">$annotation</span><span class="p">,</span>
+</span><span class='line'>                                        <span class="nx">ReflectionMethod</span> <span class="nv">$method</span> <span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * You can now manage your annotation.</span>
+</span><span class='line'><span class="sd">         * You can acced to its fields using public methods.</span>
+</span><span class='line'><span class="sd">         * </span>
+</span><span class='line'><span class="sd">         * Annotation fields can be public and can be acceded directly,</span>
+</span><span class='line'><span class="sd">         * but is better for testing to use getters; they can be mocked.</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="nv">$field</span> <span class="o">=</span> <span class="nv">$annotation</span><span class="o">-&gt;</span><span class="na">getField</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * You can also access to existing method parameters.</span>
+</span><span class='line'><span class="sd">         * </span>
+</span><span class='line'><span class="sd">         * Available parameters are:</span>
+</span><span class='line'><span class="sd">         * </span>
+</span><span class='line'><span class="sd">         * # ParamConverter parameters ( See `resolver_priority` config value )</span>
+</span><span class='line'><span class="sd">         * # All method defined parameters, included Request object if is set.</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="nv">$entity</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">attributes</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;entity&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * And you can now place new elements in the controller action.</span>
+</span><span class='line'><span class="sd">         * In this example we are creating new method parameter</span>
+</span><span class='line'><span class="sd">         * called $myNewField with some value</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">attributes</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span>
+</span><span class='line'>            <span class="s1">&#39;myNewField&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="k">new</span> <span class="nv">$field</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This class will be defined as a service, so this method is computed just
+before executing current controller. You can also subscribe to some kernel
+events and do whatever you need to do ( You can check
+<code>Mmoreram\ControllerExtraBundle\Resolver\LogAnnotationResolver</code> for some
+examples.</p>
+
+<h2>Definition</h2>
+
+<p>Once Resolver is done, we need to define our service as an Annotation
+Resolver. We will use a custom <code>tag</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">parameters</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># Resolvers</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">my.bundle.resolvers.my_custom_annotation_resolver.class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\Resolver\MyCustomAnnotationResolver</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># Resolvers</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">my.bundle.resolvers.my_custom_annotation_resolver</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="err">%</span><span class="l-Scalar-Plain">my.bundle.resolvers.my_custom_annotation_resolver.class%</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="p-Indicator">{</span> <span class="nv">name</span><span class="p-Indicator">:</span> <span class="nv">controller_extra.annotation</span> <span class="p-Indicator">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Registration</h2>
+
+<p>We need to register our annotation inside our application. We can just do it in
+the <code>boot()</code> method of <code>bundle.php</code> file.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\HttpKernel\Bundle\Bundle</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Doctrine\Common\Annotations\AnnotationRegistry</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * MyBundle</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">ControllerExtraBundle</span> <span class="k">extends</span> <span class="nx">Bundle</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Boots the Bundle.</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">boot</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$kernel</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">container</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;kernel&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">AnnotationRegistry</span><span class="o">::</span><span class="na">registerFile</span><span class="p">(</span><span class="nv">$kernel</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">locateResource</span><span class="p">(</span><span class="s2">&quot;@MyBundle/Annotation/MyCustomAnnotation.php&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Et voilà!</em>  We can now use our custom Annotation in our project controllers.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1746,6 +2117,10 @@ in <code>routing.yml</code> file we must add these lines.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/06/30/controller-extra-bundle/">ControllerExtraBundle, some useful Controller annotations</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/06/25/symfony-barcelona/">Symfony Barcelona</a>
       </li>
     
@@ -1759,10 +2134,6 @@ in <code>routing.yml</code> file we must add these lines.</p>
     
       <li class="post">
         <a href="/blog/2014/05/19/restrospectiva/">Restrospectiva de un ponente</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/15/what-makes-elcodi-different/">What makes Elcodi different?</a>
       </li>
     
   </ul>
