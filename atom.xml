@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-07-22T16:15:27+02:00</updated>
+  <updated>2014-07-30T11:29:19+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,136 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Porque el orden importa]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa/"/>
+    <updated>2014-07-30T11:07:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa</id>
+    <content type="html"><![CDATA[<p>La verdad es que reconozco que soy un poco neurótico con el código. Y es que en
+mi caso me gusta definir la belleza de mis lineas no tan solo en el aspecto
+funcional y en el aspecto de arquitectura, sino en el aspecto visual. Y en
+realidad considero que descuidar este aspecto es un problema muy grande a la
+larga.</p>
+
+<p>Tratemos de pensar en la cantidad de horas que estamos ante estas lineas de
+código, y luego tratemos de analizar el impacto que estas tienen en nuestro día
+a día. ¿No creéis que importa el hecho de que esté ordenado, limpio y tratable?</p>
+
+<p>Pues bien, es para esto que, y dado que llevo un tiempo con la manía de ordenar
+los namespaces de mis ficheros php, he decidido empezar el proyecto
+<a href="https://github.com/mmoreram/php-formatter">php-formatter</a>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Console Tool
+</span><span class='line'>
+</span><span class='line'>Usage:
+</span><span class='line'>  <span class="o">[</span>options<span class="o">]</span> <span class="nb">command</span> <span class="o">[</span>arguments<span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>Options:
+</span><span class='line'>  --help           -h Display this <span class="nb">help </span>message.
+</span><span class='line'>  --quiet          -q Do not output any message.
+</span><span class='line'>  --verbose        -v|vv|vvv Increase the verbosity of messages
+</span><span class='line'>  --version        -V Display this application version.
+</span><span class='line'>  --ansi              Force ANSI output.
+</span><span class='line'>  --no-ansi           Disable ANSI output.
+</span><span class='line'>  --no-interaction -n Do not ask any interactive question.
+</span><span class='line'>
+</span><span class='line'>Available commands:
+</span><span class='line'>  <span class="nb">help       </span>Displays <span class="nb">help </span><span class="k">for </span>a <span class="nb">command</span>
+</span><span class='line'><span class="nb">  </span>list       Lists commands
+</span><span class='line'>use
+</span><span class='line'>  use:sort   Sort Use statements
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lejos de ser un analizador de PSR, cuya función ya cumple a la perfección el
+proyecto de Fabien Potencier <a href="https://github.com/fabpot/php-cs-fixer">php-cs-fixer</a>,
+se trata de añadir, en modo comando, algunas funcionalidades tediosas que para mí
+son importantes, como es el caso de los Use Statements ( Poder ordenarlos por
+grupos, alfabéticamente o por longitud, ascendiente o descendiente&hellip; )</p>
+
+<p>De momento solo hay esta funcionalidad, y aún le faltan un par de opciones, pero
+no dudéis en proponer comandos que nos puedan ser útiles a todos.</p>
+
+<p>Os invito a que tengáis reglas estructurales y visuales en vuestros proyectos,
+ya que ayudan un poco a que el código quede un poco más estandarizado con el
+paso del tiempo, aunque sea a nivel visual.</p>
+
+<p>Vuestros ojos os lo agradecerán.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Repository Split]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/07/24/repository-split/"/>
+    <updated>2014-07-24T16:00:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/07/24/repository-split</id>
+    <content type="html"><![CDATA[<p>Una de las técnicas mas chulas que tiene git es lo llamado <code>git subtree split</code>.
+Os preguntareis para que sirve tal maravilla. Pues vamos a poner un ejemplo.</p>
+
+<h2>Escenario</h2>
+
+<p>Tenemos un proyecto muy grande con distintos componentes. Imaginemos que una de
+las particularidades de nuestro proyecto es que dichos componentes pueden ser
+utilizados de forma individual, aunque tengan dependencias entre ellos. Vamos a
+utilizar el proyecto Elcodi para ver un ejemplo real.</p>
+
+<p>Una de las cosas en las que deberíamos pensar siempre en en el coste real de
+mantener nuestro proyecto a medida que este se haga más y más grande. Al
+principio podríamos llegar a pensar&hellip; &ndash; hombre, solo son 3 repositorios simples
+, pues que sencillo es crear 3 repositorios en Github, cada uno de ellos
+independientes, y ya los voy manteniendo. Por experiencia os digo&hellip; cuando
+tenéis 20 repositorios es algo simplemente inconcebible. No tiene sentido.</p>
+
+<p>La solución que hemos encontrado para Elcodi no es otra que agregar todos los
+repositorios en un único repositorio.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># elcodi/elcodi</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">README</span>
+</span><span class='line'><span class="l-Scalar-Plain">composer.json</span>
+</span><span class='line'><span class="l-Scalar-Plain">src/</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">Elcodi/</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">CoreBundle/</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">ProductBundle/</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">UserBundle</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Este repositorio está disponible si tratas con el paquete entero, agregando a tu
+composer la dependencia <code>elcodi/elcodi</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Elcodi wants you]]></title>
@@ -4009,15 +4139,6 @@ in <code>routing.yml</code> file we must add these lines.</p>
 
 
 <blockquote><p>At this point, type value must be the same as defined in Router service.</p></blockquote>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[First commit]]></title>
-    <link href="http://mmoreram.github.io/blog/2013/10/01/first-commit/"/>
-    <updated>2013-10-01T18:00:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2013/10/01/first-commit</id>
-    <content type="html"><![CDATA[<p>This is the first commit of this blog</p>
 ]]></content>
   </entry>
   

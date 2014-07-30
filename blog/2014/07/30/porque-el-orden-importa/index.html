@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Porque el orden importa - Because yes</title>
+  <meta name="author" content="Marc Morera">
+
+  
+  <meta name="description" content="La verdad es que reconozco que soy un poco neurótico con el código. Y es que en
+mi caso me gusta definir la belleza de mis lineas no tan solo en el &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Because yes" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic|Istok+Web:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41917921-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+  <div id="header-container">
+    <div id="header">
+      <div class="wrapper">
+        <header role="banner"><hgroup>
+  <h1><a href="/">Because yes</a></h1>
+</hgroup>
+
+</header>
+        <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mmoreram.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+      </div>
+    </div>
+  </div>
+  <div id="body"   >
+    <div id="main">
+      <div id="content">
+	<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Porque El Orden Importa</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-30T11:07:00+02:00" pubdate data-updated="true">Jul 30<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>La verdad es que reconozco que soy un poco neurótico con el código. Y es que en
+mi caso me gusta definir la belleza de mis lineas no tan solo en el aspecto
+funcional y en el aspecto de arquitectura, sino en el aspecto visual. Y en
+realidad considero que descuidar este aspecto es un problema muy grande a la
+larga.</p>
+
+<p>Tratemos de pensar en la cantidad de horas que estamos ante estas lineas de
+código, y luego tratemos de analizar el impacto que estas tienen en nuestro día
+a día. ¿No creéis que importa el hecho de que esté ordenado, limpio y tratable?</p>
+
+<p>Pues bien, es para esto que, y dado que llevo un tiempo con la manía de ordenar
+los namespaces de mis ficheros php, he decidido empezar el proyecto
+<a href="https://github.com/mmoreram/php-formatter">php-formatter</a>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Console Tool
+</span><span class='line'>
+</span><span class='line'>Usage:
+</span><span class='line'>  <span class="o">[</span>options<span class="o">]</span> <span class="nb">command</span> <span class="o">[</span>arguments<span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>Options:
+</span><span class='line'>  --help           -h Display this <span class="nb">help </span>message.
+</span><span class='line'>  --quiet          -q Do not output any message.
+</span><span class='line'>  --verbose        -v|vv|vvv Increase the verbosity of messages
+</span><span class='line'>  --version        -V Display this application version.
+</span><span class='line'>  --ansi              Force ANSI output.
+</span><span class='line'>  --no-ansi           Disable ANSI output.
+</span><span class='line'>  --no-interaction -n Do not ask any interactive question.
+</span><span class='line'>
+</span><span class='line'>Available commands:
+</span><span class='line'>  <span class="nb">help       </span>Displays <span class="nb">help </span><span class="k">for </span>a <span class="nb">command</span>
+</span><span class='line'><span class="nb">  </span>list       Lists commands
+</span><span class='line'>use
+</span><span class='line'>  use:sort   Sort Use statements
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lejos de ser un analizador de PSR, cuya función ya cumple a la perfección el
+proyecto de Fabien Potencier <a href="https://github.com/fabpot/php-cs-fixer">php-cs-fixer</a>,
+se trata de añadir, en modo comando, algunas funcionalidades tediosas que para mí
+son importantes, como es el caso de los Use Statements ( Poder ordenarlos por
+grupos, alfabéticamente o por longitud, ascendiente o descendiente&hellip; )</p>
+
+<p>De momento solo hay esta funcionalidad, y aún le faltan un par de opciones, pero
+no dudéis en proponer comandos que nos puedan ser útiles a todos.</p>
+
+<p>Os invito a que tengáis reglas estructurales y visuales en vuestros proyectos,
+ya que ayudan un poco a que el código quede un poco más estandarizado con el
+paso del tiempo, aunque sea a nivel visual.</p>
+
+<p>Vuestros ojos os lo agradecerán.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marc Morera</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-30T11:07:00+02:00" pubdate data-updated="true">Jul 30<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/php/'>php</a>, <a class='category' href='/blog/categories/standards/'>standards</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/24/repository-split/" title="Previous Post: Repository Split">&laquo; Repository Split</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/30/porque-el-orden-importa/">Porque el orden importa</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/24/repository-split/">Repository Split</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/21/elcodi-wants-you/">Elcodi wants you</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/30/controller-extra-bundle/">ControllerExtraBundle, some useful Controller annotations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/25/symfony-barcelona/">Symfony Barcelona</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/mmoreram">@mmoreram</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mmoreram',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+      </div>
+    </div>
+    <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Marc Morera -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>.</span>
+</p>
+
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'mmoreram';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa/';
+        var disqus_url = 'http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>
