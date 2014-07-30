@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-07-30T11:29:19+02:00</updated>
+  <updated>2014-07-30T11:49:02+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -87,59 +87,6 @@ ya que ayudan un poco a que el código quede un poco más estandarizado con el
 paso del tiempo, aunque sea a nivel visual.</p>
 
 <p>Vuestros ojos os lo agradecerán.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Repository Split]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/07/24/repository-split/"/>
-    <updated>2014-07-24T16:00:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/07/24/repository-split</id>
-    <content type="html"><![CDATA[<p>Una de las técnicas mas chulas que tiene git es lo llamado <code>git subtree split</code>.
-Os preguntareis para que sirve tal maravilla. Pues vamos a poner un ejemplo.</p>
-
-<h2>Escenario</h2>
-
-<p>Tenemos un proyecto muy grande con distintos componentes. Imaginemos que una de
-las particularidades de nuestro proyecto es que dichos componentes pueden ser
-utilizados de forma individual, aunque tengan dependencias entre ellos. Vamos a
-utilizar el proyecto Elcodi para ver un ejemplo real.</p>
-
-<p>Una de las cosas en las que deberíamos pensar siempre en en el coste real de
-mantener nuestro proyecto a medida que este se haga más y más grande. Al
-principio podríamos llegar a pensar&hellip; &ndash; hombre, solo son 3 repositorios simples
-, pues que sencillo es crear 3 repositorios en Github, cada uno de ellos
-independientes, y ya los voy manteniendo. Por experiencia os digo&hellip; cuando
-tenéis 20 repositorios es algo simplemente inconcebible. No tiene sentido.</p>
-
-<p>La solución que hemos encontrado para Elcodi no es otra que agregar todos los
-repositorios en un único repositorio.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># elcodi/elcodi</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">README</span>
-</span><span class='line'><span class="l-Scalar-Plain">composer.json</span>
-</span><span class='line'><span class="l-Scalar-Plain">src/</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">Elcodi/</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">CoreBundle/</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">ProductBundle/</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">UserBundle</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Este repositorio está disponible si tratas con el paquete entero, agregando a tu
-composer la dependencia <code>elcodi/elcodi</code></p>
 ]]></content>
   </entry>
   
@@ -4139,6 +4086,15 @@ in <code>routing.yml</code> file we must add these lines.</p>
 
 
 <blockquote><p>At this point, type value must be the same as defined in Router service.</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[First commit]]></title>
+    <link href="http://mmoreram.github.io/blog/2013/10/01/first-commit/"/>
+    <updated>2013-10-01T18:00:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2013/10/01/first-commit</id>
+    <content type="html"><![CDATA[<p>This is the first commit of this blog</p>
 ]]></content>
   </entry>
   
