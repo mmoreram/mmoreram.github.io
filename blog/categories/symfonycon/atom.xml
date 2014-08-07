@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Symfonycon | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/symfonycon/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-08-07T16:49:25+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Symfony Walk: Zaragoza - Madrid]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/"/>
+    <updated>2014-08-07T13:49:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid</id>
+    <content type="html"><![CDATA[<p>La SymfonyCon de Madrid 2014 cada día está más cerca, y tengo que admitir que
+admiro esta comunidad. Una comunidad que ha sido capaz de alimentar el mundo php
+con valiosos proyectos y mejores personas.</p>
+
+<p>Admiro las sinergias que se crean en los distintos repositorios que hacen que
+Symfony sea una de las mejores opciones a la hora de desarrollar cualquier
+proyecto web, y todo el ecosistema que se ha creado alrededor, un ecosistema
+muy sano y con mucho valor social y humano.</p>
+
+<p>Es por esto que quiero rendir mi propio homenaje durante los próximos meses.</p>
+
+<h3>Symfony Walk 2014</h3>
+
+<p>El objetivo es hacer una ruta andando hasta la SymfonyCon de Madrid,
+con no más herramientas que una mochila y buena música. El principio de tal
+ruta será Zaragoza, por lo que el camino será un total de unos 360 quilómetros</p>
+
+<p>Voy a dividir el reto en 10 días más uno de descanso. Durante los próximos días
+definiré también su recorrido final y todos los puntos de reposo, donde pasaré
+las noches.</p>
+
+<p>Mis razones no son otras que una mezcla entre reto personal de algo que llevo
+tiempo queriendo hacer y mi gratitud a esta comunidad que comentaba por toda la
+ayuda que he recibido indirectamente.</p>
+
+<p>Como sabéis trabajo en un proyecto llamado <a href="http://elcodi.io">Elcodi</a>. Tenemos
+muy clara cual es nuestra filosofía y los detalles que queremos cuidar hasta el
+último de los suspiros del proyecto, y sabemos que no es tarea fácil.</p>
+
+<p>Hemos superado retos como proyecto <em>open source</em>, estamos superando retos como
+proyecto <em>open source</em>, y esperemos que durante los próximos años debamos
+superar retos mayores como proyecto <em>open source</em>.</p>
+
+<p>Pues bien, creo que el hecho de andar durante 70 horas en 10 días es una buena
+representación de aquello que cuesta trabajo, esfuerzo y tiempo, pero que
+finalmente, en el fondo del camino, una gran recompensa aguarda tu llegada.</p>
+
+<p>En mi caso, la conferencia que con tantas ganas espero.</p>
+
+<p>Próximamente postearé más detalles sobre mi pequeña aventura.</p>
+]]></content>
+  </entry>
+  
+</feed>
