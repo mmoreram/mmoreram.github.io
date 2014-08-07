@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Symfonycon | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/symfonycon/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-08-07T16:49:25+02:00</updated>
+  <updated>2014-08-07T17:10:49+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -18,7 +18,52 @@
     <link href="http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/"/>
     <updated>2014-08-07T13:49:00+02:00</updated>
     <id>http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid</id>
-    <content type="html"><![CDATA[<p>La SymfonyCon de Madrid 2014 cada día está más cerca, y tengo que admitir que
+    <content type="html"><![CDATA[<h4>En español al final</h4>
+
+<p>The 2014 Madrid SymfonyCon is closer every day, and I have to admit that
+I admire this community. A community that has been able to feed the world php
+with valuable projects and better people.</p>
+
+<p>I admire the synergies that are created in different repositories that make
+Symfony one of the best options when developing any
+web project, and the entire ecosystem that has been created around, an ecosystem
+very healthy and very social .</p>
+
+<p>That&rsquo;s why I pay my own tribute in the coming months.</p>
+
+<h3>Symfony Walk 2014</h3>
+
+<p>The goal is to walk a path to SymfonyCon Madrid
+with no more tools than a backpack and good music. The principle of such
+route will Zaragoza, so the road will be a total of about 360 kilometers</p>
+
+<p>I will divide the challenge in 10 days plus one resting day. During the next few days
+I will also define the final route and all points of rest, where I will spend
+night.</p>
+
+<p>My reasons are none other than a mixture of personal challenge of something I&rsquo;ve
+long wanted to do and my gratitude to this community for all
+help I&rsquo;ve received indirectly.</p>
+
+<p>As you know I work on a project called [Elcodi] (<a href="http://elcodi.io">http://elcodi.io</a>). we have
+very clear which is our philosophy and the details that we care until the
+last sighs of the project, and we know it&rsquo;s not easy.</p>
+
+<p>We have overcome challenges as an <em>open source</em> project , we are overcoming challenges as an 
+<em>open source</em> project, and hopefully over the next few years we should
+overcome greater challenges as <em>open source</em> project .</p>
+
+<p>Well, I think the act of walking for 70 hours in 10 days is a good
+representation of what needs hard work, effort and time, but
+finally, in the bottom of the road, a great reward awaits your arrival.</p>
+
+<p>In my case, the conference .</p>
+
+<p>Soon I&rsquo;ll post more details about my little adventure.</p>
+
+<h2>Versión Española</h2>
+
+<p>La SymfonyCon de Madrid 2014 cada día está más cerca, y tengo que admitir que
 admiro esta comunidad. Una comunidad que ha sido capaz de alimentar el mundo php
 con valiosos proyectos y mejores personas.</p>
 
