@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Symfonycon | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/symfonycon/atom.xml" rel="self"/>
+  <title><![CDATA[Category: SymfonyWalk | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/symfonywalk/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
   <updated>2014-08-12T12:01:42+02:00</updated>
   <id>http://mmoreram.github.io/</id>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Zaragoza | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/zaragoza/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-08-11T11:01:02+02:00</updated>
+  <updated>2014-08-12T12:01:42+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[One section, one component]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/08/12/one-section-one-component/"/>
+    <updated>2014-08-12T11:29:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/08/12/one-section-one-component</id>
+    <content type="html"><![CDATA[<p><a href="/blog/2014/08/07/symfony-walk-zaragoza-madrid/">Symfony Walk</a></p>
+
+<p><img class="[class names]" src="/images/zaragoza-madrid.png" title="[Zaragoza Madrid [Zaragoza Madrid]]" ></p>
+
+<p>Symfony Walk will contain a total of 10 sections, and each one will have the
+name of one Symfony Component. One of the sections will be named <em>Doctrine</em> (yes,
+our big friend Doctrine) and last Component will be named like the project I am
+so proud to work in, <a href="http://elcodi.io">Elcodi</a>.</p>
+
+<ul>
+<li><a href="http://symfony.com/doc/current/components/routing/index.html">Routing</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/security/index.html">Security</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/console/index.html">Console</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/finder.html">Finder</a> Section</li>
+<li><a href="http://doctrine-orm.readthedocs.org/en/latest/">Doctrine</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/event_dispatcher/index.html">EventDispatcher</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/http_kernel/index.html">HttpKernel</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/form/index.html">Form</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/dependency_injection/index.html">DependencyInjection</a> Section</li>
+<li><a href="http://elcodi.io">Elcodi</a> Section</li>
+</ul>
+
+
+<p>Each day, after walking around 35 Km in about 6 hours, I will post a small
+introduction about the component that names the current section. I&rsquo;ll talk also
+about some scenarios that this component can be useful.</p>
+
+<p>Happy Symfony Walk.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Symfony Walk: Zaragoza - Madrid]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-08-11T11:01:02+02:00</updated>
+  <updated>2014-08-12T12:01:42+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[One section, one component]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/08/12/one-section-one-component/"/>
+    <updated>2014-08-12T11:29:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/08/12/one-section-one-component</id>
+    <content type="html"><![CDATA[<p><a href="http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/">Symfony Walk</a></p>
+
+<p><img class="[class names]" src="http://mmoreram.github.io/images/zaragoza-madrid.png" title="[Zaragoza Madrid [Zaragoza Madrid]]" ></p>
+
+<p>Symfony Walk will contain a total of 10 sections, and each one will have the
+name of one Symfony Component. One of the sections will be named <em>Doctrine</em> (yes,
+our big friend Doctrine) and last Component will be named like the project I am
+so proud to work in, <a href="http://elcodi.io">Elcodi</a>.</p>
+
+<ul>
+<li><a href="http://symfony.com/doc/current/components/routing/index.html">Routing</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/security/index.html">Security</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/console/index.html">Console</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/finder.html">Finder</a> Section</li>
+<li><a href="http://doctrine-orm.readthedocs.org/en/latest/">Doctrine</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/event_dispatcher/index.html">EventDispatcher</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/http_kernel/index.html">HttpKernel</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/form/index.html">Form</a> Section</li>
+<li><a href="http://symfony.com/doc/current/components/dependency_injection/index.html">DependencyInjection</a> Section</li>
+<li><a href="http://elcodi.io">Elcodi</a> Section</li>
+</ul>
+
+
+<p>Each day, after walking around 35 Km in about 6 hours, I will post a small
+introduction about the component that names the current section. I&rsquo;ll talk also
+about some scenarios that this component can be useful.</p>
+
+<p>Happy Symfony Walk.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Symfony Walk: Zaragoza - Madrid]]></title>
@@ -3914,226 +3950,6 @@ this&hellip;</p>
 responsibilities accordingly.</p>
 
 <p>What do you think?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Dynamic routes in Symfony2]]></title>
-    <link href="http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2/"/>
-    <updated>2013-10-01T18:30:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2</id>
-    <content type="html"><![CDATA[<p>Given that most times we need to associate a static route entry with a method of
-a controller, it is normal for Symfony developers are used to working with the
-annotation @Route of FrameworkExtraBundle.</p>
-
-<p>In some cases, it will be interesting or necessary to work with the router to
-generate dynamic routes. This means that any bundle can generate a route from a
-service, defining both the name of the route as all the information necessary
-for the resolution of the route.</p>
-
-<p>Consider the following example</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">Mmoreram\AcmeBundle\Router</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Config\Loader\LoaderInterface</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Config\Loader\LoaderResolverInterface</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Routing\Route</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Routing\RouteCollection</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Acme dynamic router</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">AcmeRoutesLoader</span> <span class="k">implements</span> <span class="nx">LoaderInterface</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * @var boolean</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * Route is loaded</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$loaded</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Loads a resource.</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param mixed  $resource The resource</span>
-</span><span class='line'><span class="sd">     * @param string $type     The resource type</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return RouteCollection</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @throws RuntimeException Loader is added twice</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">load</span><span class="p">(</span><span class="nv">$resource</span><span class="p">,</span> <span class="nv">$type</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">loaded</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nx">\RuntimeException</span><span class="p">(</span><span class="s1">&#39;Do not add this loader twice&#39;</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nv">$routes</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RouteCollection</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="sd">/**</span>
-</span><span class='line'><span class="sd">         * url(&#39;controller_name&#39;) will point AcmeController:methodAction()</span>
-</span><span class='line'><span class="sd">         */</span>
-</span><span class='line'>        <span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;controller_name&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">(</span><span class="s1">&#39;controller/route&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
-</span><span class='line'>            <span class="s1">&#39;_controller&#39;</span>   <span class="o">=&gt;</span>  <span class="s1">&#39;AcmeBundle:Acme:method&#39;</span><span class="p">,</span>
-</span><span class='line'>        <span class="p">)));</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">loaded</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$routes</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Returns true if this class supports the given resource.</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param mixed  $resource A resource</span>
-</span><span class='line'><span class="sd">     * @param string $type     The resource type</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return boolean This class supports the given resource</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">supports</span><span class="p">(</span><span class="nv">$resource</span><span class="p">,</span> <span class="nv">$type</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;acme&#39;</span> <span class="o">===</span> <span class="nv">$type</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Gets the loader resolver.</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return LoaderResolverInterface A LoaderResolverInterface instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getResolver</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Sets the loader resolver.</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param LoaderResolverInterface $resolver A LoaderResolverInterface</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setResolver</span><span class="p">(</span><span class="nx">LoaderResolverInterface</span> <span class="nv">$resolver</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In method <code>supports()</code>, <code>$type</code> value can be any desired value, and only should
-be defined once in all project.</p>
-
-<p>As any service, we must define this class in dependency injection with specific
-tag.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">acme.routes.loader</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Mmoreram\AcmeBundle\Router\AcmeRoutesLoader</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="p-Indicator">{</span> <span class="nv">name</span><span class="p-Indicator">:</span> <span class="nv">routing.loader</span> <span class="p-Indicator">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And finally we just need to make our project know where to build our route, so
-in <code>routing.yml</code> file we must add these lines.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">acme_routes</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">resource</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">.</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">acme</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<blockquote><p>At this point, type value must be the same as defined in Router service.</p></blockquote>
 ]]></content>
   </entry>
   
