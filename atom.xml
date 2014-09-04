@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-08-12T12:01:42+02:00</updated>
+  <updated>2014-09-04T15:48:26+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,663 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bye Bye Symfony]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/09/01/bye-bye-symfony/"/>
+    <updated>2014-09-01T00:00:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/09/01/bye-bye-symfony</id>
+    <content type="html"><![CDATA[<p>Don&rsquo;t be afraid. You know what I think about the Symfony components and how I
+love them. Until now any circumstance has changed my mind about using them in my
+projects, and over the time, after discover every hidden single piece of code, I
+have turned more amazed of their power.</p>
+
+<p>The reason of this post is just to tell you, with a simple example, how to say
+<em>Bye Bye, Symfony!</em> and say <em>Hi PHP!</em>. This really means uncouple from Symfony
+Components and still use them as the default implementation, while we can
+securely remove, from the composer <em>require</em> block, our Symfony dependencies.</p>
+
+<p>One of the poor things I have heard these last months has been the word <em>you must</em>
+or <em>you should</em> event without knowing exactly what is the real direction of my
+project, so every word in this post will be just an idea you could have in mind
+when you design your own architecture, thinking about your real needs, far from
+the things you should or you must do.</p>
+
+<p>To explain that, how we can say goodbye to Symfony, we will start with a simple
+example. A simple class we could find in every project. Our class will have no
+sense but will be useful in our specific example, helping us to understand what
+is all this about.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * For the full copyright and license information, please view the LICENSE</span>
+</span><span class='line'><span class="sd"> * file that was distributed with this source code.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * Feel free to edit as you please, and have fun.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @author Marc Morera &lt;yuhu@mmoreram.com&gt;</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">Package\Generator</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Routing\Generator\UrlGeneratorInterface</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Class UrlPrinter</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">UrlPrinter</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var UrlGeneratorInterface</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Url generator</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Construct method</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param UrlGeneratorInterface $urlGenerator Url generator</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">UrlGeneratorInterface</span> <span class="nv">$urlGenerator</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">urlGenerator</span> <span class="o">=</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Generates Homepage route and print complete path</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return string Route path</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">printHomePageRoute</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">urlGenerator</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">generate</span><span class="p">(</span><span class="s1">&#39;homepage&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As we can see, use this class means use <code>UrlGeneratorInterface</code>. This class is
+part of the Symfony Routing Component, so is a really bad idea if you really
+want to make your project multi-environment</p>
+
+<p>Is that good? Well, it depends on your both product requirements and technical
+requirements. If you want to use always the Symfony router component, this piece
+of code is good enough. Otherwise, If you want to use another router, you have a
+problem.</p>
+
+<p>Say your project must work with and without Symfony. Our class should not depend
+on this interface. One of the strategies to uncouple external implementations is
+using ports and adapters.</p>
+
+<p>I will explain how it works and how we can implement it.</p>
+
+<h2>Real life example</h2>
+
+<p>Let&rsquo;s imagine we want to sell an USB device. We have decided in our product
+definition that this device will connect to external devices using USB Standard
+A (the big one). One of the possible approaches would be to design our device
+with the external connector coupled. This means selling it with the USB wire
+(like an USB camera, for example).</p>
+
+<p>But why coupling our device with an specific output? Do you know what it really
+means?</p>
+
+<ul>
+<li>If the wire breaks, we must change all the device.</li>
+<li>You can connect with devices that accept only USB-A</li>
+<li>Wire improvements means new device versions.</li>
+</ul>
+
+
+<p>What would be an alternative decision? Well, why don&rsquo;t we focus our efforts in
+the camera and we just let other companies to help us with the wire? This means
+more flexibility for the final user and capability of removing and changing the
+cable when is broken. And&hellip; they could connect their camera to many different
+formats, even for the most adventurous, their own formats.</p>
+
+<p>So, in fact, our device should have one female USB port with an specification
+of how connect it with another device. The wire would be just an adapter of our
+device so many of them could be plugged-in.</p>
+
+<p>We have talked about devices, ports, adapters, specifications, but&hellip; how can
+this help me with my project? Is that hard?</p>
+
+<p>The answer is No.</p>
+
+<h2>Solution</h2>
+
+<p>Our goal is to create an specification for URL generators and force each adapter
+to implement it in their own way. As we know, the OOP languages resolve the
+specification with the interfaces.</p>
+
+<p>Let&rsquo;s create our specification.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * For the full copyright and license information, please view the LICENSE</span>
+</span><span class='line'><span class="sd"> * file that was distributed with this source code.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * Feel free to edit as you please, and have fun.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @author Marc Morera &lt;yuhu@mmoreram.com&gt;</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">Package\Specification</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Interface PackageUrlGeneratorInterface</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">interface</span> <span class="nx">PackageUrlGeneratorInterface</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Generates a route given its name.</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return string Route path</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">generateUrl</span><span class="p">(</span><span class="nv">$routeName</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We are just specifying. We want that, whatever is the implementation, each
+adapter must fulfill this rule: Has a method called <code>generateRoute</code> that, given
+the route name, will return its complete path.</p>
+
+<p>Let&rsquo;s adapt our UrlPrinter to work with specification instead of implementation.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * For the full copyright and license information, please view the LICENSE</span>
+</span><span class='line'><span class="sd"> * file that was distributed with this source code.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * Feel free to edit as you please, and have fun.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @author Marc Morera &lt;yuhu@mmoreram.com&gt;</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">Package\Generator</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Package\Specification\PackageUrlGeneratorInterface</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Class UrlPrinter</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">UrlPrinter</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var PackageUrlGeneratorInterface</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Url generator</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Construct method</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param UrlGeneratorInterface $urlGenerator Url generator</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">PackageUrlGeneratorInterface</span> <span class="nv">$urlGenerator</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">urlGenerator</span> <span class="o">=</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Generates Homepage route and print complete path</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return string Route path</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">printHomePageRoute</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">urlGenerator</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">generateUrl</span><span class="p">(</span><span class="s1">&#39;homepage&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, our UrlPrinter does not depends on any external library. Goal reached!</p>
+
+<p>But, now what? I mean, we should implement our adapter, am I right? What is a
+camera with a great specification and without wire plugged in? (A wireless
+camera, welcome to the twenty century ^^. Just joking)</p>
+
+<p>Our UrlPrinter needs a <em>PackageUrlGeneratorInterface</em> implementation to be
+built, so we have to implement an adapter. And because we still want to work with
+Symfony Routing Component as my first option, we will create the Symfony Adapter
+for my specification.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * For the full copyright and license information, please view the LICENSE</span>
+</span><span class='line'><span class="sd"> * file that was distributed with this source code.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * Feel free to edit as you please, and have fun.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @author Marc Morera &lt;yuhu@mmoreram.com&gt;</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">Package\Adapter</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Package\Specification\PackageUrlGeneratorInterface</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Routing\Generator\UrlGeneratorInterface</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Class SymfonyUrlGeneratorAdapter</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">SymfonyUrlGeneratorAdapter</span> <span class="k">implements</span> <span class="nx">PackageUrlGeneratorInterface</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var UrlGeneratorInterface</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Url generator</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Construct method</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param UrlGeneratorInterface $urlGenerator Url generator</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">UrlGeneratorInterface</span> <span class="nv">$urlGenerator</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">urlGenerator</span> <span class="o">=</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Generates a route given its name</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return string Route path</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">generateUrl</span><span class="p">(</span><span class="nv">$routeName</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">urlGenerator</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">generate</span><span class="p">(</span><span class="nv">$routeName</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This an adapter, my friends. Each adapter has one mission, and is just transform
+the way we understand the method <code>generateUrl</code> must work (specification) to the
+way each external project understands it (implementation). In this case, very
+easy, our <code>generateUrl</code> is the same as Symfony Router Component&rsquo;s <code>generate</code>.</p>
+
+<p>Symfony Component is now required by this adapter, but because we are not
+required to use this adapter (Maybe we can use a dummy one for our tests, or a
+mocked one), Symfony Component is not required by our package anymore, just
+suggested.</p>
+
+<p>Let&rsquo;s see another Adapter implementation, requiring another external library.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * For the full copyright and license information, please view the LICENSE</span>
+</span><span class='line'><span class="sd"> * file that was distributed with this source code.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * Feel free to edit as you please, and have fun.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @author Marc Morera &lt;yuhu@mmoreram.com&gt;</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">Package\Adapter</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Package\Specification\PackageUrlGeneratorInterface</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">AnotherProject\UrlGeneratorInterface</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Class SymfonyUrlGeneratorAdapter</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">SymfonyUrlGeneratorAdapter</span> <span class="k">implements</span> <span class="nx">PackageUrlGeneratorInterface</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var UrlGeneratorInterface</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Url generator</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Construct method</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param UrlGeneratorInterface $urlGenerator Url generator</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">UrlGeneratorInterface</span> <span class="nv">$urlGenerator</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">urlGenerator</span> <span class="o">=</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Generates a route given its name</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return string Route path</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">generateUrl</span><span class="p">(</span><span class="nv">$routeName</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$routeName</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span> <span class="o">.</span> <span class="nv">$routeName</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$this</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">urlGenerator</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">anotherGenerateMethod</span><span class="p">(</span><span class="nv">$routeName</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Both adapters would be placed in the <code>Adapter/</code> folder, and the final user
+should be able to switch them and even implement new ones.</p>
+
+<h2>From require to suggest</h2>
+
+<p>With our changes, we can remove &ldquo;symfony/routing&rdquo; from the require block and add
+it into the suggest block in <code>composer.json</code> file.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="s">&quot;require&quot;</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span>
+</span><span class='line'>    <span class="s">&quot;php&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;&gt;=5.4&quot;</span><span class="p-Indicator">,</span>
+</span><span class='line'>    <span class="nv">...</span>
+</span><span class='line'><span class="p-Indicator">}</span><span class="err">,</span>
+</span><span class='line'><span class="s">&quot;suggest&quot;</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span>
+</span><span class='line'>    <span class="s">&quot;symfony/routing&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;Required</span><span class="nv"> </span><span class="s">if</span><span class="nv"> </span><span class="s">using</span><span class="nv"> </span><span class="s">Routing</span><span class="nv"> </span><span class="s">adapter&quot;</span><span class="p-Indicator">,</span>
+</span><span class='line'>    <span class="s">&quot;mmoreram/another-project&quot;</span><span class="p-Indicator">:</span> <span class="nv">Required if using AnotherProject Routing adapter&quot;</span>
+</span><span class='line'><span class="p-Indicator">}</span><span class="err">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We will only require the packages needed by the adapter we are using.</p>
+
+<h2>What we win</h2>
+
+<p>Much. We win maximum implementation flexibility and minimum coupling. Would be
+wise to say that a PHP project should tend to this thought, but once again, it
+depends on many factors.</p>
+
+<h2>What we lose</h2>
+
+<p>It Depends. If you want your project to be understandable by a lot of developing
+knowledge levels, this architecture goes away from the comprehensibility of a
+simple code. You also can lose by having lot of files, so you should respect
+some kind of best practices code, to make people working on your project
+comfortable dealing with it.</p>
+
+<h2>Best practices</h2>
+
+<p>I should talk about <em>Marc practices</em> instead of <em>Best practices</em>. I am used to
+adding my adapters always in the folder <code>/Adapter/{PortName}/</code>, being <em>PortName</em>
+the name of the port we are dealing with in camel case format. In this case, we
+should add both adapters in <code>/Adapter/UrlGenerator/</code>.</p>
+
+<p>Given this format we can determine what adapters we can use in our project in a
+very agile way.</p>
+
+<h2>Reference projects</h2>
+
+<p>First project that comes in my mind when I think about Ports/Adapters is
+<a href="https://github.com/KnpLabs/Gaufrette/tree/master/src/Gaufrette">Gaufrette</a>, a
+filesystem abstraction layer with a lot of adapters implemented.</p>
+
+<p>In <a href="https://github.com/elcodi/elcodi">Elcodi</a> we are actually using this
+library and its really awesome how easy is using it.</p>
+
+<p>We have also implemented internally some features using this architecture, for
+example, the <a href="https://github.com/elcodi/elcodi/tree/master/src/Elcodi/Component/Geo/Adapter/Populator">Geo Schema Populator</a>,
+a new feature under development that will allow you to populate all Geo schema
+using some adapters. Right now only GeoData adapter is implemented.</p>
+
+<p>Another example, the
+<a href="https://github.com/elcodi/elcodi/tree/master/src/Elcodi/Component/Currency/Adapter/CurrencyExchangeRatesProvider">Currency Exchange Rates Populator</a>
+with OpenExchangeRates implementation already done.</p>
+
+<h2>Final thoughts</h2>
+
+<p>Using ports and adapters is really a great tool for those who want to uncouple
+from implementations and a great pattern if you develop open source. Open source
+should satisfy as people as possible, so remember, specify and then implement.</p>
+
+<p>Try it and then tell us your experience :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[One section, one component]]></title>
@@ -3594,362 +4251,6 @@ this code to also accept ArrayCollection and all iterable objects.</p>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Inverse associations in Doctrine2 models]]></title>
-    <link href="http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/"/>
-    <updated>2013-10-09T11:37:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models</id>
-    <content type="html"><![CDATA[<p>Lets take a look some basic example about simple Doctrine2 relation.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Country</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * @ORM\Entity</span>
-</span><span class='line'><span class="sd"> * @ORM\Table(name=&quot;countries&quot;)</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Country</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * @var ArrayCollection</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @ORM\OneToMany(targetEntity=&quot;Province&quot;, mappedBy=&quot;country&quot;)</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$provinces</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Constructor</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">provinces</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ArrayCollection</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Add province</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param Province $province Province to add</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return Country self Object</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addProvince</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">provinces</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$province</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Province</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * @ORM\Entity</span>
-</span><span class='line'><span class="sd"> * @ORM\Table(name=&quot;provinces&quot;)</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Province</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * @var Country</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @ORM\ManyToOne(targetEntity=&quot;Country&quot;, inversedBy=&quot;provinces&quot;)</span>
-</span><span class='line'><span class="sd">     * @ORM\JoinColumn(name=&quot;country_id&quot;, referencedColumnName=&quot;id&quot;, nullable=false)</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$country</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Set Country</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param Country $country Country</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return Province self Object</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setCountry</span><span class="p">(</span><span class="nx">Country</span> <span class="nv">$country</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">country</span> <span class="o">=</span> <span class="nv">$country</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Get the country</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return Country</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getCountry</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">country</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The reason for this post is to try to understand the direct impact of making an
-inversed relationship when we allocate a new province in a country.
-Given the model we have in the first instance, and given this piece of
-controller</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$country</span> <span class="o">=</span> <span class="nv">$this</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">entityManager</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;AcmeCoreBundle:Country&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">findBy</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$province</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Province</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$province</span><span class="o">-&gt;</span><span class="na">setCountry</span><span class="p">(</span><span class="nv">$country</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$province</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">entityManager</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In this case, when we assign the Country to the new Province, and given that the
-owning side of the association is Province, when you flush, the association
-persists in database, so that in future reference, we would have the desired
-results.<br/>
-The &ldquo;problem&rdquo; exists because our <code>EntityManager</code> works with internal cache.
-If after this assignment, and in the same request, we need to return all the
-provinces of the Country, in particular the Country with id 1, the returned
-collection will not contain the new Province if this data is already cached.
-This is because we have not perfomed reversed assignment. There are two ways of
-solving this.</p>
-
-<h3>Model owns the responsability of double assignment</h3>
-
-<p>We can resolve this giving model the responsability of double assignment.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Province</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * @ORM\Entity</span>
-</span><span class='line'><span class="sd"> * @ORM\Table(name=&quot;provinces&quot;)</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Province</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * @var Country</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @ORM\ManyToOne(targetEntity=&quot;Country&quot;, inversedBy=&quot;provinces&quot;)</span>
-</span><span class='line'><span class="sd">     * @ORM\JoinColumn(name=&quot;country_id&quot;, referencedColumnName=&quot;id&quot;, nullable=false)</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$country</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Set Country</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param Country $country Country</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return Province self Object</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setCountry</span><span class="p">(</span><span class="nx">Country</span> <span class="nv">$country</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">country</span> <span class="o">=</span> <span class="nv">$country</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="sd">/**</span>
-</span><span class='line'><span class="sd">         * We perform inversed assignment</span>
-</span><span class='line'><span class="sd">         */</span>
-</span><span class='line'>        <span class="nv">$country</span><span class="o">-&gt;</span><span class="na">setProvince</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Get the country</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return Country</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getCountry</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">country</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This has a good side and bad. On the one hand, is a completely transparent
-process so that the model handles internally to manage their relationships.
-It allows the driver to disengage completely from the model.
-On the other hand, we must bear in mind that <strong>will</strong> always done this inverse
-relationship. This can be a plus for a project, unless handled very large
-amounts of data.<br/>
-To give an example, we can imagine a Country with a million provinces.
-When charging Country in memory, while not run the <code>getProvinces ()</code> and since
-we work with lazy loading, we will have no memory problem. The problem comes
-when you add a new province to Country. As a collection, to add an item,
-doctrine do something like <code>getProvinces()</code> and then make
-`$provinces[] = $province;&lsquo;.  Keep in mind that loading in memory up to 1
-million entities without any need is a non desired behaviour.</p>
-
-<h3>Controller ( each one ) owns the responsability of double assignment</h3>
-
-<p>In this case, controller need to perform inversed assignment.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$country</span> <span class="o">=</span> <span class="nv">$this</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">entityManager</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">&#39;AcmeCoreBundle:Country&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">findBy</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$province</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Province</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$province</span><span class="o">-&gt;</span><span class="na">setCountry</span><span class="p">(</span><span class="nv">$country</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$country</span><span class="o">-&gt;</span><span class="na">addProvince</span><span class="p">(</span><span class="nv">$province</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$province</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">entityManager</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You will choose if is the best option, so you have an idea about if all
-provinces are used later. If are used and a million Provinces are loaded,
-you will have the same problem as first case, but has nothing to do about
-this&hellip;</p>
-
-<p>My conclusion would be something like &hellip; Know your model and scope, and give
-responsibilities accordingly.</p>
-
-<p>What do you think?</p>
 ]]></content>
   </entry>
   

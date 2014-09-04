@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Symfony | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/symfony/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-08-12T12:01:42+02:00</updated>
+  <updated>2014-09-04T15:48:26+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,450 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bye Bye Symfony]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/09/01/bye-bye-symfony/"/>
+    <updated>2014-09-01T00:00:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/09/01/bye-bye-symfony</id>
+    <content type="html"><![CDATA[<p>Don&rsquo;t be afraid. You know what I think about the Symfony components and how I
+love them. Until now any circumstance has changed my mind about using them in my
+projects, and over the time, after discover every hidden single piece of code, I
+have turned more amazed of their power.</p>
+
+<p>The reason of this post is just to tell you, with a simple example, how to say
+<em>Bye Bye, Symfony!</em> and say <em>Hi PHP!</em>. This really means uncouple from Symfony
+Components and still use them as the default implementation, while we can
+securely remove, from the composer <em>require</em> block, our Symfony dependencies.</p>
+
+<p>One of the poor things I have heard these last months has been the word <em>you must</em>
+or <em>you should</em> event without knowing exactly what is the real direction of my
+project, so every word in this post will be just an idea you could have in mind
+when you design your own architecture, thinking about your real needs, far from
+the things you should or you must do.</p>
+
+<p>To explain that, how we can say goodbye to Symfony, we will start with a simple
+example. A simple class we could find in every project. Our class will have no
+sense but will be useful in our specific example, helping us to understand what
+is all this about.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * Feel free to edit as you please, and have fun.
+ *
+ * @author Marc Morera <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#x79;&#x75;&#x68;&#x75;&#x40;&#109;&#109;&#x6f;&#114;&#101;&#114;&#97;&#x6d;&#x2e;&#99;&#x6f;&#109;">&#x79;&#x75;&#x68;&#117;&#x40;&#109;&#109;&#111;&#x72;&#101;&#x72;&#x61;&#109;&#46;&#x63;&#x6f;&#109;</a>
+ </em>/</p>
+
+<p>namespace Package\Generator;</p>
+
+<p>use Symfony\Component\Routing\Generator\UrlGeneratorInterface;</p>
+
+<p>/<em>*
+ * Class UrlPrinter
+ </em>/
+class UrlPrinter
+{</p>
+
+<pre><code>/**
+ * @var UrlGeneratorInterface
+ *
+ * Url generator
+ */
+protected $urlGenerator;
+
+/**
+ * Construct method
+ *
+ * @param UrlGeneratorInterface $urlGenerator Url generator
+ */
+public function __construct(UrlGeneratorInterface $urlGenerator)
+{
+    $this-&gt;urlGenerator = $urlGenerator;
+}
+
+/**
+ * Generates Homepage route and print complete path
+ *
+ * @return string Route path
+ */
+public function printHomePageRoute()
+{
+    return $this
+        -&gt;urlGenerator
+        -&gt;generate('homepage');
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>As we can see, use this class means use <code>UrlGeneratorInterface</code>. This class is
+part of the Symfony Routing Component, so is a really bad idea if you really
+want to make your project multi-environment</p>
+
+<p>Is that good? Well, it depends on your both product requirements and technical
+requirements. If you want to use always the Symfony router component, this piece
+of code is good enough. Otherwise, If you want to use another router, you have a
+problem.</p>
+
+<p>Say your project must work with and without Symfony. Our class should not depend
+on this interface. One of the strategies to uncouple external implementations is
+using ports and adapters.</p>
+
+<p>I will explain how it works and how we can implement it.</p>
+
+<h2>Real life example</h2>
+
+<p>Let&rsquo;s imagine we want to sell an USB device. We have decided in our product
+definition that this device will connect to external devices using USB Standard
+A (the big one). One of the possible approaches would be to design our device
+with the external connector coupled. This means selling it with the USB wire
+(like an USB camera, for example).</p>
+
+<p>But why coupling our device with an specific output? Do you know what it really
+means?</p>
+
+<ul>
+<li>If the wire breaks, we must change all the device.</li>
+<li>You can connect with devices that accept only USB-A</li>
+<li>Wire improvements means new device versions.</li>
+</ul>
+
+
+<p>What would be an alternative decision? Well, why don&rsquo;t we focus our efforts in
+the camera and we just let other companies to help us with the wire? This means
+more flexibility for the final user and capability of removing and changing the
+cable when is broken. And&hellip; they could connect their camera to many different
+formats, even for the most adventurous, their own formats.</p>
+
+<p>So, in fact, our device should have one female USB port with an specification
+of how connect it with another device. The wire would be just an adapter of our
+device so many of them could be plugged-in.</p>
+
+<p>We have talked about devices, ports, adapters, specifications, but&hellip; how can
+this help me with my project? Is that hard?</p>
+
+<p>The answer is No.</p>
+
+<h2>Solution</h2>
+
+<p>Our goal is to create an specification for URL generators and force each adapter
+to implement it in their own way. As we know, the OOP languages resolve the
+specification with the interfaces.</p>
+
+<p>Let&rsquo;s create our specification.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * Feel free to edit as you please, and have fun.
+ *
+ * @author Marc Morera <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#121;&#x75;&#104;&#x75;&#x40;&#x6d;&#x6d;&#x6f;&#x72;&#101;&#x72;&#97;&#109;&#x2e;&#x63;&#x6f;&#x6d;">&#121;&#x75;&#x68;&#117;&#64;&#x6d;&#109;&#111;&#x72;&#x65;&#114;&#x61;&#109;&#x2e;&#x63;&#x6f;&#109;</a>
+ </em>/</p>
+
+<p>namespace Package\Specification;</p>
+
+<p>/<em>*
+ * Interface PackageUrlGeneratorInterface
+ </em>/
+interface PackageUrlGeneratorInterface
+{</p>
+
+<pre><code>/**
+ * Generates a route given its name.
+ *
+ * @return string Route path
+ */
+public function generateUrl($routeName);
+</code></pre>
+
+<p>}
+<code>``
+We are just specifying. We want that, whatever is the implementation, each
+adapter must fulfill this rule: Has a method called</code>generateRoute` that, given
+the route name, will return its complete path.</p>
+
+<p>Let&rsquo;s adapt our UrlPrinter to work with specification instead of implementation.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * Feel free to edit as you please, and have fun.
+ *
+ * @author Marc Morera <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#58;&#x79;&#x75;&#x68;&#117;&#64;&#109;&#109;&#111;&#x72;&#x65;&#114;&#x61;&#109;&#x2e;&#x63;&#111;&#109;">&#121;&#x75;&#104;&#x75;&#x40;&#x6d;&#x6d;&#x6f;&#x72;&#x65;&#x72;&#x61;&#x6d;&#46;&#99;&#111;&#x6d;</a>
+ </em>/</p>
+
+<p>namespace Package\Generator;</p>
+
+<p>use Package\Specification\PackageUrlGeneratorInterface;</p>
+
+<p>/<em>*
+ * Class UrlPrinter
+ </em>/
+class UrlPrinter
+{</p>
+
+<pre><code>/**
+ * @var PackageUrlGeneratorInterface
+ *
+ * Url generator
+ */
+protected $urlGenerator;
+
+/**
+ * Construct method
+ *
+ * @param UrlGeneratorInterface $urlGenerator Url generator
+ */
+public function __construct(PackageUrlGeneratorInterface $urlGenerator)
+{
+    $this-&gt;urlGenerator = $urlGenerator;
+}
+
+/**
+ * Generates Homepage route and print complete path
+ *
+ * @return string Route path
+ */
+public function printHomePageRoute()
+{
+    return $this
+        -&gt;urlGenerator
+        -&gt;generateUrl('homepage');
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Now, our UrlPrinter does not depends on any external library. Goal reached!</p>
+
+<p>But, now what? I mean, we should implement our adapter, am I right? What is a
+camera with a great specification and without wire plugged in? (A wireless
+camera, welcome to the twenty century ^^. Just joking)</p>
+
+<p>Our UrlPrinter needs a <em>PackageUrlGeneratorInterface</em> implementation to be
+built, so we have to implement an adapter. And because we still want to work with
+Symfony Routing Component as my first option, we will create the Symfony Adapter
+for my specification.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * Feel free to edit as you please, and have fun.
+ *
+ * @author Marc Morera <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#x79;&#117;&#104;&#117;&#64;&#109;&#109;&#111;&#114;&#101;&#x72;&#x61;&#x6d;&#x2e;&#99;&#111;&#109;">&#121;&#x75;&#x68;&#117;&#x40;&#109;&#x6d;&#111;&#114;&#101;&#114;&#x61;&#x6d;&#46;&#99;&#111;&#x6d;</a>
+ </em>/</p>
+
+<p>namespace Package\Adapter;</p>
+
+<p>use Package\Specification\PackageUrlGeneratorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;</p>
+
+<p>/<em>*
+ * Class SymfonyUrlGeneratorAdapter
+ </em>/
+class SymfonyUrlGeneratorAdapter implements PackageUrlGeneratorInterface
+{</p>
+
+<pre><code>/**
+ * @var UrlGeneratorInterface
+ *
+ * Url generator
+ */
+protected $urlGenerator;
+
+/**
+ * Construct method
+ *
+ * @param UrlGeneratorInterface $urlGenerator Url generator
+ */
+public function __construct(UrlGeneratorInterface $urlGenerator)
+{
+    $this-&gt;urlGenerator = $urlGenerator;
+}
+
+/**
+ * Generates a route given its name
+ *
+ * @return string Route path
+ */
+public function generateUrl($routeName)
+{
+    $this
+        -&gt;urlGenerator
+        -&gt;generate($routeName);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This an adapter, my friends. Each adapter has one mission, and is just transform
+the way we understand the method <code>generateUrl</code> must work (specification) to the
+way each external project understands it (implementation). In this case, very
+easy, our <code>generateUrl</code> is the same as Symfony Router Component&rsquo;s <code>generate</code>.</p>
+
+<p>Symfony Component is now required by this adapter, but because we are not
+required to use this adapter (Maybe we can use a dummy one for our tests, or a
+mocked one), Symfony Component is not required by our package anymore, just
+suggested.</p>
+
+<p>Let&rsquo;s see another Adapter implementation, requiring another external library.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * Feel free to edit as you please, and have fun.
+ *
+ * @author Marc Morera <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#x79;&#117;&#x68;&#117;&#x40;&#x6d;&#109;&#x6f;&#x72;&#101;&#x72;&#97;&#109;&#46;&#99;&#111;&#109;">&#x79;&#x75;&#104;&#x75;&#x40;&#109;&#109;&#x6f;&#114;&#101;&#x72;&#97;&#x6d;&#x2e;&#x63;&#111;&#109;</a>
+ </em>/</p>
+
+<p>namespace Package\Adapter;</p>
+
+<p>use Package\Specification\PackageUrlGeneratorInterface;
+use AnotherProject\UrlGeneratorInterface;</p>
+
+<p>/<em>*
+ * Class SymfonyUrlGeneratorAdapter
+ </em>/
+class SymfonyUrlGeneratorAdapter implements PackageUrlGeneratorInterface
+{</p>
+
+<pre><code>/**
+ * @var UrlGeneratorInterface
+ *
+ * Url generator
+ */
+protected $urlGenerator;
+
+/**
+ * Construct method
+ *
+ * @param UrlGeneratorInterface $urlGenerator Url generator
+ */
+public function __construct(UrlGeneratorInterface $urlGenerator)
+{
+    $this-&gt;urlGenerator = $urlGenerator;
+}
+
+/**
+ * Generates a route given its name
+ *
+ * @return string Route path
+ */
+public function generateUrl($routeName)
+{
+    $routeName = '_' . $routeName;
+
+    $this
+        -&gt;urlGenerator
+        -&gt;anotherGenerateMethod($routeName);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Both adapters would be placed in the <code>Adapter/</code> folder, and the final user
+should be able to switch them and even implement new ones.</p>
+
+<h2>From require to suggest</h2>
+
+<p>With our changes, we can remove &ldquo;symfony/routing&rdquo; from the require block and add
+it into the suggest block in <code>composer.json</code> file.</p>
+
+<p>``` yml
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "&gt;=5.4",
+...
+</code></pre>
+
+<p>},
+&ldquo;suggest&rdquo;: {</p>
+
+<pre><code>"symfony/routing": "Required if using Routing adapter",
+"mmoreram/another-project": Required if using AnotherProject Routing adapter"
+</code></pre>
+
+<p>},
+```</p>
+
+<p>We will only require the packages needed by the adapter we are using.</p>
+
+<h2>What we win</h2>
+
+<p>Much. We win maximum implementation flexibility and minimum coupling. Would be
+wise to say that a PHP project should tend to this thought, but once again, it
+depends on many factors.</p>
+
+<h2>What we lose</h2>
+
+<p>It Depends. If you want your project to be understandable by a lot of developing
+knowledge levels, this architecture goes away from the comprehensibility of a
+simple code. You also can lose by having lot of files, so you should respect
+some kind of best practices code, to make people working on your project
+comfortable dealing with it.</p>
+
+<h2>Best practices</h2>
+
+<p>I should talk about <em>Marc practices</em> instead of <em>Best practices</em>. I am used to
+adding my adapters always in the folder <code>/Adapter/{PortName}/</code>, being <em>PortName</em>
+the name of the port we are dealing with in camel case format. In this case, we
+should add both adapters in <code>/Adapter/UrlGenerator/</code>.</p>
+
+<p>Given this format we can determine what adapters we can use in our project in a
+very agile way.</p>
+
+<h2>Reference projects</h2>
+
+<p>First project that comes in my mind when I think about Ports/Adapters is
+<a href="https://github.com/KnpLabs/Gaufrette/tree/master/src/Gaufrette">Gaufrette</a>, a
+filesystem abstraction layer with a lot of adapters implemented.</p>
+
+<p>In <a href="https://github.com/elcodi/elcodi">Elcodi</a> we are actually using this
+library and its really awesome how easy is using it.</p>
+
+<p>We have also implemented internally some features using this architecture, for
+example, the <a href="https://github.com/elcodi/elcodi/tree/master/src/Elcodi/Component/Geo/Adapter/Populator">Geo Schema Populator</a>,
+a new feature under development that will allow you to populate all Geo schema
+using some adapters. Right now only GeoData adapter is implemented.</p>
+
+<p>Another example, the
+<a href="https://github.com/elcodi/elcodi/tree/master/src/Elcodi/Component/Currency/Adapter/CurrencyExchangeRatesProvider">Currency Exchange Rates Populator</a>
+with OpenExchangeRates implementation already done.</p>
+
+<h2>Final thoughts</h2>
+
+<p>Using ports and adapters is really a great tool for those who want to uncouple
+from implementations and a great pattern if you develop open source. Open source
+should satisfy as people as possible, so remember, specify and then implement.</p>
+
+<p>Try it and then tell us your experience :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Elcodi, una nueva aventura en Symfony2]]></title>
