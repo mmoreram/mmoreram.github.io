@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: php | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/php/atom.xml" rel="self"/>
+  <title><![CDATA[Category: compressed | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/compressed/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
   <updated>2014-09-13T20:56:29+02:00</updated>
   <id>http://mmoreram.github.io/</id>
@@ -105,64 +105,6 @@ $files = $extractor</p>
 </code></pre>
 
 <p>```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Porque el orden importa]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa/"/>
-    <updated>2014-07-30T11:07:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa</id>
-    <content type="html"><![CDATA[<p>La verdad es que reconozco que soy un poco neurótico con el código. Y es que en
-mi caso me gusta definir la belleza de mis lineas no tan solo en el aspecto
-funcional y en el aspecto de arquitectura, sino en el aspecto visual. Y en
-realidad considero que descuidar este aspecto es un problema muy grande a la
-larga.</p>
-
-<p>Tratemos de pensar en la cantidad de horas que estamos ante estas lineas de
-código, y luego tratemos de analizar el impacto que estas tienen en nuestro día
-a día. ¿No creéis que importa el hecho de que esté ordenado, limpio y tratable?</p>
-
-<p>Pues bien, es para esto que, y dado que llevo un tiempo con la manía de ordenar
-los namespaces de mis ficheros php, he decidido empezar el proyecto
-<a href="https://github.com/mmoreram/php-formatter">php-formatter</a>.</p>
-
-<p>``` bash
-Console Tool</p>
-
-<p>Usage:
-  [options] command [arguments]</p>
-
-<p>Options:
-  &mdash;help           -h Display this help message.
-  &mdash;quiet          -q Do not output any message.
-  &mdash;verbose        -v|vv|vvv Increase the verbosity of messages
-  &mdash;version        -V Display this application version.
-  &mdash;ansi              Force ANSI output.
-  &mdash;no-ansi           Disable ANSI output.
-  &mdash;no-interaction -n Do not ask any interactive question.</p>
-
-<p>Available commands:
-  help       Displays help for a command
-  list       Lists commands
-use
-  use:sort   Sort Use statements
-```</p>
-
-<p>Lejos de ser un analizador de PSR, cuya función ya cumple a la perfección el
-proyecto de Fabien Potencier <a href="https://github.com/fabpot/php-cs-fixer">php-cs-fixer</a>,
-se trata de añadir, en modo comando, algunas funcionalidades tediosas que para mí
-son importantes, como es el caso de los Use Statements ( Poder ordenarlos por
-grupos, alfabéticamente o por longitud, ascendiente o descendiente&hellip; )</p>
-
-<p>De momento solo hay esta funcionalidad, y aún le faltan un par de opciones, pero
-no dudéis en proponer comandos que nos puedan ser útiles a todos.</p>
-
-<p>Os invito a que tengáis reglas estructurales y visuales en vuestros proyectos,
-ya que ayudan un poco a que el código quede un poco más estandarizado con el
-paso del tiempo, aunque sea a nivel visual.</p>
-
-<p>Vuestros ojos os lo agradecerán.</p>
 ]]></content>
   </entry>
   

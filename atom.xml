@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-09-04T15:48:26+02:00</updated>
+  <updated>2014-09-13T20:56:29+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,136 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Extractor, a PHP Library for compressed packages]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/09/13/extractor/"/>
+    <updated>2014-09-13T00:00:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/09/13/extractor</id>
+    <content type="html"><![CDATA[<p>Extractor is a simple php library for extracting all files from compressed
+packages.</p>
+
+<p>You can find the source in the
+<a href="https://github.com/mmoreram/extractor">Github repository</a>.</p>
+
+<p>Extractor uses the Finder Symfony component, so the result of extracting all
+compressed files given a package is nothing more than a Finder instance ready
+to be iterated and configured.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Finder\Finder</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Filesystem\TemporaryDirectory</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Resolver\ExtensionResolver</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Extractor</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$temporaryDirectory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TemporaryDirectory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$extensionResolver</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ExtensionResolver</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$extractor</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Extractor</span><span class="p">(</span>
+</span><span class='line'>    <span class="nv">$temporaryDirectory</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$extensionResolver</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * @var Finder $files</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="nv">$files</span> <span class="o">=</span> <span class="nv">$extractor</span><span class="o">-&gt;</span><span class="na">extractFromFile</span><span class="p">(</span><span class="s1">&#39;/tmp/myfile.rar&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$files</span> <span class="k">as</span> <span class="nv">$file</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">echo</span> <span class="nv">$file</span><span class="o">-&gt;</span><span class="na">getRealpath</span><span class="p">()</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can use the temporary folder of your Filesystem using a <code>TemporaryDirectory</code>
+instance or you can use a <code>SpecificDirectory</code> instance if you want to specify
+where all files should be extracted.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Filesystem\SpecificDirectory</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Resolver\ExtensionResolver</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Extractor</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$specificDirectory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SpecificDirectory</span><span class="p">(</span><span class="s1">&#39;/my/specific/path&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$extensionResolver</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ExtensionResolver</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$extractor</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Extractor</span><span class="p">(</span>
+</span><span class='line'>    <span class="nv">$specificDirectory</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$extensionResolver</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, you can also work with remote files.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Finder\Finder</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Filesystem\TemporaryDirectory</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Resolver\ExtensionResolver</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Extractor</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$specificDirectory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TemporaryDirectory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$extensionResolver</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ExtensionResolver</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$extractor</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Extractor</span><span class="p">(</span>
+</span><span class='line'>    <span class="nv">$specificDirectory</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$extensionResolver</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * @var Finder $files</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="nv">$files</span> <span class="o">=</span> <span class="nv">$extractor</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">extractFromFile</span><span class="p">(</span><span class="s1">&#39;http://host.com/my-compressed-file.zip&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Bye Bye Symfony]]></title>
@@ -4085,172 +4215,6 @@ se trata de buscar como los demás han solucionado ciertos problemas específico
 utilizando términos como CompilerPass, Tags o Dependency Injection.</p>
 
 <p>Para empezar, <a href="http://symfony.com/">Symfony</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Flushing Doctrine2 entities]]></title>
-    <link href="http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities/"/>
-    <updated>2013-10-11T10:11:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities</id>
-    <content type="html"><![CDATA[<p>Given this example</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$spain</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$spain</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;spain&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$spain</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$france</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$france</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;france&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$france</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>When we flush without defining any kind of parameter, all entities managed by
-EntityManager with changes will be flushed.<br/>
-To flush a specific entity managed by EntityManager we can just pass the entity
-as a parameter in the flush method</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$spain</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$spain</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;spain&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$spain</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$france</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$france</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;france&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$france</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * At this point, I only want to flush $spain</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">(</span><span class="nv">$spain</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To flush an array of entities managed by EntityManager we can pass the array as
-a parameter in the flush method</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$spain</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$spain</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;spain&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$spain</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$france</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$france</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;france&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$france</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$germany</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Country</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$germany</span><span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;germany&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">persist</span><span class="p">(</span><span class="nv">$germany</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * At this point, I only want to flush $spain</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">flush</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
-</span><span class='line'>    <span class="nv">$spain</span><span class="p">,</span>
-</span><span class='line'>    <span class="nv">$france</span><span class="p">,</span>
-</span><span class='line'><span class="p">));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So, how about flushing an ArrayCollection of entities? Lets take a look at the
-UnitOfWork code where contains this logic.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nv">$entity</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeChangeSets</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_object</span><span class="p">(</span><span class="nv">$entity</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeSingleEntityChangeSet</span><span class="p">(</span><span class="nv">$entity</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$entity</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$entity</span> <span class="k">as</span> <span class="nv">$object</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeSingleEntityChangeSet</span><span class="p">(</span><span class="nv">$object</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Considering that ArrayCollection is an object, this code should be changed to
-this code to also accept ArrayCollection and all iterable objects.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nv">$entity</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeChangeSets</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$entity</span><span class="p">)</span> <span class="o">||</span> <span class="nv">$entity</span> <span class="nx">instanceof</span> <span class="nx">IteratorAggregate</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$entity</span> <span class="k">as</span> <span class="nv">$object</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeSingleEntityChangeSet</span><span class="p">(</span><span class="nv">$object</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_object</span><span class="p">(</span><span class="nv">$entity</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">computeSingleEntityChangeSet</span><span class="p">(</span><span class="nv">$entity</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
