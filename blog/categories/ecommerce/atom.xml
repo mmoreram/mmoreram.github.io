@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ecommerce | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/ecommerce/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2014-09-13T20:58:26+02:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/blog/categories/ecommerce/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2014-09-13T21:01:05+02:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Elcodi wants you]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/07/21/elcodi-wants-you/"/>
+    <link href="http://mmoreram.com/blog/2014/07/21/elcodi-wants-you/"/>
     <updated>2014-07-21T21:28:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/07/21/elcodi-wants-you</id>
+    <id>http://mmoreram.com/blog/2014/07/21/elcodi-wants-you</id>
     <content type="html"><![CDATA[<p>Right. Elcodi wants you.</p>
 
 <p><a href="http://elcodi.io">Elcodi Project</a></p>
@@ -48,9 +48,9 @@ contact me at <code>yuhu@mmoreram.com</code></p>
   
   <entry>
     <title type="html"><![CDATA[Elcodi, a new Symfony adventure]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/04/29/elcodi-a-new-symfony-adventure/"/>
+    <link href="http://mmoreram.com/blog/2014/04/29/elcodi-a-new-symfony-adventure/"/>
     <updated>2014-04-29T16:10:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/04/29/elcodi-a-new-symfony-adventure</id>
+    <id>http://mmoreram.com/blog/2014/04/29/elcodi-a-new-symfony-adventure</id>
     <content type="html"><![CDATA[<p>Some changes are about to come. And it seems that they are good
 changes. I haven’t written in my blog for a few weeks, and the truth is
 I feel bad about it. I like to write about the things that happen to me at

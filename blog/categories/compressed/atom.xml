@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: compressed | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/compressed/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2014-09-13T20:58:26+02:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/blog/categories/compressed/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2014-09-13T21:01:05+02:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Extractor, a PHP Library for compressed packages]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/09/13/extractor/"/>
+    <link href="http://mmoreram.com/blog/2014/09/13/extractor/"/>
     <updated>2014-09-13T00:00:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/09/13/extractor</id>
+    <id>http://mmoreram.com/blog/2014/09/13/extractor</id>
     <content type="html"><![CDATA[<p>Extractor is a simple php library for extracting all files from compressed
 packages. Available formats are</p>
 

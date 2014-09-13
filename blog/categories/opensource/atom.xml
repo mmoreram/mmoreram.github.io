@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: opensource | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/opensource/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2014-09-13T20:58:26+02:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/blog/categories/opensource/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2014-09-13T21:01:05+02:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ParamConverter... mala idea]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/05/05/paramconverter-una-mala-idea/"/>
+    <link href="http://mmoreram.com/blog/2014/05/05/paramconverter-una-mala-idea/"/>
     <updated>2014-05-05T13:18:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/05/05/paramconverter-una-mala-idea</id>
+    <id>http://mmoreram.com/blog/2014/05/05/paramconverter-una-mala-idea</id>
     <content type="html"><![CDATA[<p>Este problema ocurre en proyectos abiertos, open source. Para proyectos privados
 donde Cart siempre será Cart, no creo que deba ser de su preocupación.</p>
 
