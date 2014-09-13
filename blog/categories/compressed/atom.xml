@@ -4,7 +4,7 @@
   <title><![CDATA[Category: compressed | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/compressed/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-09-13T20:56:29+02:00</updated>
+  <updated>2014-09-13T20:58:26+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -19,7 +19,17 @@
     <updated>2014-09-13T00:00:00+02:00</updated>
     <id>http://mmoreram.github.io/blog/2014/09/13/extractor</id>
     <content type="html"><![CDATA[<p>Extractor is a simple php library for extracting all files from compressed
-packages.</p>
+packages. Available formats are</p>
+
+<ul>
+<li>zip</li>
+<li>Rar</li>
+<li>Phar</li>
+<li>Tar</li>
+<li>Gz</li>
+<li>Bz2</li>
+</ul>
+
 
 <p>You can find the source in the
 <a href="https://github.com/mmoreram/extractor">Github repository</a>.</p>
@@ -78,7 +88,7 @@ $extensionResolver
 <p>);
 ```</p>
 
-<p>Finally, you can also work with remote files.</p>
+<p>You can also work with remote files.</p>
 
 <p>``` php
 use Symfony\Component\Finder\Finder;
