@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: php | Because yes]]></title>
-  <link href="http://mmoreram.com/blog/categories/php/atom.xml" rel="self"/>
-  <link href="http://mmoreram.com/"/>
-  <updated>2014-09-13T21:01:05+02:00</updated>
-  <id>http://mmoreram.com/</id>
+  <link href="http://mmoreram.github.io/blog/categories/php/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-09-14T15:00:02+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Extractor, a PHP Library for compressed packages]]></title>
-    <link href="http://mmoreram.com/blog/2014/09/13/extractor/"/>
+    <link href="http://mmoreram.github.io/blog/2014/09/13/extractor/"/>
     <updated>2014-09-13T00:00:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/09/13/extractor</id>
+    <id>http://mmoreram.github.io/blog/2014/09/13/extractor</id>
     <content type="html"><![CDATA[<p>Extractor is a simple php library for extracting all files from compressed
 packages. Available formats are</p>
 
@@ -120,9 +120,9 @@ $files = $extractor</p>
   
   <entry>
     <title type="html"><![CDATA[Porque el orden importa]]></title>
-    <link href="http://mmoreram.com/blog/2014/07/30/porque-el-orden-importa/"/>
+    <link href="http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa/"/>
     <updated>2014-07-30T11:07:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/07/30/porque-el-orden-importa</id>
+    <id>http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa</id>
     <content type="html"><![CDATA[<p>La verdad es que reconozco que soy un poco neurótico con el código. Y es que en
 mi caso me gusta definir la belleza de mis lineas no tan solo en el aspecto
 funcional y en el aspecto de arquitectura, sino en el aspecto visual. Y en

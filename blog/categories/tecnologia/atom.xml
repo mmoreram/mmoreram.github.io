@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: tecnología | Because yes]]></title>
-  <link href="http://mmoreram.com/blog/categories/tecnologia/atom.xml" rel="self"/>
-  <link href="http://mmoreram.com/"/>
-  <updated>2014-09-13T21:01:05+02:00</updated>
-  <id>http://mmoreram.com/</id>
+  <link href="http://mmoreram.github.io/blog/categories/tecnologia/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-09-14T15:00:02+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Las modas y sus modelos me tienen frito]]></title>
-    <link href="http://mmoreram.com/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos/"/>
+    <link href="http://mmoreram.github.io/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos/"/>
     <updated>2014-05-22T12:27:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos</id>
+    <id>http://mmoreram.github.io/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos</id>
     <content type="html"><![CDATA[<p>Las modas y sus modelos me tienen frito.</p>
 
 <p>Empiezo así mi post porque no sabría como empezarlo sin ser más directo.

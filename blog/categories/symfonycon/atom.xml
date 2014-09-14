@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Symfonycon | Because yes]]></title>
-  <link href="http://mmoreram.com/blog/categories/symfonycon/atom.xml" rel="self"/>
-  <link href="http://mmoreram.com/"/>
-  <updated>2014-09-13T21:01:05+02:00</updated>
-  <id>http://mmoreram.com/</id>
+  <link href="http://mmoreram.github.io/blog/categories/symfonycon/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-09-14T15:00:02+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[One section, one component]]></title>
-    <link href="http://mmoreram.com/blog/2014/08/12/one-section-one-component/"/>
+    <link href="http://mmoreram.github.io/blog/2014/08/12/one-section-one-component/"/>
     <updated>2014-08-12T11:29:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/08/12/one-section-one-component</id>
+    <id>http://mmoreram.github.io/blog/2014/08/12/one-section-one-component</id>
     <content type="html"><![CDATA[<p><a href="/blog/2014/08/07/symfony-walk-zaragoza-madrid/">Symfony Walk</a></p>
 
 <p><img class="[class names]" src="/images/zaragoza-madrid.png" title="[Zaragoza Madrid [Zaragoza Madrid]]" ></p>
@@ -51,9 +51,9 @@ about some scenarios that this component can be useful.</p>
   
   <entry>
     <title type="html"><![CDATA[Symfony Walk: Zaragoza - Madrid]]></title>
-    <link href="http://mmoreram.com/blog/2014/08/07/symfony-walk-zaragoza-madrid/"/>
+    <link href="http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/"/>
     <updated>2014-08-07T13:49:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/08/07/symfony-walk-zaragoza-madrid</id>
+    <id>http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid</id>
     <content type="html"><![CDATA[<p>The 2014 Madrid SymfonyCon is closer every day, and I have to admit that
 I admire this community. A community that has been able to feed the php world
 with valuable projects and better people.</p>

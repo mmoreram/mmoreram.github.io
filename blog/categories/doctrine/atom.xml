@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: doctrine | Because yes]]></title>
-  <link href="http://mmoreram.com/blog/categories/doctrine/atom.xml" rel="self"/>
-  <link href="http://mmoreram.com/"/>
-  <updated>2014-09-13T21:01:05+02:00</updated>
-  <id>http://mmoreram.com/</id>
+  <link href="http://mmoreram.github.io/blog/categories/doctrine/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-09-14T15:00:02+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Flushing Doctrine2 entities]]></title>
-    <link href="http://mmoreram.com/blog/2013/10/11/flushing-doctrine2-entities/"/>
+    <link href="http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities/"/>
     <updated>2013-10-11T10:11:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2013/10/11/flushing-doctrine2-entities</id>
+    <id>http://mmoreram.github.io/blog/2013/10/11/flushing-doctrine2-entities</id>
     <content type="html"><![CDATA[<p>Given this example</p>
 
 <p>``` php
@@ -132,9 +132,9 @@ if ($entity === null) {</p>
   
   <entry>
     <title type="html"><![CDATA[Inverse associations in Doctrine2 models]]></title>
-    <link href="http://mmoreram.com/blog/2013/10/09/inverse-associations-in-doctrine2-models/"/>
+    <link href="http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models/"/>
     <updated>2013-10-09T11:37:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2013/10/09/inverse-associations-in-doctrine2-models</id>
+    <id>http://mmoreram.github.io/blog/2013/10/09/inverse-associations-in-doctrine2-models</id>
     <content type="html"><![CDATA[<p>Lets take a look some basic example about simple Doctrine2 relation.</p>
 
 <p>``` php

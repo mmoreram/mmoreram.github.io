@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Drupalcamp | Because yes]]></title>
-  <link href="http://mmoreram.com/blog/categories/drupalcamp/atom.xml" rel="self"/>
-  <link href="http://mmoreram.com/"/>
-  <updated>2014-09-13T21:01:05+02:00</updated>
-  <id>http://mmoreram.com/</id>
+  <link href="http://mmoreram.github.io/blog/categories/drupalcamp/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-09-14T15:00:02+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Camino hacia Drupal8]]></title>
-    <link href="http://mmoreram.com/blog/2014/04/28/camino-hacia-drupal8/"/>
+    <link href="http://mmoreram.github.io/blog/2014/04/28/camino-hacia-drupal8/"/>
     <updated>2014-04-28T16:27:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/04/28/camino-hacia-drupal8</id>
+    <id>http://mmoreram.github.io/blog/2014/04/28/camino-hacia-drupal8</id>
     <content type="html"><![CDATA[<p>Debo reconocer que 12 horas de avión son muchas horas. Sobretodo porque, aún
 teniendo formas de distraerse ( Asumo de raiz que no se puede dormir&hellip; Podría
 enumerar infinidad de razones&hellip; niños gritando, llorando o jugando, asientos

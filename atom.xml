@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Because yes]]></title>
-  <link href="http://mmoreram.com/atom.xml" rel="self"/>
-  <link href="http://mmoreram.com/"/>
-  <updated>2014-09-13T21:01:05+02:00</updated>
-  <id>http://mmoreram.com/</id>
+  <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-09-14T15:00:02+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Extractor, a PHP Library for compressed packages]]></title>
-    <link href="http://mmoreram.com/blog/2014/09/13/extractor/"/>
+    <link href="http://mmoreram.github.io/blog/2014/09/13/extractor/"/>
     <updated>2014-09-13T00:00:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/09/13/extractor</id>
+    <id>http://mmoreram.github.io/blog/2014/09/13/extractor</id>
     <content type="html"><![CDATA[<p>Extractor is a simple php library for extracting all files from compressed
 packages. Available formats are</p>
 
@@ -155,9 +155,9 @@ where all files should be extracted.</p>
   
   <entry>
     <title type="html"><![CDATA[Bye Bye Symfony]]></title>
-    <link href="http://mmoreram.com/blog/2014/09/01/bye-bye-symfony/"/>
+    <link href="http://mmoreram.github.io/blog/2014/09/01/bye-bye-symfony/"/>
     <updated>2014-09-01T00:00:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/09/01/bye-bye-symfony</id>
+    <id>http://mmoreram.github.io/blog/2014/09/01/bye-bye-symfony</id>
     <content type="html"><![CDATA[<p>Don&rsquo;t be afraid. You know what I think about the Symfony components and how I
 love them. Until now any circumstance has changed my mind about using them in my
 projects, and over the time, after discover every hidden single piece of code, I
@@ -812,12 +812,12 @@ should satisfy as people as possible, so remember, specify and then implement.</
   
   <entry>
     <title type="html"><![CDATA[One section, one component]]></title>
-    <link href="http://mmoreram.com/blog/2014/08/12/one-section-one-component/"/>
+    <link href="http://mmoreram.github.io/blog/2014/08/12/one-section-one-component/"/>
     <updated>2014-08-12T11:29:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/08/12/one-section-one-component</id>
-    <content type="html"><![CDATA[<p><a href="http://mmoreram.com/blog/2014/08/07/symfony-walk-zaragoza-madrid/">Symfony Walk</a></p>
+    <id>http://mmoreram.github.io/blog/2014/08/12/one-section-one-component</id>
+    <content type="html"><![CDATA[<p><a href="http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/">Symfony Walk</a></p>
 
-<p><img class="[class names]" src="http://mmoreram.com/images/zaragoza-madrid.png" title="[Zaragoza Madrid [Zaragoza Madrid]]" ></p>
+<p><img class="[class names]" src="http://mmoreram.github.io/images/zaragoza-madrid.png" title="[Zaragoza Madrid [Zaragoza Madrid]]" ></p>
 
 <p>Symfony Walk will contain a total of 10 sections, and each one will have the
 name of one Symfony Component. One of the sections will be named <em>Doctrine</em> (yes,
@@ -848,9 +848,9 @@ about some scenarios that this component can be useful.</p>
   
   <entry>
     <title type="html"><![CDATA[Symfony Walk: Zaragoza - Madrid]]></title>
-    <link href="http://mmoreram.com/blog/2014/08/07/symfony-walk-zaragoza-madrid/"/>
+    <link href="http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/"/>
     <updated>2014-08-07T13:49:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/08/07/symfony-walk-zaragoza-madrid</id>
+    <id>http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid</id>
     <content type="html"><![CDATA[<p>The 2014 Madrid SymfonyCon is closer every day, and I have to admit that
 I admire this community. A community that has been able to feed the php world
 with valuable projects and better people.</p>
@@ -896,9 +896,9 @@ bottom of the road, a great reward awaits your arrival.</p>
   
   <entry>
     <title type="html"><![CDATA[Porque el orden importa]]></title>
-    <link href="http://mmoreram.com/blog/2014/07/30/porque-el-orden-importa/"/>
+    <link href="http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa/"/>
     <updated>2014-07-30T11:07:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/07/30/porque-el-orden-importa</id>
+    <id>http://mmoreram.github.io/blog/2014/07/30/porque-el-orden-importa</id>
     <content type="html"><![CDATA[<p>La verdad es que reconozco que soy un poco neurótico con el código. Y es que en
 mi caso me gusta definir la belleza de mis lineas no tan solo en el aspecto
 funcional y en el aspecto de arquitectura, sino en el aspecto visual. Y en
@@ -973,9 +973,9 @@ paso del tiempo, aunque sea a nivel visual.</p>
   
   <entry>
     <title type="html"><![CDATA[Elcodi wants you]]></title>
-    <link href="http://mmoreram.com/blog/2014/07/21/elcodi-wants-you/"/>
+    <link href="http://mmoreram.github.io/blog/2014/07/21/elcodi-wants-you/"/>
     <updated>2014-07-21T21:28:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/07/21/elcodi-wants-you</id>
+    <id>http://mmoreram.github.io/blog/2014/07/21/elcodi-wants-you</id>
     <content type="html"><![CDATA[<p>Right. Elcodi wants you.</p>
 
 <p><a href="http://elcodi.io">Elcodi Project</a></p>
@@ -1006,9 +1006,9 @@ contact me at <code>yuhu@mmoreram.com</code></p>
   
   <entry>
     <title type="html"><![CDATA[ControllerExtraBundle, some useful Controller annotations]]></title>
-    <link href="http://mmoreram.com/blog/2014/06/30/controller-extra-bundle/"/>
+    <link href="http://mmoreram.github.io/blog/2014/06/30/controller-extra-bundle/"/>
     <updated>2014-06-30T17:03:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/06/30/controller-extra-bundle</id>
+    <id>http://mmoreram.github.io/blog/2014/06/30/controller-extra-bundle</id>
     <content type="html"><![CDATA[<p>Few days ago, at the bimonthly meeting of Symfony2 Barcelona, attendees
 began to discuss the annotations. Obviously, given that it is a
 practice that goes against many many philosophies or architectural strategies ,
@@ -1514,9 +1514,9 @@ and the moment you want to do it (before, after, both)</p>
   
   <entry>
     <title type="html"><![CDATA[Symfony Barcelona]]></title>
-    <link href="http://mmoreram.com/blog/2014/06/25/symfony-barcelona/"/>
+    <link href="http://mmoreram.github.io/blog/2014/06/25/symfony-barcelona/"/>
     <updated>2014-06-25T11:46:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/06/25/symfony-barcelona</id>
+    <id>http://mmoreram.github.io/blog/2014/06/25/symfony-barcelona</id>
     <content type="html"><![CDATA[<p>Queridos developers de Barcelona y alrededores.</p>
 
 <p>Como ya sabréis algunos, en Barcelona tenemos una comunidad muy interesante de
@@ -1565,9 +1565,9 @@ patas de alguna paloma o en alguna botella surcadora de mares y horizontes.</p>
   
   <entry>
     <title type="html"><![CDATA[Las modas y sus modelos me tienen frito]]></title>
-    <link href="http://mmoreram.com/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos/"/>
+    <link href="http://mmoreram.github.io/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos/"/>
     <updated>2014-05-22T12:27:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos</id>
+    <id>http://mmoreram.github.io/blog/2014/05/22/las-modas-y-los-modelos-me-tienen-fritos</id>
     <content type="html"><![CDATA[<p>Las modas y sus modelos me tienen frito.</p>
 
 <p>Empiezo así mi post porque no sabría como empezarlo sin ser más directo.
@@ -1637,9 +1637,9 @@ también&rdquo;.</p>
   
   <entry>
     <title type="html"><![CDATA[Sobre reglas y ExpressionLanguage]]></title>
-    <link href="http://mmoreram.com/blog/2014/05/20/about-rules-and-expression-language/"/>
+    <link href="http://mmoreram.github.io/blog/2014/05/20/about-rules-and-expression-language/"/>
     <updated>2014-05-20T14:00:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/05/20/about-rules-and-expression-language</id>
+    <id>http://mmoreram.github.io/blog/2014/05/20/about-rules-and-expression-language</id>
     <content type="html"><![CDATA[<blockquote><p>You can read an english translation in
 <a href="http://blog.elcodi.io/blog/2014/05/20/about-rules-and-expressionlanguage/">Elcodi blog</a></p></blockquote>
 
@@ -2536,9 +2536,9 @@ debate, mejoras y <a href="https://github.com/elcodi/elcodi/tree/master/src/Elco
   
   <entry>
     <title type="html"><![CDATA[Restrospectiva de un ponente]]></title>
-    <link href="http://mmoreram.com/blog/2014/05/19/restrospectiva/"/>
+    <link href="http://mmoreram.github.io/blog/2014/05/19/restrospectiva/"/>
     <updated>2014-05-19T13:27:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/05/19/restrospectiva</id>
+    <id>http://mmoreram.github.io/blog/2014/05/19/restrospectiva</id>
     <content type="html"><![CDATA[<p>Este fin de semana ha sido la DrupalCamp de Valencia. Tuve la suerte de ser uno
 de los seleccionados para hacer una de las ponencias que tengo preparadas, con
 título <em>El efecto &lsquo;este código es una basura&rsquo;</em>. Esta ponencia, preparada
@@ -2643,9 +2643,9 @@ me lo hicieron saber y me hicieron reflexionar.</p>
   
   <entry>
     <title type="html"><![CDATA[What makes Elcodi different?]]></title>
-    <link href="http://mmoreram.com/blog/2014/05/15/what-makes-elcodi-different/"/>
+    <link href="http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different/"/>
     <updated>2014-05-15T17:40:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/05/15/what-makes-elcodi-different</id>
+    <id>http://mmoreram.github.io/blog/2014/05/15/what-makes-elcodi-different</id>
     <content type="html"><![CDATA[<p>Well, the league of web development, in which we play, is a fussy league, I
 started to recieve the first questions about the project I find myself
 developing&hellip; ¿ Why a new project called Elcodi wants to cover the needs of
@@ -2750,9 +2750,9 @@ project will be well received and appreciated :)</p>
   
   <entry>
     <title type="html"><![CDATA[ParamConverter... mala idea]]></title>
-    <link href="http://mmoreram.com/blog/2014/05/05/paramconverter-una-mala-idea/"/>
+    <link href="http://mmoreram.github.io/blog/2014/05/05/paramconverter-una-mala-idea/"/>
     <updated>2014-05-05T13:18:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/05/05/paramconverter-una-mala-idea</id>
+    <id>http://mmoreram.github.io/blog/2014/05/05/paramconverter-una-mala-idea</id>
     <content type="html"><![CDATA[<p>Este problema ocurre en proyectos abiertos, open source. Para proyectos privados
 donde Cart siempre será Cart, no creo que deba ser de su preocupación.</p>
 
@@ -2911,9 +2911,9 @@ Source?</p>
   
   <entry>
     <title type="html"><![CDATA[Elcodi, a new Symfony adventure]]></title>
-    <link href="http://mmoreram.com/blog/2014/04/29/elcodi-a-new-symfony-adventure/"/>
+    <link href="http://mmoreram.github.io/blog/2014/04/29/elcodi-a-new-symfony-adventure/"/>
     <updated>2014-04-29T16:10:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/04/29/elcodi-a-new-symfony-adventure</id>
+    <id>http://mmoreram.github.io/blog/2014/04/29/elcodi-a-new-symfony-adventure</id>
     <content type="html"><![CDATA[<p>Some changes are about to come. And it seems that they are good
 changes. I haven’t written in my blog for a few weeks, and the truth is
 I feel bad about it. I like to write about the things that happen to me at
@@ -2987,9 +2987,9 @@ really make an interesting project for us all.</p>
   
   <entry>
     <title type="html"><![CDATA[Camino hacia Drupal8]]></title>
-    <link href="http://mmoreram.com/blog/2014/04/28/camino-hacia-drupal8/"/>
+    <link href="http://mmoreram.github.io/blog/2014/04/28/camino-hacia-drupal8/"/>
     <updated>2014-04-28T16:27:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/04/28/camino-hacia-drupal8</id>
+    <id>http://mmoreram.github.io/blog/2014/04/28/camino-hacia-drupal8</id>
     <content type="html"><![CDATA[<p>Debo reconocer que 12 horas de avión son muchas horas. Sobretodo porque, aún
 teniendo formas de distraerse ( Asumo de raiz que no se puede dormir&hellip; Podría
 enumerar infinidad de razones&hellip; niños gritando, llorando o jugando, asientos
@@ -3113,9 +3113,9 @@ colaborativa.</p>
   
   <entry>
     <title type="html"><![CDATA[Elcodi, una nueva aventura en Symfony2]]></title>
-    <link href="http://mmoreram.com/blog/2014/04/17/elcodi/"/>
+    <link href="http://mmoreram.github.io/blog/2014/04/17/elcodi/"/>
     <updated>2014-04-17T12:46:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/04/17/elcodi</id>
+    <id>http://mmoreram.github.io/blog/2014/04/17/elcodi</id>
     <content type="html"><![CDATA[<p>Ciertos cambios están por llegar. Y parece ser que son cambios buenos. Llevo
 unas cuantas semanas sin escribir en el blog, y la verdad es que me sabe mal.
 Me gusta contar cosas que me van sucediendo en la empresa. Problemas que nos
@@ -3194,9 +3194,9 @@ realmente hacer un proyecto interesante para todos.</p>
   
   <entry>
     <title type="html"><![CDATA[Custom controller annotations]]></title>
-    <link href="http://mmoreram.com/blog/2014/02/11/custom-controller-annotations/"/>
+    <link href="http://mmoreram.github.io/blog/2014/02/11/custom-controller-annotations/"/>
     <updated>2014-02-11T20:21:00+01:00</updated>
-    <id>http://mmoreram.com/blog/2014/02/11/custom-controller-annotations</id>
+    <id>http://mmoreram.github.io/blog/2014/02/11/custom-controller-annotations</id>
     <content type="html"><![CDATA[<p>The goal is easy: To provide a very intuitive and easy way of creating
 controller annotations in Symfony2.</p>
 
@@ -3535,9 +3535,9 @@ the <code>boot()</code> method of <code>bundle.php</code> file.</p>
   
   <entry>
     <title type="html"><![CDATA[Cache clear en Symfony2]]></title>
-    <link href="http://mmoreram.com/blog/2014/01/03/cache-clear-en-symfony2/"/>
+    <link href="http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2/"/>
     <updated>2014-01-03T15:11:00+01:00</updated>
-    <id>http://mmoreram.com/blog/2014/01/03/cache-clear-en-symfony2</id>
+    <id>http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2</id>
     <content type="html"><![CDATA[<p>Vacía la caché de Symfony, y la vuelve a crear (sino se especifica lo contrario)</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -3678,9 +3678,9 @@ gente&hellip;</p>
   
   <entry>
     <title type="html"><![CDATA[Factory pattern in Symfony2]]></title>
-    <link href="http://mmoreram.com/blog/2013/12/23/factory-pattern-in-symfony2/"/>
+    <link href="http://mmoreram.github.io/blog/2013/12/23/factory-pattern-in-symfony2/"/>
     <updated>2013-12-23T12:10:00+01:00</updated>
-    <id>http://mmoreram.com/blog/2013/12/23/factory-pattern-in-symfony2</id>
+    <id>http://mmoreram.github.io/blog/2013/12/23/factory-pattern-in-symfony2</id>
     <content type="html"><![CDATA[<h2>The pattern.</h2>
 
 <p>The factory pattern gives responsibility to create some instances of certain
@@ -4180,9 +4180,9 @@ a new <code>Finder</code> object the first time, but not the others.</p>
   
   <entry>
     <title type="html"><![CDATA[Symfony2]]></title>
-    <link href="http://mmoreram.com/blog/2013/12/18/symfony-rocks/"/>
+    <link href="http://mmoreram.github.io/blog/2013/12/18/symfony-rocks/"/>
     <updated>2013-12-18T19:01:00+01:00</updated>
-    <id>http://mmoreram.com/blog/2013/12/18/symfony-rocks</id>
+    <id>http://mmoreram.github.io/blog/2013/12/18/symfony-rocks</id>
     <content type="html"><![CDATA[<p>No es de extrañar que alguien llegue a considerarme un pequeño obsesionado de
 Symfony. Y dado que toda obsesión es mala, puedo asegurar que lo mío no es
 obsesión, sino predilección, estima y adulación. Y es que realmente todo mi

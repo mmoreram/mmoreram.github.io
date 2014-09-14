@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: annotations | Because yes]]></title>
-  <link href="http://mmoreram.com/blog/categories/annotations/atom.xml" rel="self"/>
-  <link href="http://mmoreram.com/"/>
-  <updated>2014-09-13T21:01:05+02:00</updated>
-  <id>http://mmoreram.com/</id>
+  <link href="http://mmoreram.github.io/blog/categories/annotations/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-09-14T15:00:02+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ControllerExtraBundle, some useful Controller annotations]]></title>
-    <link href="http://mmoreram.com/blog/2014/06/30/controller-extra-bundle/"/>
+    <link href="http://mmoreram.github.io/blog/2014/06/30/controller-extra-bundle/"/>
     <updated>2014-06-30T17:03:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/06/30/controller-extra-bundle</id>
+    <id>http://mmoreram.github.io/blog/2014/06/30/controller-extra-bundle</id>
     <content type="html"><![CDATA[<p>Few days ago, at the bimonthly meeting of Symfony2 Barcelona, attendees
 began to discuss the annotations. Obviously, given that it is a
 practice that goes against many many philosophies or architectural strategies ,

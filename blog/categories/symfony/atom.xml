@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Symfony | Because yes]]></title>
-  <link href="http://mmoreram.com/blog/categories/symfony/atom.xml" rel="self"/>
-  <link href="http://mmoreram.com/"/>
-  <updated>2014-09-13T21:01:05+02:00</updated>
-  <id>http://mmoreram.com/</id>
+  <link href="http://mmoreram.github.io/blog/categories/symfony/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-09-14T15:00:02+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Bye Bye Symfony]]></title>
-    <link href="http://mmoreram.com/blog/2014/09/01/bye-bye-symfony/"/>
+    <link href="http://mmoreram.github.io/blog/2014/09/01/bye-bye-symfony/"/>
     <updated>2014-09-01T00:00:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/09/01/bye-bye-symfony</id>
+    <id>http://mmoreram.github.io/blog/2014/09/01/bye-bye-symfony</id>
     <content type="html"><![CDATA[<p>Don&rsquo;t be afraid. You know what I think about the Symfony components and how I
 love them. Until now any circumstance has changed my mind about using them in my
 projects, and over the time, after discover every hidden single piece of code, I
@@ -48,7 +48,7 @@ is all this about.</p>
  *
  * Feel free to edit as you please, and have fun.
  *
- * @author Marc Morera <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#x79;&#x75;&#x68;&#x75;&#x40;&#x6d;&#x6d;&#x6f;&#114;&#x65;&#114;&#x61;&#x6d;&#x2e;&#99;&#111;&#x6d;">&#x79;&#117;&#104;&#x75;&#x40;&#x6d;&#109;&#x6f;&#114;&#x65;&#114;&#x61;&#x6d;&#x2e;&#x63;&#111;&#109;</a>
+ * @author Marc Morera <a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#58;&#x79;&#117;&#x68;&#x75;&#x40;&#x6d;&#x6d;&#x6f;&#114;&#x65;&#x72;&#x61;&#109;&#x2e;&#99;&#x6f;&#x6d;">&#121;&#117;&#x68;&#117;&#x40;&#x6d;&#109;&#111;&#114;&#x65;&#114;&#97;&#x6d;&#46;&#x63;&#x6f;&#109;</a>
  </em>/</p>
 
 <p>namespace Package\Generator;</p>
@@ -159,7 +159,7 @@ specification with the interfaces.</p>
  *
  * Feel free to edit as you please, and have fun.
  *
- * @author Marc Morera <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x79;&#117;&#x68;&#x75;&#64;&#x6d;&#109;&#111;&#114;&#101;&#x72;&#x61;&#x6d;&#x2e;&#99;&#x6f;&#109;">&#121;&#x75;&#x68;&#x75;&#64;&#x6d;&#109;&#111;&#x72;&#x65;&#x72;&#97;&#x6d;&#x2e;&#x63;&#x6f;&#109;</a>
+ * @author Marc Morera <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#121;&#117;&#x68;&#117;&#x40;&#109;&#x6d;&#x6f;&#114;&#101;&#114;&#x61;&#x6d;&#46;&#x63;&#x6f;&#x6d;">&#121;&#x75;&#104;&#117;&#64;&#x6d;&#109;&#x6f;&#x72;&#101;&#x72;&#97;&#x6d;&#46;&#99;&#111;&#x6d;</a>
  </em>/</p>
 
 <p>namespace Package\Specification;</p>
@@ -195,7 +195,7 @@ the route name, will return its complete path.</p>
  *
  * Feel free to edit as you please, and have fun.
  *
- * @author Marc Morera <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#x79;&#117;&#104;&#117;&#x40;&#x6d;&#x6d;&#x6f;&#114;&#101;&#x72;&#97;&#109;&#x2e;&#99;&#x6f;&#109;">&#x79;&#x75;&#x68;&#117;&#64;&#x6d;&#109;&#x6f;&#x72;&#101;&#x72;&#x61;&#x6d;&#46;&#99;&#111;&#109;</a>
+ * @author Marc Morera <a href="&#109;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#121;&#117;&#x68;&#117;&#x40;&#109;&#x6d;&#x6f;&#114;&#x65;&#114;&#97;&#109;&#46;&#x63;&#x6f;&#109;">&#121;&#x75;&#104;&#117;&#64;&#109;&#109;&#111;&#x72;&#101;&#114;&#x61;&#109;&#x2e;&#99;&#111;&#109;</a>
  </em>/</p>
 
 <p>namespace Package\Generator;</p>
@@ -261,7 +261,7 @@ for my specification.</p>
  *
  * Feel free to edit as you please, and have fun.
  *
- * @author Marc Morera <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x79;&#117;&#104;&#117;&#x40;&#x6d;&#x6d;&#111;&#114;&#101;&#x72;&#97;&#x6d;&#x2e;&#x63;&#111;&#x6d;">&#x79;&#x75;&#x68;&#x75;&#x40;&#x6d;&#x6d;&#111;&#114;&#101;&#x72;&#97;&#109;&#x2e;&#99;&#x6f;&#x6d;</a>
+ * @author Marc Morera <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x79;&#x75;&#104;&#117;&#x40;&#x6d;&#109;&#x6f;&#x72;&#101;&#114;&#x61;&#109;&#46;&#x63;&#x6f;&#109;">&#x79;&#x75;&#104;&#x75;&#x40;&#x6d;&#x6d;&#x6f;&#x72;&#101;&#x72;&#97;&#x6d;&#x2e;&#99;&#x6f;&#x6d;</a>
  </em>/</p>
 
 <p>namespace Package\Adapter;</p>
@@ -329,7 +329,7 @@ suggested.</p>
  *
  * Feel free to edit as you please, and have fun.
  *
- * @author Marc Morera <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#58;&#x79;&#x75;&#x68;&#x75;&#64;&#109;&#109;&#x6f;&#x72;&#x65;&#114;&#x61;&#109;&#x2e;&#x63;&#111;&#109;">&#121;&#x75;&#104;&#117;&#x40;&#x6d;&#x6d;&#x6f;&#x72;&#101;&#x72;&#97;&#109;&#x2e;&#x63;&#x6f;&#109;</a>
+ * @author Marc Morera <a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#x79;&#117;&#x68;&#x75;&#64;&#x6d;&#x6d;&#x6f;&#114;&#101;&#114;&#x61;&#x6d;&#46;&#99;&#111;&#109;">&#121;&#117;&#104;&#x75;&#64;&#x6d;&#109;&#111;&#x72;&#101;&#x72;&#97;&#109;&#46;&#99;&#111;&#x6d;</a>
  </em>/</p>
 
 <p>namespace Package\Adapter;</p>
@@ -459,9 +459,9 @@ should satisfy as people as possible, so remember, specify and then implement.</
   
   <entry>
     <title type="html"><![CDATA[Elcodi, una nueva aventura en Symfony2]]></title>
-    <link href="http://mmoreram.com/blog/2014/04/17/elcodi/"/>
+    <link href="http://mmoreram.github.io/blog/2014/04/17/elcodi/"/>
     <updated>2014-04-17T12:46:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2014/04/17/elcodi</id>
+    <id>http://mmoreram.github.io/blog/2014/04/17/elcodi</id>
     <content type="html"><![CDATA[<p>Ciertos cambios están por llegar. Y parece ser que son cambios buenos. Llevo
 unas cuantas semanas sin escribir en el blog, y la verdad es que me sabe mal.
 Me gusta contar cosas que me van sucediendo en la empresa. Problemas que nos
@@ -540,9 +540,9 @@ realmente hacer un proyecto interesante para todos.</p>
   
   <entry>
     <title type="html"><![CDATA[Custom controller annotations]]></title>
-    <link href="http://mmoreram.com/blog/2014/02/11/custom-controller-annotations/"/>
+    <link href="http://mmoreram.github.io/blog/2014/02/11/custom-controller-annotations/"/>
     <updated>2014-02-11T20:21:00+01:00</updated>
-    <id>http://mmoreram.com/blog/2014/02/11/custom-controller-annotations</id>
+    <id>http://mmoreram.github.io/blog/2014/02/11/custom-controller-annotations</id>
     <content type="html"><![CDATA[<p>The goal is easy: To provide a very intuitive and easy way of creating
 controller annotations in Symfony2.</p>
 
@@ -758,9 +758,9 @@ public function boot()
   
   <entry>
     <title type="html"><![CDATA[Cache clear en Symfony2]]></title>
-    <link href="http://mmoreram.com/blog/2014/01/03/cache-clear-en-symfony2/"/>
+    <link href="http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2/"/>
     <updated>2014-01-03T15:11:00+01:00</updated>
-    <id>http://mmoreram.com/blog/2014/01/03/cache-clear-en-symfony2</id>
+    <id>http://mmoreram.github.io/blog/2014/01/03/cache-clear-en-symfony2</id>
     <content type="html"><![CDATA[<p>Vacía la caché de Symfony, y la vuelve a crear (sino se especifica lo contrario)</p>
 
 <p><code>bash
@@ -897,9 +897,9 @@ gente&hellip;</p>
   
   <entry>
     <title type="html"><![CDATA[Dynamic routes in Symfony2]]></title>
-    <link href="http://mmoreram.com/blog/2013/10/01/dynamic-routes-in-symfony2/"/>
+    <link href="http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2/"/>
     <updated>2013-10-01T18:30:00+02:00</updated>
-    <id>http://mmoreram.com/blog/2013/10/01/dynamic-routes-in-symfony2</id>
+    <id>http://mmoreram.github.io/blog/2013/10/01/dynamic-routes-in-symfony2</id>
     <content type="html"><![CDATA[<p>Given that most times we need to associate a static route entry with a method of
 a controller, it is normal for Symfony developers are used to working with the
 annotation @Route of FrameworkExtraBundle.</p>
