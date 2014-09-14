@@ -3,6 +3,7 @@ layout: post
 title: "One section, one component"
 date: 2014-08-12 11:29
 comments: true
+author: Marc Morera
 categories:
     - Symfonycon
     - SymfonyWalk
