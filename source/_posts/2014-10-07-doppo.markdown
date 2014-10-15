@@ -1,0 +1,31 @@
+---
+layout: post
+title: "doppo, a small DIC"
+date: 2014-10-07 15:45
+comments: true
+categories: 
+---
+Otro DIC, si, y los que hagan falta. Para empezar este post como Dios manda,
+debo dejar claro que tanto la implementación como las prácticas que presento
+a continuación pueden no ser las más académicamente perfectas. Probablemente
+en más de algún punto, tu, mi querido lector, encontrarás que tal vez la forma
+en que yo enfoco un problema no es, ni de lejos, la mejor forma de hacerlo dadas
+las circunstancias. Pues bueno, mis disculpas por ello, pero la razón especial
+por la cual me he aventurado a hacer otro proyecto DIC es porque quiero proponer
+una forma práctica y útil de trabajar, a la vez que puedo mostrar como funciona
+internamente un Container y como afronto yo un problema como este utilizando el
+patrón Decorator.
+
+Primero de todo vamos a formalizar nuestra necesidad. Como nuestro Container
+debe comportarse y que features debe tener. Importante estar atento a esta parte
+ya que una mala definición de proyecto podría resultar muy caro en puntos
+posteriores de nuestra implementación.
+
+## Dependency Injection
+
+Queremos un Container de Inyección de Dependencias, comunmente llamado DIC. La
+misión del DIC es tener la responsabilidad (él y solo él) de saber como se deben
+construir las clases de nuestro dominio.
+
+Para entender un poco el porqué necesitamos un DIC, cual es su razón de ser,
+vamos a

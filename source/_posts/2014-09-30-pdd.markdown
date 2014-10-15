@@ -1,0 +1,70 @@
+---
+layout: post
+title: "PDD, Pragmatic Driven Development"
+date: 2014-10-06 12:00
+comments: true
+categories: 
+---
+Hay una tendencia, a mi parecer, extremadamente molesta sobre como se tiene que
+trabajar en cualquier proyecto técnico. Hemos pasado de ser un sector con poca
+voz, a ser, desde hace un tiempo, un pequeño movimiento ególatra de pensamientos
+categóricos que hacen que según qué lecturas monotemáticas aburran al lector con
+tópicos iterados por enésima vez y con un discurso teórico, nada práctico, muy
+lejos de la realidad.
+
+Y esto es lo que necesitamos, una buena dosis de realidad. Porque la realidad es
+práctica, no teórica.
+
+Desde mi punto de vista, y según la lectura que puedo tener según mi pequeña
+experiencia, creo que este movimiento debe terminar para dar paso a lo que
+circunstancialmente podría referirme como PDD, Pragmatic Driven Development
+(Siguiendo con las directrices... yo también puedo ser muy molón con nombres que
+quedan de lujo en mi currículum). Y es que estoy cansado de ver como la gente me
+dice como tengo que enfocar mi proyecto, que prácticas debo seguir para hacerlo
+"bien" y que directrices debo tomar para no estar lejos de la verdad absoluta.
+
+La verdad absoluta no existe, o no debería existir. Cualquier discurso debería
+tener una parte objetiva, basado en las buenas prácticas, pero también debería
+tener una parte subjetiva, relativa a las circunstancias reales y propias del
+proyecto. Pues parece ser que no se entiende. Parece ser que, y como si un
+movimiento político desfasado y arcaico se tratara, el Ego ciega demasiado como
+para poder entender tanta obviedad junta (será lo acostumbrados que nos tienen
+a ser tratados como borregos).
+
+Es por esto que personalmente me niego a escuchar más estupidez modernista sin
+argumentos sólidos. Me niego a ser víctima de *hype* por parte de personas que no
+tienen más formas de destacar que vender su pensamiento único como si de la
+entrada al cielo de la sabiduría se tratara. Hemos llegado a un punto enfermizo.
+
+Personalmente siempre exijo que la gente que me escucha tenga un pensamiento
+propio, que trate mi opinión como otro punto de vista, aunque sea incorrecto,
+distinto o distante, y que sirva como punto de soporte para dar aún más robustez
+al argumento que pueda darle uno a un tema específico, dado un punto de partida
+y un objetivo final.
+
+**Que conste, no digo que las buenas prácticas no importen, no digo que tener
+conocimientos sobre arquitectura no importe, no digo que aplicar una buena
+metodología no importe...** Creo que todas estas prácticas nacidas en grandes
+mentes y probadas con grandes resultados son herramientas que nos hace mejores,
+con más recursos y más capaces de trabajar problemas de forma satisfactoria.
+Debo añadir que soy practicante de muchas de ellas en el punto en que las
+necesito, y doy gracias a ello. Me hace mejor profesional. Lo que digo es que
+somos desarrolladores, no gente estúpida sin capacidad de análisis. En el
+momento que perdemos este análisis, perdemos completamente nuestro valor.
+
+- Estoy haciendo este proyecto, ¿te gusta?
+- Espero que lo estés haciendo con Arquitectura Hexagonal...
+- Pues la verdad es que no la necesito...
+- ¿Que no la necesitas? ¡Claro que la necesitas!
+- Pues no, en este caso no los necesito...
+- Lo estás haciendo mal.
+
+Se trata de pensar las cosas, y decidir por uno mismo qué necesitas en cada
+momento, sin dejar que nadie, absolutamente nadie, te diga de forma categórica
+como debes hacer su trabajo.
+
+Espero de verdad que toda esta borrachera se acabe pronto, espero que en un
+futuro empiece a haber comportamientos un poco más profesionales para trabajar
+todos como un equipo o comunidad, que es lo que necesitamos, teniendo en cuenta
+las cosas que verdaderamente importan: aprender y hacer buenos proyectos, no
+importa el Framework, el lenguaje o la arquitectura.
