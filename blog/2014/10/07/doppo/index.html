@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>First commit - Because yes</title>
+  <title>doppo, a small DIC - Because yes</title>
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="This is the first commit of this blog
-">
+  <meta name="description" content="Otro DIC, si, y los que hagan falta. Para empezar este post como Dios manda,
+debo dejar claro que tanto la implementación como las prácticas que &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mmoreram.github.io/blog/2013/10/01/first-commit/">
+  <link rel="canonical" href="http://mmoreram.github.io/blog/2014/10/07/doppo/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -84,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">First Commit</h1>
+      <h1 class="entry-title">Doppo, a Small DIC</h1>
     
     
       <p class="meta">
@@ -100,7 +100,7 @@
   
 
 
-<time datetime="2013-10-01T18:00:00+02:00" pubdate data-updated="true">Oct 1<span>st</span>, 2013</time>
+<time datetime="2014-10-07T15:45:00+02:00" pubdate data-updated="true">Oct 7<span>th</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -109,7 +109,30 @@
   </header>
 
 
-<div class="entry-content"><p>This is the first commit of this blog</p>
+<div class="entry-content"><p>Otro DIC, si, y los que hagan falta. Para empezar este post como Dios manda,
+debo dejar claro que tanto la implementación como las prácticas que presento
+a continuación pueden no ser las más académicamente perfectas. Probablemente
+en más de algún punto, tu, mi querido lector, encontrarás que tal vez la forma
+en que yo enfoco un problema no es, ni de lejos, la mejor forma de hacerlo dadas
+las circunstancias. Pues bueno, mis disculpas por ello, pero la razón especial
+por la cual me he aventurado a hacer otro proyecto DIC es porque quiero proponer
+una forma práctica y útil de trabajar, a la vez que puedo mostrar como funciona
+internamente un Container y como afronto yo un problema como este utilizando el
+patrón Decorator.</p>
+
+<p>Primero de todo vamos a formalizar nuestra necesidad. Como nuestro Container
+debe comportarse y que features debe tener. Importante estar atento a esta parte
+ya que una mala definición de proyecto podría resultar muy caro en puntos
+posteriores de nuestra implementación.</p>
+
+<h2>Dependency Injection</h2>
+
+<p>Queremos un Container de Inyección de Dependencias, comunmente llamado DIC. La
+misión del DIC es tener la responsabilidad (él y solo él) de saber como se deben
+construir las clases de nuestro dominio.</p>
+
+<p>Para entender un poco el porqué necesitamos un DIC, cual es su razón de ser,
+vamos a</p>
 </div>
 
 
@@ -132,7 +155,7 @@
   
 
 
-<time datetime="2013-10-01T18:00:00+02:00" pubdate data-updated="true">Oct 1<span>st</span>, 2013</time>
+<time datetime="2014-10-07T15:45:00+02:00" pubdate data-updated="true">Oct 7<span>th</span>, 2014</time>
       
 
 
@@ -140,7 +163,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2013/10/01/first-commit/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2013/10/01/first-commit/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2014/10/07/doppo/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2014/10/07/doppo/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -151,8 +174,10 @@
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2014/10/06/pdd/" title="Previous Post: PDD, Pragmatic Driven Development">&laquo; PDD, Pragmatic Driven Development</a>
       
-        <a class="basic-alignment right" href="/blog/2013/10/01/dynamic-routes-in-symfony2/" title="Next Post: Dynamic routes in Symfony2">Dynamic routes in Symfony2 &raquo;</a>
+      
+        <a class="basic-alignment right" href="/blog/2014/10/15/symfony-walk-symfony-con-section/" title="Next Post: Symfony Walk, the Conference section">Symfony Walk, the Conference section &raquo;</a>
       
     </p>
   </footer>
@@ -247,8 +272,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mmoreram.github.io/blog/2013/10/01/first-commit/';
-        var disqus_url = 'http://mmoreram.github.io/blog/2013/10/01/first-commit/';
+        var disqus_identifier = 'http://mmoreram.github.io/blog/2014/10/07/doppo/';
+        var disqus_url = 'http://mmoreram.github.io/blog/2014/10/07/doppo/';
         var disqus_script = 'embed.js';
       
     (function () {
