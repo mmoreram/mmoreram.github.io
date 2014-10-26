@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Development | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/development/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2014-10-26T19:58:27+01:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[PDD, Pragmatic Driven Development, English version]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/10/26/pdd-pragmatic-driven-development-english/"/>
+    <updated>2014-10-26T19:51:00+01:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/10/26/pdd-pragmatic-driven-development-english</id>
+    <content type="html"><![CDATA[<p>This post is just a translation of one of my previous posts, written in Spanish,
+for Spaniard people. I just wanted to translate it and to propose my idea to the
+entirely world, even knowing not everyone will be agree with my point of view.</p>
+
+<p>You will find the original one <a href="http://mmoreram.com/blog/2014/10/06/pdd/">here</a></p>
+
+<p>There is a trend, in my opinion, extremely annoying about how we should work in
+any technical project. We have gone from being a voiceless sector to, for a
+while, a small egomaniac movement with categorical thoughts, making some
+monothematic readings so boring for the reader, just because these topics
+iterated for the umpteenth time with a very theoretical speech, non practical at
+all, far from the real life.</p>
+
+<p>And that&rsquo;s what we all need, a great doses of reality. Because reality is
+practical, not logical.</p>
+
+<p>From my point of view, and given my small experience, I think this movement has
+to be eradicated to make way for a new movement of thought, maybe
+circumstantially called PDD, Pragmatic Driven Development (You know&hellip; I can
+also be so witty assigning new names and adding some cool tags to my Linkedin
+profile&hellip;). And the truth is that I am so tired seeing that some people is
+still telling me how I should do my job, what practices should I follow to make
+it &ldquo;the right way&rdquo; and what guidelines I should take to not being far from the
+real truth.</p>
+
+<p>The real truth does not exist, or at least should not. Every single speech
+should have an objective part, based in good practices, but also should have a
+subjective part, relative to the real circumstances and taking care about the
+needs of the project. So, this is not seemed to be understood by some people.
+Seems that, like an outdated political movement, The ego blinds some people to
+understand so much certainty (must be that we are too used to being treated like
+sheeps&hellip; BeEeEe BeEeEe).</p>
+
+<p>This is why I refuse to listen to such modernistic stupidity without solid
+arguments. I refuse to be near this hype, created from this people that don&rsquo;t
+have any other way to stand out than selling their unique thought like it was
+the entrance of the heaven of wisdom. We have reached an illness point.</p>
+
+<p>I personally always demand my attendees, or just the people that talk with me,
+to have an owning point of view, to treat my single one just like another point
+of view, even if they feel it is not correct, it is different or even distant
+from theirs, and to use it as a starting point of constructive discussion.</p>
+
+<p>Important, I&rsquo;m not telling that I disagree all these techniques, I&rsquo;m not telling
+that all this architectural knowledge is not useful, I&rsquo;m not telling that
+applying a great methodology is useless&hellip; I strongly think that all of them,
+born inside great minds and actually tested with great results, are very useful
+and really makes us better as developers, giving us more resources to work and
+making us better able to do our job successfully. I have to tell also that since
+I am actually practicing lot of them in my projects, like TDD, BDD and DDD, I
+feel better and more comfortable. I say thanks for that! What I am actually
+saying is that we are developers, not this kind of stupid people without
+capacity analysis. At the moment we lose this capacity, we lose our value.</p>
+
+<ul>
+<li>Hey, dude! I am actually working on that project! Do you like it?</li>
+<li>Well, I expect you are doing Hexagonal Architecture&hellip;</li>
+<li>Hmmm&hellip; I don&rsquo;t really need it&hellip;</li>
+<li>You don&rsquo;t need it? Sure you do!</li>
+<li>In fact, not.</li>
+<li>You are wrong!</li>
+<li>Ok.</li>
+</ul>
+
+
+<p>It is all about thinking things, and make sure about what we really need at each
+point, just ignoring everyone telling you, categorically, the way you need to do
+your job.</p>
+
+<p>I truly hope all this pantomime to be ended soon. I hope as well that one day we
+will be able to work all together as a community or a team, this is what we
+really need, keeping in mind what really matters: learning, teaching and doing
+great projects, no matter the framework, the language even the architecture.</p>
+
+<p>Have a really nice week, and enjoy your work :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PDD, Pragmatic Driven Development]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/10/06/pdd/"/>
+    <updated>2014-10-06T12:00:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/10/06/pdd</id>
+    <content type="html"><![CDATA[<p>Hay una tendencia, a mi parecer, extremadamente molesta sobre como se tiene que
+trabajar en cualquier proyecto técnico. Hemos pasado de ser un sector con poca
+voz, a ser, desde hace un tiempo, un pequeño movimiento ególatra de pensamientos
+categóricos que hacen que según qué lecturas monotemáticas aburran al lector con
+tópicos iterados por enésima vez y con un discurso teórico, nada práctico, muy
+lejos de la realidad.</p>
+
+<p>Y esto es lo que necesitamos, una buena dosis de realidad. Porque la realidad es
+práctica, no teórica.</p>
+
+<p>Desde mi punto de vista, y según la lectura que puedo tener según mi pequeña
+experiencia, creo que este movimiento debe terminar para dar paso a lo que
+circunstancialmente podría referirme como PDD, Pragmatic Driven Development
+(Siguiendo con las directrices&hellip; yo también puedo ser muy molón con nombres que
+quedan de lujo en mi currículum). Y es que estoy cansado de ver como la gente me
+dice como tengo que enfocar mi proyecto, que prácticas debo seguir para hacerlo
+&ldquo;bien&rdquo; y que directrices debo tomar para no estar lejos de la verdad absoluta.</p>
+
+<p>La verdad absoluta no existe, o no debería existir. Cualquier discurso debería
+tener una parte objetiva, basado en las buenas prácticas, pero también debería
+tener una parte subjetiva, relativa a las circunstancias reales y propias del
+proyecto. Pues parece ser que no se entiende. Parece ser que, y como si un
+movimiento político desfasado y arcaico se tratara, el Ego ciega demasiado como
+para poder entender tanta obviedad junta (será lo acostumbrados que nos tienen
+a ser tratados como borregos).</p>
+
+<p>Es por esto que personalmente me niego a escuchar más estupidez modernista sin
+argumentos sólidos. Me niego a ser víctima de <em>hype</em> por parte de personas que no
+tienen más formas de destacar que vender su pensamiento único como si de la
+entrada al cielo de la sabiduría se tratara. Hemos llegado a un punto enfermizo.</p>
+
+<p>Personalmente siempre exijo que la gente que me escucha tenga un pensamiento
+propio, que trate mi opinión como otro punto de vista, aunque sea incorrecto,
+distinto o distante, y que sirva como punto de soporte para dar aún más robustez
+al argumento que pueda darle uno a un tema específico, dado un punto de partida
+y un objetivo final.</p>
+
+<p><strong>Que conste, no digo que las buenas prácticas no importen, no digo que tener
+conocimientos sobre arquitectura no importe, no digo que aplicar una buena
+metodología no importe&hellip;</strong> Creo que todas estas prácticas nacidas en grandes
+mentes y probadas con grandes resultados son herramientas que nos hace mejores,
+con más recursos y más capaces de trabajar problemas de forma satisfactoria.
+Debo añadir que soy practicante de muchas de ellas en el punto en que las
+necesito, y doy gracias a ello. Me hace mejor profesional. Lo que digo es que
+somos desarrolladores, no gente estúpida sin capacidad de análisis. En el
+momento que perdemos este análisis, perdemos completamente nuestro valor.</p>
+
+<ul>
+<li>Estoy haciendo este proyecto, ¿te gusta?</li>
+<li>Espero que lo estés haciendo con Arquitectura Hexagonal&hellip;</li>
+<li>Pues la verdad es que no la necesito&hellip;</li>
+<li>¿Que no la necesitas? ¡Claro que la necesitas!</li>
+<li>Pues no, en este caso no los necesito&hellip;</li>
+<li>Lo estás haciendo mal.</li>
+</ul>
+
+
+<p>Se trata de pensar las cosas, y decidir por uno mismo qué necesitas en cada
+momento, sin dejar que nadie, absolutamente nadie, te diga de forma categórica
+como debes hacer su trabajo.</p>
+
+<p>Espero de verdad que toda esta borrachera se acabe pronto, espero que en un
+futuro empiece a haber comportamientos un poco más profesionales para trabajar
+todos como un equipo o comunidad, que es lo que necesitamos, teniendo en cuenta
+las cosas que verdaderamente importan: aprender y hacer buenos proyectos, no
+importa el Framework, el lenguaje o la arquitectura.</p>
+]]></content>
+  </entry>
+  
+</feed>
