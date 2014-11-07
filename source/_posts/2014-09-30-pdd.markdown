@@ -3,7 +3,11 @@ layout: post
 title: "PDD, Pragmatic Driven Development"
 date: 2014-10-06 12:00
 comments: true
-categories: 
+categories:
+    - PDD
+    - Pragmatic
+    - Driven
+    - Development
 ---
 Hay una tendencia, a mi parecer, extremadamente molesta sobre como se tiene que
 trabajar en cualquier proyecto técnico. Hemos pasado de ser un sector con poca

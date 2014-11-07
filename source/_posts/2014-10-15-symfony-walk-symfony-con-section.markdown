@@ -3,11 +3,16 @@ layout: post
 title: "Symfony Walk, the Conference section"
 date: 2014-10-15 11:48
 comments: true
-categories: 
+author: Marc Morera
+categories:
+    - Symfonycon
+    - SymfonyWalk
+    - Madrid
+    - Zaragoza
 ---
 The day is getting closer. I am really exited about the idea of the [Symfony Walk](http://mmoreram.com/blog/2014/08/07/symfony-walk-zaragoza-madrid/).
 
-As you may know, the walk will consist in 12 days (10 walking, 2 resting, 1
+As you may know, the walk will consists in 12 days (10 walking, 2 resting, 1
 resting day added as announced for my health), from Zaragoza to Madrid, so today
 I want to announce formally the last section of the Walk, dedicated to the
 people in the conference and to the entirely Symfony Community.
