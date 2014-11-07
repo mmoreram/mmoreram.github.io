@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Madrid | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/madrid/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2014-10-26T19:58:27+01:00</updated>
+  <updated>2014-11-07T19:27:37+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,77 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SymfonyWalk - Sleeping bag]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/11/07/symfonywalk-sleeping-bag/"/>
+    <updated>2014-11-07T18:51:00+01:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/11/07/symfonywalk-sleeping-bag</id>
+    <content type="html"><![CDATA[<p>I expected it would be much easier. Indeed, it should be easier, but once again,
+the effort on something is just the beginning of something simply bigger called
+&ldquo;The plan&rdquo;.</p>
+
+<p>The problem is that I thought if would be much simple to sleep from Zaragoza to
+Madrid.</p>
+
+<p>It is not. Damn!</p>
+
+<p>So this is why I will have to sleep in a sleeping bag 9 days. I don&rsquo;t exactly
+know where will I be able to clean myself, or to eat something, or sleep. In
+fact this is what OpenSource is. All OpenSource developers are Walkers in a
+world without hostels, but nice people.</p>
+
+<p>I expect I will find some contributors around the adventure.</p>
+
+<ul>
+<li>Food Pull Requests?</li>
+<li>Bed Pull Requests?</li>
+<li>Water Pull Requests?</li>
+</ul>
+
+
+<p>7 days to go. I am ready. Am I?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Symfony Walk, the Conference section]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/10/15/symfony-walk-symfony-con-section/"/>
+    <updated>2014-10-15T11:48:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/10/15/symfony-walk-symfony-con-section</id>
+    <content type="html"><![CDATA[<p>The day is getting closer. I am really exited about the idea of the <a href="http://mmoreram.com/blog/2014/08/07/symfony-walk-zaragoza-madrid/">Symfony Walk</a>.</p>
+
+<p>As you may know, the walk will consists in 12 days (10 walking, 2 resting, 1
+resting day added as announced for my health), from Zaragoza to Madrid, so today
+I want to announce formally the last section of the Walk, dedicated to the
+people in the conference and to the entirely Symfony Community.</p>
+
+<p>I want to open source the last part of my experience. I&rsquo;d like everyone excited
+with the idea to walk beside me for the last 38km.</p>
+
+<p>That&rsquo;s the plan:</p>
+
+<p><img src="/images/zaragoza-madrid-last-section.png" title="[Zaragoza Madrid Last Section [Zaragoza Madrid Las Section]]" ></p>
+
+<ul>
+<li>From &ndash; 26 Nov at 10.00 &ndash; <a href="https://www.google.es/maps/place/Hotel+Azuqueca/@40.574603,-3.260397,17z/data=!3m1!4b1!4m2!3m1!1s0xd424d58faf1da8d:0x4d83f8902082a9e8?hl=ca">Hotel Azuqueca, Azuqueca de Henares, Guadalajara</a></li>
+<li>To &ndash; 26 November at 19.00 &ndash; <a href="https://www.google.es/maps/search/hotel+auditorium/@40.448706,-3.5586655,17z/data=!3m2!4b1!5s0xd4230487e9da459:0xa7e56b7dca610362?hl=ca">Hotel Auditorium, Madrid</a></li>
+<li>Good shoes, important!</li>
+<li>We could talk about symfony stuff and some interesting topics.</li>
+</ul>
+
+
+<p>Excited about that? Good! Once in Madrid, a cold beer will be our best friend&hellip;
+ever!</p>
+
+<p>Let me know if you want to join us through the
+<a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
+so we can organize based on the total number of people. You can also contact me
+through my email, <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#121;&#117;&#104;&#117;&#x40;&#x6d;&#x6d;&#x6f;&#114;&#x65;&#114;&#x61;&#109;&#x2e;&#x63;&#x6f;&#x6d;&#x2e;">&#x79;&#117;&#x68;&#x75;&#x40;&#109;&#109;&#x6f;&#x72;&#101;&#x72;&#97;&#109;&#x2e;&#99;&#111;&#109;&#46;</a></p>
+
+<p>Looking forward to meet you there, it is going to be amazing!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[One section, one component]]></title>
