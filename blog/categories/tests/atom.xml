@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: tests | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/tests/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2015-04-25T17:28:54+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Behat and data-test]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/04/25/behat-and-data-test/"/>
+    <updated>2015-04-25T16:31:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/04/25/behat-and-data-test</id>
+    <content type="html"><![CDATA[<p>Tests should be as robust as possible.</p>
+
+<p>I think you will agree with me with that phrase. If your tests are too coupled
+with your implementation, a simple modification of your code will need the
+modification of your tests, and that&rsquo;s so annoying, right?</p>
+
+<p>I&rsquo;ve using Behat for the last months in my projects, and as soon as you dominate
+the tool it becomes really useful to make sure that any future refactoring or
+change will break these user stories you have already defined and tested.</p>
+
+<p>So, thinking about coupling I saw this method in Behat implementation.</p>
+
+<p>``` php
+/<em><em>
+ * Presses button with specified id|name|title|alt|value.
+ *
+ * @When /^(?:|I )press &ldquo;(?P<button>(?:[^&rdquo;]|\&ldquo;)</em>)&rdquo;$/
+ </em>/
+public function pressButton($button)
+{</p>
+
+<pre><code>//
+</code></pre>
+
+<p>}
+```</p>
+
+<p>What do you think? Do you think that this method helps people to really decouple
+the tests from their implementation? I don&rsquo;t really think so&hellip; Let me explain.</p>
+
+<h3>Design v Test</h3>
+
+<p>My question is&hellip; should the frontend of your website be aware of the how your
+Behat tests are built? In my opinion, <strong>nope</strong>.</p>
+
+<p>Your tests should live in a simple layout on top of your application, emulating
+some cases and ensuring that your users will be able to do what they should be
+able to.</p>
+
+<p>Said this, you cannot build your tests depending on final implementation. So,
+whats the problem there?</p>
+
+<h3>HTML Properties</h3>
+
+<p>Dear backend. Between you and me&hellip; we have nothing to do with some html
+properties, and you know that&hellip; This is the frontend world and we have nothing
+to say about that :)</p>
+
+<p>So why referring to html property <code>id</code> in your Behat cases? It has no sense
+indeed. You will need to change <strong>all</strong> your tests every time your frontend
+says&hellip; <em>refactoring time!!</em>, and we have no enough time for this, right?</p>
+
+<p>So&hellip; first property strikethrough.</p>
+
+<h3>Translations</h3>
+
+<p>Dear backend (again, yes). Between you and me&hellip; we have neither nothing to do
+with translations, and we both know as well that translations is something
+really changeable (that means evolving&hellip; so yes, that are good news indeed), so
+how about coupling your fantastic tests to translations?</p>
+
+<p>How do you really know that your submission button copy will be always <code>send</code>?
+What if someone thinks that is better <code>submit</code>? The point is that you <strong>don&rsquo;t</strong>
+know that, and you will never do.</p>
+
+<p>If you don&rsquo;t want to do that, please, don&rsquo;t use <code>title</code>, <code>alt</code> nor <code>value</code>. All
+these html properties are very used to changing if you use them properly, so if
+you have your site in several countries with some modifications, you will not be
+able to reuse any scenario.</p>
+
+<p>Bad choice again.</p>
+
+<h3>Symfony Forms</h3>
+
+<p>We still have the <code>name</code> property, a very important property for forms and
+references inside your DOM. In fact, too much important to be an starting point
+for your test cases.</p>
+
+<p>For example, you can fill a value in a Symfony Form input, but you know what?
+Symfony Forms define themselves how their forms are named, in order to know how
+to build them again after submitting them.</p>
+
+<p>If you use <code>name</code> property, and for example you have different teams for
+developing your applications and for testing them, you will add an extra and
+useless coupling layer between them. This means more <em>points of failure</em> and, at
+the end, less agility.</p>
+
+<p>Not valid.</p>
+
+<h3>So what?</h3>
+
+<p>Well, this is a <em>problem</em> really easy to solve. Have you ever meet the property
+<code>data-test</code>? You can build any property starting with <code>data-</code> and will be okay.
+So, in that case you can safely reference your elements using it.</p>
+
+<ul>
+<li>Your front-ends have nothing to do with it. They will see <code>data-test</code> and will
+know that they belong to the testing layer. Then, they will ignore it, and even
+if they decide to refactor a page, they will preserve this property (if they
+can and want, of course) and your tests will not have any reason to expire.</li>
+<li>Your tests will have nothing to do with translation, product people and other
+tactical nor strategical changes.</li>
+<li>People of your team will now have a unique way of referencing visible elements
+of your application.</li>
+</ul>
+
+
+<p>That&rsquo;s so nice!</p>
+
+<h3>Implementation</h3>
+
+<p>Well, after this analysis, I propose to add <code>data-test</code> in all pre-defined
+selectors in order to allow people to uncouple from implementation.</p>
+
+<p>``` php
+/<em><em>
+ * Presses button with specified id|name|title|alt|value|data-test.
+ *
+ * @When /^(?:|I )press &ldquo;(?P<button>(?:[^&rdquo;]|\&ldquo;)</em>)&rdquo;$/
+ </em>/
+public function pressButton($button)
+{</p>
+
+<pre><code>//
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Please, I would like to have some feedback, specially if you are used to working
+with Behat or any kind of Behavioral Testing Tool.</p>
+
+<p>Thanks and enjoy your day!</p>
+]]></content>
+  </entry>
+  
+</feed>

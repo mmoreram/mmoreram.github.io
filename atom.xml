@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-04-07T16:20:19+02:00</updated>
+  <updated>2015-04-25T17:28:54+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,159 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Behat and data-test]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/04/25/behat-and-data-test/"/>
+    <updated>2015-04-25T16:31:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/04/25/behat-and-data-test</id>
+    <content type="html"><![CDATA[<p>Tests should be as robust as possible.</p>
+
+<p>I think you will agree with me with that phrase. If your tests are too coupled
+with your implementation, a simple modification of your code will need the
+modification of your tests, and that&rsquo;s so annoying, right?</p>
+
+<p>I&rsquo;ve using Behat for the last months in my projects, and as soon as you dominate
+the tool it becomes really useful to make sure that any future refactoring or
+change will break these user stories you have already defined and tested.</p>
+
+<p>So, thinking about coupling I saw this method in Behat implementation.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Presses button with specified id|name|title|alt|value.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @When /^(?:|I )press &quot;(?P&lt;button&gt;(?:[^&quot;]|\\&quot;)*)&quot;$/</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">pressButton</span><span class="p">(</span><span class="nv">$button</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">//</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What do you think? Do you think that this method helps people to really decouple
+the tests from their implementation? I don&rsquo;t really think so&hellip; Let me explain.</p>
+
+<h3>Design v Test</h3>
+
+<p>My question is&hellip; should the frontend of your website be aware of the how your
+Behat tests are built? In my opinion, <strong>nope</strong>.</p>
+
+<p>Your tests should live in a simple layout on top of your application, emulating
+some cases and ensuring that your users will be able to do what they should be
+able to.</p>
+
+<p>Said this, you cannot build your tests depending on final implementation. So,
+whats the problem there?</p>
+
+<h3>HTML Properties</h3>
+
+<p>Dear backend. Between you and me&hellip; we have nothing to do with some html
+properties, and you know that&hellip; This is the frontend world and we have nothing
+to say about that :)</p>
+
+<p>So why referring to html property <code>id</code> in your Behat cases? It has no sense
+indeed. You will need to change <strong>all</strong> your tests every time your frontend
+says&hellip; <em>refactoring time!!</em>, and we have no enough time for this, right?</p>
+
+<p>So&hellip; first property strikethrough.</p>
+
+<h3>Translations</h3>
+
+<p>Dear backend (again, yes). Between you and me&hellip; we have neither nothing to do
+with translations, and we both know as well that translations is something
+really changeable (that means evolving&hellip; so yes, that are good news indeed), so
+how about coupling your fantastic tests to translations?</p>
+
+<p>How do you really know that your submission button copy will be always <code>send</code>?
+What if someone thinks that is better <code>submit</code>? The point is that you <strong>don&rsquo;t</strong>
+know that, and you will never do.</p>
+
+<p>If you don&rsquo;t want to do that, please, don&rsquo;t use <code>title</code>, <code>alt</code> nor <code>value</code>. All
+these html properties are very used to changing if you use them properly, so if
+you have your site in several countries with some modifications, you will not be
+able to reuse any scenario.</p>
+
+<p>Bad choice again.</p>
+
+<h3>Symfony Forms</h3>
+
+<p>We still have the <code>name</code> property, a very important property for forms and
+references inside your DOM. In fact, too much important to be an starting point
+for your test cases.</p>
+
+<p>For example, you can fill a value in a Symfony Form input, but you know what?
+Symfony Forms define themselves how their forms are named, in order to know how
+to build them again after submitting them.</p>
+
+<p>If you use <code>name</code> property, and for example you have different teams for
+developing your applications and for testing them, you will add an extra and
+useless coupling layer between them. This means more <em>points of failure</em> and, at
+the end, less agility.</p>
+
+<p>Not valid.</p>
+
+<h3>So what?</h3>
+
+<p>Well, this is a <em>problem</em> really easy to solve. Have you ever meet the property
+<code>data-test</code>? You can build any property starting with <code>data-</code> and will be okay.
+So, in that case you can safely reference your elements using it.</p>
+
+<ul>
+<li>Your front-ends have nothing to do with it. They will see <code>data-test</code> and will
+know that they belong to the testing layer. Then, they will ignore it, and even
+if they decide to refactor a page, they will preserve this property (if they
+can and want, of course) and your tests will not have any reason to expire.</li>
+<li>Your tests will have nothing to do with translation, product people and other
+tactical nor strategical changes.</li>
+<li>People of your team will now have a unique way of referencing visible elements
+of your application.</li>
+</ul>
+
+
+<p>That&rsquo;s so nice!</p>
+
+<h3>Implementation</h3>
+
+<p>Well, after this analysis, I propose to add <code>data-test</code> in all pre-defined
+selectors in order to allow people to uncouple from implementation.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Presses button with specified id|name|title|alt|value|data-test.</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @When /^(?:|I )press &quot;(?P&lt;button&gt;(?:[^&quot;]|\\&quot;)*)&quot;$/</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">pressButton</span><span class="p">(</span><span class="nv">$button</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">//</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Please, I would like to have some feedback, specially if you are used to working
+with Behat or any kind of Behavioral Testing Tool.</p>
+
+<p>Thanks and enjoy your day!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Reflexiones de un pequeño emprendedor]]></title>
@@ -436,7 +589,7 @@ ever!</p>
 <p>Let me know if you want to join us through the
 <a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
 so we can organize based on the total number of people. You can also contact me
-through my email, <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#x79;&#117;&#104;&#117;&#x40;&#x6d;&#109;&#x6f;&#x72;&#x65;&#114;&#x61;&#109;&#46;&#99;&#111;&#x6d;&#x2e;">&#121;&#x75;&#x68;&#117;&#64;&#x6d;&#109;&#111;&#x72;&#101;&#114;&#x61;&#x6d;&#46;&#x63;&#x6f;&#109;&#x2e;</a></p>
+through my email, <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x79;&#117;&#x68;&#x75;&#64;&#x6d;&#x6d;&#x6f;&#x72;&#101;&#114;&#97;&#x6d;&#46;&#x63;&#x6f;&#109;&#x2e;">&#x79;&#x75;&#x68;&#117;&#x40;&#109;&#x6d;&#111;&#114;&#x65;&#114;&#97;&#109;&#x2e;&#99;&#x6f;&#x6d;&#46;</a></p>
 
 <p>Looking forward to meet you there, it is going to be amazing!</p>
 ]]></content>
@@ -3248,167 +3401,6 @@ development in <a href="http://github.com/elcodi/elcodi">Github &ndash; @elcodi<
 <p>Obviously we want people to clone the project, inspect it, question us, discuss
 constructively and give us reviews on our implementations. Contributions to the
 project will be well received and appreciated :)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ParamConverter... mala idea]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/05/05/paramconverter-una-mala-idea/"/>
-    <updated>2014-05-05T13:18:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/05/05/paramconverter-una-mala-idea</id>
-    <content type="html"><![CDATA[<p>Este problema ocurre en proyectos abiertos, open source. Para proyectos privados
-donde Cart siempre será Cart, no creo que deba ser de su preocupación.</p>
-
-<p>Cada vez tenemos más en mente trabajar con módulos que sean reutilizables. Las
-buenas prácticas pasan por trabajar con interfaces y dar pie a que, el usuario
-que tan amablemente está reutilizando nuestro código, pueda definir su dominio
-según su especificación. Esto pasa, claro, por pensar que una entidad no siempre
-será la misma entidad, el mismo objeto.</p>
-
-<p>Me explicaré.</p>
-
-<p>La buena práctica sugiere que cuando definimos una entidad con sus relaciones,
-utilizemos un ResolveTargetEntityListener. Lo que hace este listener es, una vez
-se han definido las relaciones utilizando interfaces, se resuelven éstas y se
-sustituyen por entidades reales ( evidentemente por entidades que implementan
-tales interfaces ).</p>
-
-<p>Cuando se sigue esta estrategia, es natural definir tanto el namespace como
-el factory de la entidad que estás utilizando en un parámetro de bundle, por lo
-que se puede sobrescribir fácilmente en cada uno de los proyectos.</p>
-
-<p>Vemos un ejemplo.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">Elcodi\CartBundle\Entity\Cart</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">entity</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">repositoryClass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Repository\CartRepository</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">table</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cart</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="l-Scalar-Plain">oneToOne</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">order</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="l-Scalar-Plain">targetEntity</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Entity\Interfaces\OrderInterface</span>
-</span><span class='line'>            <span class="l-Scalar-Plain">mappedBy</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cart</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>En este caso, la relación con Order es débil, ya que la proponemos con cualquier
-entidad que implemente OrderInterface. Solo hace falta que el
-ResolveTargetEntityListener proponga una implementación para OrderInterface, en
-nuestro caso, <code>Elcodi\CartBundle\Entity\Order</code>.</p>
-
-<p>En nuestro config, definimos los namespaces de las entidades con las que vamos a
-trabajar.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">parameters</span><span class="p-Indicator">:</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="c1"># Entities</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">elcodi.core.cart.entity.cart.class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Entity\Cart</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">elcodi.core.cart.entity.order.class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Entity\Order</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="c1"># Factories</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">elcodi.core.cart.factory.cart.class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Factory\CartFactory</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">elcodi.core.cart.factory.order.class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Elcodi\CartBundle\Factory\OrderFactory</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Este escenario anuncia lo que el título de este post enuncia. Hardcodear el
-namespace de una entidad en alguna parte, rompe toda esta estrategia. Si
-trabajamos de esta forma &ldquo;abstracta&rdquo; no nos podemos permitir el lujo de marcar
-con sangre que una entidad siempre será de un tipo específico, y es, en
-realidad, lo que obliga el ParamConverter</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\Route</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * @Route(&quot;/cart/{id}&quot;)</span>
-</span><span class='line'><span class="sd"> * @ParamConverter(&quot;cart&quot;, class=&quot;ElcodiCartBundle:Cart&quot;)</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">showAction</span><span class="p">(</span><span class="nx">Post</span> <span class="nv">$post</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Proposición</p>
-
-<p>Para que el ParamConverter funcionara de tal forma que pudiéramos salvar este
-problema, deberíamos poder definir nuestra entidad con un parameter. Algo así:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\Route</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * @Route(&quot;/cart/{id}&quot;)</span>
-</span><span class='line'><span class="sd"> * @ParamConverter(&quot;cart&quot;, class=&quot;%elcodi.core.cart.entity.cart.class%&quot;)</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">showAction</span><span class="p">(</span><span class="nx">Post</span> <span class="nv">$post</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Esto implica que se debería inyectar el Container entero en el servicio que
-trabaja los paramconverter de Doctrine, y que deberíamos checkear siempre si
-el parámetro que se pasa es un namespace o un nombre de un parámetro.</p>
-
-<p>Tal vez tendría sentido poder trabajar con ExpressionLanguage, pero el problema
-es que añades una relación mas al bundle, por lo que no creo que les guste a los
-autores del bundle ( SensioLabs ).</p>
-
-<p>Con este post no quiero abrir un debate sobre si las annotations están bien o
-no. Soy el primero que las he defendido en su momento, otorgando siempre su
-utilidad en ciertos entornos y en ciertos casos. Ahora que empiezo a trabajar en
-un entorno 100% OpenSource ya no valen tanto como antes.</p>
-
-<p>Que creéis al respecto? Olvidaríais las annotations al 100 en entornos Open
-Source?</p>
 ]]></content>
   </entry>
   
