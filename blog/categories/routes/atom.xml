@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: routes | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/routes/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2015-05-04T13:41:07+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Visithor, testing your routes without pain]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/05/04/visithor/"/>
+    <updated>2015-05-04T13:11:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/05/04/visithor</id>
+    <content type="html"><![CDATA[<p>Do you like testing? I like testing. Well, in fact I like testing once I have
+understood how the engine I am using works. Until this moment, everything is a
+completely disaster.</p>
+
+<p>And because this learning curve, many of my personal projects have reached an
+MVP without any type of testing environment. And sincerely, I don&rsquo;t really like
+this scenario.</p>
+
+<p>Many years ago I was thinking about a <strong>simple</strong> and fast tool to test specific
+routes, expecting specific HTTP codes and providing an easy environment of
+ensuring properly your HTTP layer.</p>
+
+<p>So&hellip; I present you <a href="http://github.com/visithor/visithor">Visithor</a>, a PHP based
+library that provides you this functionality, with a simple configuration
+definition and a very easy way of installation.</p>
+
+<p>Let&rsquo;s see an example.</p>
+
+<h2>Execute Visithor</h2>
+
+<p>With this lines of code you will download Visithor, ready to be used.</p>
+
+<p><code>bash
+$ git clone git@github.com:visithor/visithor.git
+$ cd visithor
+$
+$ build/visithor.phar
+</code></p>
+
+<p>You can download it as a global executable</p>
+
+<p><code>bash
+$ git clone git@github.com:visithor/visithor.git
+$ cd visithor
+$ cp build/visithor.phar /usr/local/bin/visithor
+$
+$ visithor
+</code></p>
+
+<h2>Creating your configuration</h2>
+
+<p>As easy as it seems. This is a random configuration file with a random set of
+urls. If your <code>visithor.yml</code> file is placed in the same folder than you are,
+then you don&rsquo;t have to specify its location. Otherwise, please use the
+<em>[&mdash;config|-c]</em> option.</p>
+
+<p>``` yaml
+defaults:</p>
+
+<pre><code>#
+# This value can be a simple HTTP Code or an array of acceptable HTTP Codes
+# - 200
+# - [200, 301]
+#
+http_codes: [200, 302]
+</code></pre>
+
+<p>urls:</p>
+
+<pre><code>#
+# By default, is there is no specified HTTP Code, then default one is used
+# as the valid one
+#
+- http://google.es
+- http://elcodi.io
+
+#
+# There are some other formats available as well
+#
+- [http://shopery.com, 200]
+- [http://mmoreram.com, [200, 302]]
+- [http://nonexistingurl.com, [200]]
+</code></pre>
+
+<p>```</p>
+
+<p>In this case, the execution result is <em>0</em></p>
+
+<h2>Executing Visithor</h2>
+
+<p>Once you have it installed and you have a configuration file, let&rsquo;s see what
+happens!</p>
+
+<p>```
+$ visithor visithor:go</p>
+
+<p>Visithor by Marc Morera and contributors.</p>
+
+<p>Configuration read from /var/www/my/project</p>
+
+<p>OK [200] <a href="http://google.es">http://google.es</a>
+OK [200] <a href="http://elcodi.io">http://elcodi.io</a>
+OK [200] <a href="http://shopery.com">http://shopery.com</a>
+OK [200] <a href="http://mmoreram.com">http://mmoreram.com</a>
+KO [404] <a href="http://nonexistingurl.com">http://nonexistingurl.com</a></p>
+
+<p>Time: 1002 ms, Memory: 15.5Mb
+```</p>
+
+<p>As you can see, we have an error. We expect a <code>200</code> code when we call
+<code>http://nonexistingurl.com</code> but the real response is <code>404</code>, so it fails. Then,
+the execution result is <em>1</em>.</p>
+
+<h2>Integrations</h2>
+
+<p>You can integrate Visithor with your Symfony projects right now. I expect some
+other integrations will be available soon.</p>
+
+<ul>
+<li><a href="http://github.com/Visithor/VisithorBundle">VisithorBundle</a></li>
+</ul>
+
+
+<p>If you use this bundle, then you will be able to define your routes not with the
+final path but with the route name and a bunch of parameters, as it is shown
+here.</p>
+
+<p>``` yaml
+defaults:</p>
+
+<pre><code>#
+# This value can be a simple HTTP Code or an array of acceptable HTTP Codes
+# - 200
+# - [200, 301]
+#
+http_codes: [200, 302]
+</code></pre>
+
+<p>urls:</p>
+
+<pre><code>#
+# This Bundle adds some extra formats
+#
+- [store_homepage, 200]
+- [[store_category_products_list, {'slug': 'women-shirts', 'id': 1}], 200]
+- [[store_category_products_list, {'slug': 'another-name', 'id': 1}], 302]
+- [[store_homepage, {_locale: es}]]
+</code></pre>
+
+<p>```</p>
+
+<p>This project is being so useful for me, I expect it will be for you as well :)</p>
+
+<h2>Travis</h2>
+
+<p>Of course, you can add Visithor in your travis tests suite. You can use the
+[&mdash;format|-f] option to change the format and use <em>dots</em></p>
+
+<p>``` yaml
+script:</p>
+
+<pre><code>- bin/behat -fprogress --tags="~javascript"
+- bin/phpunit -c app
+- bin/visithor --format=dots visithor:go
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>
