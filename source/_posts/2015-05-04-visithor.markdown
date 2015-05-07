@@ -1,0 +1,152 @@
+---
+layout: post
+title: "Visithor, testing your routes without pain"
+date: 2015-05-04 13:11
+comments: true
+author: Marc Morera
+categories:
+    - visithor
+    - tests
+    - routes
+---
+Do you like testing? I like testing. Well, in fact I like testing once I have
+understood how the engine I am using works. Until this moment, everything is a
+completely disaster.
+
+And because this learning curve, many of my personal projects have reached an 
+MVP without any type of testing environment. And sincerely, I don't really like
+this scenario.
+
+Many years ago I was thinking about a **simple** and fast tool to test specific 
+routes, expecting specific HTTP codes and providing an easy environment of
+ensuring properly your HTTP layer.
+
+So... I present you [Visithor](http://github.com/visithor/visithor), a PHP based 
+library that provides you this functionality, with a simple configuration 
+definition and a very easy way of installation.
+
+Let's see an example.
+
+## Execute Visithor
+
+With this lines of code you will download Visithor, ready to be used.
+
+``` bash
+$ git clone git@github.com:visithor/visithor.git
+$ cd visithor
+$
+$ build/visithor.phar
+```
+
+You can download it as a global executable
+
+``` bash
+$ git clone git@github.com:visithor/visithor.git
+$ cd visithor
+$ cp build/visithor.phar /usr/local/bin/visithor
+$
+$ visithor
+```
+
+## Creating your configuration
+
+As easy as it seems. This is a random configuration file with a random set of
+urls. If your `visithor.yml` file is placed in the same folder than you are, 
+then you don't have to specify its location. Otherwise, please use the 
+*[--config|-c]* option.
+
+``` yaml
+defaults:
+    #
+    # This value can be a simple HTTP Code or an array of acceptable HTTP Codes
+    # - 200
+    # - [200, 301]
+    #
+    http_codes: [200, 302]
+
+urls:
+    #
+    # By default, is there is no specified HTTP Code, then default one is used
+    # as the valid one
+    #
+    - http://google.es
+    - http://elcodi.io
+
+    #
+    # There are some other formats available as well
+    #
+    - [http://shopery.com, 200]
+    - [http://mmoreram.com, [200, 302]]
+    - [http://nonexistingurl.com, [200]]
+```
+
+In this case, the execution result is *0*
+
+## Executing Visithor
+
+Once you have it installed and you have a configuration file, let's see what
+happens!
+
+```
+$ visithor visithor:go
+
+Visithor by Marc Morera and contributors.
+
+Configuration read from /var/www/my/project
+
+OK [200] http://google.es
+OK [200] http://elcodi.io
+OK [200] http://shopery.com
+OK [200] http://mmoreram.com
+KO [404] http://nonexistingurl.com
+
+Time: 1002 ms, Memory: 15.5Mb
+```
+
+As you can see, we have an error. We expect a `200` code when we call
+`http://nonexistingurl.com` but the real response is `404`, so it fails. Then, 
+the execution result is *1*.
+
+## Integrations
+
+You can integrate Visithor with your Symfony projects right now. I expect some 
+other integrations will be available soon.
+
+* [VisithorBundle](http://github.com/Visithor/VisithorBundle)
+
+If you use this bundle, then you will be able to define your routes not with the
+final path but with the route name and a bunch of parameters, as it is shown 
+here.
+
+``` yaml
+defaults:
+    #
+    # This value can be a simple HTTP Code or an array of acceptable HTTP Codes
+    # - 200
+    # - [200, 301]
+    #
+    http_codes: [200, 302]
+
+urls:
+    #
+    # This Bundle adds some extra formats
+    #
+    - [store_homepage, 200]
+    - [[store_category_products_list, {'slug': 'women-shirts', 'id': 1}], 200]
+    - [[store_category_products_list, {'slug': 'another-name', 'id': 1}], 302]
+    - [[store_homepage, {_locale: es}]]
+```
+
+This project is being so useful for me, I expect it will be for you as well :)
+
+## Travis
+
+Of course, you can add Visithor in your travis tests suite. You can use the
+[--format|-f] option to change the format and use *dots*
+
+``` yaml
+script:
+    - bin/behat -fprogress --tags="~javascript"
+    - bin/phpunit -c app
+    - bin/visithor --format=dots visithor:go
+```
