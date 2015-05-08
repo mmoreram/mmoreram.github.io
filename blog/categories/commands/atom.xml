@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Commands | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/commands/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-05-08T11:49:35+02:00</updated>
+  <updated>2015-05-08T19:16:02+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -22,7 +22,7 @@
 
 <p>``` bash
 $ php app/console doctrine:database:drop &mdash;force
-$ php app/console doctrine:datbase:create</p>
+$ php app/console doctrine:database:create</p>
 
 <pre><code>[Doctrine\DBAL\Exception\ConnectionException]                                     
 An exception occured in driver: SQLSTATE[42000] [1049] Unknown database 'mydatabase'
