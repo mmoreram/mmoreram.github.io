@@ -9,8 +9,13 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="Hace apenas unas semanas, en un diario nacional español, aparecía un escrito
-inquietante, al menos a simple vista, sobre algunos puntos discutibles &hellip;">
+  <meta name="description" content="Have you ever had this scenario? 1
+2
+3
+4
+5
+$ php app/console doctrine:database:drop --force
+$ php app/console doctrine:datbase:create [Doctrine\DBAL\ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +86,179 @@ inquietante, al menos a simple vista, sobre algunos puntos discutibles &hellip;"
       <div id="content">
 	<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/08/lazy-commands-in-symfony/">Lazy Commands in Symfony</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-08T11:04:00+02:00" pubdate data-updated="true">May 8<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/05/08/lazy-commands-in-symfony/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Have you ever had this scenario?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php app/console doctrine:database:drop --force
+</span><span class='line'><span class="nv">$ </span>php app/console doctrine:datbase:create
+</span><span class='line'>
+</span><span class='line'>    <span class="o">[</span>Doctrine<span class="se">\D</span>BAL<span class="se">\E</span>xception<span class="se">\C</span>onnectionException<span class="o">]</span>
+</span><span class='line'>    An exception occured in driver: SQLSTATE<span class="o">[</span>42000<span class="o">]</span> <span class="o">[</span>1049<span class="o">]</span> Unknown database <span class="s1">&#39;mydatabase&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Well, it happens and I will tell you why.</p>
+
+<h2>Command as a Service</h2>
+
+<p>Since Symfony version 2.4 you can define your controllers and commands as
+services. This is so useful as long as you need to treat your classes as much
+decoupled as possible. You can check some information about how to define them
+as services in
+<a href="http://symfony.com/doc/current/cookbook/console/commands_as_services.html">Symfony Documentation</a>.</p>
+
+<p>Then, let&rsquo;s figure out that our command is intended to check an entity from your
+database. Of course, your command should be as empty as possible, placing all
+your business logic inside your service layer (this is not the only strategy, of
+course, but there is no strategy where you lace your logic inside your command).</p>
+
+<p>Then, using commands as services, you will have this</p>
+
+<ul>
+<li>ObjectManager as a service (or Repository)</li>
+<li>Your service, intended to do whatever you need to do, for example, check that
+your entities are all enabled. Your ObjectManager or Repository will be injected
+here</li>
+<li>Your command, intended to work as the simple layer between your cli interface
+and your service layer. Your service will be injected here.</li>
+</ul>
+
+
+<p>Given this schema, when we require this command through the DI Container, of
+course a new Service instance will be created in order to inject it through the
+command constructor, and the object will have to be created as well to be
+injected inside the service.</p>
+
+<p>It means create a new connection to the database. Fair enough till now :)</p>
+
+<h2>Commands list</h2>
+
+<p>Let me show you some lines of code. This method is placed in a class called
+<code>Application</code> inside the bundle <code>FrameworkBundle</code>. This class is intended to add
+the possibility of adding Commands as services in the main Application class of
+Command Component.</p>
+
+<p><a href="https://github.com/symfony/symfony/blob/2.7/src/Symfony/Bundle/FrameworkBundle/Console/Application.php">Symfony\Bundle\FrameworkBundle\Console\Application</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">protected</span> <span class="k">function</span> <span class="nf">registerCommands</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$container</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">kernel</span><span class="o">-&gt;</span><span class="na">getContainer</span><span class="p">();</span>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">kernel</span><span class="o">-&gt;</span><span class="na">getBundles</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$bundle</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$bundle</span> <span class="nx">instanceof</span> <span class="nx">Bundle</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$bundle</span><span class="o">-&gt;</span><span class="na">registerCommands</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$container</span><span class="o">-&gt;</span><span class="na">hasParameter</span><span class="p">(</span><span class="s1">&#39;console.command.ids&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$container</span><span class="o">-&gt;</span><span class="na">getParameter</span><span class="p">(</span><span class="s1">&#39;console.command.ids&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="nv">$container</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nv">$id</span><span class="p">));</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Oh, wait&hellip; what?</p>
+
+<p>Register a command means instantiate it! So if we have a command with a service
+injected which has an object manager injected&hellip; then we have a problem. If we
+don&rsquo;t have the database created we will not be able to create it using the
+Doctrine command.</p>
+
+<p><em>~ironic~ Perfect scenario for deployment ~/ironic~</em></p>
+
+<h2>Using Lazy services</h2>
+
+<p>Of course we should find a solution for this scenario, in order to be able to
+call this command when is needed.</p>
+
+<p>When we define as lazy a service, this is not instanced when is injected, but
+only when is accessed. You can find some information about lazy services in
+<a href="http://symfony.com/doc/current/components/dependency_injection/lazy_services.html">Symfony Documentation</a>.</p>
+
+<p>The point here is to define our service intended to work with the model as lazy.
+The result will be that when we instance the Command, then a proxy object is
+created and injected with all the service information.</p>
+
+<p>Because our command will not be used as long as we don&rsquo;t need it, then the
+service will not be instanced and the ObjectManager not created. We will be able
+to list all the commands, and finally, call
+<code>php app/console doctrine:database:create</code> properly.</p>
+
+<h2>Implementation</h2>
+
+<p>Some tips here&hellip;</p>
+
+<ul>
+<li>Why instancing all services when we just need them to be listed? Is it really
+necessary? Doing than we are forcing some service to be defined as lazy just
+because of it, and this is not and will never be a good practice.</li>
+<li>If the command needs to be instanced to be listed, and assuming that this
+information <del>should</del> could be cached, then, is it necessary to call the
+constructor? We could get the class, build the object using <code>\ReflectionClass</code>
+and request all the needed information.</li>
+</ul>
+
+
+<p>I invoke the community for some feedback on that. If this is really a need for
+some people, we should do some push (and organize us for an implementation,
+maybe) to change this implementation for next Symfony 3 version.</p>
+
+<p>Feedback, feedback :)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1301,112 +1479,9 @@ ever!</p>
 <p>Let me know if you want to join us through the
 <a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
 so we can organize based on the total number of people. You can also contact me
-through my email, <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#121;&#x75;&#104;&#x75;&#64;&#x6d;&#x6d;&#111;&#x72;&#101;&#x72;&#x61;&#109;&#x2e;&#x63;&#111;&#109;&#x2e;">&#x79;&#117;&#104;&#117;&#x40;&#x6d;&#x6d;&#x6f;&#x72;&#101;&#114;&#97;&#109;&#46;&#99;&#111;&#109;&#46;</a></p>
+through my email, <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x79;&#117;&#x68;&#117;&#64;&#109;&#x6d;&#x6f;&#114;&#101;&#114;&#x61;&#109;&#x2e;&#99;&#x6f;&#109;&#x2e;">&#x79;&#x75;&#x68;&#x75;&#64;&#x6d;&#x6d;&#111;&#114;&#x65;&#x72;&#x61;&#x6d;&#46;&#x63;&#111;&#x6d;&#46;</a></p>
 
 <p>Looking forward to meet you there, it is going to be amazing!</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/06/pdd/">PDD, Pragmatic Driven Development</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-06T12:00:00+02:00" pubdate data-updated="true">Oct 6<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/10/06/pdd/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Hay una tendencia, a mi parecer, extremadamente molesta sobre como se tiene que
-trabajar en cualquier proyecto técnico. Hemos pasado de ser un sector con poca
-voz, a ser, desde hace un tiempo, un pequeño movimiento ególatra de pensamientos
-categóricos que hacen que según qué lecturas monotemáticas aburran al lector con
-tópicos iterados por enésima vez y con un discurso teórico, nada práctico, muy
-lejos de la realidad.</p>
-
-<p>Y esto es lo que necesitamos, una buena dosis de realidad. Porque la realidad es
-práctica, no teórica.</p>
-
-<p>Desde mi punto de vista, y según la lectura que puedo tener según mi pequeña
-experiencia, creo que este movimiento debe terminar para dar paso a lo que
-circunstancialmente podría referirme como PDD, Pragmatic Driven Development
-(Siguiendo con las directrices&hellip; yo también puedo ser muy molón con nombres que
-quedan de lujo en mi currículum). Y es que estoy cansado de ver como la gente me
-dice como tengo que enfocar mi proyecto, que prácticas debo seguir para hacerlo
-&ldquo;bien&rdquo; y que directrices debo tomar para no estar lejos de la verdad absoluta.</p>
-
-<p>La verdad absoluta no existe, o no debería existir. Cualquier discurso debería
-tener una parte objetiva, basado en las buenas prácticas, pero también debería
-tener una parte subjetiva, relativa a las circunstancias reales y propias del
-proyecto. Pues parece ser que no se entiende. Parece ser que, y como si un
-movimiento político desfasado y arcaico se tratara, el Ego ciega demasiado como
-para poder entender tanta obviedad junta (será lo acostumbrados que nos tienen
-a ser tratados como borregos).</p>
-
-<p>Es por esto que personalmente me niego a escuchar más estupidez modernista sin
-argumentos sólidos. Me niego a ser víctima de <em>hype</em> por parte de personas que no
-tienen más formas de destacar que vender su pensamiento único como si de la
-entrada al cielo de la sabiduría se tratara. Hemos llegado a un punto enfermizo.</p>
-
-<p>Personalmente siempre exijo que la gente que me escucha tenga un pensamiento
-propio, que trate mi opinión como otro punto de vista, aunque sea incorrecto,
-distinto o distante, y que sirva como punto de soporte para dar aún más robustez
-al argumento que pueda darle uno a un tema específico, dado un punto de partida
-y un objetivo final.</p>
-
-<p><strong>Que conste, no digo que las buenas prácticas no importen, no digo que tener
-conocimientos sobre arquitectura no importe, no digo que aplicar una buena
-metodología no importe&hellip;</strong> Creo que todas estas prácticas nacidas en grandes
-mentes y probadas con grandes resultados son herramientas que nos hace mejores,
-con más recursos y más capaces de trabajar problemas de forma satisfactoria.
-Debo añadir que soy practicante de muchas de ellas en el punto en que las
-necesito, y doy gracias a ello. Me hace mejor profesional. Lo que digo es que
-somos desarrolladores, no gente estúpida sin capacidad de análisis. En el
-momento que perdemos este análisis, perdemos completamente nuestro valor.</p>
-
-<ul>
-<li>Estoy haciendo este proyecto, ¿te gusta?</li>
-<li>Espero que lo estés haciendo con Arquitectura Hexagonal&hellip;</li>
-<li>Pues la verdad es que no la necesito&hellip;</li>
-<li>¿Que no la necesitas? ¡Claro que la necesitas!</li>
-<li>Pues no, en este caso no los necesito&hellip;</li>
-<li>Lo estás haciendo mal.</li>
-</ul>
-
-
-<p>Se trata de pensar las cosas, y decidir por uno mismo qué necesitas en cada
-momento, sin dejar que nadie, absolutamente nadie, te diga de forma categórica
-como debes hacer su trabajo.</p>
-
-<p>Espero de verdad que toda esta borrachera se acabe pronto, espero que en un
-futuro empiece a haber comportamientos un poco más profesionales para trabajar
-todos como un equipo o comunidad, que es lo que necesitamos, teniendo en cuenta
-las cosas que verdaderamente importan: aprender y hacer buenos proyectos, no
-importa el Framework, el lenguaje o la arquitectura.</p>
 </div>
   
   
@@ -1429,6 +1504,10 @@ importa el Framework, el lenguaje o la arquitectura.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/05/08/lazy-commands-in-symfony/">Lazy Commands in Symfony</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/05/07/montando-a-pau-garcia-mila/">Montando a Pau Garcia-Milà</a>
       </li>
     
@@ -1442,10 +1521,6 @@ importa el Framework, el lenguaje o la arquitectura.</p>
     
       <li class="post">
         <a href="/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor/">Reflexiones de un pequeño emprendedor</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/01/10/pdd-manifesto/">PDD Manifesto</a>
       </li>
     
   </ul>
