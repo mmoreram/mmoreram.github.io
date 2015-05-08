@@ -3,6 +3,7 @@ layout: post
 title: "Montando a Pau Garcia-Milà"
 date: 2015-05-07 02:58
 comments: true
+author: Marc Morera
 categories:
     - Pau Garcia-Milà
     - montando
@@ -37,7 +38,7 @@ tiempo, pasó a ser mi *vende-humos* favorito.
 
 Pero gracias a Dios, a veces en la vida te encuentras a grandes personas que te
 bautizan de golpe como *ex-hater*, y te das cuenta que el odio es, 
-habitualmente, proporcional a la envidia, y quien mejor una persona a la que 
+habitualmente, proporcional a la envidia, y quién mejor que una persona a la que 
 envidias para empezar a admirar.
 
 He aquí mi pequeño paso hacia la redención relativa. Mi objetivo, la completa
@@ -157,7 +158,7 @@ lo mires.
 Repito una frase con la que empezaba mi post dado que encuentro interesante y
 reveladora.
 
-> el odio es, habitualmente, proporcional a la envidia, y quien mejor una 
+> el odio es, habitualmente, proporcional a la envidia, y quién mejor que una 
 > persona a la que envidias para empezar a admirar
 
 Mi consejo siempre es el mismo. Que el miedo a intentar cosas no os impida no
