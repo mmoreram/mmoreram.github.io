@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-05-08T19:16:02+02:00</updated>
+  <updated>2015-05-18T10:23:51+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,130 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Defeating Expression Language]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/05/18/defeating-expression-language/"/>
+    <updated>2015-05-18T09:53:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/05/18/defeating-expression-language</id>
+    <content type="html"><![CDATA[<p>How beautiful Expression Language definitions are, right? I mean, inserting that
+complex expressions in a Dependency Injection configuration file is so nice and
+fast if you need to inject the result of a method in a service (one of the
+multiple examples we can see)</p>
+
+<p>Let&rsquo;s see a simple example of how we use this library.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># My managers</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">some_manager</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Manager</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">=service(&quot;another_manager&quot;).someCall(&quot;value&quot;)</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">=service(&quot;yet_another_manager&quot;).getInjectableInstance(parameter(&quot;my_parameter&quot;))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is not a bad idea, really, but because we are engineers and we should have
+as much information as possible in order to be able to choose between the best
+option, always, I will show you another way of defining this piece of code.</p>
+
+<p>Let&rsquo;s do that!</p>
+
+<h3>Factories</h3>
+
+<p>Remember the <a href="http://mmoreram.com/blog/2013/12/23/factory-pattern-in-symfony2/">Factory pattern in Symfony2</a>
+post I wrote some time ago? I talked about how this pattern can be implemented
+in your Symfony projects.</p>
+
+<p>Well, just for your information, most of your Expression Language definitions
+can be nicely done using Factories.</p>
+
+<p>Let&rsquo;s reproduce the same example using factories.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># My managers</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">some_manager</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Manager</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">my_injectable_value</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">my_injectable_service</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">my_injectable_value</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">StdClass</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">factory</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">another_manager</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">someCall</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">value</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">my_injectable_service</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Injectable\Class</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">factory</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">yet_another_manager</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">getInjectableInstance</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">%</span><span class="l-Scalar-Plain">my_parameter%</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Dependency</h3>
+
+<p>Take a look and realise that we&rsquo;ve removed a package dependency from your
+project, as you don&rsquo;t need <code>symfony/expression-language</code> anymore, and your DIC
+definition will be easily exportable to another format if someday is needed.</p>
+
+<h3>Reflexion</h3>
+
+<p>Is Expression Language a bad choice? Well, only you should be able to know if
+using this library is a good choice or not, because only you know your needs and
+your resources, but every time you add a new Expression Language line, just ask
+yourself&hellip;</p>
+
+<p>Can I use simple DI definitions here? Is the only way I can do that?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Crowdfunding Soundtrack - El Evento]]></title>
@@ -1256,7 +1380,7 @@ ever!</p>
 <p>Let me know if you want to join us through the
 <a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
 so we can organize based on the total number of people. You can also contact me
-through my email, <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x79;&#x75;&#104;&#x75;&#x40;&#x6d;&#109;&#111;&#x72;&#x65;&#114;&#97;&#109;&#x2e;&#99;&#x6f;&#109;&#x2e;">&#x79;&#117;&#104;&#117;&#x40;&#109;&#109;&#x6f;&#114;&#x65;&#x72;&#97;&#x6d;&#46;&#x63;&#x6f;&#x6d;&#x2e;</a></p>
+through my email, <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x79;&#117;&#104;&#117;&#x40;&#x6d;&#x6d;&#x6f;&#x72;&#x65;&#114;&#97;&#109;&#x2e;&#99;&#111;&#109;&#x2e;">&#121;&#x75;&#x68;&#117;&#x40;&#x6d;&#x6d;&#111;&#114;&#101;&#x72;&#x61;&#x6d;&#46;&#99;&#111;&#x6d;&#x2e;</a></p>
 
 <p>Looking forward to meet you there, it is going to be amazing!</p>
 ]]></content>
@@ -2832,57 +2956,6 @@ and the moment you want to do it (before, after, both)</p>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Symfony Barcelona]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/06/25/symfony-barcelona/"/>
-    <updated>2014-06-25T11:46:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/06/25/symfony-barcelona</id>
-    <content type="html"><![CDATA[<p>Queridos developers de Barcelona y alrededores.</p>
-
-<p>Como ya sabréis algunos, en Barcelona tenemos una comunidad muy interesante de
-developers interesados en Symfony y Cervezas. Cada par de meses nos reunimos todos
-en un bar y nos echamos un par de charlas relacionadas con nuestro entorno de
-programación. Hablamos, bebemos como si no hubiera un mañana y nos intentamos
-ayudar con aquellas cosas que nos interesan.</p>
-
-<pre><code>- Hola, buenas tardes.
-- Buenas tardes.
-- ¿Y tu eres programador Symfony?
-- Si claro.
-- ¿Y vendrás a la próxima Symfony Barcelona?
-- ¿Qué es esto?
-</code></pre>
-
-<p>Desde Symfony Barcelona queremos llegar a todos los developers PHP de la ciudad
-que estamos aquí. Que existimos y que los queremos con nosotros.
-(evidentemente no queremos ser centralistas, y ya que somos la única comunidad
-symfony en Catalunya, todos los developers son bienvenidos, amados y queridos de
-la misma forma)</p>
-
-<p>Es por esto que invocamos el Dios del boca-a-boca para hacer del siguiente
-evento Symfony algo nuevo para muchos y que encuentren un punto de encuentro
-entre personas con los mismos problemas entre código.</p>
-
-<p>Recordad que será el día 2 de Julio en el centro de Barcelona. Podéis apuntaros
-en la página <a href="http://symfony-barcelona.es">Symfony Barcelona</a>, así como seguir
-el usuario de twitter <a href="http://twitter.com/symfony_bcn">@symfony_bcn</a> y estar un
-poco más al día de nuestros movimientos</p>
-
-<p>En este caso tendremos una charla de Git, una de RabbitMQ, y finalmente
-abriremos un debate entre todos los asistentes sobre un tema aún abierto (Podéis
-dar vuestra opinión, propuestas, o mandarnos un cheque en blanco en el
-<a href="https://groups.google.com/forum/#!topic/symfony_barcelona/vd7Ld5k3fpQ">grupo de google groups</a>)</p>
-
-<p>Para la buena difusión del evento, recordad hacer (re)tweet del post, así como
-ponerlo en las redes sociales, escribirlo a mano en un papel y ponerlo en las
-patas de alguna paloma o en alguna botella surcadora de mares y horizontes.</p>
-
-<p>Os esperamos a todos para brindar por esta comunidad tan molona :D</p>
-
-<p>Salutacions!</p>
 ]]></content>
   </entry>
   

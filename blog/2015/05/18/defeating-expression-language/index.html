@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Defeating Expression Language - Because yes</title>
+  <meta name="author" content="Marc Morera">
+
+  
+  <meta name="description" content="How beautiful Expression Language definitions are, right? I mean, inserting that
+complex expressions in a Dependency Injection configuration file is &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mmoreram.github.io/blog/2015/05/18/defeating-expression-language/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Because yes" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic|Istok+Web:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41917921-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+  <div id="header-container">
+    <div id="header">
+      <div class="wrapper">
+        <header role="banner"><hgroup>
+  <h1><a href="/">Because yes</a></h1>
+</hgroup>
+
+</header>
+        <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mmoreram.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+      </div>
+    </div>
+  </div>
+  <div id="body"   >
+    <div id="main">
+      <div id="content">
+	<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Defeating Expression Language</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-18T09:53:00+02:00" pubdate data-updated="true">May 18<span>th</span>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>How beautiful Expression Language definitions are, right? I mean, inserting that
+complex expressions in a Dependency Injection configuration file is so nice and
+fast if you need to inject the result of a method in a service (one of the
+multiple examples we can see)</p>
+
+<p>Let&rsquo;s see a simple example of how we use this library.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># My managers</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">some_manager</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Manager</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">=service(&quot;another_manager&quot;).someCall(&quot;value&quot;)</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">=service(&quot;yet_another_manager&quot;).getInjectableInstance(parameter(&quot;my_parameter&quot;))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is not a bad idea, really, but because we are engineers and we should have
+as much information as possible in order to be able to choose between the best
+option, always, I will show you another way of defining this piece of code.</p>
+
+<p>Let&rsquo;s do that!</p>
+
+<h3>Factories</h3>
+
+<p>Remember the <a href="http://mmoreram.com/blog/2013/12/23/factory-pattern-in-symfony2/">Factory pattern in Symfony2</a>
+post I wrote some time ago? I talked about how this pattern can be implemented
+in your Symfony projects.</p>
+
+<p>Well, just for your information, most of your Expression Language definitions
+can be nicely done using Factories.</p>
+
+<p>Let&rsquo;s reproduce the same example using factories.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># My managers</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">some_manager</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Manager</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">my_injectable_value</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">my_injectable_service</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">my_injectable_value</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">StdClass</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">factory</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">another_manager</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">someCall</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">value</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">my_injectable_service</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Injectable\Class</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">factory</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">yet_another_manager</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">getInjectableInstance</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">%</span><span class="l-Scalar-Plain">my_parameter%</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Dependency</h3>
+
+<p>Take a look and realise that we&rsquo;ve removed a package dependency from your
+project, as you don&rsquo;t need <code>symfony/expression-language</code> anymore, and your DIC
+definition will be easily exportable to another format if someday is needed.</p>
+
+<h3>Reflexion</h3>
+
+<p>Is Expression Language a bad choice? Well, only you should be able to know if
+using this library is a good choice or not, because only you know your needs and
+your resources, but every time you add a new Expression Language line, just ask
+yourself&hellip;</p>
+
+<p>Can I use simple DI definitions here? Is the only way I can do that?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marc Morera</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-18T09:53:00+02:00" pubdate data-updated="true">May 18<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/expression-language/'>Expression Language</a>, <a class='category' href='/blog/categories/symfony/'>Symfony</a>, <a class='category' href='/blog/categories/factory/'>factory</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2015/05/18/defeating-expression-language/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2015/05/18/defeating-expression-language/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/05/08/crowdfunding-soundtrack-the-event/" title="Previous Post: Crowdfunding Soundtrack - El Evento">&laquo; Crowdfunding Soundtrack - El Evento</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/05/18/defeating-expression-language/">Defeating Expression Language</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/08/crowdfunding-soundtrack-the-event/">Crowdfunding Soundtrack - El Evento</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/08/lazy-commands-in-symfony/">Lazy Commands in Symfony</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/07/montando-a-pau-garcia-mila/">Montando a Pau Garcia-Milà</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/04/visithor/">Visithor, testing your routes without pain</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/mmoreram">@mmoreram</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mmoreram',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+      </div>
+    </div>
+    <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Marc Morera -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>.</span>
+</p>
+
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'mmoreram';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mmoreram.github.io/blog/2015/05/18/defeating-expression-language/';
+        var disqus_url = 'http://mmoreram.github.io/blog/2015/05/18/defeating-expression-language/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>

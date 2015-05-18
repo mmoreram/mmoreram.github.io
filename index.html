@@ -9,8 +9,8 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="This post is written in Spanish, but I will translate it soon. Stay tuned for
-the translation :D Finalmente, y después de unas semanas cociendo la &hellip;">
+  <meta name="description" content="How beautiful Expression Language definitions are, right? I mean, inserting that
+complex expressions in a Dependency Injection configuration file is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,159 @@ the translation :D Finalmente, y después de unas semanas cociendo la &hellip;">
       <div id="content">
 	<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/18/defeating-expression-language/">Defeating Expression Language</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-18T09:53:00+02:00" pubdate data-updated="true">May 18<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/05/18/defeating-expression-language/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>How beautiful Expression Language definitions are, right? I mean, inserting that
+complex expressions in a Dependency Injection configuration file is so nice and
+fast if you need to inject the result of a method in a service (one of the
+multiple examples we can see)</p>
+
+<p>Let&rsquo;s see a simple example of how we use this library.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># My managers</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">some_manager</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Manager</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">=service(&quot;another_manager&quot;).someCall(&quot;value&quot;)</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">=service(&quot;yet_another_manager&quot;).getInjectableInstance(parameter(&quot;my_parameter&quot;))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is not a bad idea, really, but because we are engineers and we should have
+as much information as possible in order to be able to choose between the best
+option, always, I will show you another way of defining this piece of code.</p>
+
+<p>Let&rsquo;s do that!</p>
+
+<h3>Factories</h3>
+
+<p>Remember the <a href="http://mmoreram.com/blog/2013/12/23/factory-pattern-in-symfony2/">Factory pattern in Symfony2</a>
+post I wrote some time ago? I talked about how this pattern can be implemented
+in your Symfony projects.</p>
+
+<p>Well, just for your information, most of your Expression Language definitions
+can be nicely done using Factories.</p>
+
+<p>Let&rsquo;s reproduce the same example using factories.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># My managers</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">some_manager</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Manager</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">my_injectable_value</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">my_injectable_service</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">my_injectable_value</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">StdClass</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">factory</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">another_manager</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">someCall</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">value</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">my_injectable_service</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Injectable\Class</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">factory</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">yet_another_manager</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">getInjectableInstance</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">%</span><span class="l-Scalar-Plain">my_parameter%</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Dependency</h3>
+
+<p>Take a look and realise that we&rsquo;ve removed a package dependency from your
+project, as you don&rsquo;t need <code>symfony/expression-language</code> anymore, and your DIC
+definition will be easily exportable to another format if someday is needed.</p>
+
+<h3>Reflexion</h3>
+
+<p>Is Expression Language a bad choice? Well, only you should be able to know if
+using this library is a good choice or not, because only you know your needs and
+your resources, but every time you add a new Expression Language line, just ask
+yourself&hellip;</p>
+
+<p>Can I use simple DI definitions here? Is the only way I can do that?</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1470,118 +1623,6 @@ world without hostels, but nice people.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/26/pdd-pragmatic-driven-development-english/">PDD, Pragmatic Driven Development, English Version</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-26T19:51:00+01:00" pubdate data-updated="true">Oct 26<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/10/26/pdd-pragmatic-driven-development-english/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This post is just a translation of one of my previous posts, written in Spanish,
-for Spaniard people. I just wanted to translate it and to propose my idea to the
-entirely world, even knowing not everyone will be agree with my point of view.</p>
-
-<p>You will find the original one <a href="http://mmoreram.com/blog/2014/10/06/pdd/">here</a></p>
-
-<p>There is a trend, in my opinion, extremely annoying about how we should work in
-any technical project. We have gone from being a voiceless sector to, for a
-while, a small egomaniac movement with categorical thoughts, making some
-monothematic readings so boring for the reader, just because these topics
-iterated for the umpteenth time with a very theoretical speech, non practical at
-all, far from the real life.</p>
-
-<p>And that&rsquo;s what we all need, a great doses of reality. Because reality is
-practical, not logical.</p>
-
-<p>From my point of view, and given my small experience, I think this movement has
-to be eradicated to make way for a new movement of thought, maybe
-circumstantially called PDD, Pragmatic Driven Development (You know&hellip; I can
-also be so witty assigning new names and adding some cool tags to my Linkedin
-profile&hellip;). And the truth is that I am so tired seeing that some people is
-still telling me how I should do my job, what practices should I follow to make
-it &ldquo;the right way&rdquo; and what guidelines I should take to not being far from the
-real truth.</p>
-
-<p>The real truth does not exist, or at least should not. Every single speech
-should have an objective part, based in good practices, but also should have a
-subjective part, relative to the real circumstances and taking care about the
-needs of the project. So, this is not seemed to be understood by some people.
-Seems that, like an outdated political movement, The ego blinds some people to
-understand so much certainty (must be that we are too used to being treated like
-sheeps&hellip; BeEeEe BeEeEe).</p>
-
-<p>This is why I refuse to listen to such modernistic stupidity without solid
-arguments. I refuse to be near this hype, created from this people that don&rsquo;t
-have any other way to stand out than selling their unique thought like it was
-the entrance of the heaven of wisdom. We have reached an illness point.</p>
-
-<p>I personally always demand my attendees, or just the people that talk with me,
-to have an owning point of view, to treat my single one just like another point
-of view, even if they feel it is not correct, it is different or even distant
-from theirs, and to use it as a starting point of constructive discussion.</p>
-
-<p>Important, I&rsquo;m not telling that I disagree all these techniques, I&rsquo;m not telling
-that all this architectural knowledge is not useful, I&rsquo;m not telling that
-applying a great methodology is useless&hellip; I strongly think that all of them,
-born inside great minds and actually tested with great results, are very useful
-and really makes us better as developers, giving us more resources to work and
-making us better able to do our job successfully. I have to tell also that since
-I am actually practicing lot of them in my projects, like TDD, BDD and DDD, I
-feel better and more comfortable. I say thanks for that! What I am actually
-saying is that we are developers, not this kind of stupid people without
-capacity analysis. At the moment we lose this capacity, we lose our value.</p>
-
-<ul>
-<li>Hey, dude! I am actually working on that project! Do you like it?</li>
-<li>Well, I expect you are doing Hexagonal Architecture&hellip;</li>
-<li>Hmmm&hellip; I don&rsquo;t really need it&hellip;</li>
-<li>You don&rsquo;t need it? Sure you do!</li>
-<li>In fact, not.</li>
-<li>You are wrong!</li>
-<li>Ok.</li>
-</ul>
-
-
-<p>It is all about thinking things, and make sure about what we really need at each
-point, just ignoring everyone telling you, categorically, the way you need to do
-your job.</p>
-
-<p>I truly hope all this pantomime to be ended soon. I hope as well that one day we
-will be able to work all together as a community or a team, this is what we
-really need, keeping in mind what really matters: learning, teaching and doing
-great projects, no matter the framework, the language even the architecture.</p>
-
-<p>Have a really nice week, and enjoy your work :)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1597,6 +1638,10 @@ great projects, no matter the framework, the language even the architecture.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/05/18/defeating-expression-language/">Defeating Expression Language</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/05/08/crowdfunding-soundtrack-the-event/">Crowdfunding Soundtrack - El Evento</a>
       </li>
     
@@ -1610,10 +1655,6 @@ great projects, no matter the framework, the language even the architecture.</p>
     
       <li class="post">
         <a href="/blog/2015/05/04/visithor/">Visithor, testing your routes without pain</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/25/behat-and-data-test/">Behat and data-test</a>
       </li>
     
   </ul>
