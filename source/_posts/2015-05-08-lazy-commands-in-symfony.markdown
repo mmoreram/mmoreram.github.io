@@ -3,6 +3,7 @@ layout: post
 title: "Lazy Commands in Symfony"
 date: 2015-05-08 11:04
 comments: true
+author: Marc Morera
 categories: 
     - Symfony
     - Commands
