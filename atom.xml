@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-08-23T18:17:18+02:00</updated>
+  <updated>2015-08-23T18:19:07+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,34 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Symfony in Barcelona]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/08/23/symfony-in-barcelona/"/>
+    <updated>2015-08-23T17:22:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/08/23/symfony-in-barcelona</id>
+    <content type="html"><![CDATA[<p>Barcelona, one of the best cities in the world.</p>
+
+<p>For you, Symfony lover. Do you know where is Barcelona, right?
+Well, this is a call for all Symfony lovers who want something special,
+something really different. Amazing people, amazing food and tons and tons of
+new experiences with one of the greatest Symfony Communities around the world.</p>
+
+<iframe width="420" height="315" src="http://www.youtube.com/embed/6DxX1DYHOlk" frameborder="0" allowfullscreen></iframe>
+
+
+<p>Lot of companies are actually being built in this city, so we really want you
+with us. No matter your Symfony expertise, no matter how good you really are&hellip;
+in Barcelona only matters one simple thing&hellip; How good you want to be. If you
+want to be one of the bests, then Barcelona can be your new home :)</p>
+
+<p>If you want to know more about it, just send an email to Symfony Barcelona User
+Group and you will be properly helped to move here with us. The group email is
+<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#x73;&#121;&#109;&#102;&#111;&#110;&#x79;&#x62;&#97;&#114;&#99;&#101;&#108;&#x6f;&#x6e;&#97;&#x40;&#x67;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#111;&#x6d;">&#x73;&#x79;&#x6d;&#x66;&#111;&#110;&#121;&#98;&#97;&#114;&#99;&#101;&#x6c;&#111;&#110;&#97;&#64;&#103;&#x6d;&#x61;&#105;&#108;&#x2e;&#x63;&#111;&#x6d;</a></p>
+
+<p>You want to join us, but you don&rsquo;t know it yet :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Re-thinking Event Listeners]]></title>
@@ -1812,7 +1840,7 @@ ever!</p>
 <p>Let me know if you want to join us through the
 <a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
 so we can organize based on the total number of people. You can also contact me
-through my email, <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#121;&#x75;&#104;&#117;&#64;&#x6d;&#109;&#111;&#x72;&#x65;&#114;&#97;&#109;&#46;&#99;&#111;&#x6d;&#x2e;">&#121;&#x75;&#104;&#x75;&#64;&#x6d;&#109;&#x6f;&#114;&#101;&#x72;&#97;&#109;&#x2e;&#99;&#111;&#x6d;&#46;</a></p>
+through my email, <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x79;&#117;&#x68;&#x75;&#x40;&#109;&#x6d;&#111;&#x72;&#101;&#x72;&#97;&#x6d;&#46;&#x63;&#x6f;&#109;&#46;">&#x79;&#117;&#x68;&#117;&#x40;&#109;&#109;&#x6f;&#x72;&#x65;&#x72;&#97;&#x6d;&#x2e;&#99;&#111;&#109;&#x2e;</a></p>
 
 <p>Looking forward to meet you there, it is going to be amazing!</p>
 ]]></content>
@@ -2847,39 +2875,6 @@ ya que ayudan un poco a que el código quede un poco más estandarizado con el
 paso del tiempo, aunque sea a nivel visual.</p>
 
 <p>Vuestros ojos os lo agradecerán.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Elcodi wants you]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/07/21/elcodi-wants-you/"/>
-    <updated>2014-07-21T21:28:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/07/21/elcodi-wants-you</id>
-    <content type="html"><![CDATA[<p>Right. Elcodi wants you.</p>
-
-<p><a href="http://elcodi.io">Elcodi Project</a></p>
-
-<p>And Elcodi wants you because you are ambitious, a fighter, a ninja developer
-eager to learn and to teach.</p>
-
-<p>Elcodi wants you because you are a follower of good practices and have a sound
-software craftsmanship mindset, because you are a perfectionist, because your
-inspiring work is a way of life.</p>
-
-<p>Elcodi wants you because you firmly believe that an open-source environment is a
-trigger that can detonate personal and professional achievements.</p>
-
-<p>We believe we are doing a good job. We are not alone in believing it, many
-others do. This is why we have decided take it to the next level and start to
-evolve, growing the team and our vision.</p>
-
-<p>We really aim to make things the right way by unfolding the power of
-collaborative software development and this is why we need your voice, your
-ideas, your enthusiasm and, of course, we need your hands. Skillful, experienced
-and visionary artisan hands.</p>
-
-<p>If you share our vision and want to collaborate with a truly inspiring project,
-contact me at <code>yuhu@mmoreram.com</code></p>
 ]]></content>
   </entry>
   
