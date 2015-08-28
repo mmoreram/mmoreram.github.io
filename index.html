@@ -9,8 +9,8 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="Barcelona, one of the best cities in the world. For you, Symfony lover. Do you know where is Barcelona, right?
-Well, this is a call for all Symfony &hellip;">
+  <meta name="description" content="Some of my concerns during the last couple of years have been how to collect
+data from all installed bundles using available tools in Symfony &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +87,478 @@ Well, this is a call for all Symfony &hellip;">
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/08/28/eventlisteners-as-collectors-in-symfony/">EventListeners as Collectors in Symfony</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-28T12:04:00+02:00" pubdate data-updated="true">Aug 28<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/08/28/eventlisteners-as-collectors-in-symfony/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Some of my concerns during the last couple of years have been how to collect
+data from all installed bundles using available tools in Symfony packages.
+I say concerns because I don&rsquo;t really know if is there a tool for that.</p>
+
+<p>Some people have told me that the
+<a href="http://symfony.com/doc/current/components/event_dispatcher/introduction.html">EventDispatcher component</a>
+can do this work greatly, but then I have the same question once and again&hellip; is
+this component designed for such?</p>
+
+<p>Let&rsquo;s review some tiny concepts here.</p>
+
+<h2>Event immutability</h2>
+
+<p>Try to think what really is an event. Something that happens. For example, I
+wake up. Once I wake up, an event is dispatched called <code>mmoreram.wake_up</code>. This
+event, of course, is immutable. Nothing can change the fact that I woke up, so
+the event should be treated as an immutable object, with only reading actions.</p>
+
+<p>One single property of the event is injected once is created. Did I wake up
+rested enough for a new crazy day with all cool guys from my office?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">Mmoreram</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\EventDispatcher\Event</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Marc woke up event</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MmoreramWakeUpEvent</span> <span class="k">extends</span> <span class="nx">Event</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var boolean</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Marc woke up rested</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$rested</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Construct method</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @var boolean $rested Marc woke up rested</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$rested</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rested</span> <span class="o">=</span> <span class="nv">$rested</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Get if Marc is rested enough</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return boolean Marc is rested enough</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">isRested</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rested</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course, no one should be able to change the value of rested, because no one
+has the <strong>power</strong> to change the fact I woke up tired this night.</p>
+
+<p>The main intention of an event is notify the world that something just happened,
+so any extra implementation changing this paradigm should be avoided in order to
+not corrupt the real meaning of the component.</p>
+
+<p>Said that, and before continuing with the post&hellip; a question related to this
+topic. Just make sure that you can take some time to think about that.</p>
+
+<p>If we talk about decoupling between components&hellip; is the concept of <code>priority</code>
+helpful? If any actor must know the priorities of all listeners in order to know
+its own&hellip; then can we consider that all event listeners are really decoupled
+between them? And how bad is that?</p>
+
+<h2>Collector</h2>
+
+<p>Let&rsquo;s figure out that the system need to collect some feelings when I wake up.
+Let&rsquo;s figure out as well that we don&rsquo;t really care about how these feelings are
+sorted, so the problem of priority is not a problem anymore: we can ignore it
+completely.</p>
+
+<p>We can change our event with this new implementation.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">Mmoreram</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\EventDispatcher\Event</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Feeling</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Marc woke up event</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MmoreramWakeUpEvent</span> <span class="k">extends</span> <span class="nx">Event</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var boolean</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Marc woke up rested</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$rested</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var Feeling[]</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Array of feelings</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$feelings</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Construct method</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @var boolean $rested Marc woke up rested</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$rested</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rested</span> <span class="o">=</span> <span class="nv">$rested</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">feelings</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Add new feeling</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param Feeling $feeling New feeling to be added</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return $this Self object</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addFeeling</span><span class="p">(</span><span class="nx">Feeling</span> <span class="nv">$feeling</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">feelings</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$feeling</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Get if Marc is rested enough</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return boolean Marc is rested enough</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">isRested</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rested</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Get all feelings</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return Feeling[] Set of feelings</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getFeelings</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">feelings</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course, in our domain we must dispatch this event one I really wake up (for
+example a service called <code>MmoreramVitalActions</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\EventDispatcher\EventDispatcher</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\EventDispatcher\Event</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\MmoreramWakeUpEvent</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Marc vital actions</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MmoreramVitalActions</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Marc wakes up</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return Feeling[] Set of feelings resulting of the action of waking up</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">wakeUp</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$rested</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">didMarcRestedProperly</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$eventDispatcher</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventDispatcher</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MmoreramWakeUpEvent</span><span class="p">(</span><span class="nv">$rested</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$dispatcher</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">dispatch</span><span class="p">(</span>
+</span><span class='line'>                <span class="s1">&#39;mmoreram.wake_up&#39;</span><span class="p">,</span>
+</span><span class='line'>                <span class="nv">$event</span>
+</span><span class='line'>            <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getFeelings</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Get if Marc rested properly</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return boolean Marc rested properly</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">didMarcRestedProperly</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see, after dispatching the event you should be able to get all
+collected feelings. This means that the one in charge to fulfill this
+information related to my feelings should be any event listener interested in
+adding it&rsquo;s own related feeling.</p>
+
+<p>For example, an Event Listener will have the responsibility to add a feeling
+related to the temperature of my room.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\MmoreramWakeUpEvent</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Marc wake up event listener related to temperature.</span>
+</span><span class='line'><span class="sd"> * This class is intended to add a feeling depending on local temperature</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">TemperatureMmoreramWakeUpEventListener</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Marc wakes up listener</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param MmoreramWakeUpEvent $event Marc wake up event</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return $this Self object</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addTemperatureFeeling</span><span class="p">(</span><span class="nx">MmoreramWakeUpEvent</span> <span class="nv">$event</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$feeling</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getTemperatureFeeling</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">addFeeling</span><span class="p">(</span><span class="nv">$feeling</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Get feeling related to the temperature</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return Feeling Feeling related to temperature</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">private</span> <span class="k">function</span> <span class="nf">getTemperatureFeeling</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course, you must add this event listener using tags in the Dependency
+Injection Symfony configuration.</p>
+
+<p><a href="http://symfony.com/doc/current/reference/dic_tags.html">Using tags for our listeners definition</a></p>
+
+<p>At this point, you can see that maybe this is useful. This is a very easy and
+fast collector implementation, but not enough good. The event is not immutable
+anymore and you can change if from any event dispatcher, very far from the real
+intention of the component.</p>
+
+<h2>Solution</h2>
+
+<p>I am using this approach in order to be as much pragmatic as possible. Of course
+this works properly by adding an extra definition and documentation layer, but
+I wonder if other people is concerned about that in Symfony.</p>
+
+<p>I don&rsquo;t really think that yet another component called Collector would be
+necessary at all unless there is an abstraction between both components (they
+share some common things related to the fact of broadcasting and subscribing).</p>
+
+<p>Of course, again, simple theory and personal thoughts brought to the community.
+I will continue using this approach even knowing that should be solved using
+another one as long as people understand it and is easy to work with.</p>
+
+<p>Feedback and people thoughts will be appreciated, as always :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/08/23/symfony-in-barcelona/">Symfony in Barcelona</a></h1>
     
     
@@ -129,7 +601,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#115;&#x79;&#x6d;&#102;&#x6f;&#x6e;&#x79;&#x62;&#x61;&#114;&#x63;&#x65;&#108;&#111;&#x6e;&#97;&#64;&#x67;&#x6d;&#x61;&#105;&#x6c;&#46;&#99;&#111;&#109;">&#115;&#121;&#109;&#x66;&#x6f;&#110;&#x79;&#98;&#x61;&#114;&#x63;&#101;&#108;&#x6f;&#x6e;&#x61;&#64;&#x67;&#x6d;&#x61;&#x69;&#108;&#x2e;&#99;&#x6f;&#x6d;</a></p>
+<a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#115;&#121;&#x6d;&#x66;&#111;&#110;&#x79;&#x62;&#97;&#x72;&#99;&#x65;&#x6c;&#x6f;&#110;&#x61;&#64;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#109;">&#115;&#x79;&#x6d;&#x66;&#x6f;&#x6e;&#x79;&#98;&#97;&#114;&#99;&#x65;&#x6c;&#x6f;&#110;&#x61;&#64;&#x67;&#109;&#x61;&#x69;&#108;&#x2e;&#99;&#111;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 </div>
@@ -1904,107 +2376,6 @@ mayores deseos de éxito.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/01/10/pdd-manifesto/">PDD Manifesto</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-01-10T18:40:00+01:00" pubdate data-updated="true">Jan 10<span>th</span>, 2015</time>
-        
-         | <a href="/blog/2015/01/10/pdd-manifesto/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Hi everyone.</p>
-
-<p>I&rsquo;ve been talking about PDD for a while. Pragmatism-Driven Development, a
-methodology that takes in account the development environment and the
-circumstances before of deciding the tools and the architectural decisions of
-your projects.</p>
-
-<p><a href="http://mmoreram.com/blog/2014/10/26/pdd-pragmatic-driven-development-english/">Pragmatic Driver Development</a></p>
-
-<p>Some people asked me for the manifesto. And because I think that some people
-will appreciate another way of doing things more realistic, I started the first
-draft of that manifesto some time ago.</p>
-
-<p>After discussions with the ecosystem where I work, finally, I can release the
-first version of the manifesto.</p>
-
-<p>These are just some ideas, not a dogma, so please, don&rsquo;t use them as the only
-way of doing things, making the same mistake again and again.</p>
-
-<p>I will appreciate as well your constructive comments, so the real objective of
-that kind of things are, indeed, to make people more comfortable with their
-projects.</p>
-
-<p>The more useful projects, the more knowledge shared, the more fun for everyone.</p>
-
-<p>Be happy!</p>
-
-<h2>PDD Manifesto</h2>
-
-<h3>Good practices</h3>
-
-<ul>
-<li>All good practice is only good if it is.</li>
-<li>A good practice is good, indeed, if the executor knows it enough.</li>
-<li>Otherwise, a good practice becomes always a bad practice; Ipso Facto.</li>
-</ul>
-
-
-<h3>Bad practices</h3>
-
-<ul>
-<li>All bad practice can be accepted, if, and only if, is well known by the executor.</li>
-<li>Knowing them means to have a strict control of your current bad practices.</li>
-<li>The absence of this control turns any bad practice in a poorly executed project.</li>
-</ul>
-
-
-<h3>Analyzing</h3>
-
-<ul>
-<li>Every project must be analyzed according to needs and own tools.</li>
-<li>Accepting that these needs and tools are static is accepting their failure.</li>
-<li>Starting a project destined to fail is the worst practice of all.</li>
-</ul>
-
-
-<h3>Evolving</h3>
-
-<ul>
-<li>These needs can change along the time, so the tools have to change as well.</li>
-<li>Internal and staff training is essential for the evolution of a team, and therefore a project.</li>
-<li>All components of such team must evolve to self-acceptance and practice of good practices.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -2020,6 +2391,10 @@ projects.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/28/eventlisteners-as-collectors-in-symfony/">EventListeners as collectors in Symfony</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/23/symfony-in-barcelona/">Symfony in Barcelona</a>
       </li>
     
@@ -2033,10 +2408,6 @@ projects.</p>
     
       <li class="post">
         <a href="/blog/2015/05/08/crowdfunding-soundtrack-the-event/">Crowdfunding Soundtrack - El Evento</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/08/lazy-commands-in-symfony/">Lazy Commands in Symfony</a>
       </li>
     
   </ul>

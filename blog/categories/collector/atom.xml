@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: collector | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/collector/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2015-08-28T13:16:29+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[EventListeners as collectors in Symfony]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/08/28/eventlisteners-as-collectors-in-symfony/"/>
+    <updated>2015-08-28T12:04:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/08/28/eventlisteners-as-collectors-in-symfony</id>
+    <content type="html"><![CDATA[<p>Some of my concerns during the last couple of years have been how to collect
+data from all installed bundles using available tools in Symfony packages.
+I say concerns because I don&rsquo;t really know if is there a tool for that.</p>
+
+<p>Some people have told me that the
+<a href="http://symfony.com/doc/current/components/event_dispatcher/introduction.html">EventDispatcher component</a>
+can do this work greatly, but then I have the same question once and again&hellip; is
+this component designed for such?</p>
+
+<p>Let&rsquo;s review some tiny concepts here.</p>
+
+<h2>Event immutability</h2>
+
+<p>Try to think what really is an event. Something that happens. For example, I
+wake up. Once I wake up, an event is dispatched called <code>mmoreram.wake_up</code>. This
+event, of course, is immutable. Nothing can change the fact that I woke up, so
+the event should be treated as an immutable object, with only reading actions.</p>
+
+<p>One single property of the event is injected once is created. Did I wake up
+rested enough for a new crazy day with all cool guys from my office?</p>
+
+<p>``` php
+namespace Mmoreram;</p>
+
+<p>use Symfony\Component\EventDispatcher\Event;</p>
+
+<p>/<em>*
+ * Marc woke up event
+ </em>/
+class MmoreramWakeUpEvent extends Event
+{</p>
+
+<pre><code>/**
+ * @var boolean
+ *
+ * Marc woke up rested
+ */
+private $rested;
+
+/**
+ * Construct method
+ *
+ * @var boolean $rested Marc woke up rested
+ */
+public function __construct($rested)
+{
+    $this-&gt;rested = $rested;
+}
+
+/**
+ * Get if Marc is rested enough
+ *
+ * @return boolean Marc is rested enough
+ */
+public function isRested()
+{
+    return $this-&gt;rested;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Of course, no one should be able to change the value of rested, because no one
+has the <strong>power</strong> to change the fact I woke up tired this night.</p>
+
+<p>The main intention of an event is notify the world that something just happened,
+so any extra implementation changing this paradigm should be avoided in order to
+not corrupt the real meaning of the component.</p>
+
+<p>Said that, and before continuing with the post&hellip; a question related to this
+topic. Just make sure that you can take some time to think about that.</p>
+
+<p>If we talk about decoupling between components&hellip; is the concept of <code>priority</code>
+helpful? If any actor must know the priorities of all listeners in order to know
+its own&hellip; then can we consider that all event listeners are really decoupled
+between them? And how bad is that?</p>
+
+<h2>Collector</h2>
+
+<p>Let&rsquo;s figure out that the system need to collect some feelings when I wake up.
+Let&rsquo;s figure out as well that we don&rsquo;t really care about how these feelings are
+sorted, so the problem of priority is not a problem anymore: we can ignore it
+completely.</p>
+
+<p>We can change our event with this new implementation.</p>
+
+<p>``` php
+namespace Mmoreram;</p>
+
+<p>use Symfony\Component\EventDispatcher\Event;
+use Mmoreram\Feeling;</p>
+
+<p>/<em>*
+ * Marc woke up event
+ </em>/
+class MmoreramWakeUpEvent extends Event
+{</p>
+
+<pre><code>/**
+ * @var boolean
+ *
+ * Marc woke up rested
+ */
+private $rested;
+
+/**
+ * @var Feeling[]
+ *
+ * Array of feelings
+ */
+private $feelings;
+
+/**
+ * Construct method
+ *
+ * @var boolean $rested Marc woke up rested
+ */
+public function __construct($rested)
+{
+    $this-&gt;rested = $rested;
+    $this-&gt;feelings = [];
+}
+
+/**
+ * Add new feeling
+ *
+ * @param Feeling $feeling New feeling to be added
+ *
+ * @return $this Self object
+ */
+public function addFeeling(Feeling $feeling)
+{
+    $this-&gt;feelings[] = $feeling;
+
+    return $this;
+}
+
+/**
+ * Get if Marc is rested enough
+ *
+ * @return boolean Marc is rested enough
+ */
+public function isRested()
+{
+    return $this-&gt;rested;
+}
+
+/**
+ * Get all feelings
+ *
+ * @return Feeling[] Set of feelings
+ */
+public function getFeelings()
+{
+    return $this-&gt;feelings;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Of course, in our domain we must dispatch this event one I really wake up (for
+example a service called <code>MmoreramVitalActions</code></p>
+
+<p>``` php
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\Event;
+use Mmoreram\MmoreramWakeUpEvent;</p>
+
+<p>/<em>*
+ * Marc vital actions
+ </em>/
+class MmoreramVitalActions
+{</p>
+
+<pre><code>/**
+ * Marc wakes up
+ *
+ * @return Feeling[] Set of feelings resulting of the action of waking up
+ */
+public function wakeUp()
+{
+    $rested = $this-&gt;didMarcRestedProperly();
+    $eventDispatcher = new EventDispatcher();
+    $event = new MmoreramWakeUpEvent($rested);
+
+    $dispatcher
+        -&gt;dispatch(
+            'mmoreram.wake_up',
+            $event
+        );
+
+    return $event-&gt;getFeelings();
+}
+
+/**
+ * Get if Marc rested properly
+ *
+ * @return boolean Marc rested properly
+ */
+private function didMarcRestedProperly();
+</code></pre>
+
+<p>}
+```</p>
+
+<p>As you can see, after dispatching the event you should be able to get all
+collected feelings. This means that the one in charge to fulfill this
+information related to my feelings should be any event listener interested in
+adding it&rsquo;s own related feeling.</p>
+
+<p>For example, an Event Listener will have the responsibility to add a feeling
+related to the temperature of my room.</p>
+
+<p>``` php
+use Mmoreram\MmoreramWakeUpEvent;</p>
+
+<p>/<em>*
+ * Marc wake up event listener related to temperature.
+ * This class is intended to add a feeling depending on local temperature
+ </em>/
+class TemperatureMmoreramWakeUpEventListener
+{</p>
+
+<pre><code>/**
+ * Marc wakes up listener
+ *
+ * @param MmoreramWakeUpEvent $event Marc wake up event
+ *
+ * @return $this Self object
+ */
+public function addTemperatureFeeling(MmoreramWakeUpEvent $event)
+{
+    $feeling = $this-&gt;getTemperatureFeeling();
+    $event-&gt;addFeeling($feeling);
+
+    return $this;
+}
+
+/**
+ * Get feeling related to the temperature
+ *
+ * @return Feeling Feeling related to temperature
+ */
+private function getTemperatureFeeling();
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Of course, you must add this event listener using tags in the Dependency
+Injection Symfony configuration.</p>
+
+<p><a href="http://symfony.com/doc/current/reference/dic_tags.html">Using tags for our listeners definition</a></p>
+
+<p>At this point, you can see that maybe this is useful. This is a very easy and
+fast collector implementation, but not enough good. The event is not immutable
+anymore and you can change if from any event dispatcher, very far from the real
+intention of the component.</p>
+
+<h2>Solution</h2>
+
+<p>I am using this approach in order to be as much pragmatic as possible. Of course
+this works properly by adding an extra definition and documentation layer, but
+I wonder if other people is concerned about that in Symfony.</p>
+
+<p>I don&rsquo;t really think that yet another component called Collector would be
+necessary at all unless there is an abstraction between both components (they
+share some common things related to the fact of broadcasting and subscribing).</p>
+
+<p>Of course, again, simple theory and personal thoughts brought to the community.
+I will continue using this approach even knowing that should be solved using
+another one as long as people understand it and is easy to work with.</p>
+
+<p>Feedback and people thoughts will be appreciated, as always :)</p>
+]]></content>
+  </entry>
+  
+</feed>
