@@ -4,7 +4,7 @@
   <title><![CDATA[Category: barcelona | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/barcelona/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-08-28T13:16:29+02:00</updated>
+  <updated>2015-09-07T21:57:53+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,54 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Symfony Barcelona Event, September 2015]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/09/07/symfony-barcelona-event-september-2015/"/>
+    <updated>2015-09-07T21:38:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/09/07/symfony-barcelona-event-september-2015</id>
+    <content type="html"><![CDATA[<p>It is a pleasure for me to announce that next September 22nd we will have a
+great event in Barcelona. I&rsquo;ve talked many times about this local organization,
+but this time is pretty different. I&rsquo;ll explain you.</p>
+
+<p>This year Barcelona hosts the
+<a href="https://events.drupal.org/barcelona2015">DrupalCon Europe 2015</a>, and this is
+super exciting. Many people from around the world will visit our great and
+amazing streets and will attend to a great and big event, related with Drupal,
+Symfony and other interesting topics, always, related to the Drupal world.</p>
+
+<p>This is very interesting from the point of view of Symfony, because as you may
+know, new version of drupal, Drupal8, is build using some Symfony components.
+This is one of the examples I refer when I talk about sharing technologies
+between PHP projects and when I talk about open source, community and other
+related topics. We&rsquo;ve seen these synergies between other PHP projects and
+Symfony as well with Laravel, eZ Publish, Magento and Joomla (and many more,
+indeed)</p>
+
+<p>So, this is a call to all the community coming to Barcelona next September 21st.
+We will host Fabien Potencier, the creator of Symfony, and Lukas Kahwe Smith, an
+amazing and super active PHP developer, member, for example, of the PHP-FIG
+group.</p>
+
+<p><a href="http://symfony-barcelona.es">http://symfony-barcelona.es</a></p>
+
+<p>Isn&rsquo;t it interesting? Indeed, but this is not all!</p>
+
+<p>We are planning to overcome our last assistance record, which is 140 attendees.
+This time, we want to fill an auditorium of 600 seats and show you what really
+is Barcelona, and how amazing can be :)</p>
+
+<p>Our sponsors are ready<br/>
+The community is ready<br/>
+The organization is ready<br/>
+Only one thing is missing here&hellip;</p>
+
+<p><strong>You!</strong></p>
+
+<p><a href="http://symfony-barcelona.es#register">Join us now for free!</a> and please share
+this post to allow everyone to know about it!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Symfony in Barcelona]]></title>
@@ -35,7 +83,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x73;&#121;&#x6d;&#102;&#111;&#x6e;&#121;&#98;&#x61;&#114;&#x63;&#x65;&#x6c;&#x6f;&#110;&#97;&#64;&#x67;&#x6d;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;">&#115;&#x79;&#x6d;&#102;&#x6f;&#x6e;&#121;&#98;&#x61;&#114;&#x63;&#x65;&#x6c;&#x6f;&#110;&#97;&#64;&#x67;&#x6d;&#97;&#x69;&#108;&#46;&#x63;&#111;&#109;</a></p>
+<a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x73;&#x79;&#x6d;&#x66;&#x6f;&#110;&#121;&#98;&#x61;&#114;&#x63;&#x65;&#108;&#111;&#x6e;&#97;&#64;&#x67;&#109;&#97;&#x69;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#121;&#x6d;&#102;&#x6f;&#110;&#x79;&#98;&#x61;&#114;&#x63;&#x65;&#108;&#111;&#x6e;&#97;&#64;&#103;&#109;&#x61;&#105;&#108;&#x2e;&#x63;&#111;&#109;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 ]]></content>
