@@ -16,7 +16,7 @@ intended for. If you don't, don't hesitate to take a look at the Symfony
 documentation.
 
 This post aims to start a small discussion about how an Event Listener should
-look like if we really want to keep things uncoupled. 
+look like if we really want to keep things decoupled. 
 
 ## TL;DR
 
