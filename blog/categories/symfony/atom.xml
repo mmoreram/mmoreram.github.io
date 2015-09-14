@@ -4,7 +4,7 @@
   <title><![CDATA[Category: symfony | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/symfony/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-09-07T21:57:53+02:00</updated>
+  <updated>2015-09-14T12:44:09+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,32 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Symfony UG, be our friend]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/09/14/symfony-ug-be-our-friend/"/>
+    <updated>2015-09-14T10:57:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/09/14/symfony-ug-be-our-friend</id>
+    <content type="html"><![CDATA[<p>Symfony Barcelona UG have been looking some sponsors for a while, and we have
+had a great response from the community. We are so proud and happy about that.</p>
+
+<p>As a User Group, we want to be a community group for all the community, so from
+today, you can be our UG friend :)</p>
+
+<p>If you are a Symfony UG around the world and you want to be part of it, very
+easy. Just send an email to
+<a href="symfonybarcelona@gmail.com">symfonybarcelona@gmail.com</a> or just a simple tweet
+with <a href="http://twitter.com/symfony_bcn">@symfony_bcn</a>. We will add your logo in
+our website and you will appear in our next event.</p>
+
+<p>Then, we will be friends :)</p>
+
+<p>Please, share this post on your social networks, and help us making a better
+world with tons of tiny and cute cats :)</p>
+
+<p>Have a nice week!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Symfony Barcelona Event, September 2015]]></title>
@@ -367,7 +393,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x73;&#x79;&#x6d;&#x66;&#111;&#110;&#121;&#98;&#x61;&#x72;&#x63;&#x65;&#x6c;&#x6f;&#x6e;&#97;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#x6f;&#109;">&#115;&#x79;&#109;&#x66;&#x6f;&#110;&#121;&#98;&#x61;&#114;&#x63;&#x65;&#108;&#111;&#x6e;&#x61;&#64;&#103;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;</a></p>
+<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#x73;&#121;&#x6d;&#102;&#x6f;&#110;&#x79;&#x62;&#x61;&#114;&#99;&#x65;&#108;&#111;&#x6e;&#x61;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#109;">&#115;&#x79;&#x6d;&#102;&#111;&#110;&#121;&#x62;&#97;&#x72;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#x61;&#64;&#103;&#x6d;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#109;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 ]]></content>
@@ -403,343 +429,6 @@ and visionary artisan hands.</p>
 
 <p>If you share our vision and want to collaborate with a truly inspiring project,
 contact me at <code>yuhu@mmoreram.com</code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ControllerExtraBundle, some useful Controller annotations]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/06/30/controller-extra-bundle/"/>
-    <updated>2014-06-30T17:03:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/06/30/controller-extra-bundle</id>
-    <content type="html"><![CDATA[<p>Few days ago, at the bimonthly meeting of Symfony2 Barcelona, attendees
-began to discuss the annotations. Obviously, given that it is a
-practice that goes against many many philosophies or architectural strategies ,
-many people were against them, and some people where I include myself, were in
-favor.</p>
-
-<p>Being in favor of annotations does not mean wanting to use everywhere
-but take them into account when the occasion required it is.</p>
-
-<p>We could divide Symfony2 project into two blocks in this case. the
-first is the model, a set of elements that implement our domain.
-Doctrine has some annotations to define how this model maps to the
-database, and I admit that at the first, when you are in the lower part
-and elemental learning curve, are very positive elements for all developers.</p>
-
-<p>However, at the time that you must have actual control of your domain, and
-the time domain may be used in more than one project and more than
-a framework, we have a problem. So, and I will not go into details,
-I conclude that annotations never should be used in the domain model.</p>
-
-<p>On the other hand, we have the application, the entry point. The controllers.</p>
-
-<p>Let me ask you a question.</p>
-
-<p>Do you think your application will change its framework someday? And given that
-the answer is affirmative&hellip; Do you think you will maintain your controllers?</p>
-
-<p>Both questions can be answered affirmatively, but is a very very rarely
-situation where, surely, most of you will never have to manage. So I think that
-we should thread Controllers in a very different way than Model.</p>
-
-<p>IMHO, I am used to using annotations, because simplifies a lot some repetitive
-processes, and gives me a very visual definition of what my action is responding
-against, and what configuration are being applied.</p>
-
-<p>Maybe is not the best of the options in some cases, but if the annotations is
-well documented and defined, maybe could be useful in lot of cases.</p>
-
-<p>In Symfony Controllers we have those annotations (Surely there are more, but I
-consider that those are the most useful of them)</p>
-
-<ul>
-<li>ParamConverter &ndash; Good annotation. The code is a little bit messy but I am very
-thankful. At the point I needed to define the namespace of the entity through a
-container parameter, this annotations became useless.</li>
-<li>Method, Router y Template &ndash; Very useful for non-customizable projects. Worth
-considering in our projects if we really do not need any kind of customization,
-like custom routes.</li>
-<li>Secure &ndash; Static. Very useful if you accept your controllers will never change
-its secure definition.</li>
-</ul>
-
-
-<p>Given my little devotion for these controller annotations, some months ago I
-decided to detect some needs I had in some personal projects, needs to repeat
-some code once and again, code that had nothing to do with my business. I tried
-to implement my annotations as flexible as possible.</p>
-
-<p>For that I created <a href="https://github.com/mmoreram/ControllerExtraBundle">ControllerExtraBundle</a>.
-This bundle, in addition to provide a set of Symfony2 annotations for
-controllers, provides you a platform and a documentation to implement yourself
-your own needs.</p>
-
-<p>Actually this bundle is stable at version <code>v.1.1.2</code> and have this annotations</p>
-
-<h2>@Paginator</h2>
-
-<p><a href="https://github.com/mmoreram/ControllerExtraBundle#paginator">@Paginator Documentation</a></p>
-
-<p>Allows you to inject a Doctrine Paginator given a route and a configuration. Is
-very flexible but has to evolve even more.</p>
-
-<p><code>php
-/**
- * Simple controller method
- *
- * This Controller matches pattern /paginate/nb/{limit}/{page}
- *
- * Where:
- *
- * * limit = 10
- * * page = 1
- *
- * @PaginatorAnnotation(
- *      class = (
- *          factoryClass = "Mmoreram\ControllerExtraBundle\Factory\EntityFactory",
- *          factoryMethod = "create",
- *          factoryStatic = true
- *      ),
- *      page = "~page~",
- *      limit = "~limit~",
- *      orderBy = {
- *          { "x", "createdAt", "ASC" },
- *          { "x", "updatedAt", "DESC" },
- *          { "x", "id", "0", {
- *              "1" = "ASC",
- *              "2" = "DESC",
- *          }}
- *      },
- *      wheres = {
- *          { "x", "enabled" , "=", true }
- *      },
- *      leftJoins = {
- *          { "x", "relation", "r" },
- *          { "x", "relation2", "r2" },
- *          { "x", "relation5", "r5", true },
- *      },
- *      innerJoins = {
- *          { "x", "relation3", "r3" },
- *          { "x", "relation4", "r4", true },
- *      },
- *      notNulls = {
- *          {"x", "address1"},
- *          {"x", "address2"},
- *      }
- * )
- */
-public function indexAction(Paginator $paginator)
-{
-}
-</code></p>
-
-<h2>@Entity</h2>
-
-<p><a href="https://github.com/mmoreram/ControllerExtraBundle#entity">@Entity Documentation</a></p>
-
-<p>Generates a new entity instance, given an entity definition. This definition can
-be given a namespace, a container parameter, a doctrine shortcut or a factory
-definition.</p>
-
-<p>``` php
-&lt;?php</p>
-
-<p>use Mmoreram\ControllerExtraBundle\Annotation\Entity;
-use Mmoreram\ControllerExtraBundle\Entity\User;</p>
-
-<p>/<em>*
- * Simple controller method
- *
- * This Controller matches pattern /user/edit/{id}/{username}
- *
- * @Entity(
- *      class = {
- *          &ldquo;factory&rdquo; = &ldquo;my.factory.service&rdquo;,
- *          &ldquo;method&rdquo;  = &ldquo;generate&rdquo;,
- *          &ldquo;static&rdquo;  = false,
- *      },
- *      name  = &ldquo;user&rdquo;
- * )
- </em>/
-public function indexAction(User $user)
-{</p>
-
-<pre><code>// $user is an empty instance
-</code></pre>
-
-<p>}
-```</p>
-
-<p>You can also, and since some days ago, not only inject an empty entity instance
-but retrieve an existing mapped instance like ParamConverter does, but in a very
-easy way.</p>
-
-<p>``` php
-&lt;?php</p>
-
-<p>use Mmoreram\ControllerExtraBundle\Annotation\Entity;
-use Mmoreram\ControllerExtraBundle\Entity\User;</p>
-
-<p>/<em>*
- * Simple controller method
- *
- * This Controller matches pattern /user/edit/{id}/{username}
- *
- * @Entity(
- *      class = &ldquo;MmoreramCustomBundle:User&rdquo;,
- *      name  = &ldquo;user&rdquo;,
- *      mapping = {
- *          &ldquo;id&rdquo;: &ldquo;~id~&rdquo;,
- *          &ldquo;username&rdquo;: &ldquo;~username~&rdquo;
- *      }
- * )
- </em>/
-public function indexAction(User $user)
-{</p>
-
-<pre><code>// $user is a mapped entity
-</code></pre>
-
-<p>}
-```</p>
-
-<h2>@Form</h2>
-
-<p><a href="https://github.com/mmoreram/ControllerExtraBundle#form">@Form Documentation</a></p>
-
-<p>Generates a simple FormType, FormInterface of FormView instance, given a form
-definition. You can also configure it to create given a mapped or a new entity
-instance and you can also handleRequest it and validate.</p>
-
-<p>To create it given a mapped or a new entity instance, you can combine it using
-both @ParamConverter or @Entity annotations.</p>
-
-<p>``` php
-&lt;?php</p>
-
-<p>use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Form\Form;</p>
-
-<p>use Mmoreram\ControllerExtraBundle\Annotation\Form as AnnotationForm;
-use Mmoreram\ControllerExtraBundle\Entity\User;</p>
-
-<p>/<em>*
- * Simple controller method
- *
- * @Route(
- *      path = &ldquo;/user/{id}&rdquo;,
- *      name = &ldquo;view_user&rdquo;
- * )
- * @Entity(
- *      class = &ldquo;MmoreramCustomBundle:User&rdquo;,
- *      name  = &ldquo;user&rdquo;,
- *      mapping = {
- *          &ldquo;id&rdquo;: &ldquo;~id~&rdquo;
- *      }
- * )
- * @AnnotationForm(
- *      class         = &ldquo;user_type&rdquo;,
- *      entity        = &ldquo;user&rdquo;
- *      handleRequest = true,
- *      name          = &ldquo;userForm&rdquo;,
- *      validate      = &ldquo;isValid&rdquo;,
- * )
- </em>/
-public function indexAction(User $user, Form $userForm, $isValid)
-{
-}
-```</p>
-
-<h2>@Flush</h2>
-
-<p><a href="https://github.com/mmoreram/ControllerExtraBundle#flush">@Flush Documentation</a></p>
-
-<p>Allows you to automate a flush every time a response is returned. There are
-some real philosophies that say that a single flush should be executed always
-at the end of the request.</p>
-
-<p>``` php
-&lt;?php</p>
-
-<p>use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;</p>
-
-<p>use Mmoreram\ControllerExtraBundle\Annotation\Flush;
-use Mmoreram\ControllerExtraBundle\Entity\Address;
-use Mmoreram\ControllerExtraBundle\Entity\User;</p>
-
-<p>/<em>*
- * Simple controller method
- *
- * @ParamConverter(&ldquo;user&rdquo;, class=&ldquo;MmoreramCustomBundle:User&rdquo;)
- * @ParamConverter(&ldquo;address&rdquo;, class=&ldquo;MmoreramCustomBundle:Address&rdquo;)
- * @Flush(
- *      entity = {
- *          &ldquo;user&rdquo;,
- *          &ldquo;address&rdquo;
- *      }
- * )
- </em>/
-public function indexAction(User $user, Address $address)
-{
-}
-```</p>
-
-<h2>@JsonResponse</h2>
-
-<p><a href="https://github.com/mmoreram/ControllerExtraBundle#jsonresponse">@JsonResponse Documentation</a></p>
-
-<p>This annotation converts your controller return value in a single response,
-using your data serialized with php <code>json_encode()</code>. This follows same way
-@Template does.</p>
-
-<p>IMHO, very useful.</p>
-
-<p>``` php
-&lt;?php</p>
-
-<p>use Mmoreram\ControllerExtraBundle\Annotation\JsonResponse;</p>
-
-<p>/<em>*
- * Simple controller method
- *
- * @JsonResponse
- </em>/
-public function indexAction(User $user, Address $address)
-{</p>
-
-<pre><code>return array(
-    'This is my response'
-);
-</code></pre>
-
-<p>}
-```</p>
-
-<h2>@Log</h2>
-
-<p><a href="https://github.com/mmoreram/ControllerExtraBundle#log">@Log Documentation</a></p>
-
-<p>Automatic log system for controller methods. You can define level of your log
-and the moment you want to do it (before, after, both)</p>
-
-<p>``` php
-&lt;?php</p>
-
-<p>use Mmoreram\ControllerExtraBundle\Annotation\Flush;</p>
-
-<p>/<em>*
- * Simple controller method
- *
- * @Log(
- *      value   = &ldquo;Executing index Action&rdquo;,
- *      level   = @Log::LVL_WARNING
- * )
- </em>/
-public function indexAction()
-{
-}
-```</p>
 ]]></content>
   </entry>
   

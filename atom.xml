@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-09-07T21:57:53+02:00</updated>
+  <updated>2015-09-14T12:44:09+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,32 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Symfony UG, be our friend]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/09/14/symfony-ug-be-our-friend/"/>
+    <updated>2015-09-14T10:57:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/09/14/symfony-ug-be-our-friend</id>
+    <content type="html"><![CDATA[<p>Symfony Barcelona UG have been looking some sponsors for a while, and we have
+had a great response from the community. We are so proud and happy about that.</p>
+
+<p>As a User Group, we want to be a community group for all the community, so from
+today, you can be our UG friend :)</p>
+
+<p>If you are a Symfony UG around the world and you want to be part of it, very
+easy. Just send an email to
+<a href="symfonybarcelona@gmail.com">symfonybarcelona@gmail.com</a> or just a simple tweet
+with <a href="http://twitter.com/symfony_bcn">@symfony_bcn</a>. We will add your logo in
+our website and you will appear in our next event.</p>
+
+<p>Then, we will be friends :)</p>
+
+<p>Please, share this post on your social networks, and help us making a better
+world with tons of tiny and cute cats :)</p>
+
+<p>Have a nice week!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Symfony Barcelona Event, September 2015]]></title>
@@ -526,7 +552,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x73;&#121;&#x6d;&#102;&#111;&#110;&#121;&#x62;&#97;&#x72;&#x63;&#101;&#108;&#111;&#110;&#x61;&#x40;&#x67;&#109;&#x61;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;">&#x73;&#121;&#x6d;&#102;&#111;&#110;&#121;&#x62;&#97;&#x72;&#x63;&#x65;&#108;&#x6f;&#110;&#x61;&#x40;&#103;&#109;&#x61;&#x69;&#x6c;&#x2e;&#99;&#111;&#109;</a></p>
+<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#115;&#x79;&#109;&#102;&#111;&#x6e;&#x79;&#98;&#97;&#x72;&#99;&#101;&#108;&#111;&#x6e;&#x61;&#x40;&#103;&#x6d;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#109;">&#x73;&#x79;&#109;&#x66;&#111;&#110;&#121;&#98;&#x61;&#114;&#x63;&#101;&#108;&#x6f;&#x6e;&#97;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#109;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 ]]></content>
@@ -2331,7 +2357,7 @@ ever!</p>
 <p>Let me know if you want to join us through the
 <a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
 so we can organize based on the total number of people. You can also contact me
-through my email, <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#58;&#121;&#117;&#x68;&#117;&#x40;&#109;&#x6d;&#111;&#x72;&#101;&#114;&#x61;&#x6d;&#46;&#x63;&#x6f;&#109;&#x2e;">&#121;&#x75;&#104;&#x75;&#x40;&#109;&#109;&#x6f;&#x72;&#x65;&#114;&#x61;&#x6d;&#46;&#x63;&#x6f;&#109;&#x2e;</a></p>
+through my email, <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#x79;&#x75;&#104;&#117;&#x40;&#x6d;&#x6d;&#x6f;&#114;&#x65;&#114;&#x61;&#x6d;&#x2e;&#x63;&#111;&#x6d;&#46;">&#121;&#117;&#x68;&#117;&#64;&#109;&#109;&#111;&#x72;&#x65;&#114;&#x61;&#x6d;&#x2e;&#99;&#x6f;&#109;&#x2e;</a></p>
 
 <p>Looking forward to meet you there, it is going to be amazing!</p>
 ]]></content>
@@ -3205,42 +3231,6 @@ from implementations and a great pattern if you develop open source. Open source
 should satisfy as people as possible, so remember, specify and then implement.</p>
 
 <p>Try it and then tell us your experience :)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[One section, one component]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/08/12/one-section-one-component/"/>
-    <updated>2014-08-12T11:29:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/08/12/one-section-one-component</id>
-    <content type="html"><![CDATA[<p><a href="http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/">Symfony Walk</a></p>
-
-<p><img class="[class names]" src="http://mmoreram.github.io/images/zaragoza-madrid.png" title="[Zaragoza Madrid [Zaragoza Madrid]]" ></p>
-
-<p>Symfony Walk will contain a total of 10 sections, and each one will have the
-name of one Symfony Component. One of the sections will be named <em>Doctrine</em> (yes,
-our big friend Doctrine) and last Component will be named like the project I am
-so proud to work in, <a href="http://elcodi.io">Elcodi</a>.</p>
-
-<ul>
-<li><a href="http://symfony.com/doc/current/components/routing/index.html">Routing</a> Section</li>
-<li><a href="http://symfony.com/doc/current/components/security/index.html">Security</a> Section</li>
-<li><a href="http://symfony.com/doc/current/components/console/index.html">Console</a> Section</li>
-<li><a href="http://symfony.com/doc/current/components/finder.html">Finder</a> Section</li>
-<li><a href="http://doctrine-orm.readthedocs.org/en/latest/">Doctrine</a> Section</li>
-<li><a href="http://symfony.com/doc/current/components/event_dispatcher/index.html">EventDispatcher</a> Section</li>
-<li><a href="http://symfony.com/doc/current/components/http_kernel/index.html">HttpKernel</a> Section</li>
-<li><a href="http://symfony.com/doc/current/components/form/index.html">Form</a> Section</li>
-<li><a href="http://symfony.com/doc/current/components/dependency_injection/index.html">DependencyInjection</a> Section</li>
-<li><a href="http://elcodi.io">Elcodi</a> Section</li>
-</ul>
-
-
-<p>Each day, after walking around 35 Km in about 6 hours, I will post a small
-introduction about the component that names the current section. I&rsquo;ll talk also
-about some scenarios that this component can be useful.</p>
-
-<p>Happy Symfony Walk.</p>
 ]]></content>
   </entry>
   
