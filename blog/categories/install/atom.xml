@@ -4,7 +4,7 @@
   <title><![CDATA[Category: install | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/install/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-09-28T18:25:20+02:00</updated>
+  <updated>2015-09-28T18:26:43+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -128,6 +128,10 @@ each version, this won&rsquo;t work at all.</p>
 
 <p>}
 ```</p>
+
+<p>So, the only way of doing that is by using <code>composer update</code> in your CI
+platform. The good point is that you <strong>must</strong> take care of your <code>composer.json</code>
+file&hellip;</p>
 
 <h3>For libraries</h3>
 
