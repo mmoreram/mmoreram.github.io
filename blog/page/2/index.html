@@ -9,8 +9,8 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="Tests should be as robust as possible. I think you will agree with me with that phrase. If your tests are too coupled
-with your implementation, a &hellip;">
+  <meta name="description" content="Do you like testing? I like testing. Well, in fact I like testing once I have
+understood how the engine I am using works. Until this moment, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,251 @@ with your implementation, a &hellip;">
       <div id="content">
 	<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/04/visithor/">Visithor, Testing Your Routes Without Pain</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-04T13:11:00+02:00" pubdate data-updated="true">May 4<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/05/04/visithor/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Do you like testing? I like testing. Well, in fact I like testing once I have
+understood how the engine I am using works. Until this moment, everything is a
+completely disaster.</p>
+
+<p>And because this learning curve, many of my personal projects have reached an
+MVP without any type of testing environment. And sincerely, I don&rsquo;t really like
+this scenario.</p>
+
+<p>Many years ago I was thinking about a <strong>simple</strong> and fast tool to test specific
+routes, expecting specific HTTP codes and providing an easy environment of
+ensuring properly your HTTP layer.</p>
+
+<p>So&hellip; I present you <a href="http://github.com/visithor/visithor">Visithor</a>, a PHP based
+library that provides you this functionality, with a simple configuration
+definition and a very easy way of installation.</p>
+
+<p>Let&rsquo;s see an example.</p>
+
+<h2>Execute Visithor</h2>
+
+<p>With this lines of code you will download Visithor, ready to be used.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone git@github.com:visithor/visithor.git
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>visithor
+</span><span class='line'><span class="err">$</span>
+</span><span class='line'><span class="nv">$ </span>build/visithor.phar
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can download it as a global executable</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone git@github.com:visithor/visithor.git
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>visithor
+</span><span class='line'><span class="nv">$ </span>cp build/visithor.phar /usr/local/bin/visithor
+</span><span class='line'><span class="err">$</span>
+</span><span class='line'><span class="nv">$ </span>visithor
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Creating your configuration</h2>
+
+<p>As easy as it seems. This is a random configuration file with a random set of
+urls. If your <code>visithor.yml</code> file is placed in the same folder than you are,
+then you don&rsquo;t have to specify its location. Otherwise, please use the
+<em>[&mdash;config|-c]</em> option.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">defaults</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># This value can be a simple HTTP Code or an array of acceptable HTTP Codes</span>
+</span><span class='line'>    <span class="c1"># - 200</span>
+</span><span class='line'>    <span class="c1"># - [200, 301]</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">http_codes</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">200</span><span class="p-Indicator">,</span> <span class="nv">302</span><span class="p-Indicator">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">urls</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># By default, is there is no specified HTTP Code, then default one is used</span>
+</span><span class='line'>    <span class="c1"># as the valid one</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">http://google.es</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">http://elcodi.io</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># There are some other formats available as well</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">http</span><span class="p-Indicator">:</span><span class="nv">//shopery.com</span><span class="p-Indicator">,</span> <span class="nv">200</span><span class="p-Indicator">]</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">http</span><span class="p-Indicator">:</span><span class="nv">//mmoreram.com</span><span class="p-Indicator">,</span> <span class="p-Indicator">[</span><span class="nv">200</span><span class="p-Indicator">,</span> <span class="nv">302</span><span class="p-Indicator">]]</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">http</span><span class="p-Indicator">:</span><span class="nv">//nonexistingurl.com</span><span class="p-Indicator">,</span> <span class="p-Indicator">[</span><span class="nv">200</span><span class="p-Indicator">]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this case, the execution result is <em>0</em></p>
+
+<h2>Executing Visithor</h2>
+
+<p>Once you have it installed and you have a configuration file, let&rsquo;s see what
+happens!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">$ visithor visithor:go</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Visithor by Marc Morera and contributors.</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Configuration read from /var/www/my/project</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">OK [200] http://google.es</span>
+</span><span class='line'><span class="l-Scalar-Plain">OK [200] http://elcodi.io</span>
+</span><span class='line'><span class="l-Scalar-Plain">OK [200] http://shopery.com</span>
+</span><span class='line'><span class="l-Scalar-Plain">OK [200] http://mmoreram.com</span>
+</span><span class='line'><span class="l-Scalar-Plain">KO [404] http://nonexistingurl.com</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Time</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1002 ms, Memory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">15.5Mb</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see, we have an error. We expect a <code>200</code> code when we call
+<code>http://nonexistingurl.com</code> but the real response is <code>404</code>, so it fails. Then,
+the execution result is <em>1</em>.</p>
+
+<h2>Integrations</h2>
+
+<p>You can integrate Visithor with your Symfony projects right now. I expect some
+other integrations will be available soon.</p>
+
+<ul>
+<li><a href="http://github.com/Visithor/VisithorBundle">VisithorBundle</a></li>
+</ul>
+
+
+<p>If you use this bundle, then you will be able to define your routes not with the
+final path but with the route name and a bunch of parameters, as it is shown
+here.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">defaults</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># This value can be a simple HTTP Code or an array of acceptable HTTP Codes</span>
+</span><span class='line'>    <span class="c1"># - 200</span>
+</span><span class='line'>    <span class="c1"># - [200, 301]</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">http_codes</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">200</span><span class="p-Indicator">,</span> <span class="nv">302</span><span class="p-Indicator">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">urls</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># This Bundle adds some extra formats</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">store_homepage</span><span class="p-Indicator">,</span> <span class="nv">200</span><span class="p-Indicator">]</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="p-Indicator">[[</span><span class="nv">store_category_products_list</span><span class="p-Indicator">,</span> <span class="p-Indicator">{</span><span class="s">&#39;slug&#39;</span><span class="p-Indicator">:</span> <span class="s">&#39;women-shirts&#39;</span><span class="p-Indicator">,</span> <span class="s">&#39;id&#39;</span><span class="p-Indicator">:</span> <span class="nv">1</span><span class="p-Indicator">}],</span> <span class="nv">200</span><span class="p-Indicator">]</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="p-Indicator">[[</span><span class="nv">store_category_products_list</span><span class="p-Indicator">,</span> <span class="p-Indicator">{</span><span class="s">&#39;slug&#39;</span><span class="p-Indicator">:</span> <span class="s">&#39;another-name&#39;</span><span class="p-Indicator">,</span> <span class="s">&#39;id&#39;</span><span class="p-Indicator">:</span> <span class="nv">1</span><span class="p-Indicator">}],</span> <span class="nv">302</span><span class="p-Indicator">]</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="p-Indicator">[[</span><span class="nv">store_homepage</span><span class="p-Indicator">,</span> <span class="p-Indicator">{</span><span class="nv">_locale</span><span class="p-Indicator">:</span> <span class="nv">es</span><span class="p-Indicator">}]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This project is being so useful for me, I expect it will be for you as well :)</p>
+
+<h2>Travis</h2>
+
+<p>Of course, you can add Visithor in your travis tests suite. You can use the
+[&mdash;format|-f] option to change the format and use <em>dots</em></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">bin/behat -fprogress --tags=&quot;~javascript&quot;</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">bin/phpunit -c app</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">bin/visithor --format=dots visithor:go</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -857,7 +1102,7 @@ ever!</p>
 <p>Let me know if you want to join us through the
 <a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
 so we can organize based on the total number of people. You can also contact me
-through my email, <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#x79;&#x75;&#104;&#117;&#x40;&#x6d;&#x6d;&#x6f;&#114;&#x65;&#114;&#x61;&#x6d;&#x2e;&#x63;&#111;&#x6d;&#46;">&#121;&#117;&#x68;&#117;&#64;&#109;&#109;&#111;&#x72;&#x65;&#114;&#x61;&#x6d;&#x2e;&#99;&#x6f;&#109;&#x2e;</a></p>
+through my email, <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#121;&#x75;&#x68;&#117;&#x40;&#109;&#109;&#111;&#114;&#101;&#114;&#97;&#x6d;&#x2e;&#99;&#x6f;&#109;&#x2e;">&#x79;&#117;&#104;&#x75;&#64;&#x6d;&#109;&#111;&#x72;&#101;&#114;&#97;&#x6d;&#46;&#x63;&#111;&#109;&#x2e;</a></p>
 
 <p>Looking forward to meet you there, it is going to be amazing!</p>
 </div>
@@ -1139,692 +1384,6 @@ where all files should be extracted.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/09/01/bye-bye-symfony/">Bye Bye Symfony</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-09-01T00:00:00+02:00" pubdate data-updated="true">Sep 1<span>st</span>, 2014</time>
-        
-         | <a href="/blog/2014/09/01/bye-bye-symfony/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Don&rsquo;t be afraid. You know what I think about the Symfony components and how I
-love them. Until now any circumstance has changed my mind about using them in my
-projects, and over the time, after discover every hidden single piece of code, I
-have turned more amazed of their power.</p>
-
-<p>The reason of this post is just to tell you, with a simple example, how to say
-<em>Bye Bye, Symfony!</em> and say <em>Hi PHP!</em>. This really means uncouple from Symfony
-Components and still use them as the default implementation, while we can
-securely remove, from the composer <em>require</em> block, our Symfony dependencies.</p>
-
-<p>One of the poor things I have heard these last months has been the word <em>you must</em>
-or <em>you should</em> event without knowing exactly what is the real direction of my
-project, so every word in this post will be just an idea you could have in mind
-when you design your own architecture, thinking about your real needs, far from
-the things you should or you must do.</p>
-
-<p>To explain that, how we can say goodbye to Symfony, we will start with a simple
-example. A simple class we could find in every project. Our class will have no
-sense but will be useful in our specific example, helping us to understand what
-is all this about.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * For the full copyright and license information, please view the LICENSE</span>
-</span><span class='line'><span class="sd"> * file that was distributed with this source code.</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * Feel free to edit as you please, and have fun.</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * @author Marc Morera &lt;yuhu@mmoreram.com&gt;</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">Package\Generator</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Routing\Generator\UrlGeneratorInterface</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Class UrlPrinter</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">UrlPrinter</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * @var UrlGeneratorInterface</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * Url generator</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Construct method</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param UrlGeneratorInterface $urlGenerator Url generator</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">UrlGeneratorInterface</span> <span class="nv">$urlGenerator</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">urlGenerator</span> <span class="o">=</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Generates Homepage route and print complete path</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return string Route path</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">printHomePageRoute</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">urlGenerator</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">generate</span><span class="p">(</span><span class="s1">&#39;homepage&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>As we can see, use this class means use <code>UrlGeneratorInterface</code>. This class is
-part of the Symfony Routing Component, so is a really bad idea if you really
-want to make your project multi-environment</p>
-
-<p>Is that good? Well, it depends on your both product requirements and technical
-requirements. If you want to use always the Symfony router component, this piece
-of code is good enough. Otherwise, If you want to use another router, you have a
-problem.</p>
-
-<p>Say your project must work with and without Symfony. Our class should not depend
-on this interface. One of the strategies to uncouple external implementations is
-using ports and adapters.</p>
-
-<p>I will explain how it works and how we can implement it.</p>
-
-<h2>Real life example</h2>
-
-<p>Let&rsquo;s imagine we want to sell an USB device. We have decided in our product
-definition that this device will connect to external devices using USB Standard
-A (the big one). One of the possible approaches would be to design our device
-with the external connector coupled. This means selling it with the USB wire
-(like an USB camera, for example).</p>
-
-<p>But why coupling our device with an specific output? Do you know what it really
-means?</p>
-
-<ul>
-<li>If the wire breaks, we must change all the device.</li>
-<li>You can connect with devices that accept only USB-A</li>
-<li>Wire improvements means new device versions.</li>
-</ul>
-
-
-<p>What would be an alternative decision? Well, why don&rsquo;t we focus our efforts in
-the camera and we just let other companies to help us with the wire? This means
-more flexibility for the final user and capability of removing and changing the
-cable when is broken. And&hellip; they could connect their camera to many different
-formats, even for the most adventurous, their own formats.</p>
-
-<p>So, in fact, our device should have one female USB port with an specification
-of how connect it with another device. The wire would be just an adapter of our
-device so many of them could be plugged-in.</p>
-
-<p>We have talked about devices, ports, adapters, specifications, but&hellip; how can
-this help me with my project? Is that hard?</p>
-
-<p>The answer is No.</p>
-
-<h2>Solution</h2>
-
-<p>Our goal is to create an specification for URL generators and force each adapter
-to implement it in their own way. As we know, the OOP languages resolve the
-specification with the interfaces.</p>
-
-<p>Let&rsquo;s create our specification.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * For the full copyright and license information, please view the LICENSE</span>
-</span><span class='line'><span class="sd"> * file that was distributed with this source code.</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * Feel free to edit as you please, and have fun.</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * @author Marc Morera &lt;yuhu@mmoreram.com&gt;</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">Package\Specification</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Interface PackageUrlGeneratorInterface</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">interface</span> <span class="nx">PackageUrlGeneratorInterface</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Generates a route given its name.</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return string Route path</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">generateUrl</span><span class="p">(</span><span class="nv">$routeName</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We are just specifying. We want that, whatever is the implementation, each
-adapter must fulfill this rule: Has a method called <code>generateRoute</code> that, given
-the route name, will return its complete path.</p>
-
-<p>Let&rsquo;s adapt our UrlPrinter to work with specification instead of implementation.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * For the full copyright and license information, please view the LICENSE</span>
-</span><span class='line'><span class="sd"> * file that was distributed with this source code.</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * Feel free to edit as you please, and have fun.</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * @author Marc Morera &lt;yuhu@mmoreram.com&gt;</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">Package\Generator</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">Package\Specification\PackageUrlGeneratorInterface</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Class UrlPrinter</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">UrlPrinter</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * @var PackageUrlGeneratorInterface</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * Url generator</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Construct method</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param UrlGeneratorInterface $urlGenerator Url generator</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">PackageUrlGeneratorInterface</span> <span class="nv">$urlGenerator</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">urlGenerator</span> <span class="o">=</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Generates Homepage route and print complete path</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return string Route path</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">printHomePageRoute</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">urlGenerator</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">generateUrl</span><span class="p">(</span><span class="s1">&#39;homepage&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, our UrlPrinter does not depends on any external library. Goal reached!</p>
-
-<p>But, now what? I mean, we should implement our adapter, am I right? What is a
-camera with a great specification and without wire plugged in? (A wireless
-camera, welcome to the twenty century ^^. Just joking)</p>
-
-<p>Our UrlPrinter needs a <em>PackageUrlGeneratorInterface</em> implementation to be
-built, so we have to implement an adapter. And because we still want to work with
-Symfony Routing Component as my first option, we will create the Symfony Adapter
-for my specification.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * For the full copyright and license information, please view the LICENSE</span>
-</span><span class='line'><span class="sd"> * file that was distributed with this source code.</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * Feel free to edit as you please, and have fun.</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * @author Marc Morera &lt;yuhu@mmoreram.com&gt;</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">Package\Adapter</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">Package\Specification\PackageUrlGeneratorInterface</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Routing\Generator\UrlGeneratorInterface</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Class SymfonyUrlGeneratorAdapter</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">SymfonyUrlGeneratorAdapter</span> <span class="k">implements</span> <span class="nx">PackageUrlGeneratorInterface</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * @var UrlGeneratorInterface</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * Url generator</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Construct method</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param UrlGeneratorInterface $urlGenerator Url generator</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">UrlGeneratorInterface</span> <span class="nv">$urlGenerator</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">urlGenerator</span> <span class="o">=</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Generates a route given its name</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return string Route path</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">generateUrl</span><span class="p">(</span><span class="nv">$routeName</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">urlGenerator</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">generate</span><span class="p">(</span><span class="nv">$routeName</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This an adapter, my friends. Each adapter has one mission, and is just transform
-the way we understand the method <code>generateUrl</code> must work (specification) to the
-way each external project understands it (implementation). In this case, very
-easy, our <code>generateUrl</code> is the same as Symfony Router Component&rsquo;s <code>generate</code>.</p>
-
-<p>Symfony Component is now required by this adapter, but because we are not
-required to use this adapter (Maybe we can use a dummy one for our tests, or a
-mocked one), Symfony Component is not required by our package anymore, just
-suggested.</p>
-
-<p>Let&rsquo;s see another Adapter implementation, requiring another external library.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * For the full copyright and license information, please view the LICENSE</span>
-</span><span class='line'><span class="sd"> * file that was distributed with this source code.</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * Feel free to edit as you please, and have fun.</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * @author Marc Morera &lt;yuhu@mmoreram.com&gt;</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">Package\Adapter</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">Package\Specification\PackageUrlGeneratorInterface</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">AnotherProject\UrlGeneratorInterface</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Class SymfonyUrlGeneratorAdapter</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">SymfonyUrlGeneratorAdapter</span> <span class="k">implements</span> <span class="nx">PackageUrlGeneratorInterface</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * @var UrlGeneratorInterface</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * Url generator</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Construct method</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param UrlGeneratorInterface $urlGenerator Url generator</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">UrlGeneratorInterface</span> <span class="nv">$urlGenerator</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">urlGenerator</span> <span class="o">=</span> <span class="nv">$urlGenerator</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Generates a route given its name</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return string Route path</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">generateUrl</span><span class="p">(</span><span class="nv">$routeName</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$routeName</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span> <span class="o">.</span> <span class="nv">$routeName</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nv">$this</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">urlGenerator</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">anotherGenerateMethod</span><span class="p">(</span><span class="nv">$routeName</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Both adapters would be placed in the <code>Adapter/</code> folder, and the final user
-should be able to switch them and even implement new ones.</p>
-
-<h2>From require to suggest</h2>
-
-<p>With our changes, we can remove &ldquo;symfony/routing&rdquo; from the require block and add
-it into the suggest block in <code>composer.json</code> file.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="s">&quot;require&quot;</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span>
-</span><span class='line'>    <span class="s">&quot;php&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;&gt;=5.4&quot;</span><span class="p-Indicator">,</span>
-</span><span class='line'>    <span class="nv">...</span>
-</span><span class='line'><span class="p-Indicator">}</span><span class="err">,</span>
-</span><span class='line'><span class="s">&quot;suggest&quot;</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span>
-</span><span class='line'>    <span class="s">&quot;symfony/routing&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;Required</span><span class="nv"> </span><span class="s">if</span><span class="nv"> </span><span class="s">using</span><span class="nv"> </span><span class="s">Routing</span><span class="nv"> </span><span class="s">adapter&quot;</span><span class="p-Indicator">,</span>
-</span><span class='line'>    <span class="s">&quot;mmoreram/another-project&quot;</span><span class="p-Indicator">:</span> <span class="nv">Required if using AnotherProject Routing adapter&quot;</span>
-</span><span class='line'><span class="p-Indicator">}</span><span class="err">,</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We will only require the packages needed by the adapter we are using.</p>
-
-<h2>What we win</h2>
-
-<p>Much. We win maximum implementation flexibility and minimum coupling. Would be
-wise to say that a PHP project should tend to this thought, but once again, it
-depends on many factors.</p>
-
-<h2>What we lose</h2>
-
-<p>It Depends. If you want your project to be understandable by a lot of developing
-knowledge levels, this architecture goes away from the comprehensibility of a
-simple code. You also can lose by having lot of files, so you should respect
-some kind of best practices code, to make people working on your project
-comfortable dealing with it.</p>
-
-<h2>Best practices</h2>
-
-<p>I should talk about <em>Marc practices</em> instead of <em>Best practices</em>. I am used to
-adding my adapters always in the folder <code>/Adapter/{PortName}/</code>, being <em>PortName</em>
-the name of the port we are dealing with in camel case format. In this case, we
-should add both adapters in <code>/Adapter/UrlGenerator/</code>.</p>
-
-<p>Given this format we can determine what adapters we can use in our project in a
-very agile way.</p>
-
-<h2>Reference projects</h2>
-
-<p>First project that comes in my mind when I think about Ports/Adapters is
-<a href="https://github.com/KnpLabs/Gaufrette/tree/master/src/Gaufrette">Gaufrette</a>, a
-filesystem abstraction layer with a lot of adapters implemented.</p>
-
-<p>In <a href="https://github.com/elcodi/elcodi">Elcodi</a> we are actually using this
-library and its really awesome how easy is using it.</p>
-
-<p>We have also implemented internally some features using this architecture, for
-example, the <a href="https://github.com/elcodi/elcodi/tree/master/src/Elcodi/Component/Geo/Adapter/Populator">Geo Schema Populator</a>,
-a new feature under development that will allow you to populate all Geo schema
-using some adapters. Right now only GeoData adapter is implemented.</p>
-
-<p>Another example, the
-<a href="https://github.com/elcodi/elcodi/tree/master/src/Elcodi/Component/Currency/Adapter/CurrencyExchangeRatesProvider">Currency Exchange Rates Populator</a>
-with OpenExchangeRates implementation already done.</p>
-
-<h2>Final thoughts</h2>
-
-<p>Using ports and adapters is really a great tool for those who want to uncouple
-from implementations and a great pattern if you develop open source. Open source
-should satisfy as people as possible, so remember, specify and then implement.</p>
-
-<p>Try it and then tell us your experience :)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1842,6 +1401,10 @@ should satisfy as people as possible, so remember, specify and then implement.</
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/09/28/composer-install-in-ci/">Composer install in CI</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/14/symfony-ug-be-our-friend/">Symfony UG, be our friend</a>
       </li>
     
@@ -1855,10 +1418,6 @@ should satisfy as people as possible, so remember, specify and then implement.</
     
       <li class="post">
         <a href="/blog/2015/08/23/symfony-in-barcelona/">Symfony in Barcelona</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/20/re-thinking-event-listeners/">Re-thinking Event Listeners</a>
       </li>
     
   </ul>

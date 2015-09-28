@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ci | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/ci/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2015-09-28T18:25:20+02:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Composer install in CI]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/09/28/composer-install-in-ci/"/>
+    <updated>2015-09-28T16:53:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/09/28/composer-install-in-ci</id>
+    <content type="html"><![CDATA[<p>If you have a project with a lot of dependencies, then you might now what I am
+talking about. We all love composer, but we all know as well that, at least with
+current PHP versions, some composer.json are very heavy to compute and fulfill.
+All this problems are reduced to time, and some CI engines, like Travis, only
+allow a finite number of seconds (in Travis case, 20 minutes).</p>
+
+<p>That&rsquo;s too much!</p>
+
+<p>I found a solution (at least, I thought), but some days ago I saw that was not a
+solution at all, but a workaround that only sometimes works properly. I will
+explain exactly what&rsquo;s the point here.</p>
+
+<h3>The problem</h3>
+
+<p>My <code>composer.json</code> is very big and composer needs too much time to compute all
+the dependencies. Reducing dependencies is not an option at all, so the only way
+of reducing dependencies is by doing some refactoring.</p>
+
+<p>Any final project needs a lot of dependencies, and even if your <code>composer.json</code>
+file is small, you may need a dependency with a lot of dependencies.</p>
+
+<h3>My solution (the bad one&hellip;)</h3>
+
+<p>This solution is only wrong if you want to test your application under several
+PHP versions. That&rsquo;s my case and could be yours&hellip;</p>
+
+<p>Well. Computing the real dependencies in my environment seems a great solution,
+right? I run <code>composer update</code> in my computer, I update the <code>composer.lock</code>
+version in the repository, and then I only need to do <code>composer install</code>. What
+I reduce here is the computing time of all recursive dependencies from 20+
+minutes to less than 5 minutes.</p>
+
+<p>That&rsquo;s great!</p>
+
+<h3>Why this is a bad solution?</h3>
+
+<p>Some projects have decided to increase the minimum PHP dependency only
+increasing the minor version of the package (and is not wrong, is not BC break).
+If your project believes in Semantic Version (semver), is usual to find these
+pieces of composer blocks</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "&gt;5.4",
+"symfony/symfony": "^2.7",
+"doctrine/orm": "^2.5",
+"some/package": "^1.3"
+</code></pre>
+
+<p>}
+```</p>
+
+<p>If my development environment uses PHP 5.5, then I will be able to work with
+this composer requirements. Great. We update our dependencies, we update our
+repository with the <code>composer.lock</code> file, and everything should work as
+expected.</p>
+
+<p>The problem here is that there is an scenario that we are not considering here,
+and is that for sure, our <code>composer.lock</code> is the result of computing the
+<code>composer.json</code> file in PHP 5.5, but this doesn&rsquo;t mean that same dependencies
+will work as well in PHP 5.4.</p>
+
+<p>Let&rsquo;s see the <code>some/package</code> composer definition in version 1.3.</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "&gt;5.4",
+"whatever/whatever": *
+</code></pre>
+
+<p>}
+```</p>
+
+<p>And then, let&rsquo;s see the same composer file in version 1.4.</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "&gt;5.5",
+"whatever/whatever": *
+</code></pre>
+
+<p>}
+```</p>
+
+<p>As long as we create the <code>composer.lock</code> file in our development environment
+(remember, with PHP 5.5), we will use version 1.4 of package <code>some/package</code>, but
+this package version is not compatible with PHP 5.4.</p>
+
+<p>What will happens is that, when we do <code>composer install</code> in your CI, composer
+will throw an Exception. And that&rsquo;s always bad news.</p>
+
+<h3>The good solution</h3>
+
+<p>There&rsquo;s no good solution at all. In fact, there are only partial solutions, for
+example generating the <code>composer.lock</code> file with the highest PHP version
+allowed, but then, if you work with a dependency that forces a PHP version in
+each version, this won&rsquo;t work at all.</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "5.4",
+"whatever/whatever": *
+</code></pre>
+
+<p>}
+```</p>
+
+<h3>For libraries</h3>
+
+<p>If you work with a library, then use the biggest dependency scope. This will
+allow more users to use your library. Of course, you will increase the final
+time of composer computation time, but is not your problem at all.</p>
+
+<p>Of course, library composer dependencies should be as small as possible.</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "&gt;5.4",
+"whatever/whatever": *
+</code></pre>
+
+<p>}
+```</p>
+
+<h3>For final projects</h3>
+
+<p>Final projects have the responsibility of reducing that scope, only allowing
+explicitly highest versions. Of course, final projects can host big composer
+structures (at least it&rsquo;s not a bad practice&hellip;), so in that case you will have
+to work harder to reduce that file.</p>
+
+<p>The problem here is not a problem at all, so it has no sense to test your final
+application under several PHP versions, at least in your CI platform. Just test
+it under your current PHP version, right?</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "5.5",
+"whatever/whatever": ^1.5.4
+</code></pre>
+
+<p>}
+```</p>
+]]></content>
+  </entry>
+  
+</feed>
