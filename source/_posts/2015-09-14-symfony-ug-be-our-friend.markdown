@@ -3,6 +3,7 @@ layout: post
 title: "Symfony UG, be our friend"
 date: 2015-09-14 10:57
 comments: true
+author: Marc Morera
 categories: 
     - symfony
     - barcelona
