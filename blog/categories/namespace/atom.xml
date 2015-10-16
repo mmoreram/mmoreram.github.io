@@ -4,7 +4,7 @@
   <title><![CDATA[Category: namespace | Because yes]]></title>
   <link href="http://mmoreram.github.io/blog/categories/namespace/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-10-16T13:25:45+02:00</updated>
+  <updated>2015-10-16T14:40:55+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -18,7 +18,9 @@
     <link href="http://mmoreram.github.io/blog/2015/10/16/namespaces-in-traits/"/>
     <updated>2015-10-16T12:32:00+02:00</updated>
     <id>http://mmoreram.github.io/blog/2015/10/16/namespaces-in-traits</id>
-    <content type="html"><![CDATA[<p>Some projects using PHP 5.4 are actually using Traits. If you don&rsquo;t know yet
+    <content type="html"><![CDATA[<blockquote><p>This post is under revision.</p></blockquote>
+
+<p>Some projects using PHP 5.4 are actually using Traits. If you don&rsquo;t know yet
 what a trait is, there are some interesting links for you.</p>
 
 <ul>
