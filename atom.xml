@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-10-16T14:40:55+02:00</updated>
+  <updated>2015-10-19T11:25:44+02:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,373 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Namespaces in Traits]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/10/16/namespaces-in-traits/"/>
-    <updated>2015-10-16T12:32:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/10/16/namespaces-in-traits</id>
-    <content type="html"><![CDATA[<blockquote><p>This post is under revision.</p></blockquote>
-
-<p>Some projects using PHP 5.4 are actually using Traits. If you don&rsquo;t know yet
-what a trait is, there are some interesting links for you.</p>
-
-<ul>
-<li><a href="https://secure.php.net/manual/en/language.oop5.traits.php">https://secure.php.net/manual/en/language.oop5.traits.php</a></li>
-<li><a href="http://www.sitepoint.com/using-traits-in-php-5-4/">http://www.sitepoint.com/using-traits-in-php-5-4/</a></li>
-<li><a href="http://www.sitepoint.com/php-traits-good-or-bad/">http://www.sitepoint.com/php-traits-good-or-bad/</a></li>
-</ul>
-
-
-<p>This post is about the usage of &ldquo;use statements&rdquo; in Traits, like this example</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">SomeProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">SomeProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My trait</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">trait</span> <span class="nx">MyTrait</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do something</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nx">SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Is that implementation good enough?</p>
-
-<h2>TL;DR</h2>
-
-<ul>
-<li>Never use &ldquo;use statements&rdquo; in Traits. Never.</li>
-</ul>
-
-
-<h2>The overall picture</h2>
-
-<p>When you work on open source, you learn to think about the overall picture. This
-means that, probably, your code will somehow, somewhere, part of something even
-bigger. Your code must be ready for that.</p>
-
-<p>Let&rsquo;s work with the first shown example. This implementation is correct, right?
-I mean, it seems correct because we are not thinking with the global design of
-something bigger than our project.</p>
-
-<p>When you work on open source, you learn as well some basic rules. These rules
-are based on the reality of sharing. People share their work, and sometimes
-means that you will never know what packages will coexist with your own package.</p>
-
-<p>Remember that.</p>
-
-<h2>Friendly packages</h2>
-
-<p>Because our package should be able to work with other unknown packages, then we
-should design our packages as much isolated as possible. A friendly package is
-the one that can live with all type of external packages, even if they are not
-friendly at all.</p>
-
-<p>Let me show you why our first example is not friendly at all.
-First of all let&rsquo;s see our package again.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">SomeProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">SomeProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My trait</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">trait</span> <span class="nx">MyTrait</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do something</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nx">SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This trait assumes too many things, and because of that, is not friendly at all.
-We&rsquo;ll see soon why this implementation can make itself completely non-usable by
-many projects.</p>
-
-<p>Let&rsquo;s see another third party project, with another trait, providing us another
-useful behavior.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">AnotherProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">AnotherProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My another trait</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">trait</span> <span class="nx">MyAnotherTrait</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do another thing</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">soAnotherThing</span><span class="p">(</span><span class="nx">SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>As you can see, this class belongs to another isolated project, so each one will
-work properly in its own sandbox. Until now, everything works perfectly&hellip; but
-remember when we were talking about the overall picture? In the real world, this
-last example is what happens.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">ThirdPartyProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">SomeProject\MyTrait</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">AnotherProject\MyAnotherTrait</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My super class</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">MySuperClass</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">use</span> <span class="nx">MyTrait</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">use</span> <span class="nx">MyAnotherTrait</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What happens here?
-Well, as you may know (otherwise, please read about Traits), a Trait is
-considered as a simple copy/paste action inside a class. That means that, on the
-one hand, all &ldquo;use statements&rdquo; are copied one by one on the top of the main
-object, and on the other, all methods, with some priorities considerations, are
-copied inside the main class.</p>
-
-<p>So, our last example equals that new one.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">ThirdPartyProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">SomeProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">AnotherProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My super class</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">MySuperClass</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do something</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nx">SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do another thing</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">soAnotherThing</span><span class="p">(</span><span class="nx">SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Oh, wait&hellip; can you see that?</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">SomeProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">AnotherProject\SomeObject</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>As you may think, this is il·legal in PHP.</p>
-
-<h2>Complete namespaces</h2>
-
-<p>Considering that all traits should be friendly then, the best solution here is
-avoiding namespaces. You could tell right now&hellip;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>- Oh, well Marc, you can have this problem as well with methods. What happens if
-</span><span class='line'>  two traits have same method definitions?
-</span><span class='line'>
-</span><span class='line'>- Well, when you use a trait, then you should revise these parts that it offers
-</span><span class='line'>  you (class signature, methods signature...). You should not take in account if
-</span><span class='line'>  that trait uses internal statements or not, considering that as possible
-</span><span class='line'>  incompatibilities with other usable traits.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So, this is our first example transformed as a friendly trait.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">SomeProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My trait</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">trait</span> <span class="nx">MyTrait</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do something</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param \SomeProject\SomeObject\SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nx">\SomeProject\SomeObject\SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Same trait, same behavior, but more friendly.
-Have you ever had a problem related to this topic?</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Composer install in CI]]></title>
@@ -1088,7 +721,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#58;&#115;&#x79;&#109;&#x66;&#x6f;&#x6e;&#x79;&#x62;&#x61;&#114;&#99;&#101;&#x6c;&#111;&#110;&#97;&#x40;&#x67;&#x6d;&#97;&#x69;&#x6c;&#46;&#99;&#x6f;&#x6d;">&#115;&#121;&#x6d;&#102;&#x6f;&#110;&#x79;&#x62;&#x61;&#114;&#99;&#101;&#x6c;&#x6f;&#110;&#x61;&#x40;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;</a></p>
+<a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#115;&#121;&#109;&#102;&#x6f;&#110;&#121;&#x62;&#x61;&#114;&#99;&#x65;&#x6c;&#x6f;&#110;&#97;&#64;&#103;&#109;&#x61;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#115;&#x79;&#109;&#102;&#111;&#110;&#x79;&#x62;&#97;&#114;&#x63;&#101;&#x6c;&#111;&#110;&#x61;&#64;&#x67;&#109;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#109;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 ]]></content>
@@ -2893,7 +2526,7 @@ ever!</p>
 <p>Let me know if you want to join us through the
 <a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
 so we can organize based on the total number of people. You can also contact me
-through my email, <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x79;&#x75;&#x68;&#117;&#64;&#x6d;&#109;&#x6f;&#114;&#101;&#114;&#x61;&#109;&#x2e;&#x63;&#x6f;&#109;&#x2e;">&#x79;&#117;&#x68;&#x75;&#x40;&#x6d;&#x6d;&#111;&#114;&#x65;&#114;&#x61;&#x6d;&#x2e;&#99;&#111;&#109;&#46;</a></p>
+through my email, <a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x79;&#117;&#104;&#x75;&#x40;&#x6d;&#x6d;&#x6f;&#114;&#101;&#114;&#97;&#109;&#46;&#x63;&#111;&#109;&#x2e;">&#x79;&#117;&#x68;&#117;&#64;&#109;&#x6d;&#x6f;&#x72;&#x65;&#x72;&#x61;&#109;&#46;&#x63;&#111;&#109;&#x2e;</a></p>
 
 <p>Looking forward to meet you there, it is going to be amazing!</p>
 ]]></content>
@@ -2970,6 +2603,146 @@ futuro empiece a haber comportamientos un poco más profesionales para trabajar
 todos como un equipo o comunidad, que es lo que necesitamos, teniendo en cuenta
 las cosas que verdaderamente importan: aprender y hacer buenos proyectos, no
 importa el Framework, el lenguaje o la arquitectura.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Extractor, a PHP Library for compressed packages]]></title>
+    <link href="http://mmoreram.github.io/blog/2014/09/13/extractor/"/>
+    <updated>2014-09-13T00:00:00+02:00</updated>
+    <id>http://mmoreram.github.io/blog/2014/09/13/extractor</id>
+    <content type="html"><![CDATA[<p>Extractor is a simple php library for extracting all files from compressed
+packages. Available formats are</p>
+
+<ul>
+<li>zip</li>
+<li>Rar</li>
+<li>Phar</li>
+<li>Tar</li>
+<li>Gz</li>
+<li>Bz2</li>
+</ul>
+
+
+<p>You can find the source in the
+<a href="https://github.com/mmoreram/extractor">Github repository</a>.</p>
+
+<p>Extractor uses the Finder Symfony component, so the result of extracting all
+compressed files given a package is nothing more than a Finder instance ready
+to be iterated and configured.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Finder\Finder</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Filesystem\TemporaryDirectory</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Resolver\ExtensionResolver</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Extractor</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$temporaryDirectory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TemporaryDirectory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$extensionResolver</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ExtensionResolver</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$extractor</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Extractor</span><span class="p">(</span>
+</span><span class='line'>    <span class="nv">$temporaryDirectory</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$extensionResolver</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * @var Finder $files</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="nv">$files</span> <span class="o">=</span> <span class="nv">$extractor</span><span class="o">-&gt;</span><span class="na">extractFromFile</span><span class="p">(</span><span class="s1">&#39;/tmp/myfile.rar&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$files</span> <span class="k">as</span> <span class="nv">$file</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">echo</span> <span class="nv">$file</span><span class="o">-&gt;</span><span class="na">getRealpath</span><span class="p">()</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can use the temporary folder of your Filesystem using a <code>TemporaryDirectory</code>
+instance or you can use a <code>SpecificDirectory</code> instance if you want to specify
+where all files should be extracted.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Filesystem\SpecificDirectory</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Resolver\ExtensionResolver</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Extractor</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$specificDirectory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SpecificDirectory</span><span class="p">(</span><span class="s1">&#39;/my/specific/path&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$extensionResolver</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ExtensionResolver</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$extractor</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Extractor</span><span class="p">(</span>
+</span><span class='line'>    <span class="nv">$specificDirectory</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$extensionResolver</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can also work with remote files.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Finder\Finder</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Filesystem\TemporaryDirectory</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Resolver\ExtensionResolver</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\Extractor\Extractor</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$specificDirectory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TemporaryDirectory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$extensionResolver</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ExtensionResolver</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$extractor</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Extractor</span><span class="p">(</span>
+</span><span class='line'>    <span class="nv">$specificDirectory</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$extensionResolver</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * @var Finder $files</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="nv">$files</span> <span class="o">=</span> <span class="nv">$extractor</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">extractFromFile</span><span class="p">(</span><span class="s1">&#39;http://host.com/my-compressed-file.zip&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   

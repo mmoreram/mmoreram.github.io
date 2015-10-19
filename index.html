@@ -9,8 +9,8 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="This post is under revision. Some projects using PHP 5.4 are actually using Traits. If you don&rsquo;t know yet
-what a trait is, there are some &hellip;">
+  <meta name="description" content="If you have a project with a lot of dependencies, then you might now what I am
+talking about. We all love composer, but we all know as well that, at &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,402 +81,6 @@ what a trait is, there are some &hellip;">
       <div id="content">
 	<div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/10/16/namespaces-in-traits/">Namespaces in Traits</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-10-16T12:32:00+02:00" pubdate data-updated="true">Oct 16<span>th</span>, 2015</time>
-        
-         | <a href="/blog/2015/10/16/namespaces-in-traits/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><blockquote><p>This post is under revision.</p></blockquote>
-
-<p>Some projects using PHP 5.4 are actually using Traits. If you don&rsquo;t know yet
-what a trait is, there are some interesting links for you.</p>
-
-<ul>
-<li><a href="https://secure.php.net/manual/en/language.oop5.traits.php">https://secure.php.net/manual/en/language.oop5.traits.php</a></li>
-<li><a href="http://www.sitepoint.com/using-traits-in-php-5-4/">http://www.sitepoint.com/using-traits-in-php-5-4/</a></li>
-<li><a href="http://www.sitepoint.com/php-traits-good-or-bad/">http://www.sitepoint.com/php-traits-good-or-bad/</a></li>
-</ul>
-
-
-<p>This post is about the usage of &ldquo;use statements&rdquo; in Traits, like this example</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">SomeProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">SomeProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My trait</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">trait</span> <span class="nx">MyTrait</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do something</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nx">SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Is that implementation good enough?</p>
-
-<h2>TL;DR</h2>
-
-<ul>
-<li>Never use &ldquo;use statements&rdquo; in Traits. Never.</li>
-</ul>
-
-
-<h2>The overall picture</h2>
-
-<p>When you work on open source, you learn to think about the overall picture. This
-means that, probably, your code will somehow, somewhere, part of something even
-bigger. Your code must be ready for that.</p>
-
-<p>Let&rsquo;s work with the first shown example. This implementation is correct, right?
-I mean, it seems correct because we are not thinking with the global design of
-something bigger than our project.</p>
-
-<p>When you work on open source, you learn as well some basic rules. These rules
-are based on the reality of sharing. People share their work, and sometimes
-means that you will never know what packages will coexist with your own package.</p>
-
-<p>Remember that.</p>
-
-<h2>Friendly packages</h2>
-
-<p>Because our package should be able to work with other unknown packages, then we
-should design our packages as much isolated as possible. A friendly package is
-the one that can live with all type of external packages, even if they are not
-friendly at all.</p>
-
-<p>Let me show you why our first example is not friendly at all.
-First of all let&rsquo;s see our package again.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">SomeProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">SomeProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My trait</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">trait</span> <span class="nx">MyTrait</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do something</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nx">SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This trait assumes too many things, and because of that, is not friendly at all.
-We&rsquo;ll see soon why this implementation can make itself completely non-usable by
-many projects.</p>
-
-<p>Let&rsquo;s see another third party project, with another trait, providing us another
-useful behavior.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">AnotherProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">AnotherProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My another trait</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">trait</span> <span class="nx">MyAnotherTrait</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do another thing</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">soAnotherThing</span><span class="p">(</span><span class="nx">SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>As you can see, this class belongs to another isolated project, so each one will
-work properly in its own sandbox. Until now, everything works perfectly&hellip; but
-remember when we were talking about the overall picture? In the real world, this
-last example is what happens.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">ThirdPartyProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">SomeProject\MyTrait</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">AnotherProject\MyAnotherTrait</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My super class</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">MySuperClass</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">use</span> <span class="nx">MyTrait</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">use</span> <span class="nx">MyAnotherTrait</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What happens here?
-Well, as you may know (otherwise, please read about Traits), a Trait is
-considered as a simple copy/paste action inside a class. That means that, on the
-one hand, all &ldquo;use statements&rdquo; are copied one by one on the top of the main
-object, and on the other, all methods, with some priorities considerations, are
-copied inside the main class.</p>
-
-<p>So, our last example equals that new one.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">ThirdPartyProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">SomeProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">AnotherProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My super class</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">MySuperClass</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do something</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nx">SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do another thing</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">soAnotherThing</span><span class="p">(</span><span class="nx">SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Oh, wait&hellip; can you see that?</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">SomeProject\SomeObject</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">AnotherProject\SomeObject</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>As you may think, this is il·legal in PHP.</p>
-
-<h2>Complete namespaces</h2>
-
-<p>Considering that all traits should be friendly then, the best solution here is
-avoiding namespaces. You could tell right now&hellip;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>- Oh, well Marc, you can have this problem as well with methods. What happens if
-</span><span class='line'>  two traits have same method definitions?
-</span><span class='line'>
-</span><span class='line'>- Well, when you use a trait, then you should revise these parts that it offers
-</span><span class='line'>  you (class signature, methods signature...). You should not take in account if
-</span><span class='line'>  that trait uses internal statements or not, considering that as possible
-</span><span class='line'>  incompatibilities with other usable traits.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So, this is our first example transformed as a friendly trait.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">SomeProject</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * My trait</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">trait</span> <span class="nx">MyTrait</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Do something</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param \SomeProject\SomeObject\SomeObject $someObject Some object instance</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nx">\SomeProject\SomeObject\SomeObject</span> <span class="nv">$someObject</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// Do things...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Same trait, same behavior, but more friendly.
-Have you ever had a problem related to this topic?</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1327,7 +931,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#58;&#115;&#x79;&#109;&#x66;&#x6f;&#x6e;&#x79;&#x62;&#x61;&#114;&#99;&#101;&#x6c;&#111;&#110;&#97;&#x40;&#x67;&#x6d;&#97;&#x69;&#x6c;&#46;&#99;&#x6f;&#x6d;">&#115;&#121;&#x6d;&#102;&#x6f;&#110;&#x79;&#x62;&#x61;&#114;&#99;&#101;&#x6c;&#x6f;&#110;&#x61;&#x40;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;</a></p>
+<a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#115;&#121;&#109;&#102;&#x6f;&#110;&#121;&#x62;&#x61;&#114;&#99;&#x65;&#x6c;&#x6f;&#110;&#97;&#64;&#103;&#109;&#x61;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#115;&#x79;&#109;&#102;&#111;&#110;&#x79;&#x62;&#97;&#114;&#x63;&#101;&#x6c;&#111;&#110;&#x61;&#64;&#x67;&#109;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#109;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 </div>
@@ -2290,6 +1894,205 @@ maybe) to change this implementation for next Symfony 3 version.</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/07/montando-a-pau-garcia-mila/">Montando a Pau Garcia-Milà</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-07T02:58:00+02:00" pubdate data-updated="true">May 7<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/05/07/montando-a-pau-garcia-mila/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Hace apenas unas semanas, en un diario nacional español, aparecía un escrito
+inquietante, al menos a simple vista, sobre algunos puntos discutibles alrededor
+del ya más que conocido emprendedor Pau Garcia-Milà.</p>
+
+<p><a href="http://www.eldiario.es/hojaderouter/emprendedores/pau_garcia-mila-emprendimiento-EyeOS-Bananity_0_369213079.html">Post original</a></p>
+
+<p>Para los interesados, decir que el propio Pau respondió días más tarde en su
+blog, respondiendo a ciertas afirmaciones.</p>
+
+<p><a href="http://paugarciamila.com/desmontando-a-pau-garcia-mila/">Respuesta de Pau</a></p>
+
+<p>En dicho escrito, se analizan algunos de los puntos importantes y críticos por
+los que nuestro protagonista ha pasado durante los últimos años, dejando al
+lector la tarea de leer a simple vista un gran elenco de comentarios de algunas
+personas cuya opinión se les fue requerida, entiendo yo.</p>
+
+<p>Antes de todo decir escuetamente que yo recuerdo a Pau en sus inicios, cuando
+empezó a ser un personaje público. Añadir también que, tras un tiempo teniéndolo
+en mi <em>top of mind</em> como referencia y recordándolo como
+<em>simplemente, brillante</em>, y por alguna razón que no logré entender durante mucho
+tiempo, pasó a ser mi <em>vende-humos</em> favorito.</p>
+
+<blockquote><p>Éste no ha hecho nada. Solo habla de ideas. Yo también tengo muchas ideas!
+Mirad! Un percebe con alas! Fundemos una empresa que se llame Engonga
+associated y conquistemos el mundo. Ah, no, esperad, que con una idea uno no
+tiene ni para empezar&hellip; Nada, vuelvo al mundo real, en mi sofá de pensar.</p></blockquote>
+
+<p>Pero gracias a Dios, a veces en la vida te encuentras a grandes personas que te
+bautizan de golpe como <em>ex-hater</em>, y te das cuenta que el odio es,
+habitualmente, proporcional a la envidia, y quién mejor que una persona a la que
+envidias para empezar a admirar.</p>
+
+<p>He aquí mi pequeño paso hacia la redención relativa. Mi objetivo, la completa
+madurez. :)</p>
+
+<h3>Reflexiones</h3>
+
+<p>En este post, y como persona emprendedora que creo ser, añado algunas respuestas
+a comentarios del post original sin entrar demasiado al detalle.</p>
+
+<blockquote><p>Ha empezado cosas, pero no ha terminado ninguna. Son habilidades distintas.
+Creo que es un grandísimo comunicador y tiene éxito con eso, pero como
+emprendedor no lo ha demostrado</p></blockquote>
+
+<p>En realidad esta frase es la que más me duele a mi, como emprendedor que soy.
+Hace un poco más de un año y medio que trabajo en un proyecto, y siento decir
+que, por ahora, no he demostrado nada a nadie. ¿Eso me convierte en menos
+emprendedor?</p>
+
+<p>Trabajo un mínimo de 80 horas semanales en un proyecto de código libre de índole
+internacional, llevo una comunidad de desarrolladores Web local cuyos eventos
+son referenciados en todo el mundo, tengo unos cuantos proyectos personales
+también de código libre utilizados en multitud de empresas reales, y en el
+tiempo más libre de mi tiempo libre, soy ponente en eventos alrededor del globo.</p>
+
+<p>¿Demostrado? Si se refiere a si he vendido alguna empresa por 20 millones de
+euros, pues no&hellip; ¿Emprendedor? Hombre, pues creo que algo si, ¿no?</p>
+
+<p>Debo decir con gran aplomo que ningún emprendedor tiene que demostrar nada a
+nadie para serlo, y es que la palabra emprendedor, uno, se la gana con el
+trabajo y el sudor, no con los éxitos (y menos midiendo los éxitos en cifras
+o en rondas de inversión).</p>
+
+<p>Emprendedor es el que crea sitios de trabajo, el que crea equipos sanos y
+empresas con ideales humanos. Emprendedor es quien no se rinde a pesar de sus
+innumerables fracasos. Emprendedor es el que tras un &ldquo;No lo vas a conseguir&rdquo; ve
+un &ldquo;Debes conseguirlo&rdquo;.</p>
+
+<p>Emprendedor es quien persigue lo que todo el mundo ha dejado por imposible.</p>
+
+<p>Está claro que Pau es un gran comunicador y también está claro que ha tenido
+éxito con ello, pero seamos realistas y no nos dejemos llevar por la envidia y
+el descontrol: Un chico que a los 28 años ha tratado de levantar 3 empresas (la
+cuarta recientemente) y haya vendido una, cuales fueran las condiciones de dicha
+transacción y cuya información no me interesa en absoluto, absolutamente nadie
+puede tacharle de no ser emprendedor (evidentemente mencionar sus libros,
+charlas y todo el ecosistema que ha creado alrededor).</p>
+
+<p>Yo me quito el sombrero, al menos, por haberlo intentado.</p>
+
+<p>Pero está claro que es más simple y fácil entrar en la crítica destructiva y
+sensacionalista. Nos alimenta mucho más el ego interior y nos hace sentir más
+fuertes a nosotros, seres iluminados. Pero la realidad es que tras la fachada de
+un comunicador como Pau hay, en la mayoría de los casos, una mente brillante y
+un trabajo constante. Otra cosa es tener interés en conocer este trabajo y
+valorarlo como se debe.</p>
+
+<p>Que difícil es hacer esto.</p>
+
+<blockquote><p>pero hay grandes emprendedores en España que son menos mediáticos. Mi
+experiencia me dice que el éxito de un emprendedor es inversamente
+proporcional a sus seguidores en Twitter. No suele ser mediático.</p></blockquote>
+
+<p>El número de seguidores que tiene una persona en Twitter es directamente
+proporcional a varios elementos, como el campo en que esta persona haya decidido
+ser emprendedor (no es lo mismo un químico que un informático) o el carácter
+comunicativo que dicha persona tenga en su personalidad (No es lo mismo una
+persona expansiva y sociable que una persona itrovertida y tímida).</p>
+
+<p>Algunos ejemplos rápidos.</p>
+
+<ul>
+<li>Bill Gates, co-fundador de Microsoft, <strong>21.8 millones</strong> de followers</li>
+<li>Steve Wozniak, co-fundador de Apple, <strong>402 mil</strong> followers</li>
+<li>Elon Musk, fundador de Tesla y PayPal, <strong>2.06 millones</strong> de followers</li>
+<li>Jimmy Wales, fundador de Wikipedia, <strong>110 mil</strong> followers</li>
+<li>Charles W. Hull, inventor de la impresora 3D (nada, es posible que solo
+revolucione el modelo industrial en los próximos años)&hellip; <strong>0</strong> followers</li>
+<li>Steve Chen, co-fundador de Youtube, <strong>3599</strong> followers</li>
+</ul>
+
+
+<p>Podría seguir, pero carece de sentido categorizar a estos emprendedores como
+ejemplos de qué es tener poco éxito&hellip; Personas como ellas hacen que la sociedad
+avance en campos como la medicina, la tecnología o el bienestar.</p>
+
+<p>Evidentemente esto no quita que hay emprendedores de éxito abismal que, por
+decisión propia, han preferido quedarse en segundo plano en temas sociales. Y
+esta es una decisión igual de factible, correcta e indiscutible que cualquier
+otra.</p>
+
+<blockquote><p>Tenemos que animar con credibilidad. Lo bueno es que nos fijemos en los que ya
+han tenido éxito, porque es lo que cuenta: si no, se genera la sensación de
+que esto no es serio</p></blockquote>
+
+<p>Comentario propio del que lo tuvo todo muy fácil.</p>
+
+<p>Precisamente la gente necesita ver a personas que lo intentan a pesar de que las
+cosas van en contra, y aceptar que fallar nos hace aún más humanos. La
+credibilidad se demuestra con los caminos que uno hace a lo largo de su vida, la
+credibilidad la marca la honestidad y la ley del esfuerzo, sea cual sea el
+resultado final.</p>
+
+<p>Adjudicar seriedad al grado de éxito es, a mi parecer, una falta de respeto para
+los que aún no hemos conseguido nada, aún lo intentemos con todas nuestras
+fuerzas. Y lo que me parece más grave, me parece una falta de respeto
+innecesaria, un comentario fuera de lugar y una doctrina tóxica para una
+sociedad desanimada y desorientada como es la nuestra.</p>
+
+<p>Reflexión, por favor.</p>
+
+<h3>Conclusión</h3>
+
+<p>Emprendedor, no emprendedor. Da igual, lo importante para una sociedad es el
+esfuerzo. Hable en público, tenga seguidores en Twitter o toque la pandereta con
+los ojos cerrados y en sol sostenido, son elementos personales, injuzgables más
+allá de uno mismo, y menos cuando el impacto social es positivo, mires por donde
+lo mires.</p>
+
+<p>Repito una frase con la que empezaba mi post dado que encuentro interesante y
+reveladora.</p>
+
+<blockquote><p>el odio es, habitualmente, proporcional a la envidia, y quién mejor que una
+persona a la que envidias para empezar a admirar</p></blockquote>
+
+<p>Mi consejo siempre es el mismo. Que el miedo a intentar cosas no os impida no
+hacerlas, y que simplemente os hagan más cautos. No os dejéis llevar por la
+mediocridad social a la hora de juzgar a personas que trabajan por su futuro y
+sed críticos más allá de 4 medios de comunicación de intenciones puramente
+marketinianas.</p>
+
+<p>Dicho esto, sed felices y volad cometas.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -2305,10 +2108,6 @@ maybe) to change this implementation for next Symfony 3 version.</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/10/16/namespaces-in-traits/">Namespaces in Traits</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2015/09/28/composer-install-in-ci/">Composer install in CI</a>
       </li>
     
@@ -2322,6 +2121,10 @@ maybe) to change this implementation for next Symfony 3 version.</p>
     
       <li class="post">
         <a href="/blog/2015/08/28/eventlisteners-as-collectors-in-symfony/">EventListeners as collectors in Symfony</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/23/symfony-in-barcelona/">Symfony in Barcelona</a>
       </li>
     
   </ul>
