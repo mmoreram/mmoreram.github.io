@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: dependencies | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/dependencies/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2015-11-25T12:52:03+01:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Your packages dependencies]]></title>
+    <link href="http://mmoreram.github.io/blog/2015/11/20/your-packages-dependencies/"/>
+    <updated>2015-11-20T21:50:00+01:00</updated>
+    <id>http://mmoreram.github.io/blog/2015/11/20/your-packages-dependencies</id>
+    <content type="html"><![CDATA[<ul>
+<li>A component should add as dependency all needed packages to have a complete
+functionality</li>
+<li>A bundle should add as dependency as well all these bundles that define other
+services used in your own service definitions</li>
+<li>Take care of your version policy. Being too restrictive reduces the
+compatibility with other packages.</li>
+</ul>
+
+
+<h2>Responsibilities</h2>
+
+<ul>
+<li>Hi. I&rsquo;m Marc and I am an open source addict</li>
+<li>Hi Marc, welcome!</li>
+</ul>
+
+
+<p>That is a reality in fact. I&rsquo;m part of this group of people that consider
+themselves addicts to open source. Big part of our work is created to be shared
+by everyone, and like Spider-man&rsquo;s uncle said once&hellip; &ldquo;With great power comes
+great responsibility&rdquo;.</p>
+
+<p>But what are those responsibilities we should take care of during our
+development? What parts of our application should we really take care of and
+which are more vulnerable over the time? Testing, documentation, clearness of
+our code, abstraction, extension capabilities&hellip; we could talk about them all,
+and for sure, each one can have enough material for an entire blog or a book.</p>
+
+<p>In that case, I want to expose my personal experiences about what I learned over
+the time by leading an open source project, several small open source bundles
+and PHP libraries, and I want to do it by explaining how we should take care of
+our Symfony bundles or PHP component dependencies.</p>
+
+<h2>PHP Component Dependencies</h2>
+
+<p>When we talk about PHP components, we talk about framework agnostic packages,
+only coupled to the language itself, in that case PHP, and to some other
+libraries. Having said that, we could start by trying to understand how the
+components and bundles are split in some projects, for example
+<a href="http://github.com/symfony/symfony">Symfony</a> or
+<a href="http://github.com/elcodi/elcodi">Elcodi</a>. Both projects have components and
+bundles, providing the chance to all frameworks to work with their business
+logic.</p>
+
+<ul>
+<li>So do we place all the business logic in components?</li>
+<li>Yes. The <em>why</em> of your project is placed in libraries. This will be your
+service layer, and it should be covered with unit tests.</li>
+</ul>
+
+
+<p>In regard to dependencies, components should only have dependencies on other
+components. But how can I discover what packages I really depend on? In that
+case it&rsquo;s very simple, so we&rsquo;re not working with any kind of magic. Because our
+packages are simple PHP classes, checking the usage of all external classes
+should be enough to know on which libraries we depend.</p>
+
+<p>In that case, I always write code with <code>use</code> statements, so is much easier to
+check my external classes usage. Just by checking the first lines of all my
+classes I can guess what packages I should add in my composer.</p>
+
+<p>``` php
+namespace Elcodi\Component\User\EventListener;</p>
+
+<p>use Symfony\Component\Security\Core\Event\AuthenticationEvent;
+use Doctrine\Common\Persistence\ObjectManager;
+use Elcodi\Component\Cart\Entity\Interfaces\CartInterface;
+use Elcodi\Component\Cart\Wrapper\CartWrapper;
+use Elcodi\Component\User\Entity\Interfaces\CustomerInterface;</p>
+
+<p>/<em>*
+ * Class UpdateCartWithUserListener
+ </em>/
+class UpdateCartWithUserListener
+```</p>
+
+<p>This piece of code makes you depend on four packages at least. Please, don&rsquo;t
+focus on the versions, but only on the libraries.</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "*",
+
+"symfony/security": "*",
+"doctrine/common": "*",
+"elcodi/cart": "*",
+"elcodi/user": "*"
+</code></pre>
+
+<p>}
+```</p>
+
+<h3>Dependencies of Dependencies</h3>
+
+<p>Your package must manage ALL of its dependencies, even if they are as well
+dependencies of your dependencies.</p>
+
+<ul>
+<li>Your package A uses B and C.</li>
+<li>Your package A requires B.</li>
+<li>Package B requires C.</li>
+<li>Then, your package A has both B and C. Enough.</li>
+</ul>
+
+
+<p>Well, that&rsquo;s not true at all, because you cannot depend never of the
+dependencies of your dependencies. Maybe now they require a package, but maybe
+this package won&rsquo;t be required by your dependency anymore in the future. In that
+case, even if you still need it, your package will disappear from your vendor
+folder.</p>
+
+<ul>
+<li>Your package A uses B and C.</li>
+<li>Your package A requires B and C.</li>
+<li>Package B requires C.</li>
+<li>Then, your package A has both B and C.</li>
+<li>Package B does not require C anymore.</li>
+<li>You still have B and C.</li>
+</ul>
+
+
+<p>Remember that&hellip; Require <strong>ALL</strong> your dependencies. All of them! That can make
+the difference.</p>
+
+<h3>Adapters</h3>
+
+<p>If our application is super decoupled from other libraries, and you have used
+adapters for those integrations, then things change. Because the use of adapters
+allows you to decouple from other packages literally, we should find another
+mechanism to say&hellip; <em>hey, maybe you can depend on this package&hellip;</em>. Composer
+proposes that mechanism, by using the <code>suggest</code> section.</p>
+
+<p>``` json
+&ldquo;suggest&rdquo;: {</p>
+
+<pre><code>"some/package": "Use ^2.5 for integration with Some Package"
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Of course, this is not the only way of doing that. In this example we assume
+that our package will offer all the adapters implementing an interface, and this
+is just an option. In my case, I&rsquo;ve been working for so long with a library
+called <a href="https://github.com/KnpLabs/Gaufrette">Gaufrette</a>, and I really enjoy the
+way these kind of packages work.</p>
+
+<blockquote><p>Some of you could say&hellip; oh, but by doing that, then you&rsquo;re not defining
+dependencies but only suggestions (sounds the same as saying nothing, in
+fact), but when we define a requirement is when our package cannot exist
+without this package. When it is a MUST.</p></blockquote>
+
+<p>Other kind of implementations don&rsquo;t take into account the possibility of using the
+<code>suggest</code> section in composer, because they don&rsquo;t really solve the dependencies
+problem. This implementation forces having 1+<code>n</code> packages, the first one
+containing the interface and the common content, and the other <code>n</code> containing
+each specific implementation, all of them requiring the first one as a
+dependency and the specific third-party package.</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"myself/core": "*",
+"some/package": "^2.5 "
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This is much more heavy to maintain, and only works if you only offer one port
+with <code>n</code> adapters in your package. In the case of Gaufrette, this could be a
+reality, so they only offer one port with <code>n</code> adapters, but of course, having
+this structure is more difficult to maintain.</p>
+
+<h3>Versions</h3>
+
+<p>That is a very complex topic. I will not talk about composer, but firstly, I
+will share some basic concepts that are used a lot when defining dependencies
+between packages.</p>
+
+<ul>
+<li><code>~2.5.4</code> means equal and bigger than <code>2.5.4</code> but smaller than <code>2.6</code></li>
+<li><code>~2.5</code> means equal and bigger than <code>2.5.0</code> but smaller than <code>3.0.0</code></li>
+<li><code>^2.5.4</code> means equal and bigger than <code>2.5.4</code> but smaller than <code>3.0.0</code></li>
+<li><code>^2.5</code> means equal and bigger than <code>2.5.0</code> but smaller than <code>3.0.0</code></li>
+</ul>
+
+
+<p>The only thing I can say about that is that if your library aims to be usable by
+a biggest community as possible, then please consider checking your dependencies
+deeply, offering as much version-compatibility as possible.</p>
+
+<p>The following composer requirements&hellip;</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "5.4.2",
+
+"symfony/security": "~2.7.3",
+"doctrine/common": "~2.7.3",
+"elcodi/cart": "~1.0.4",
+"elcodi/user": "~1.0.4"
+</code></pre>
+
+<p>}
+```</p>
+
+<p>are more restrictive than the following ones&hellip;</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "^5.3.9",
+
+"symfony/security": "^2.3",
+"doctrine/common": "^2.3",
+"elcodi/cart": "^1.0",
+"elcodi/user": "^1.0"
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Of course, you should add requirement compliance as long as they really cover
+your library needs. If you use Traits, then you should use <code>^5.4</code>, or if you&rsquo;re
+using some Symfony features introduced in a specific version, then you become
+dependent, at least, on this version</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "^5.4",
+
+"symfony/security": "^2.7",
+"doctrine/common": "^2.3",
+"elcodi/cart": "^1.0",
+"elcodi/user": "^1.0"
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Consider as well the compatibility with new major versions, as soon as they
+confirm their roadmap strategy and feature list. In that case, we could add
+compatibility with Symfony <code>^3.0</code> if we have removed all deprecated elements
+from old versions, or PHP <code>^7.0</code> if we don&rsquo;t use any <code>^5.6</code> deprecated function.</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "^5.4|^7.0",
+
+"symfony/security": "^2.7|^3.0",
+"doctrine/common": "^2.3|^3.0",
+"elcodi/cart": "^1.0",
+"elcodi/user": "^1.0"
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This is very important, because if you don&rsquo;t offer this kind of compatibility,
+no one using your package will be able to evolve properly, and when I mean
+someone using your package I mean anyone using any package that, recursively,
+uses your package.</p>
+
+<p>That can be tons of projects.</p>
+
+<h2>Symfony bundle dependencies</h2>
+
+<p>Once we have talked about PHP components, let&rsquo;s talk about Symfony bundles. This
+is something much more complicated, because a Symfony Bundle is a PHP library
+that is co-existing in a framework, so it is not as easy to check all our PHP
+class dependencies.</p>
+
+<p>The question we must ask ourselves when trying to resolve any Symfony bundle
+dependency map is&hellip; <em>What do I really need to make this bundle work in any
+Symfony project?</em></p>
+
+<h3>Other bundles</h3>
+
+<p>This is one of the things Symfony doesn&rsquo;t solve yet. How can a bundle depend on
+another bundle, but not only in the composer layer but as well in the
+application layer?</p>
+
+<p>Well, there is a package for that (remember to <strong>star</strong> it if turns out useful
+for you).</p>
+
+<p><a href="https://github.com/mmoreram/symfony-bundle-dependencies">Symfony Bundle Dependencies</a></p>
+
+<p>This package allows you to create bundles with other bundle dependencies very
+easily. By using this package you will be able to say&hellip; <em>okay composer,
+download this bundles, I need them to instantiate my bundle&hellip; and Symfony
+application, as soon you instantiate my bundle, please, install these other
+bundles as well before</em> without any need to modify the kernel. Of course, this
+is only possible if the project works with that package as well.</p>
+
+<p>``` php
+use Mmoreram\SymfonyBundleDependencies\DependentBundleInterface;</p>
+
+<p>/<em>*
+ * My Bundle
+ </em>/
+class MyBundle implements DependentBundleInterface
+{</p>
+
+<pre><code>/**
+ * Create instance of current bundle, and return dependent bundle namespaces
+ *
+ * @return array Bundle instances
+ */
+public static function getBundleDependencies(KernelInterface $kernel)
+{
+    return [
+        'Another\Bundle\AnotherBundle',
+        'My\Great\Bundle\MyGreatBundle',
+        new \Yet\Another\Bundle\YetAnotherBundle($kernel),
+        new \Even\Another\Bundle\EvenAnotherBundle($kernel, true),
+    ];
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>If the project is not using this package, then the behavior of your bundle won&rsquo;t
+change at all.</p>
+
+<h3>DIC Services</h3>
+
+<p>To resolve all your bundle dependencies you need to take a look as well at your
+Dependency Injection definition. Let&rsquo;s imagine we have a bundle with this
+DIC definition.</p>
+
+<p>``` yaml
+services:</p>
+
+<pre><code>my_service:
+    class: My\Service\Class
+    arguments:
+        - @twig
+        - my_other_service
+        - @event_dispatcher
+</code></pre>
+
+<p>```</p>
+
+<p>When Symfony tries to resolve this file, it needs as well all the definitions
+of the arguments (dependencies). The bundles that have these definitions
+automatically become your bundle dependencies.</p>
+
+<p>The hard work here is to know which bundles have all these service definitions,
+and that is not always that simple. In that case, for example&hellip; Which package
+has the <code>@twig</code> service? We could think easily&hellip; well, <code>twig/twig</code> for sure has
+the class we are injecting here.</p>
+
+<p>And you&rsquo;re right, so if any of your classes, in that case <code>My\Service\Class</code>
+needs a class from the package <code>twig/twig</code>, this package will have to be
+required by your bundle.</p>
+
+<p>But is that the real answer we need right now? Not at all. The question is not
+which package provides me with the Twig class, but with the <code>@twig</code> service, and
+this one is not <code>twig\twig</code> as this is only a PHP library, framework agnostic.</p>
+
+<p>For this reason, we have a bundle called
+<a href="http://github.com/symfony/TwigBundle">TwigBundle</a>. This bundle, as well as
+other needed things, creates a new service called <code>twig</code>. This Bundle is
+required not only because we need the code under our vendor folder, but also
+because it has to be instantiated when our bundle is instantiated.</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"symfony/twig-bundle": "^2.7"
+</code></pre>
+
+<p>}
+```</p>
+
+<p>If you decide to work with the symfony bundle dependency package, then this code
+is for you.</p>
+
+<p>``` php
+use Mmoreram\SymfonyBundleDependencies\DependentBundleInterface;</p>
+
+<p>/<em>*
+ * My Bundle
+ </em>/
+class MyBundle implements DependentBundleInterface
+{</p>
+
+<pre><code>/**
+ * Create instance of current bundle, and return dependent bundle namespaces
+ *
+ * @return array Bundle instances
+ */
+public static function getBundleDependencies(KernelInterface $kernel)
+{
+    return [
+        'Symfony\Bundle\TwigBundle\TwigBundle',
+    ];
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>If you don&rsquo;t use this package, then you should add the TwigBundle instance in
+your AppKernel.</p>
+
+<h3>Requiring the Framework</h3>
+
+<p>How about this services file? What dependencies do you think your package has?</p>
+
+<p>``` yaml
+services:</p>
+
+<pre><code>my_service:
+    class: My\Service\Class
+    arguments:
+        - @event_dispatcher
+</code></pre>
+
+<p>```</p>
+
+<p>Some people can say if quickly&hellip; the EventDispatcher is a requirement&hellip; but we
+have the same problem as before. The Event Dispatcher is a Symfony component,
+and has nothing to do with the exposure of their classes in the Symfony
+Framework dependency injection definition.</p>
+
+<p>Symfony provides as well a bundle called
+<a href="https://github.com/symfony/framework-bundle">FrameworkBundle</a>. Its mission is,
+in addition to creating all the working environment for your project (the
+framework itself), to expose all needed services to the DIC. One of them is the
+Event Dispatcher from the component (if you check the composer.json file of that
+bundle you will discover that the symfony/event-dispatcher package is a
+requirement).</p>
+
+<p>So, some of your bundle services should require as well this bundle.</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"symfony/framework-bundle": "^2.7|^3.0"
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This bundle is almost always required by all bundles (at least, it should), so
+make sure you&rsquo;re really tolerant with its version, or you will make your
+bundle less usable than it could be.</p>
+
+<h3>Symfony ^3.0.0</h3>
+
+<p>Many packages are actually requiring a very restrictive version of Symfony. This
+fact has not been a problem during the latest 4 years, but nowadays Symfony
+<code>v3.0.0</code> is going to be a reality soon, so all these packages need to make two
+easy things</p>
+
+<ul>
+<li>Check if your bundle introduces a Symfony <code>~2.8</code> deprecated feature.</li>
+<li>If it does, update your bundle to avoid this deprecation</li>
+<li>Update your requirements to work as well with Symfony <code>^3.0</code>.</li>
+</ul>
+
+
+<p>Check that your Symfony requirements then are still valid. For example:</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"symfony/framework-bundle": "^2.2|^3.0"
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Applying this new requirement with Symfony <code>^3.0</code> maybe you had to use a new
+feature that was introduced in Symfony <code>^2.7.3</code>. In that case, your
+composer.json is invalid, and if you have covered your class with tests and you
+run your tests with <code>--prefer-lowest</code>, then you will have some fails there.</p>
+
+<p>You will have to update your dependency properly.</p>
+
+<p>``` json
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"symfony/framework-bundle": "^2.7.3|^3.0"
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>Development Dependencies</h2>
+
+<p>As you may already noticed, development dependencies are not loaded recursively.
+This means that the <code>require-dev</code> block of your <code>require-dev</code> packages is
+completely ignored.</p>
+
+<p>In some way, this is great because you can define specifically what packages you
+need for your development (testing, mostly), without being worried about all the
+packages that require you.</p>
+
+<p>In some other way, this can be bad&hellip; well, yes, you must know exactly all your
+dependencies for testing (there should be only a few&hellip;), so in that case, just
+make sure you know your application :)</p>
+
+<h3>Requiring PHPUnit</h3>
+
+<p>And then the question is&hellip; should I require PHPUnit or other testing libraries,
+as well as lints and formatters?</p>
+
+<p>Again, some people will tell you&hellip; don&rsquo;t do that! Your development and testing
+deployment will require more disk and more resources for composer. Well, sure,
+but if you depend on the pre-installed PHPUnit version, then you can have some
+trouble when testing.</p>
+
+<p>``` json
+&ldquo;require-dev&rdquo;: {</p>
+
+<pre><code>"fabpot/php-cs-fixer": "1.4.2",
+"mmoreram/php-formatter": "1.1.0",
+"phpunit/phpunit": "4.5.0"
+</code></pre>
+
+<p>},
+```</p>
+
+<p>I really need these versions. No others but these. For example, some lints can
+add some logic, or even change it. Because we&rsquo;re responsible for our bundles,
+components or code, we should trust as less as possible in what other people can
+do to our dependencies (somehow we really trust a lot of packages by adding the
+<code>^2.2</code> symbol, but in that case we do it not for us but for our users). In
+testing mode, and because fortunately <code>require-dev</code> block is not recursive, we
+can perfectly be restrictive with the version we want, and as long as we
+want/need to change it&hellip; just do it :)</p>
+
+<h2>Trust</h2>
+
+<p>Trusting open source is something you cannot do blindly. Your project is your
+business, and you need to know that is safe from third party version errors and
+issues.</p>
+
+<p>If you trust a package, like I do for example in Symfony, then use the
+semantic version notation in your requirements. Believe that the community will
+never allow back compatibilities breaks, or they will fix them all as soon as
+possible when introduced.</p>
+
+<p>If you trust a library because it is tested, but you don&rsquo;t trust their
+version policy, then just block the version (knowing that this restricts the
+compatibility with other packages), or make some push to this community for a
+really semantic version policy.</p>
+
+<p>If you don&rsquo;t trust a library at all, then don&rsquo;t use it. That simple.</p>
+
+<h2>Conclusion</h2>
+
+<p>So, that&rsquo;s it.</p>
+
+<p>I highly recommend you, open source lover, to take as much care as possible of
+your package dependencies. A healthy and useful package is a package used by
+tons of people. Offer them some confidence and you will get a lot of feedback in
+return.</p>
+
+<p>Share your work as much as you can, and don&rsquo;t be afraid of your errors, they
+will be your biggest reasons for being a better developer day after day, and
+remember that all of us were inexperienced once.</p>
+
+<p><em>Error is first step to success</em></p>
+]]></content>
+  </entry>
+  
+</feed>

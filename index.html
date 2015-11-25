@@ -9,8 +9,9 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="If you have a project with a lot of dependencies, then you might now what I am
-talking about. We all love composer, but we all know as well that, at &hellip;">
+  <meta name="description" content="A component should add as dependency all needed packages to have a complete
+functionality
+A bundle should add as dependency as well all these &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +82,701 @@ talking about. We all love composer, but we all know as well that, at &hellip;">
       <div id="content">
 	<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/11/20/your-packages-dependencies/">Your Packages Dependencies</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-20T21:50:00+01:00" pubdate data-updated="true">Nov 20<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/11/20/your-packages-dependencies/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>A component should add as dependency all needed packages to have a complete
+functionality</li>
+<li>A bundle should add as dependency as well all these bundles that define other
+services used in your own service definitions</li>
+<li>Take care of your version policy. Being too restrictive reduces the
+compatibility with other packages.</li>
+</ul>
+
+
+<h2>Responsibilities</h2>
+
+<ul>
+<li>Hi. I&rsquo;m Marc and I am an open source addict</li>
+<li>Hi Marc, welcome!</li>
+</ul>
+
+
+<p>That is a reality in fact. I&rsquo;m part of this group of people that consider
+themselves addicts to open source. Big part of our work is created to be shared
+by everyone, and like Spider-man&rsquo;s uncle said once&hellip; &ldquo;With great power comes
+great responsibility&rdquo;.</p>
+
+<p>But what are those responsibilities we should take care of during our
+development? What parts of our application should we really take care of and
+which are more vulnerable over the time? Testing, documentation, clearness of
+our code, abstraction, extension capabilities&hellip; we could talk about them all,
+and for sure, each one can have enough material for an entire blog or a book.</p>
+
+<p>In that case, I want to expose my personal experiences about what I learned over
+the time by leading an open source project, several small open source bundles
+and PHP libraries, and I want to do it by explaining how we should take care of
+our Symfony bundles or PHP component dependencies.</p>
+
+<h2>PHP Component Dependencies</h2>
+
+<p>When we talk about PHP components, we talk about framework agnostic packages,
+only coupled to the language itself, in that case PHP, and to some other
+libraries. Having said that, we could start by trying to understand how the
+components and bundles are split in some projects, for example
+<a href="http://github.com/symfony/symfony">Symfony</a> or
+<a href="http://github.com/elcodi/elcodi">Elcodi</a>. Both projects have components and
+bundles, providing the chance to all frameworks to work with their business
+logic.</p>
+
+<ul>
+<li>So do we place all the business logic in components?</li>
+<li>Yes. The <em>why</em> of your project is placed in libraries. This will be your
+service layer, and it should be covered with unit tests.</li>
+</ul>
+
+
+<p>In regard to dependencies, components should only have dependencies on other
+components. But how can I discover what packages I really depend on? In that
+case it&rsquo;s very simple, so we&rsquo;re not working with any kind of magic. Because our
+packages are simple PHP classes, checking the usage of all external classes
+should be enough to know on which libraries we depend.</p>
+
+<p>In that case, I always write code with <code>use</code> statements, so is much easier to
+check my external classes usage. Just by checking the first lines of all my
+classes I can guess what packages I should add in my composer.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">namespace</span> <span class="nx">Elcodi\Component\User\EventListener</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Security\Core\Event\AuthenticationEvent</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Doctrine\Common\Persistence\ObjectManager</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Elcodi\Component\Cart\Entity\Interfaces\CartInterface</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Elcodi\Component\Cart\Wrapper\CartWrapper</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Elcodi\Component\User\Entity\Interfaces\CustomerInterface</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Class UpdateCartWithUserListener</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">UpdateCartWithUserListener</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This piece of code makes you depend on four packages at least. Please, don&rsquo;t
+focus on the versions, but only on the libraries.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;php&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&quot;symfony/security&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;doctrine/common&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;elcodi/cart&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;elcodi/user&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Dependencies of Dependencies</h3>
+
+<p>Your package must manage ALL of its dependencies, even if they are as well
+dependencies of your dependencies.</p>
+
+<ul>
+<li>Your package A uses B and C.</li>
+<li>Your package A requires B.</li>
+<li>Package B requires C.</li>
+<li>Then, your package A has both B and C. Enough.</li>
+</ul>
+
+
+<p>Well, that&rsquo;s not true at all, because you cannot depend never of the
+dependencies of your dependencies. Maybe now they require a package, but maybe
+this package won&rsquo;t be required by your dependency anymore in the future. In that
+case, even if you still need it, your package will disappear from your vendor
+folder.</p>
+
+<ul>
+<li>Your package A uses B and C.</li>
+<li>Your package A requires B and C.</li>
+<li>Package B requires C.</li>
+<li>Then, your package A has both B and C.</li>
+<li>Package B does not require C anymore.</li>
+<li>You still have B and C.</li>
+</ul>
+
+
+<p>Remember that&hellip; Require <strong>ALL</strong> your dependencies. All of them! That can make
+the difference.</p>
+
+<h3>Adapters</h3>
+
+<p>If our application is super decoupled from other libraries, and you have used
+adapters for those integrations, then things change. Because the use of adapters
+allows you to decouple from other packages literally, we should find another
+mechanism to say&hellip; <em>hey, maybe you can depend on this package&hellip;</em>. Composer
+proposes that mechanism, by using the <code>suggest</code> section.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;suggest&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;some/package&quot;</span><span class="p">:</span> <span class="s2">&quot;Use ^2.5 for integration with Some Package&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course, this is not the only way of doing that. In this example we assume
+that our package will offer all the adapters implementing an interface, and this
+is just an option. In my case, I&rsquo;ve been working for so long with a library
+called <a href="https://github.com/KnpLabs/Gaufrette">Gaufrette</a>, and I really enjoy the
+way these kind of packages work.</p>
+
+<blockquote><p>Some of you could say&hellip; oh, but by doing that, then you&rsquo;re not defining
+dependencies but only suggestions (sounds the same as saying nothing, in
+fact), but when we define a requirement is when our package cannot exist
+without this package. When it is a MUST.</p></blockquote>
+
+<p>Other kind of implementations don&rsquo;t take into account the possibility of using the
+<code>suggest</code> section in composer, because they don&rsquo;t really solve the dependencies
+problem. This implementation forces having 1+<code>n</code> packages, the first one
+containing the interface and the common content, and the other <code>n</code> containing
+each specific implementation, all of them requiring the first one as a
+dependency and the specific third-party package.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;myself/core&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;some/package&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.5 &quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is much more heavy to maintain, and only works if you only offer one port
+with <code>n</code> adapters in your package. In the case of Gaufrette, this could be a
+reality, so they only offer one port with <code>n</code> adapters, but of course, having
+this structure is more difficult to maintain.</p>
+
+<h3>Versions</h3>
+
+<p>That is a very complex topic. I will not talk about composer, but firstly, I
+will share some basic concepts that are used a lot when defining dependencies
+between packages.</p>
+
+<ul>
+<li><code>~2.5.4</code> means equal and bigger than <code>2.5.4</code> but smaller than <code>2.6</code></li>
+<li><code>~2.5</code> means equal and bigger than <code>2.5.0</code> but smaller than <code>3.0.0</code></li>
+<li><code>^2.5.4</code> means equal and bigger than <code>2.5.4</code> but smaller than <code>3.0.0</code></li>
+<li><code>^2.5</code> means equal and bigger than <code>2.5.0</code> but smaller than <code>3.0.0</code></li>
+</ul>
+
+
+<p>The only thing I can say about that is that if your library aims to be usable by
+a biggest community as possible, then please consider checking your dependencies
+deeply, offering as much version-compatibility as possible.</p>
+
+<p>The following composer requirements&hellip;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;php&quot;</span><span class="p">:</span> <span class="s2">&quot;5.4.2&quot;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&quot;symfony/security&quot;</span><span class="p">:</span> <span class="s2">&quot;~2.7.3&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;doctrine/common&quot;</span><span class="p">:</span> <span class="s2">&quot;~2.7.3&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;elcodi/cart&quot;</span><span class="p">:</span> <span class="s2">&quot;~1.0.4&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;elcodi/user&quot;</span><span class="p">:</span> <span class="s2">&quot;~1.0.4&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>are more restrictive than the following ones&hellip;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;php&quot;</span><span class="p">:</span> <span class="s2">&quot;^5.3.9&quot;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&quot;symfony/security&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.3&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;doctrine/common&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.3&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;elcodi/cart&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;elcodi/user&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.0&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course, you should add requirement compliance as long as they really cover
+your library needs. If you use Traits, then you should use <code>^5.4</code>, or if you&rsquo;re
+using some Symfony features introduced in a specific version, then you become
+dependent, at least, on this version</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;php&quot;</span><span class="p">:</span> <span class="s2">&quot;^5.4&quot;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&quot;symfony/security&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.7&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;doctrine/common&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.3&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;elcodi/cart&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;elcodi/user&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.0&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Consider as well the compatibility with new major versions, as soon as they
+confirm their roadmap strategy and feature list. In that case, we could add
+compatibility with Symfony <code>^3.0</code> if we have removed all deprecated elements
+from old versions, or PHP <code>^7.0</code> if we don&rsquo;t use any <code>^5.6</code> deprecated function.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;php&quot;</span><span class="p">:</span> <span class="s2">&quot;^5.4|^7.0&quot;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&quot;symfony/security&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.7|^3.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;doctrine/common&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.3|^3.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;elcodi/cart&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;elcodi/user&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.0&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is very important, because if you don&rsquo;t offer this kind of compatibility,
+no one using your package will be able to evolve properly, and when I mean
+someone using your package I mean anyone using any package that, recursively,
+uses your package.</p>
+
+<p>That can be tons of projects.</p>
+
+<h2>Symfony bundle dependencies</h2>
+
+<p>Once we have talked about PHP components, let&rsquo;s talk about Symfony bundles. This
+is something much more complicated, because a Symfony Bundle is a PHP library
+that is co-existing in a framework, so it is not as easy to check all our PHP
+class dependencies.</p>
+
+<p>The question we must ask ourselves when trying to resolve any Symfony bundle
+dependency map is&hellip; <em>What do I really need to make this bundle work in any
+Symfony project?</em></p>
+
+<h3>Other bundles</h3>
+
+<p>This is one of the things Symfony doesn&rsquo;t solve yet. How can a bundle depend on
+another bundle, but not only in the composer layer but as well in the
+application layer?</p>
+
+<p>Well, there is a package for that (remember to <strong>star</strong> it if turns out useful
+for you).</p>
+
+<p><a href="https://github.com/mmoreram/symfony-bundle-dependencies">Symfony Bundle Dependencies</a></p>
+
+<p>This package allows you to create bundles with other bundle dependencies very
+easily. By using this package you will be able to say&hellip; <em>okay composer,
+download this bundles, I need them to instantiate my bundle&hellip; and Symfony
+application, as soon you instantiate my bundle, please, install these other
+bundles as well before</em> without any need to modify the kernel. Of course, this
+is only possible if the project works with that package as well.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\SymfonyBundleDependencies\DependentBundleInterface</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * My Bundle</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MyBundle</span> <span class="k">implements</span> <span class="nx">DependentBundleInterface</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Create instance of current bundle, and return dependent bundle namespaces</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return array Bundle instances</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getBundleDependencies</span><span class="p">(</span><span class="nx">KernelInterface</span> <span class="nv">$kernel</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">[</span>
+</span><span class='line'>            <span class="s1">&#39;Another\Bundle\AnotherBundle&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s1">&#39;My\Great\Bundle\MyGreatBundle&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="k">new</span> <span class="nx">\Yet\Another\Bundle\YetAnotherBundle</span><span class="p">(</span><span class="nv">$kernel</span><span class="p">),</span>
+</span><span class='line'>            <span class="k">new</span> <span class="nx">\Even\Another\Bundle\EvenAnotherBundle</span><span class="p">(</span><span class="nv">$kernel</span><span class="p">,</span> <span class="k">true</span><span class="p">),</span>
+</span><span class='line'>        <span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If the project is not using this package, then the behavior of your bundle won&rsquo;t
+change at all.</p>
+
+<h3>DIC Services</h3>
+
+<p>To resolve all your bundle dependencies you need to take a look as well at your
+Dependency Injection definition. Let&rsquo;s imagine we have a bundle with this
+DIC definition.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">my_service</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Service\Class</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">twig</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">my_other_service</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">event_dispatcher</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When Symfony tries to resolve this file, it needs as well all the definitions
+of the arguments (dependencies). The bundles that have these definitions
+automatically become your bundle dependencies.</p>
+
+<p>The hard work here is to know which bundles have all these service definitions,
+and that is not always that simple. In that case, for example&hellip; Which package
+has the <code>@twig</code> service? We could think easily&hellip; well, <code>twig/twig</code> for sure has
+the class we are injecting here.</p>
+
+<p>And you&rsquo;re right, so if any of your classes, in that case <code>My\Service\Class</code>
+needs a class from the package <code>twig/twig</code>, this package will have to be
+required by your bundle.</p>
+
+<p>But is that the real answer we need right now? Not at all. The question is not
+which package provides me with the Twig class, but with the <code>@twig</code> service, and
+this one is not <code>twig\twig</code> as this is only a PHP library, framework agnostic.</p>
+
+<p>For this reason, we have a bundle called
+<a href="http://github.com/symfony/TwigBundle">TwigBundle</a>. This bundle, as well as
+other needed things, creates a new service called <code>twig</code>. This Bundle is
+required not only because we need the code under our vendor folder, but also
+because it has to be instantiated when our bundle is instantiated.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;symfony/twig-bundle&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.7&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you decide to work with the symfony bundle dependency package, then this code
+is for you.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\SymfonyBundleDependencies\DependentBundleInterface</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * My Bundle</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MyBundle</span> <span class="k">implements</span> <span class="nx">DependentBundleInterface</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Create instance of current bundle, and return dependent bundle namespaces</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return array Bundle instances</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getBundleDependencies</span><span class="p">(</span><span class="nx">KernelInterface</span> <span class="nv">$kernel</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">[</span>
+</span><span class='line'>            <span class="s1">&#39;Symfony\Bundle\TwigBundle\TwigBundle&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you don&rsquo;t use this package, then you should add the TwigBundle instance in
+your AppKernel.</p>
+
+<h3>Requiring the Framework</h3>
+
+<p>How about this services file? What dependencies do you think your package has?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="l-Scalar-Plain">my_service</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Service\Class</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">event_dispatcher</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Some people can say if quickly&hellip; the EventDispatcher is a requirement&hellip; but we
+have the same problem as before. The Event Dispatcher is a Symfony component,
+and has nothing to do with the exposure of their classes in the Symfony
+Framework dependency injection definition.</p>
+
+<p>Symfony provides as well a bundle called
+<a href="https://github.com/symfony/framework-bundle">FrameworkBundle</a>. Its mission is,
+in addition to creating all the working environment for your project (the
+framework itself), to expose all needed services to the DIC. One of them is the
+Event Dispatcher from the component (if you check the composer.json file of that
+bundle you will discover that the symfony/event-dispatcher package is a
+requirement).</p>
+
+<p>So, some of your bundle services should require as well this bundle.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;symfony/framework-bundle&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.7|^3.0&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This bundle is almost always required by all bundles (at least, it should), so
+make sure you&rsquo;re really tolerant with its version, or you will make your
+bundle less usable than it could be.</p>
+
+<h3>Symfony ^3.0.0</h3>
+
+<p>Many packages are actually requiring a very restrictive version of Symfony. This
+fact has not been a problem during the latest 4 years, but nowadays Symfony
+<code>v3.0.0</code> is going to be a reality soon, so all these packages need to make two
+easy things</p>
+
+<ul>
+<li>Check if your bundle introduces a Symfony <code>~2.8</code> deprecated feature.</li>
+<li>If it does, update your bundle to avoid this deprecation</li>
+<li>Update your requirements to work as well with Symfony <code>^3.0</code>.</li>
+</ul>
+
+
+<p>Check that your Symfony requirements then are still valid. For example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;symfony/framework-bundle&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.2|^3.0&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Applying this new requirement with Symfony <code>^3.0</code> maybe you had to use a new
+feature that was introduced in Symfony <code>^2.7.3</code>. In that case, your
+composer.json is invalid, and if you have covered your class with tests and you
+run your tests with <code>--prefer-lowest</code>, then you will have some fails there.</p>
+
+<p>You will have to update your dependency properly.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;symfony/framework-bundle&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.7.3|^3.0&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Development Dependencies</h2>
+
+<p>As you may already noticed, development dependencies are not loaded recursively.
+This means that the <code>require-dev</code> block of your <code>require-dev</code> packages is
+completely ignored.</p>
+
+<p>In some way, this is great because you can define specifically what packages you
+need for your development (testing, mostly), without being worried about all the
+packages that require you.</p>
+
+<p>In some other way, this can be bad&hellip; well, yes, you must know exactly all your
+dependencies for testing (there should be only a few&hellip;), so in that case, just
+make sure you know your application :)</p>
+
+<h3>Requiring PHPUnit</h3>
+
+<p>And then the question is&hellip; should I require PHPUnit or other testing libraries,
+as well as lints and formatters?</p>
+
+<p>Again, some people will tell you&hellip; don&rsquo;t do that! Your development and testing
+deployment will require more disk and more resources for composer. Well, sure,
+but if you depend on the pre-installed PHPUnit version, then you can have some
+trouble when testing.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;require-dev&quot;</span><span class="err">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;fabpot/php-cs-fixer&quot;</span><span class="p">:</span> <span class="s2">&quot;1.4.2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;mmoreram/php-formatter&quot;</span><span class="p">:</span> <span class="s2">&quot;1.1.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;phpunit/phpunit&quot;</span><span class="p">:</span> <span class="s2">&quot;4.5.0&quot;</span>
+</span><span class='line'><span class="p">}</span><span class="err">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I really need these versions. No others but these. For example, some lints can
+add some logic, or even change it. Because we&rsquo;re responsible for our bundles,
+components or code, we should trust as less as possible in what other people can
+do to our dependencies (somehow we really trust a lot of packages by adding the
+<code>^2.2</code> symbol, but in that case we do it not for us but for our users). In
+testing mode, and because fortunately <code>require-dev</code> block is not recursive, we
+can perfectly be restrictive with the version we want, and as long as we
+want/need to change it&hellip; just do it :)</p>
+
+<h2>Trust</h2>
+
+<p>Trusting open source is something you cannot do blindly. Your project is your
+business, and you need to know that is safe from third party version errors and
+issues.</p>
+
+<p>If you trust a package, like I do for example in Symfony, then use the
+semantic version notation in your requirements. Believe that the community will
+never allow back compatibilities breaks, or they will fix them all as soon as
+possible when introduced.</p>
+
+<p>If you trust a library because it is tested, but you don&rsquo;t trust their
+version policy, then just block the version (knowing that this restricts the
+compatibility with other packages), or make some push to this community for a
+really semantic version policy.</p>
+
+<p>If you don&rsquo;t trust a library at all, then don&rsquo;t use it. That simple.</p>
+
+<h2>Conclusion</h2>
+
+<p>So, that&rsquo;s it.</p>
+
+<p>I highly recommend you, open source lover, to take as much care as possible of
+your package dependencies. A healthy and useful package is a package used by
+tons of people. Offer them some confidence and you will get a lot of feedback in
+return.</p>
+
+<p>Share your work as much as you can, and don&rsquo;t be afraid of your errors, they
+will be your biggest reasons for being a better developer day after day, and
+remember that all of us were inexperienced once.</p>
+
+<p><em>Error is first step to success</em></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -931,7 +1627,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#115;&#121;&#109;&#102;&#x6f;&#110;&#121;&#x62;&#x61;&#114;&#99;&#x65;&#x6c;&#x6f;&#110;&#97;&#64;&#103;&#109;&#x61;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#115;&#x79;&#109;&#102;&#111;&#110;&#x79;&#x62;&#97;&#114;&#x63;&#101;&#x6c;&#111;&#110;&#x61;&#64;&#x67;&#109;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#109;</a></p>
+<a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#115;&#x79;&#x6d;&#x66;&#x6f;&#x6e;&#121;&#98;&#x61;&#114;&#x63;&#x65;&#108;&#111;&#110;&#97;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#121;&#109;&#102;&#111;&#110;&#x79;&#98;&#x61;&#x72;&#x63;&#101;&#x6c;&#x6f;&#110;&#97;&#64;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 </div>
@@ -1894,205 +2590,6 @@ maybe) to change this implementation for next Symfony 3 version.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/07/montando-a-pau-garcia-mila/">Montando a Pau Garcia-Milà</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-07T02:58:00+02:00" pubdate data-updated="true">May 7<span>th</span>, 2015</time>
-        
-         | <a href="/blog/2015/05/07/montando-a-pau-garcia-mila/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Hace apenas unas semanas, en un diario nacional español, aparecía un escrito
-inquietante, al menos a simple vista, sobre algunos puntos discutibles alrededor
-del ya más que conocido emprendedor Pau Garcia-Milà.</p>
-
-<p><a href="http://www.eldiario.es/hojaderouter/emprendedores/pau_garcia-mila-emprendimiento-EyeOS-Bananity_0_369213079.html">Post original</a></p>
-
-<p>Para los interesados, decir que el propio Pau respondió días más tarde en su
-blog, respondiendo a ciertas afirmaciones.</p>
-
-<p><a href="http://paugarciamila.com/desmontando-a-pau-garcia-mila/">Respuesta de Pau</a></p>
-
-<p>En dicho escrito, se analizan algunos de los puntos importantes y críticos por
-los que nuestro protagonista ha pasado durante los últimos años, dejando al
-lector la tarea de leer a simple vista un gran elenco de comentarios de algunas
-personas cuya opinión se les fue requerida, entiendo yo.</p>
-
-<p>Antes de todo decir escuetamente que yo recuerdo a Pau en sus inicios, cuando
-empezó a ser un personaje público. Añadir también que, tras un tiempo teniéndolo
-en mi <em>top of mind</em> como referencia y recordándolo como
-<em>simplemente, brillante</em>, y por alguna razón que no logré entender durante mucho
-tiempo, pasó a ser mi <em>vende-humos</em> favorito.</p>
-
-<blockquote><p>Éste no ha hecho nada. Solo habla de ideas. Yo también tengo muchas ideas!
-Mirad! Un percebe con alas! Fundemos una empresa que se llame Engonga
-associated y conquistemos el mundo. Ah, no, esperad, que con una idea uno no
-tiene ni para empezar&hellip; Nada, vuelvo al mundo real, en mi sofá de pensar.</p></blockquote>
-
-<p>Pero gracias a Dios, a veces en la vida te encuentras a grandes personas que te
-bautizan de golpe como <em>ex-hater</em>, y te das cuenta que el odio es,
-habitualmente, proporcional a la envidia, y quién mejor que una persona a la que
-envidias para empezar a admirar.</p>
-
-<p>He aquí mi pequeño paso hacia la redención relativa. Mi objetivo, la completa
-madurez. :)</p>
-
-<h3>Reflexiones</h3>
-
-<p>En este post, y como persona emprendedora que creo ser, añado algunas respuestas
-a comentarios del post original sin entrar demasiado al detalle.</p>
-
-<blockquote><p>Ha empezado cosas, pero no ha terminado ninguna. Son habilidades distintas.
-Creo que es un grandísimo comunicador y tiene éxito con eso, pero como
-emprendedor no lo ha demostrado</p></blockquote>
-
-<p>En realidad esta frase es la que más me duele a mi, como emprendedor que soy.
-Hace un poco más de un año y medio que trabajo en un proyecto, y siento decir
-que, por ahora, no he demostrado nada a nadie. ¿Eso me convierte en menos
-emprendedor?</p>
-
-<p>Trabajo un mínimo de 80 horas semanales en un proyecto de código libre de índole
-internacional, llevo una comunidad de desarrolladores Web local cuyos eventos
-son referenciados en todo el mundo, tengo unos cuantos proyectos personales
-también de código libre utilizados en multitud de empresas reales, y en el
-tiempo más libre de mi tiempo libre, soy ponente en eventos alrededor del globo.</p>
-
-<p>¿Demostrado? Si se refiere a si he vendido alguna empresa por 20 millones de
-euros, pues no&hellip; ¿Emprendedor? Hombre, pues creo que algo si, ¿no?</p>
-
-<p>Debo decir con gran aplomo que ningún emprendedor tiene que demostrar nada a
-nadie para serlo, y es que la palabra emprendedor, uno, se la gana con el
-trabajo y el sudor, no con los éxitos (y menos midiendo los éxitos en cifras
-o en rondas de inversión).</p>
-
-<p>Emprendedor es el que crea sitios de trabajo, el que crea equipos sanos y
-empresas con ideales humanos. Emprendedor es quien no se rinde a pesar de sus
-innumerables fracasos. Emprendedor es el que tras un &ldquo;No lo vas a conseguir&rdquo; ve
-un &ldquo;Debes conseguirlo&rdquo;.</p>
-
-<p>Emprendedor es quien persigue lo que todo el mundo ha dejado por imposible.</p>
-
-<p>Está claro que Pau es un gran comunicador y también está claro que ha tenido
-éxito con ello, pero seamos realistas y no nos dejemos llevar por la envidia y
-el descontrol: Un chico que a los 28 años ha tratado de levantar 3 empresas (la
-cuarta recientemente) y haya vendido una, cuales fueran las condiciones de dicha
-transacción y cuya información no me interesa en absoluto, absolutamente nadie
-puede tacharle de no ser emprendedor (evidentemente mencionar sus libros,
-charlas y todo el ecosistema que ha creado alrededor).</p>
-
-<p>Yo me quito el sombrero, al menos, por haberlo intentado.</p>
-
-<p>Pero está claro que es más simple y fácil entrar en la crítica destructiva y
-sensacionalista. Nos alimenta mucho más el ego interior y nos hace sentir más
-fuertes a nosotros, seres iluminados. Pero la realidad es que tras la fachada de
-un comunicador como Pau hay, en la mayoría de los casos, una mente brillante y
-un trabajo constante. Otra cosa es tener interés en conocer este trabajo y
-valorarlo como se debe.</p>
-
-<p>Que difícil es hacer esto.</p>
-
-<blockquote><p>pero hay grandes emprendedores en España que son menos mediáticos. Mi
-experiencia me dice que el éxito de un emprendedor es inversamente
-proporcional a sus seguidores en Twitter. No suele ser mediático.</p></blockquote>
-
-<p>El número de seguidores que tiene una persona en Twitter es directamente
-proporcional a varios elementos, como el campo en que esta persona haya decidido
-ser emprendedor (no es lo mismo un químico que un informático) o el carácter
-comunicativo que dicha persona tenga en su personalidad (No es lo mismo una
-persona expansiva y sociable que una persona itrovertida y tímida).</p>
-
-<p>Algunos ejemplos rápidos.</p>
-
-<ul>
-<li>Bill Gates, co-fundador de Microsoft, <strong>21.8 millones</strong> de followers</li>
-<li>Steve Wozniak, co-fundador de Apple, <strong>402 mil</strong> followers</li>
-<li>Elon Musk, fundador de Tesla y PayPal, <strong>2.06 millones</strong> de followers</li>
-<li>Jimmy Wales, fundador de Wikipedia, <strong>110 mil</strong> followers</li>
-<li>Charles W. Hull, inventor de la impresora 3D (nada, es posible que solo
-revolucione el modelo industrial en los próximos años)&hellip; <strong>0</strong> followers</li>
-<li>Steve Chen, co-fundador de Youtube, <strong>3599</strong> followers</li>
-</ul>
-
-
-<p>Podría seguir, pero carece de sentido categorizar a estos emprendedores como
-ejemplos de qué es tener poco éxito&hellip; Personas como ellas hacen que la sociedad
-avance en campos como la medicina, la tecnología o el bienestar.</p>
-
-<p>Evidentemente esto no quita que hay emprendedores de éxito abismal que, por
-decisión propia, han preferido quedarse en segundo plano en temas sociales. Y
-esta es una decisión igual de factible, correcta e indiscutible que cualquier
-otra.</p>
-
-<blockquote><p>Tenemos que animar con credibilidad. Lo bueno es que nos fijemos en los que ya
-han tenido éxito, porque es lo que cuenta: si no, se genera la sensación de
-que esto no es serio</p></blockquote>
-
-<p>Comentario propio del que lo tuvo todo muy fácil.</p>
-
-<p>Precisamente la gente necesita ver a personas que lo intentan a pesar de que las
-cosas van en contra, y aceptar que fallar nos hace aún más humanos. La
-credibilidad se demuestra con los caminos que uno hace a lo largo de su vida, la
-credibilidad la marca la honestidad y la ley del esfuerzo, sea cual sea el
-resultado final.</p>
-
-<p>Adjudicar seriedad al grado de éxito es, a mi parecer, una falta de respeto para
-los que aún no hemos conseguido nada, aún lo intentemos con todas nuestras
-fuerzas. Y lo que me parece más grave, me parece una falta de respeto
-innecesaria, un comentario fuera de lugar y una doctrina tóxica para una
-sociedad desanimada y desorientada como es la nuestra.</p>
-
-<p>Reflexión, por favor.</p>
-
-<h3>Conclusión</h3>
-
-<p>Emprendedor, no emprendedor. Da igual, lo importante para una sociedad es el
-esfuerzo. Hable en público, tenga seguidores en Twitter o toque la pandereta con
-los ojos cerrados y en sol sostenido, son elementos personales, injuzgables más
-allá de uno mismo, y menos cuando el impacto social es positivo, mires por donde
-lo mires.</p>
-
-<p>Repito una frase con la que empezaba mi post dado que encuentro interesante y
-reveladora.</p>
-
-<blockquote><p>el odio es, habitualmente, proporcional a la envidia, y quién mejor que una
-persona a la que envidias para empezar a admirar</p></blockquote>
-
-<p>Mi consejo siempre es el mismo. Que el miedo a intentar cosas no os impida no
-hacerlas, y que simplemente os hagan más cautos. No os dejéis llevar por la
-mediocridad social a la hora de juzgar a personas que trabajan por su futuro y
-sed críticos más allá de 4 medios de comunicación de intenciones puramente
-marketinianas.</p>
-
-<p>Dicho esto, sed felices y volad cometas.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -2108,6 +2605,10 @@ marketinianas.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/20/your-packages-dependencies/">Your packages dependencies</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/28/composer-install-in-ci/">Composer install in CI</a>
       </li>
     
@@ -2121,10 +2622,6 @@ marketinianas.</p>
     
       <li class="post">
         <a href="/blog/2015/08/28/eventlisteners-as-collectors-in-symfony/">EventListeners as collectors in Symfony</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/23/symfony-in-barcelona/">Symfony in Barcelona</a>
       </li>
     
   </ul>
