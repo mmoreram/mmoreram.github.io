@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2015-11-25T12:52:03+01:00</updated>
+  <updated>2016-02-09T13:16:58+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -12,6 +12,72 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[you probably need bundle dependencies]]></title>
+    <link href="http://mmoreram.github.io/blog/2016/02/09/you-probably-need-bundle-dependencies/"/>
+    <updated>2016-02-09T12:23:00+01:00</updated>
+    <id>http://mmoreram.github.io/blog/2016/02/09/you-probably-need-bundle-dependencies</id>
+    <content type="html"><![CDATA[<p>This post tries to answer the Magnus Nordlander&rsquo;s
+<a href="https://blog.fervo.se/blog/2016/02/07/bundle-deps/">blog post</a>, and to explain
+why the <a href="https://github.com/mmoreram/symfony-bundle-dependencies">Symfony Bundle Dependencies</a>
+is not just a personal project to fulfill my bundles dependencies, but a
+practice we should implement in all our Symfony bundles as well.</p>
+
+<p>Believe me, I had a big post to explain why people really need this bundle, but
+I think that you don&rsquo;t need these words, but a simple and real example.</p>
+
+<p>Magnus, you&rsquo;re right. Maybe soft dependencies between bundles could be a good
+option, but you know what? You know why Symfony is one of the biggest PHP
+projects ever? Because Symfony understands the real user needs, and furthermore,
+fulfills them the best way.</p>
+
+<p>Why I tell this? Because your &ldquo;You probably don&rsquo;t need bundle dependencies&rdquo;
+should be &ldquo;You <strong>really</strong> need bundle dependencies, but you should work hard to
+don&rsquo;t need them anymore&rdquo;.</p>
+
+<p>Remember, software is real, with real developers, real projects and real needs.
+We should take it in account as much as we can.</p>
+
+<p>This is my example, from the most used bundle in the world, FOSUserBundle.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;service</span> <span class="na">id=</span><span class="s">&quot;fos_user.user_manager.default&quot;</span> <span class="na">class=</span><span class="s">&quot;FOS\UserBundle\Doctrine\UserManager&quot;</span> <span class="na">public=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;security.encoder_factory&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;fos_user.util.username_canonicalizer&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;fos_user.util.email_canonicalizer&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;fos_user.object_manager&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument&gt;</span>%fos_user.model.user.class%<span class="nt">&lt;/argument&gt;</span>
+</span><span class='line'><span class="nt">&lt;/service&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I want you to focus on one single line.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;security.encoder_factory&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can discuss about how good or bad this is, but I really ensure you that you
+will find this in the 99,99% of all bundles. So maybe we need to change our mind
+and start doing decoupled bundles (not agree in fact, it depends on the case),
+but right now, hard bundle dependencies (composer and kernel) is something that
+should be cover.</p>
+
+<p>About your last question, well, your libraries will require some other libraries
+and composer will make it happen, with an update and it&rsquo;s autoloader. But your
+bundles will probably require dependencies as well, with composer and as well
+with a library like that, that will tell the Kernel witch bundle should be
+instanced as well.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Your packages dependencies]]></title>
@@ -1387,7 +1453,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#115;&#x79;&#x6d;&#x66;&#x6f;&#x6e;&#121;&#98;&#x61;&#114;&#x63;&#x65;&#108;&#111;&#110;&#97;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#121;&#109;&#102;&#111;&#110;&#x79;&#98;&#x61;&#x72;&#x63;&#101;&#x6c;&#x6f;&#110;&#97;&#64;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x73;&#121;&#x6d;&#x66;&#x6f;&#110;&#x79;&#98;&#97;&#114;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#x61;&#64;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#115;&#x79;&#109;&#x66;&#111;&#x6e;&#x79;&#x62;&#97;&#114;&#x63;&#x65;&#108;&#x6f;&#x6e;&#x61;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 ]]></content>
@@ -3192,83 +3258,9 @@ ever!</p>
 <p>Let me know if you want to join us through the
 <a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
 so we can organize based on the total number of people. You can also contact me
-through my email, <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#121;&#117;&#104;&#117;&#x40;&#x6d;&#x6d;&#111;&#114;&#x65;&#x72;&#x61;&#x6d;&#x2e;&#x63;&#x6f;&#109;&#46;">&#x79;&#117;&#104;&#x75;&#x40;&#x6d;&#109;&#x6f;&#x72;&#x65;&#114;&#x61;&#x6d;&#x2e;&#x63;&#x6f;&#x6d;&#46;</a></p>
+through my email, <a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#121;&#x75;&#x68;&#117;&#64;&#109;&#109;&#x6f;&#x72;&#x65;&#x72;&#x61;&#109;&#x2e;&#99;&#111;&#109;&#x2e;">&#121;&#x75;&#104;&#x75;&#64;&#109;&#x6d;&#x6f;&#114;&#x65;&#x72;&#x61;&#109;&#x2e;&#99;&#x6f;&#x6d;&#46;</a></p>
 
 <p>Looking forward to meet you there, it is going to be amazing!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PDD, Pragmatic Driven Development]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/10/06/pdd/"/>
-    <updated>2014-10-06T12:00:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/10/06/pdd</id>
-    <content type="html"><![CDATA[<p>Hay una tendencia, a mi parecer, extremadamente molesta sobre como se tiene que
-trabajar en cualquier proyecto técnico. Hemos pasado de ser un sector con poca
-voz, a ser, desde hace un tiempo, un pequeño movimiento ególatra de pensamientos
-categóricos que hacen que según qué lecturas monotemáticas aburran al lector con
-tópicos iterados por enésima vez y con un discurso teórico, nada práctico, muy
-lejos de la realidad.</p>
-
-<p>Y esto es lo que necesitamos, una buena dosis de realidad. Porque la realidad es
-práctica, no teórica.</p>
-
-<p>Desde mi punto de vista, y según la lectura que puedo tener según mi pequeña
-experiencia, creo que este movimiento debe terminar para dar paso a lo que
-circunstancialmente podría referirme como PDD, Pragmatic Driven Development
-(Siguiendo con las directrices&hellip; yo también puedo ser muy molón con nombres que
-quedan de lujo en mi currículum). Y es que estoy cansado de ver como la gente me
-dice como tengo que enfocar mi proyecto, que prácticas debo seguir para hacerlo
-&ldquo;bien&rdquo; y que directrices debo tomar para no estar lejos de la verdad absoluta.</p>
-
-<p>La verdad absoluta no existe, o no debería existir. Cualquier discurso debería
-tener una parte objetiva, basado en las buenas prácticas, pero también debería
-tener una parte subjetiva, relativa a las circunstancias reales y propias del
-proyecto. Pues parece ser que no se entiende. Parece ser que, y como si un
-movimiento político desfasado y arcaico se tratara, el Ego ciega demasiado como
-para poder entender tanta obviedad junta (será lo acostumbrados que nos tienen
-a ser tratados como borregos).</p>
-
-<p>Es por esto que personalmente me niego a escuchar más estupidez modernista sin
-argumentos sólidos. Me niego a ser víctima de <em>hype</em> por parte de personas que no
-tienen más formas de destacar que vender su pensamiento único como si de la
-entrada al cielo de la sabiduría se tratara. Hemos llegado a un punto enfermizo.</p>
-
-<p>Personalmente siempre exijo que la gente que me escucha tenga un pensamiento
-propio, que trate mi opinión como otro punto de vista, aunque sea incorrecto,
-distinto o distante, y que sirva como punto de soporte para dar aún más robustez
-al argumento que pueda darle uno a un tema específico, dado un punto de partida
-y un objetivo final.</p>
-
-<p><strong>Que conste, no digo que las buenas prácticas no importen, no digo que tener
-conocimientos sobre arquitectura no importe, no digo que aplicar una buena
-metodología no importe&hellip;</strong> Creo que todas estas prácticas nacidas en grandes
-mentes y probadas con grandes resultados son herramientas que nos hace mejores,
-con más recursos y más capaces de trabajar problemas de forma satisfactoria.
-Debo añadir que soy practicante de muchas de ellas en el punto en que las
-necesito, y doy gracias a ello. Me hace mejor profesional. Lo que digo es que
-somos desarrolladores, no gente estúpida sin capacidad de análisis. En el
-momento que perdemos este análisis, perdemos completamente nuestro valor.</p>
-
-<ul>
-<li>Estoy haciendo este proyecto, ¿te gusta?</li>
-<li>Espero que lo estés haciendo con Arquitectura Hexagonal&hellip;</li>
-<li>Pues la verdad es que no la necesito&hellip;</li>
-<li>¿Que no la necesitas? ¡Claro que la necesitas!</li>
-<li>Pues no, en este caso no los necesito&hellip;</li>
-<li>Lo estás haciendo mal.</li>
-</ul>
-
-
-<p>Se trata de pensar las cosas, y decidir por uno mismo qué necesitas en cada
-momento, sin dejar que nadie, absolutamente nadie, te diga de forma categórica
-como debes hacer su trabajo.</p>
-
-<p>Espero de verdad que toda esta borrachera se acabe pronto, espero que en un
-futuro empiece a haber comportamientos un poco más profesionales para trabajar
-todos como un equipo o comunidad, que es lo que necesitamos, teniendo en cuenta
-las cosas que verdaderamente importan: aprender y hacer buenos proyectos, no
-importa el Framework, el lenguaje o la arquitectura.</p>
 ]]></content>
   </entry>
   

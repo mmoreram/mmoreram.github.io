@@ -9,9 +9,10 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="A component should add as dependency all needed packages to have a complete
-functionality
-A bundle should add as dependency as well all these &hellip;">
+  <meta name="description" content="This post tries to answer the Magnus Nordlander&rsquo;s
+blog post, and to explain
+why the Symfony Bundle Dependencies
+is not just a personal project &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +83,101 @@ A bundle should add as dependency as well all these &hellip;">
       <div id="content">
 	<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/02/09/you-probably-need-bundle-dependencies/">You Probably Need Bundle Dependencies</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-02-09T12:23:00+01:00" pubdate data-updated="true">Feb 9<span>th</span>, 2016</time>
+        
+         | <a href="/blog/2016/02/09/you-probably-need-bundle-dependencies/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This post tries to answer the Magnus Nordlander&rsquo;s
+<a href="https://blog.fervo.se/blog/2016/02/07/bundle-deps/">blog post</a>, and to explain
+why the <a href="https://github.com/mmoreram/symfony-bundle-dependencies">Symfony Bundle Dependencies</a>
+is not just a personal project to fulfill my bundles dependencies, but a
+practice we should implement in all our Symfony bundles as well.</p>
+
+<p>Believe me, I had a big post to explain why people really need this bundle, but
+I think that you don&rsquo;t need these words, but a simple and real example.</p>
+
+<p>Magnus, you&rsquo;re right. Maybe soft dependencies between bundles could be a good
+option, but you know what? You know why Symfony is one of the biggest PHP
+projects ever? Because Symfony understands the real user needs, and furthermore,
+fulfills them the best way.</p>
+
+<p>Why I tell this? Because your &ldquo;You probably don&rsquo;t need bundle dependencies&rdquo;
+should be &ldquo;You <strong>really</strong> need bundle dependencies, but you should work hard to
+don&rsquo;t need them anymore&rdquo;.</p>
+
+<p>Remember, software is real, with real developers, real projects and real needs.
+We should take it in account as much as we can.</p>
+
+<p>This is my example, from the most used bundle in the world, FOSUserBundle.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;service</span> <span class="na">id=</span><span class="s">&quot;fos_user.user_manager.default&quot;</span> <span class="na">class=</span><span class="s">&quot;FOS\UserBundle\Doctrine\UserManager&quot;</span> <span class="na">public=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;security.encoder_factory&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;fos_user.util.username_canonicalizer&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;fos_user.util.email_canonicalizer&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;fos_user.object_manager&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument&gt;</span>%fos_user.model.user.class%<span class="nt">&lt;/argument&gt;</span>
+</span><span class='line'><span class="nt">&lt;/service&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I want you to focus on one single line.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;security.encoder_factory&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can discuss about how good or bad this is, but I really ensure you that you
+will find this in the 99,99% of all bundles. So maybe we need to change our mind
+and start doing decoupled bundles (not agree in fact, it depends on the case),
+but right now, hard bundle dependencies (composer and kernel) is something that
+should be cover.</p>
+
+<p>About your last question, well, your libraries will require some other libraries
+and composer will make it happen, with an update and it&rsquo;s autoloader. But your
+bundles will probably require dependencies as well, with composer and as well
+with a library like that, that will tell the Kernel witch bundle should be
+instanced as well.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1627,7 +1723,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#115;&#x79;&#x6d;&#x66;&#x6f;&#x6e;&#121;&#98;&#x61;&#114;&#x63;&#x65;&#108;&#111;&#110;&#97;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#121;&#109;&#102;&#111;&#110;&#x79;&#98;&#x61;&#x72;&#x63;&#101;&#x6c;&#x6f;&#110;&#97;&#64;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x73;&#121;&#x6d;&#x66;&#x6f;&#110;&#x79;&#98;&#97;&#114;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#x61;&#64;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#115;&#x79;&#109;&#x66;&#111;&#x6e;&#x79;&#x62;&#97;&#114;&#x63;&#x65;&#108;&#x6f;&#x6e;&#x61;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 </div>
@@ -2417,179 +2513,6 @@ a escribir de forma periódica todas las actualizaciones sobre el evento.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/08/lazy-commands-in-symfony/">Lazy Commands in Symfony</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-08T11:04:00+02:00" pubdate data-updated="true">May 8<span>th</span>, 2015</time>
-        
-         | <a href="/blog/2015/05/08/lazy-commands-in-symfony/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Have you ever had this scenario?</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php app/console doctrine:database:drop --force
-</span><span class='line'><span class="nv">$ </span>php app/console doctrine:database:create
-</span><span class='line'>
-</span><span class='line'>    <span class="o">[</span>Doctrine<span class="se">\D</span>BAL<span class="se">\E</span>xception<span class="se">\C</span>onnectionException<span class="o">]</span>
-</span><span class='line'>    An exception occured in driver: SQLSTATE<span class="o">[</span>42000<span class="o">]</span> <span class="o">[</span>1049<span class="o">]</span> Unknown database <span class="s1">&#39;mydatabase&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Well, it happens and I will tell you why.</p>
-
-<h2>Command as a Service</h2>
-
-<p>Since Symfony version 2.4 you can define your controllers and commands as
-services. This is so useful as long as you need to treat your classes as much
-decoupled as possible. You can check some information about how to define them
-as services in
-<a href="http://symfony.com/doc/current/cookbook/console/commands_as_services.html">Symfony Documentation</a>.</p>
-
-<p>Then, let&rsquo;s figure out that our command is intended to check an entity from your
-database. Of course, your command should be as empty as possible, placing all
-your business logic inside your service layer (this is not the only strategy, of
-course, but there is no strategy where you lace your logic inside your command).</p>
-
-<p>Then, using commands as services, you will have this</p>
-
-<ul>
-<li>ObjectManager as a service (or Repository)</li>
-<li>Your service, intended to do whatever you need to do, for example, check that
-your entities are all enabled. Your ObjectManager or Repository will be injected
-here</li>
-<li>Your command, intended to work as the simple layer between your cli interface
-and your service layer. Your service will be injected here.</li>
-</ul>
-
-
-<p>Given this schema, when we require this command through the DI Container, of
-course a new Service instance will be created in order to inject it through the
-command constructor, and the object will have to be created as well to be
-injected inside the service.</p>
-
-<p>It means create a new connection to the database. Fair enough till now :)</p>
-
-<h2>Commands list</h2>
-
-<p>Let me show you some lines of code. This method is placed in a class called
-<code>Application</code> inside the bundle <code>FrameworkBundle</code>. This class is intended to add
-the possibility of adding Commands as services in the main Application class of
-Command Component.</p>
-
-<p><a href="https://github.com/symfony/symfony/blob/2.7/src/Symfony/Bundle/FrameworkBundle/Console/Application.php">Symfony\Bundle\FrameworkBundle\Console\Application</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">protected</span> <span class="k">function</span> <span class="nf">registerCommands</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="nv">$container</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">kernel</span><span class="o">-&gt;</span><span class="na">getContainer</span><span class="p">();</span>
-</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">kernel</span><span class="o">-&gt;</span><span class="na">getBundles</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$bundle</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$bundle</span> <span class="nx">instanceof</span> <span class="nx">Bundle</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$bundle</span><span class="o">-&gt;</span><span class="na">registerCommands</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$container</span><span class="o">-&gt;</span><span class="na">hasParameter</span><span class="p">(</span><span class="s1">&#39;console.command.ids&#39;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$container</span><span class="o">-&gt;</span><span class="na">getParameter</span><span class="p">(</span><span class="s1">&#39;console.command.ids&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="nv">$container</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nv">$id</span><span class="p">));</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Oh, wait&hellip; what?</p>
-
-<p>Register a command means instantiate it! So if we have a command with a service
-injected which has an object manager injected&hellip; then we have a problem. If we
-don&rsquo;t have the database created we will not be able to create it using the
-Doctrine command.</p>
-
-<p><em>~ironic~ Perfect scenario for deployment ~/ironic~</em></p>
-
-<h2>Using Lazy services</h2>
-
-<p>Of course we should find a solution for this scenario, in order to be able to
-call this command when is needed.</p>
-
-<p>When we define as lazy a service, this is not instanced when is injected, but
-only when is accessed. You can find some information about lazy services in
-<a href="http://symfony.com/doc/current/components/dependency_injection/lazy_services.html">Symfony Documentation</a>.</p>
-
-<p>The point here is to define our service intended to work with the model as lazy.
-The result will be that when we instance the Command, then a proxy object is
-created and injected with all the service information.</p>
-
-<p>Because our command will not be used as long as we don&rsquo;t need it, then the
-service will not be instanced and the ObjectManager not created. We will be able
-to list all the commands, and finally, call
-<code>php app/console doctrine:database:create</code> properly.</p>
-
-<h2>Implementation</h2>
-
-<p>Some tips here&hellip;</p>
-
-<ul>
-<li>Why instancing all services when we just need them to be listed? Is it really
-necessary? Doing than we are forcing some service to be defined as lazy just
-because of it, and this is not and will never be a good practice.</li>
-<li>If the command needs to be instanced to be listed, and assuming that this
-information <del>should</del> could be cached, then, is it necessary to call the
-constructor? We could get the class, build the object using <code>\ReflectionClass</code>
-and request all the needed information.</li>
-</ul>
-
-
-<p>I invoke the community for some feedback on that. If this is really a need for
-some people, we should do some push (and organize us for an implementation,
-maybe) to change this implementation for next Symfony 3 version.</p>
-
-<p>Feedback, feedback :)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -2605,6 +2528,10 @@ maybe) to change this implementation for next Symfony 3 version.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/09/you-probably-need-bundle-dependencies/">you probably need bundle dependencies</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/20/your-packages-dependencies/">Your packages dependencies</a>
       </li>
     
@@ -2618,10 +2545,6 @@ maybe) to change this implementation for next Symfony 3 version.</p>
     
       <li class="post">
         <a href="/blog/2015/09/07/symfony-barcelona-event-september-2015/">Symfony Barcelona Event, September 2015</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/28/eventlisteners-as-collectors-in-symfony/">EventListeners as collectors in Symfony</a>
       </li>
     
   </ul>
@@ -2666,7 +2589,7 @@ maybe) to change this implementation for next Symfony 3 version.</p>
       </div>
     </div>
     <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Marc Morera -
+  Copyright &copy; 2016 - Marc Morera -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>.</span>
 </p>
 

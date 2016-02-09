@@ -5,12 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Symfony Walk: Zaragoza - Madrid - Because yes</title>
+  <title>you probably need bundle dependencies - Because yes</title>
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="The 2014 Madrid SymfonyCon is closer every day, and I have to admit that
-I admire this community. A community that has been able to feed the php &hellip;">
+  <meta name="description" content="This post tries to answer the Magnus Nordlander&rsquo;s
+blog post, and to explain
+why the Symfony Bundle Dependencies
+is not just a personal project &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +21,7 @@ I admire this community. A community that has been able to feed the php &hellip;
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/">
+  <link rel="canonical" href="http://mmoreram.github.io/blog/2016/02/09/you-probably-need-bundle-dependencies/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -84,7 +86,7 @@ I admire this community. A community that has been able to feed the php &hellip;
   
   <header>
     
-      <h1 class="entry-title">Symfony Walk: Zaragoza - Madrid</h1>
+      <h1 class="entry-title">You Probably Need Bundle Dependencies</h1>
     
     
       <p class="meta">
@@ -100,7 +102,7 @@ I admire this community. A community that has been able to feed the php &hellip;
   
 
 
-<time datetime="2014-08-07T13:49:00+02:00" pubdate data-updated="true">Aug 7<span>th</span>, 2014</time>
+<time datetime="2016-02-09T12:23:00+01:00" pubdate data-updated="true">Feb 9<span>th</span>, 2016</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -109,46 +111,64 @@ I admire this community. A community that has been able to feed the php &hellip;
   </header>
 
 
-<div class="entry-content"><p>The 2014 Madrid SymfonyCon is closer every day, and I have to admit that
-I admire this community. A community that has been able to feed the php world
-with valuable projects and better people.</p>
+<div class="entry-content"><p>This post tries to answer the Magnus Nordlander&rsquo;s
+<a href="https://blog.fervo.se/blog/2016/02/07/bundle-deps/">blog post</a>, and to explain
+why the <a href="https://github.com/mmoreram/symfony-bundle-dependencies">Symfony Bundle Dependencies</a>
+is not just a personal project to fulfill my bundles dependencies, but a
+practice we should implement in all our Symfony bundles as well.</p>
 
-<p>I admire the synergies that are created in different repositories that make
-Symfony one of the best options when developing any
-web project, and the entire ecosystem that has been created around, an ecosystem
-very healthy and social.</p>
+<p>Believe me, I had a big post to explain why people really need this bundle, but
+I think that you don&rsquo;t need these words, but a simple and real example.</p>
 
-<p>That&rsquo;s why I&rsquo;ll pay my own tribute the coming months.</p>
+<p>Magnus, you&rsquo;re right. Maybe soft dependencies between bundles could be a good
+option, but you know what? You know why Symfony is one of the biggest PHP
+projects ever? Because Symfony understands the real user needs, and furthermore,
+fulfills them the best way.</p>
 
-<h3>Symfony Walk 2014</h3>
+<p>Why I tell this? Because your &ldquo;You probably don&rsquo;t need bundle dependencies&rdquo;
+should be &ldquo;You <strong>really</strong> need bundle dependencies, but you should work hard to
+don&rsquo;t need them anymore&rdquo;.</p>
 
-<p>The goal is to walk a path to SymfonyCon Madrid with no more tools than a
-backpack and good music. The principle of such route will be Zaragoza, so the
-road will be a total of about 360 kilometers.</p>
+<p>Remember, software is real, with real developers, real projects and real needs.
+We should take it in account as much as we can.</p>
 
-<p>I will divide the challenge in 10 days plus one resting day. During the next few
-days I will also define the final route and all resting points, where I will
-spend nights.</p>
+<p>This is my example, from the most used bundle in the world, FOSUserBundle.</p>
 
-<p>My reasons are none other than a mixture of personal challenge of something I&rsquo;ve
-wanted to do for a long time and my gratitude to this community for all
-help I&rsquo;ve received indirectly.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;service</span> <span class="na">id=</span><span class="s">&quot;fos_user.user_manager.default&quot;</span> <span class="na">class=</span><span class="s">&quot;FOS\UserBundle\Doctrine\UserManager&quot;</span> <span class="na">public=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;security.encoder_factory&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;fos_user.util.username_canonicalizer&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;fos_user.util.email_canonicalizer&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;fos_user.object_manager&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;argument&gt;</span>%fos_user.model.user.class%<span class="nt">&lt;/argument&gt;</span>
+</span><span class='line'><span class="nt">&lt;/service&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>As you know I work on a project called [Elcodi] (<a href="http://elcodi.io">http://elcodi.io</a>). we have
-very clear which is our philosophy and the details that we care until the
-last sighs of the project, and we know it&rsquo;s not easy.</p>
 
-<p>We have overcome challenges as an <em>open source</em> project , we are overcoming
-challenges as an <em>open source</em> project, and hopefully over the next few years we
-should overcome greater challenges as <em>open source</em> project .</p>
+<p>I want you to focus on one single line.</p>
 
-<p>Well, I think the act of walking for 70 hours in 10 days is a good
-representation of what needs hard work, effort and time, but finally, in the
-bottom of the road, a great reward awaits your arrival.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;security.encoder_factory&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>In my case, the conference .</p>
 
-<p>I&rsquo;ll post more details about my little adventure soon.</p>
+<p>We can discuss about how good or bad this is, but I really ensure you that you
+will find this in the 99,99% of all bundles. So maybe we need to change our mind
+and start doing decoupled bundles (not agree in fact, it depends on the case),
+but right now, hard bundle dependencies (composer and kernel) is something that
+should be cover.</p>
+
+<p>About your last question, well, your libraries will require some other libraries
+and composer will make it happen, with an update and it&rsquo;s autoloader. But your
+bundles will probably require dependencies as well, with composer and as well
+with a library like that, that will tell the Kernel witch bundle should be
+instanced as well.</p>
 </div>
 
 
@@ -171,21 +191,15 @@ bottom of the road, a great reward awaits your arrival.</p>
   
 
 
-<time datetime="2014-08-07T13:49:00+02:00" pubdate data-updated="true">Aug 7<span>th</span>, 2014</time>
+<time datetime="2016-02-09T12:23:00+01:00" pubdate data-updated="true">Feb 9<span>th</span>, 2016</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/madrid/'>Madrid</a>, <a class='category' href='/blog/categories/symfonywalk/'>SymfonyWalk</a>, <a class='category' href='/blog/categories/symfonycon/'>Symfonycon</a>, <a class='category' href='/blog/categories/zaragoza/'>Zaragoza</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.github.io/blog/2016/02/09/you-probably-need-bundle-dependencies/" data-via="mmoreram" data-counturl="http://mmoreram.github.io/blog/2016/02/09/you-probably-need-bundle-dependencies/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -196,10 +210,8 @@ bottom of the road, a great reward awaits your arrival.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/07/30/porque-el-orden-importa/" title="Previous Post: Porque el orden importa">&laquo; Porque el orden importa</a>
+        <a class="basic-alignment left" href="/blog/2015/11/20/your-packages-dependencies/" title="Previous Post: Your packages dependencies">&laquo; Your packages dependencies</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/08/12/one-section-one-component/" title="Next Post: One section, one component">One section, one component &raquo;</a>
       
     </p>
   </footer>
@@ -294,8 +306,8 @@ bottom of the road, a great reward awaits your arrival.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/';
-        var disqus_url = 'http://mmoreram.github.io/blog/2014/08/07/symfony-walk-zaragoza-madrid/';
+        var disqus_identifier = 'http://mmoreram.github.io/blog/2016/02/09/you-probably-need-bundle-dependencies/';
+        var disqus_url = 'http://mmoreram.github.io/blog/2016/02/09/you-probably-need-bundle-dependencies/';
         var disqus_script = 'embed.js';
       
     (function () {
