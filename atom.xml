@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2016-02-09T13:16:58+01:00</updated>
+  <updated>2016-02-09T13:19:47+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -69,7 +69,7 @@ We should take it in account as much as we can.</p>
 will find this in the 99,99% of all bundles. So maybe we need to change our mind
 and start doing decoupled bundles (not agree in fact, it depends on the case),
 but right now, hard bundle dependencies (composer and kernel) is something that
-should be cover.</p>
+should be covered the best we can.</p>
 
 <p>About your last question, well, your libraries will require some other libraries
 and composer will make it happen, with an update and it&rsquo;s autoloader. But your
@@ -1453,7 +1453,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x73;&#121;&#x6d;&#x66;&#x6f;&#110;&#x79;&#98;&#97;&#114;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#x61;&#64;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#115;&#x79;&#109;&#x66;&#111;&#x6e;&#x79;&#x62;&#97;&#114;&#x63;&#x65;&#108;&#x6f;&#x6e;&#x61;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#x73;&#x79;&#109;&#102;&#x6f;&#x6e;&#x79;&#x62;&#x61;&#114;&#x63;&#101;&#108;&#111;&#x6e;&#97;&#x40;&#103;&#x6d;&#97;&#105;&#x6c;&#46;&#99;&#x6f;&#109;">&#115;&#121;&#x6d;&#102;&#111;&#x6e;&#x79;&#98;&#x61;&#114;&#x63;&#101;&#x6c;&#x6f;&#110;&#97;&#x40;&#x67;&#109;&#97;&#x69;&#108;&#x2e;&#x63;&#111;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 ]]></content>
@@ -3258,7 +3258,7 @@ ever!</p>
 <p>Let me know if you want to join us through the
 <a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
 so we can organize based on the total number of people. You can also contact me
-through my email, <a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#121;&#x75;&#x68;&#117;&#64;&#109;&#109;&#x6f;&#x72;&#x65;&#x72;&#x61;&#109;&#x2e;&#99;&#111;&#109;&#x2e;">&#121;&#x75;&#104;&#x75;&#64;&#109;&#x6d;&#x6f;&#114;&#x65;&#x72;&#x61;&#109;&#x2e;&#99;&#x6f;&#x6d;&#46;</a></p>
+through my email, <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x79;&#117;&#x68;&#x75;&#64;&#x6d;&#109;&#111;&#x72;&#x65;&#114;&#x61;&#109;&#x2e;&#99;&#111;&#109;&#46;">&#x79;&#x75;&#104;&#117;&#64;&#x6d;&#109;&#x6f;&#114;&#101;&#x72;&#x61;&#x6d;&#x2e;&#x63;&#111;&#109;&#46;</a></p>
 
 <p>Looking forward to meet you there, it is going to be amazing!</p>
 ]]></content>
