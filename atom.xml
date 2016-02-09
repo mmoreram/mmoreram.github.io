@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
   <link href="http://mmoreram.github.io/"/>
-  <updated>2016-02-09T13:19:47+01:00</updated>
+  <updated>2016-02-09T13:20:36+01:00</updated>
   <id>http://mmoreram.github.io/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -75,7 +75,7 @@ should be covered the best we can.</p>
 and composer will make it happen, with an update and it&rsquo;s autoloader. But your
 bundles will probably require dependencies as well, with composer and as well
 with a library like that, that will tell the Kernel witch bundle should be
-instanced as well.</p>
+instanced as well to complain services dependencies.</p>
 ]]></content>
   </entry>
   
@@ -1453,7 +1453,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#x73;&#x79;&#109;&#102;&#x6f;&#x6e;&#x79;&#x62;&#x61;&#114;&#x63;&#101;&#108;&#111;&#x6e;&#97;&#x40;&#103;&#x6d;&#97;&#105;&#x6c;&#46;&#99;&#x6f;&#109;">&#115;&#121;&#x6d;&#102;&#111;&#x6e;&#x79;&#98;&#x61;&#114;&#x63;&#101;&#x6c;&#x6f;&#110;&#97;&#x40;&#x67;&#109;&#97;&#x69;&#108;&#x2e;&#x63;&#111;&#x6d;</a></p>
+<a href="&#109;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#x73;&#x79;&#x6d;&#x66;&#111;&#110;&#x79;&#x62;&#x61;&#x72;&#99;&#101;&#108;&#x6f;&#110;&#97;&#64;&#103;&#109;&#97;&#x69;&#108;&#x2e;&#x63;&#111;&#109;">&#x73;&#121;&#109;&#102;&#111;&#110;&#x79;&#x62;&#x61;&#x72;&#x63;&#101;&#108;&#111;&#x6e;&#x61;&#x40;&#x67;&#109;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 ]]></content>
@@ -3258,7 +3258,7 @@ ever!</p>
 <p>Let me know if you want to join us through the
 <a href="https://www.eventbrite.com/e/symfony-walk-symfonycon-section-tickets-13728858385">Eventbrite event</a>,
 so we can organize based on the total number of people. You can also contact me
-through my email, <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x79;&#117;&#x68;&#x75;&#64;&#x6d;&#109;&#111;&#x72;&#x65;&#114;&#x61;&#109;&#x2e;&#99;&#111;&#109;&#46;">&#x79;&#x75;&#104;&#117;&#64;&#x6d;&#109;&#x6f;&#114;&#101;&#x72;&#x61;&#x6d;&#x2e;&#x63;&#111;&#109;&#46;</a></p>
+through my email, <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#121;&#117;&#104;&#117;&#x40;&#109;&#109;&#111;&#x72;&#x65;&#114;&#97;&#x6d;&#46;&#x63;&#x6f;&#x6d;&#x2e;">&#121;&#x75;&#104;&#117;&#x40;&#x6d;&#109;&#111;&#x72;&#101;&#x72;&#97;&#109;&#46;&#x63;&#111;&#109;&#46;</a></p>
 
 <p>Looking forward to meet you there, it is going to be amazing!</p>
 ]]></content>
