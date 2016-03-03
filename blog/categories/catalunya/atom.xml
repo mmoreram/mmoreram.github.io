@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: catalunya | Because yes]]></title>
+  <link href="http://mmoreram.github.io/blog/categories/catalunya/atom.xml" rel="self"/>
+  <link href="http://mmoreram.github.io/"/>
+  <updated>2016-03-03T17:22:02+01:00</updated>
+  <id>http://mmoreram.github.io/</id>
+  <author>
+    <name><![CDATA[Marc Morera]]></name>
+    <email><![CDATA[yuhu@mmoreram.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Symfony Catalunya]]></title>
+    <link href="http://mmoreram.github.io/blog/2016/03/03/symfony-catalunya/"/>
+    <updated>2016-03-03T17:00:00+01:00</updated>
+    <id>http://mmoreram.github.io/blog/2016/03/03/symfony-catalunya</id>
+    <content type="html"><![CDATA[<p>Imagine yourself in front of the Barcelona&rsquo;s beach in July. It sounds good,
+right? Then, continue imagining yourself with a great Symfony environment, with
+a very cold beer, amazing people and even better topics to talk about.</p>
+
+<p>Isn&rsquo;t it the best plan ever?</p>
+
+<p>Well, if you feel that you need it, then you should continue reading this
+post&hellip;</p>
+
+<p>I&rsquo;m very very pleased to tell you that this plan is going to happen this summer.
+The Symfony Barcelona Association is working very hard on this first edition of
+<a href="http://symfony.cat">Symfony Catalunya</a>, an international Symfony event placed
+in our city. This event is 100% in english and is going to be very focused on
+how Symfony can help us in our day by day and in our jobs.</p>
+
+<p>What does it really mean? Let me explain you properly:</p>
+
+<ul>
+<li><strong>0 hype</strong>. This doesn&rsquo;t mean that we will not talk about new concepts, like
+React for example, but everything will be constructive and focused on your next
+day work.</li>
+<li><strong>New talks</strong>. Don&rsquo;t you feel that all events are populated with same talks year
+after year? In this event you will find <strong>only</strong> new talks.</li>
+<li><strong>Amazing speakers</strong>. Speakers are selected because their communication skills.
+The speaker quality is as important as the talk quality, don&rsquo;t you think?</li>
+<li>Community to Community. We will not make any money with that event. All earned
+gains will be invested in you somehow.</li>
+<li><strong>50 euros</strong> early bird ticket. <a href="http://symfony.cat/#tickets">Get yours</a> as soon
+as possible and join us :)</li>
+<li>Take some breath. 7 talks per day, one after another is never a good option.
+With 4 talks per day you will be able to enjoy the city and the people.</li>
+<li>Eat whatever you want, whenever you need. Your ticket doesn&rsquo;t include food,
+but the venue is in front of great placed for having lunch and coffee.</li>
+<li>Lighting talks. If you feel that you have something to show us, bring your 8
+minutes speech.</li>
+</ul>
+
+
+<p>Of course, and because you&rsquo;re able to buy early bird tickets, we have published
+4 of our 8 speakers in our website.</p>
+
+<ul>
+<li><a href="https://github.com/matthiasnoback">Matthias Noback</a></li>
+<li><a href="https://github.com/acasademont">Albert Casademont</a></li>
+<li><a href="https://github.com/weaverryan">Ryan Weaver</a></li>
+<li><a href="https://github.com/jmikola">Jeremy Mikola</a></li>
+</ul>
+
+
+<h2>Companies</h2>
+
+<p>Are you a company placed in some part of the world? Do you like Symfony? Then
+this may interest you&hellip;</p>
+
+<p>For only 300 euros you will be able to</p>
+
+<ul>
+<li>Put your logo everywhere. We will mention you in our media channels at least
+once.</li>
+<li>You will be able to add whatever you want in our Conference Attendee bag</li>
+<li>You will get one free ticket for the conference</li>
+<li>We will work very very hard to provide you an stand during the conference.</li>
+<li>You will have the satisfaction to be helping the Symfony Environment, a very
+important part if you are looking for Symfony developers</li>
+</ul>
+
+
+<p>We really appreciate companies sponsoring, and we strongly think that should
+always be that cheaper.</p>
+
+<h2>Communities</h2>
+
+<p>Are you a PHP or Symfony community? Well, you can help us too by spreading the
+word. In exchange of that, we will consider you part of our sponsoring group,
+adding your logo in our list as well.</p>
+
+<p>And is free!</p>
+
+<p>How can you help us?
+Well, for each new sponsor we have because of you, we will give you one free
+ticket for the conference. You will be able to raffle this ticket among your
+community.</p>
+
+<h2>Join us</h2>
+
+<p>Do you like that? Then&hellip;</p>
+
+<ul>
+<li><a href="http://symfony.cat/#tickets">Join Symfony Catalunya now!</a></li>
+</ul>
+
+
+<p>To be aware of our news, follow our Twitter account
+(<a href="http://twitter.com/symfonycat">@symfonycat</a>) and say hello :)</p>
+]]></content>
+  </entry>
+  
+</feed>
