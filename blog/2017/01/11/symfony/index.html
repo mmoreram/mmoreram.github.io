@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Symfony, que narices estás haciendo? - Because yes</title>
+  <meta name="author" content="Marc Morera">
+
+  
+  <meta name="description" content="Si, esta es mi pregunta. Que narices está pasando? Desde hace unos meses te veo perdido, y es que durante mucho tiempo, y a pesar
+de las muchas voces &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mmoreram.com/blog/2017/01/11/symfony/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Because yes" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic|Istok+Web:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41917921-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+  <div id="header-container">
+    <div id="header">
+      <div class="wrapper">
+        <header role="banner"><hgroup>
+  <h1><a href="/">Because yes</a></h1>
+</hgroup>
+
+</header>
+        <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mmoreram.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+      </div>
+    </div>
+  </div>
+  <div id="body"   >
+    <div id="main">
+      <div id="content">
+	<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Symfony, Que Narices Estás Haciendo?</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-01-11T11:43:00+01:00" pubdate data-updated="true">Jan 11<span>th</span>, 2017</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Si, esta es mi pregunta. Que narices está pasando?</p>
+
+<p>Desde hace unos meses te veo perdido, y es que durante mucho tiempo, y a pesar
+de las muchas voces que han pasado de quererte a odiarte en una fracción de
+segundo, bien por tu obvia complejidad o bien por tu carácter conservador en
+muchas partes de la tecnología, tu has sido la luz en muchos aspectos. Has
+fundado donde todo parecía estar perdido, y has iluminado donde todo parecía
+oscuro. ¿Y bien, que te ha pasado?</p>
+
+<p>Digo esto porque desde hace ya unas versiones tengo la sensación de que has
+cambiado. Tus objetivos, tus metas. Han cambiado. Como dirían algunos en tono
+sarcástico, tu antes molabas.</p>
+
+<p>Aqui te muestro algunos de los puntos que me preocupan de verdad.</p>
+
+<h3>Destrozando el DIC</h3>
+
+<p>Aunque el concepto de Inyección de dependencias ya existía cuando el componente
+de Symfony salió en Github hace ya unos cuandos años, reconozco que tu nos
+enseñaste a muchos como funcionaba esto del SOLID. Y lo recuerdo con mucho
+cariño, pues fue un antes y un después. Entendimos todos la importancia de
+trabajar con Interfaces, la importancia de inyectar librerías de las que
+dependemos y lo erroneo que es el hecho de inyectar el contenedor directamente
+en nuestras clases. Esto nos hizo y nos sigue haciendo mejores desarrolladores
+y arquitectos.</p>
+
+<p>Por esto y por mucho más, te doy solemnemente las gracias.</p>
+
+<p>Dicho esto, ¿puedes entender que el componente de Inyección de Dependencias
+puede que ya esté terminado? Me refiero a que, la función de dicho componente es
+uno y tan solo uno, y debería ser sencillo y fácil de entender. Durante muchos
+años hemos trabajado para que no tan solo el componente funcione en miles de
+proyectos en producción, sino que aún muchos más miles de personas lo entiendan
+y lo sepan utilizar. Se consiguió un modelo de definición de dependencias
+bastante bueno y con las que la gente sabía trabajar sin demasiados problemas.
+¿Y pues? ¿Que motivos tienes ahora para cambiar esto?</p>
+
+<p>Lo digo porque recientemente sacaste el Autowiring, y me parece una chapuza como
+pocas había visto en ti. No la implementación, en absoluto, hasta reconozco que
+ni me la he mirado, aunque no deja de ser una anotación como cualquier otra. Me
+parece una chapuza el hecho de que un proyecto como tú trates por un lado de
+evangelizar buenas praxis tales como el Testing, las &ldquo;buenas prácticas&rdquo;, y el
+mismo SOLID que en tantas charlas hemos oído hablar, y luego defendáis el hecho
+de que los servicios de nuestras aplicaciones lleven anotaciones.</p>
+
+<p>Yo mismo sigo defendiendo las anotaciones en controladores, pues creo que son el
+único sitio donde pueden tener sentido&hellip; ¿pero en los servicios? ¿anotaciones
+en los servicios? ¿hola? ¿es que nadie dirá nada?</p>
+
+<p>Desde luego, es una opción como cualquier otra, válida en algunos momentos,
+estúpida en muchos otros, pero no deberíamos tener la responsabilidad de hacer
+que los desarrolladores de apps basadas en Symfony fueran escalables a la vez
+que comprensibles? ¿Cuando de escalable véis en el hecho de que los servicios
+tengan anotaciones? ¿Como cuento yo ahora en mis clases de Symfony que esta
+aberración es posible?</p>
+
+<p>Por otro lado, nuevo en la versión ^3.3&hellip; definición de servicios por clase.
+Bien, vamos a ver un hermoso ejemplo.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">AppBundle\EventListener\UserManager</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// ...</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">editAction</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// before Symfony 3.3</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;app.manager.user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Symfony 3.3</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nx">UserManager</span><span class="o">::</span><span class="na">class</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Según el core de Symfony, esta nueva feature es opcional, por lo que si quieres
+puedes seguir utilizando la antigua, y añade&hellip; &ldquo;la antigua forma es obligatoria
+para cuando se quiera sobreescribir, aunque la nueva, juntamente con el
+Autowiring es muy útil para hacer RAD&rdquo;.</p>
+
+<p>Les voy a contar un secreto, pero no se lo contéis a nadie.</p>
+
+<blockquote><p>RAD !== SAD
+Rapid Application Development !== Shitty Application Development</p></blockquote>
+
+<p>Crear una app rápido no implica hacerla de tal forma que, de forma ipsofacta,
+sea inservible para otros entornos. Dicen que la antigua forma es obligatoria
+para cuando quieres sobreescribirlo. Pues bien, amigos, si tanto nos importa
+el hecho que la gente utilize internamente librerías como si 3rd party se
+tratara, si queremos que la gente cree librerías y bundles en sus empresas tan
+profesionales como sea posible, si queremos, al fín y al cabo, potenciar el
+hecho que la gente cree software de calidad, alguien puede comentarme el porqué
+Symfony ahora permite hacer las cosas de otra forma, aín añadir ningún tipo de
+valor a lo que ya existía? ¿Que se pretende? ¿Que la gente lo haga mal de buenas
+a primeras?</p>
+
+<p>Bien, creo que lo váis a conseguir.
+Felicidades.</p>
+
+<h3>Comunidades</h3>
+
+<p>Pasan los años y sigues sin saber que es lo realmente importante. Piensas que lo
+que te ha hecho grande es tu código, y no te negaré que no está mal, aunque es
+muy mejorable, solo hace falta que un PHPStorm entre en algunas de tus clases y
+se ponga a echar humo (namespaces que ya no se utilizan, métodos privados a los
+que nadie llama, bloques de PHPDoc inválidos o sin actualizar&hellip;), pero te
+equivocas.</p>
+
+<p>Desde el principio, mucha gente confió en ti. Nos cambiaste la vida (lo siento,
+soy un romántico, no puedo remediarlo) y nosotros te devolvimos el favor con
+meetups, conferencias, posts, Bundles&hellip;</p>
+
+<p>¿Y sigues pensando que lo más importante es tu código? Te equivocas. Lo más
+importante es el trabajo de toda esta gente que, a pesar de tus muchos pasos
+erroneos, hemos estado allí preparados para difundir tus últimas maravillas.
+Nuestro incansable esfuerzo ha hecho que hoy seas lo que eres, y tu aún más
+inagotable indiferencia hacia nosotros te ha limitado ser lo que realmente
+podrías haber sido.</p>
+
+<p>¿Quieres crecer? Haz de tus comunidades algo esencial, algo prioritario. Danos
+herramientas para ser una extensión de ti. Sé nuestro altavoz y haremos de tí
+algo grande&hellip; aunque algo me dice que esto no entra dentro de tus
+prioridades&hellip; me equivoco?</p>
+
+<h3>DX</h3>
+
+<p>Hace unos dias vi una issue en Symfony que me mosqueó. Javier Eguiluz comentaba
+con mucho acierto que la forma de trabajar con todo lo relacionado con la
+seguridad era tedioso, complicado, repetitivo y pesado. Tal vez estas no fueron
+sus palabras, pero si son las mias.</p>
+
+<p>Tras muchísimos proyectos en Symfony, uno se percata que siempre hace las mismas
+comprobaciones una y otra vez. Existe un Token? Existe un usuario? Porque un
+usuario tiene que saebr</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marc Morera</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-01-11T11:43:00+01:00" pubdate data-updated="true">Jan 11<span>th</span>, 2017</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/symfony/'>symfony</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.com/blog/2017/01/11/symfony/" data-via="mmoreram" data-counturl="http://mmoreram.com/blog/2017/01/11/symfony/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/03/03/symfony-catalunya/" title="Previous Post: Symfony Catalunya">&laquo; Symfony Catalunya</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/" title="Next Post: BLDD, un DD para dominarlos a todos">BLDD, un DD para dominarlos a todos &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/">BLDD, un DD para dominarlos a todos</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/01/11/symfony/">Symfony, que narices estás haciendo?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/03/symfony-catalunya/">Symfony Catalunya</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/09/you-probably-need-bundle-dependencies/">you probably need bundle dependencies</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/20/your-packages-dependencies/">Your packages dependencies</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/mmoreram">@mmoreram</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mmoreram',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+      </div>
+    </div>
+    <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Marc Morera -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>.</span>
+</p>
+
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'mmoreram';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mmoreram.com/blog/2017/01/11/symfony/';
+        var disqus_url = 'http://mmoreram.com/blog/2017/01/11/symfony/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>

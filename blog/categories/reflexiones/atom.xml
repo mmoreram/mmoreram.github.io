@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: reflexiones | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/reflexiones/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2016-03-03T17:28:59+01:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/blog/categories/reflexiones/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2017-01-27T01:03:58+01:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Reflexiones de un pequeño emprendedor]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor/"/>
+    <link href="http://mmoreram.com/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor/"/>
     <updated>2015-04-05T01:58:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor</id>
+    <id>http://mmoreram.com/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor</id>
     <content type="html"><![CDATA[<p>Ya hace un poco más de un año que estoy a bordo de este proyecto llamado Elcodi.
 Para los que no conozcáis el proyecto, solo unas simples pistas&hellip;</p>
 

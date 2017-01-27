@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: elcodi | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/elcodi/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2016-03-03T17:28:59+01:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <title><![CDATA[Category: Elcodi | Because yes]]></title>
+  <link href="http://mmoreram.com/blog/categories/elcodi/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2017-01-27T01:03:58+01:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -14,268 +14,821 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Reflexiones de un pequeño emprendedor]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor/"/>
-    <updated>2015-04-05T01:58:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor</id>
-    <content type="html"><![CDATA[<p>Ya hace un poco más de un año que estoy a bordo de este proyecto llamado Elcodi.
-Para los que no conozcáis el proyecto, solo unas simples pistas&hellip;</p>
+    <title type="html"><![CDATA[Sobre reglas y ExpressionLanguage]]></title>
+    <link href="http://mmoreram.com/blog/2014/05/20/about-rules-and-expression-language/"/>
+    <updated>2014-05-20T14:00:00+02:00</updated>
+    <id>http://mmoreram.com/blog/2014/05/20/about-rules-and-expression-language</id>
+    <content type="html"><![CDATA[<blockquote><p>You can read an english translation in
+<a href="http://blog.elcodi.io/blog/2014/05/20/about-rules-and-expressionlanguage/">Elcodi blog</a></p></blockquote>
+
+<p>Esta implementación trabaja con el ExpressionLanguage de Symfony.</p>
+
+<p>Para instalarlo o entender como funciona, así como para descubrir la syntaxis de
+las Expressions puedes utilizar la
+<a href="http://symfony.com/doc/current/components/expression_language/index.html">Documentación oficial del Componente</a></p>
+
+<h3>Nuestras necesidades</h3>
+
+<p>En realidad podríamos decir que estamos ante uno de los mayores problemas que ha
+sufrido cualquier programador que se haya dedicado mínimamente al ecommerce:
+Las reglas de acción. El ejemplo más significativo son los cupones. Cuándo un
+cupón es válido? Y dado que hay una cantidad bestial de distintos cupones y
+distintas lógicas de aplicación, y dado que estas son distintas y própias de
+cada uno de los proyectos&hellip; como se puede abstraer la lógica para que se pueda
+hacer algo &ldquo;neutral&rdquo; y lo suficientemente flexible para que todo el mundo lo
+pueda utilizar?</p>
+
+<p>Pues esta es una de nuestras preocupaciones principales, ya que la solución a
+esta pregunta, de rebote, nos soluciones otros problema paralelos, como por
+ejemplo cuando se aplican ciertas acciones, o hasta generar un eventDispatcher
+muy flexible, que active cierto evento en cierto punto de la request, si aplica
+un conjunto de condiciones.</p>
+
+<h3>Nuestro propósito</h3>
+
+<p><a href="https://github.com/elcodi/RuleBundle">Elcodi RuleBundle</a></p>
+
+<p>Nuestra propuesta no es demasiado compleja.</p>
+
+<p>Partimos de un modelo completamente desacoplado y standalone. El motor de reglas
+proporciona una gestión de las mismas independientemente de donde se quieran
+utilizar, ya que la única misión para este módulo es devolver <code>true</code> o <code>false</code>.</p>
+
+<p>En este caso hemos tratado con dos tipos de reglas, las Rules y las RuleGroups.
+El sentido de la primera es simple, una regla simple que, evaluada, devuelve un
+booleano. El sentido de la segunda es en cambio, agrupar Rules, de tal forma
+que si decidimos aplicar un conjunto de reglas unidas, podamos trabajar con el
+conjunto directamente, y asociarlo a un comportamiento.</p>
+
+<p>Dado este modelo, es bastante evidente que requiere de un Composite Pattern para
+que sea más fácil trabajar, ya que este nos proporciona una sola entidad,
+independientemente que sea Rule o RuleGroup, y le da un comportamiento común a
+ambos, que es al fín y al cabo, el mas importante: Evalúate.</p>
+
+<h3>Utilizando composite pattern con Doctrine</h3>
+
+<p>La primera pregunta que nos viene a la cabeza es&hellip; De que se trata el Composite
+Pattern?</p>
+
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Composite_UML_class_diagram_%28fixed%29.svg/900px-Composite_UML_class_diagram_%28fixed%29.svg.png" title="composite pattern" alt="Composite pattern" /></p>
+
+<p>En este caso tenemos que tanto Leaf como Composite son dos entidades distintas.
+Leaf sería nuestro Rule y Composite sería nuestro RuleGroup. Podemos ver que,
+como ambos extienden de un objeto abstracto llamado Component, se puede forzar
+que ambos tengan un comportamiento común. En esta gráfica, el abstracto define
+un método y lo implementa, dando un comportamiento por defecto y dando la
+oportunidad de sobreescribir este comportamiento. En nuestro caso, <code>operation()</code>
+responde a la necesidad de devolver todas las expressions del objeto (En el
+caso de Rule, una sola expression, en el caso de RuleGroup, todas las
+expressions de sus hijos), por lo que se ha definido el método como abstracto,
+así cada entidad debe implementar el método a su modo.</p>
+
+<p>Finalmente, y lo que define realmente a este patrón, es que Composite
+(RuleGroup) tiene un conjunto de hijos (en nuestro caso Rules) que tanto
+pueden ser del tipo Rule o del tipo RuleGroup, por lo que la relación se hace
+directamente con el Abstracto.</p>
+
+<p>Esta implementación permite que, cuando se pide las Expression de un RuleGroup,
+esta te devuelva la de todos sus hijos, sean Rule o RuleGroup, ya que ambos
+elementos implementan el mismo método.</p>
+
+<p>Doctrine te permite hacer esta implementación utilizando el STI (Single Table
+Inheritance) o el CTI (Class Table Inheritance). En este caso, y para
+ahorrarnos demasiadas joins, hemos tratado la implementación con STI.</p>
+
+<p>Definimos la entidad Rule</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * This file is part of the Elcodi package.
+ </em>/</p>
+
+<p>namespace Elcodi\RuleBundle\Entity;</p>
+
+<p>/<em>*
+ * Class Rule
+ </em>/
+class Rule extends AbstractRule implements RuleInterface
+{</p>
+
+<pre><code>/**
+ * @var ExpressionInterface
+ *
+ * Expression
+ */
+protected $expression;
+
+/**
+ * Specific class parameters, getters and setters
+ */
+
+/**
+ * Return all object contained expressions
+ *
+ * @return ArrayCollection Collection of expressions
+ */
+public function getExpressionCollection()
+{
+    return new ArrayCollection(array($this-&gt;getExpression()));
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Definimos la entidad RuleGroup</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * This file is part of the Elcodi package.
+ </em>/</p>
+
+<p>namespace Elcodi\RuleBundle\Entity;</p>
+
+<p>/<em>*
+ * Class RuleGroup
+ </em>/
+class RuleGroup extends AbstractRule implements RuleGroupInterface
+{</p>
+
+<pre><code>/**
+ * @var Collection
+ *
+ * Rules
+ */
+protected $rules;
+
+/**
+ * Specific class parameters, getters and setters
+ */
+
+/**
+ * Return all object contained expressions
+ *
+ * @return ArrayCollection Collection of expressions
+ */
+public function getExpressionCollection()
+{
+    $expressions = array();
+
+    /**
+     * @var AbstractRuleInterface $rule
+     */
+    foreach ($this-&gt;getRules() as $rule) {
+
+        $expressions = array_merge(
+            $expressions,
+            $rule-&gt;getExpressionCollection()-&gt;toArray()
+        );
+    }
+
+    return new ArrayCollection($expressions);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Y finalmente la clase abstracta</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * This file is part of the Elcodi package.
+ </em>/</p>
+
+<p>namespace Elcodi\RuleBundle\Entity\Abstracts;</p>
+
+<p>/<em>*
+ * Class AbstractRule
+ </em>/
+abstract class AbstractRule extends AbstractEntity
+{</p>
+
+<pre><code>/**
+ * Specific class parameters, getters and setters
+ */
+
+/**
+ * Return all object contained expressions
+ *
+ * @return Collection Collection of expressions
+ */
+abstract public function getExpressionCollection();
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Ambas clases implementan a su modo el método <code>getExpressionCollection()</code> por lo
+que cuando se trate con un ArrayCollection devuelto por Doctrine, todas las
+instancias tendrán el método.</p>
+
+<p>```php
+&lt;?php</p>
+
+<p>/<em>*
+* @var Collection $rules
+</em>/
+foreach ($rules as $rule) {</p>
+
+<p>   /**</p>
+
+<pre><code>* @var AbstractRule $rule
+*/
+</code></pre>
+
+<p>   $expressionCollection = $rule->getExpressionCollection();
+   &hellip;
+}
+```</p>
+
+<p>Una vez tenemos las clases, debemos mapearlas a Doctrine.</p>
+
+<p>Mapeamos la clase Rule, con una relación unidireccional con Expression</p>
+
+<p>``` yml
+Elcodi\RuleBundle\Entity\Rule:</p>
+
+<pre><code>type: entity
+repositoryClass: Elcodi\RuleBundle\Repository\RuleRepository
+table: rule
+
+oneToOne:
+    expression:
+        targetEntity: Elcodi\RuleBundle\Entity\Expression
+        cascade: [ all ]
+</code></pre>
+
+<p>```</p>
+
+<p>Mapeamos la clase RuleGroup, con una relación ManyToMany unidireccional (No nos
+interesa saber <code>parents()</code>) con AbstractRule</p>
+
+<p>``` yml
+Elcodi\RuleBundle\Entity\RuleGroup:</p>
+
+<pre><code>type: entity
+repositoryClass: Elcodi\RuleBundle\Repository\RuleGroupRepository
+table: rule_group
+
+manyToMany:
+    rules:
+        targetEntity: Elcodi\RuleBundle\Entity\Abstracts\AbstractRule
+        joinTable:
+            name: rule_group_rule
+            joinColumns:
+                rule_group_id:
+                    referencedColumnName: id
+            inverseJoinColumns:
+                rule_id:
+                    referencedColumnName: id
+</code></pre>
+
+<p>```</p>
+
+<p>Y finalmente generamos el mapeo de la clase abstracta</p>
+
+<p>``` yml
+Elcodi\RuleBundle\Entity\Abstracts\AbstractRule:</p>
+
+<pre><code>type: entity
+repositoryClass: Elcodi\RuleBundle\Repository\AbstractRuleRepository
+inheritanceType: single_table
+discriminatorColumn:
+    name: discr
+    type: string
+discriminatorMap:
+    rule: Elcodi\RuleBundle\Entity\Rule
+    rule_group: Elcodi\RuleBundle\Entity\RuleGroup
+fields:
+    ...
+</code></pre>
+
+<p>```</p>
+
+<p>Esta configuración creará una sola tabla, con un campo dedicado a decirle a
+Doctrine de que tipo es la fila en cuestión.</p>
+
+<p>Llegados a este punto, tenemos una implementación para poder asignar a cualquier
+entidad una relación con Rules, teniendo solucionado, almenos a nivel de dominio
+y de implementación el concepto &ldquo;Regla de Reglas&rdquo;, pero ahora falta solucionar
+el cómo se ejecutan estas reglas y el contexto en el que lo hacen.</p>
+
+<h3>Configuración de contexto y customización</h3>
+
+<p>Definamos contexto en el que una regla se ejecuta como el conjunto de elementos
+en el que la regla tiene acceso en el momento de la ejecución.</p>
+
+<p>Ya que el motor trabaja utilizando el ExpressionLanguage de Symfony, hemos
+utilizado su forma de contextualizar una evaluación.</p>
+
+<p>``` php
+$language = new ExpressionLanguage();</p>
+
+<p>class Apple
+{</p>
+
+<pre><code>public $variety;
+</code></pre>
+
+<p>}</p>
+
+<p>$apple = new Apple();
+$apple->variety = &lsquo;Honeycrisp&rsquo;;</p>
+
+<p>$this->assertTrue($language->evaluate(</p>
+
+<pre><code>'fruit.variety === "Honeycrisp"',
+array(
+    'fruit' =&gt; $apple,
+)
+</code></pre>
+
+<p>));
+```</p>
+
+<p>En este caso, ejecutamos la expresión &ldquo;fruit.variety&rdquo; en un contexto donde
+<code>fruit</code> es nuestra instancia de <code>Apple</code>, por lo que este assert resolvería como
+<code>true</code>.</p>
+
+<p>En el caso siguiente, y teniendo la misma expresión, al tener una
+contextualización distinta, no tendríamos el resultado esperado, pues devolvería
+<code>false</code></p>
+
+<p>``` php
+$language = new ExpressionLanguage();</p>
+
+<p>class Apple
+{</p>
+
+<pre><code>public $variety;
+</code></pre>
+
+<p>}</p>
+
+<p>$apple = new Apple();
+$apple->variety = &lsquo;Arlet&rsquo;;</p>
+
+<p>$this->assertTrue($language->evaluate(</p>
+
+<pre><code>'fruit.variety === "Honeycrisp"',
+array(
+    'fruit' =&gt; $apple,
+)
+</code></pre>
+
+<p>));
+```</p>
+
+<p>Hay dos tipos de contextualizaciones, las que responden a una request (En toda
+las evaluaciones dada una request se setean unos valores globales,
+independientemente de la ejecución) y las que responden a cada llamada del
+manager.</p>
+
+<p>En este caso se trata de una contextualización de llamada, pues en esta
+evaluación, <code>customer</code> responde a $myCustomer.</p>
+
+<p>``` php</p>
+
+<p>/<em>*
+ * Rule with code &ldquo;somecode&rdquo; has this expression assigned:
+ * &ldquo;customer.id in [1..100]&rdquo;
+ </em>/
+$myCustomer = &hellip;;
+$ruleManager = $this->container->get(&lsquo;rule_manager&rsquo;);
+$result = $ruleManager->evaluateByCode(&lsquo;somecode&rsquo;, array(</p>
+
+<pre><code>'customer'  =&gt;  $myCustomer
+</code></pre>
+
+<p>));
+```</p>
+
+<p>Es posible pero que tengamos servicios, por ejemplo, a los que queramos acceder
+de forma reiterada, y que haya una forma independiente de acceder a ellos, por
+ejemplo, el <code>entity_manager</code>.</p>
+
+<p>``` php</p>
+
+<p>/<em>*
+ * Rule with code &ldquo;somecode&rdquo; has this expression assigned:
+ * &ldquo;customer_wrapper.getCustomer().getId() in [1..100]&rdquo;
+ </em>/</p>
+
+<p>$ruleManager = $this->container->get(&lsquo;rule_manager&rsquo;);
+$result = $ruleManager->evaluateByCode(&lsquo;somecode&rsquo;);
+```</p>
+
+<p><code>customer_wrapper</code> en realidad es un servicio que, a su forma, nos instancia un
+Customer recuperable mediante el método <code>getCustomer</code>. No debemos pasarlo cada
+vez que queremos evaluar una Expresión, así que podemos considerarla como parte
+del contexto global.</p>
+
+<p>Como podemos añadir valores a este contexto global? Pues implementando un
+<code>ContextConfigurationInterface</code>.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * This file is part of the Elcodi package.
+ </em>/</p>
+
+<p>namespace Elcodi\RuleBundle\Configuration;</p>
+
+<p>use Doctrine\Common\Persistence\ObjectManager;</p>
+
+<p>use Elcodi\RuleBundle\Configuration\Interfaces\ContextConfigurationInterface;
+use Elcodi\RuleBundle\Services\Interfaces\ContextAwareInterface;</p>
+
+<p>/<em>*
+ * Class ContextConfiguration
+ </em>/
+class ContextConfiguration implements ContextConfigurationInterface
+{</p>
+
+<pre><code>/**
+ * @var ObjectManager
+ *
+ * Object manager
+ */
+protected $objectManager;
+
+/**
+ * Construct method
+ *
+ * @param ObjectManager $objectManager Object manager
+ */
+public function __construct(ObjectManager $objectManager)
+{
+    $this-&gt;objectManager = $objectManager;
+}
+
+/**
+ * @param ContextAwareInterface $contextAware
+ */
+public function configureContext(ContextAwareInterface $contextAware)
+{
+    $contextAware-&gt;addContextElement('manager', $this-&gt;objectManager);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Podemos observar que en este caso estamos contextualizando todo el gestor de
+expresiones con el <code>EntityManager</code> respondiendo al valor <code>manager</code>, así que
+si en una Expression tenemos a expresión <code>manager.getRepository("...")</code> podremos
+acceder perfectamente al EntityManager.</p>
+
+<p>Finalmente, y para terminar de añadir este valor al contexto, debemos definir
+esta clase como servicio utilizando un tag específico.</p>
+
+<p>``` yml
+services:</p>
+
+<pre><code>elcodi.core.rule.configuration.context:
+    class: %elcodi.core.rule.configuration.context.class%
+    arguments:
+        entity_manager: @doctrine.orm.entity_manager
+    tags:
+        - { name: elcodi.rule_context_configuration }
+</code></pre>
+
+<p>```</p>
+
+<h3>Configuración de ExpressionLanguage y customización</h3>
+
+<p>Otra de las facilidades que nos brinda el ExpressionLanguage es la capacidad de
+crear funciones. En este caso podemos agregar nuevas funcionalidades al
+ExpressionLanguage del sistema de Reglas implementando
+<code>ExpressionLanguageConfigurationInterface</code></p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * This file is part of the Elcodi package.
+ </em>/</p>
+
+<p>namespace Elcodi\RuleBundle\Configuration;</p>
+
+<p>use Symfony\Component\DependencyInjection\ContainerInterface;</p>
+
+<p>use Elcodi\RuleBundle\Configuration\Interfaces\ExpressionLanguageConfigurationInterface;
+use Elcodi\RuleBundle\Services\Interfaces\ExpressionLanguageAwareInterface;</p>
+
+<p>/<em>*
+ * Class ExpressionLanguageConfiguration
+ </em>/
+class ExpressionLanguageConfiguration implements ExpressionLanguageConfigurationInterface
+{</p>
+
+<pre><code>/**
+ * @var ContainerInterface
+ *
+ * Container
+ */
+protected $container;
+
+/**
+ * Construct method
+ *
+ * @param ContainerInterface $container Container
+ */
+public function __construct(ContainerInterface $container)
+{
+    $this-&gt;container = $container;
+}
+
+/**
+ * Configures expression language
+ *
+ * @param ExpressionLanguageAwareInterface $expressionLanguageAware Expression Language aware
+ */
+public function configureExpressionLanguage(ExpressionLanguageAwareInterface $expressionLanguageAware)
+{
+    $expressionLanguage = $expressionLanguageAware-&gt;getExpressionLanguage();
+    $expressionLanguage
+        -&gt;register('service', function ($arg) {
+            return sprintf('$this-&gt;get(%s)', $arg);
+        }, function (array $variables, $value) {
+            return $this-&gt;container-&gt;get($value);
+        });
+
+    $expressionLanguage
+        -&gt;register('parameter', function ($arg) {
+            return sprintf('$this-&gt;getParameter(%s)', $arg);
+        }, function (array $variables, $value) {
+            return $this-&gt;container-&gt;getParameter($value);
+        });
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Vemos que hemos añadido el mismo comportamiento que tiene el ExpressionLanguage
+cuando se utiliza en las definiciones del DependencyInjection. Se agregan dos
+funciones nuevas y ambas requieren del container entero, por lo que se tiene que
+definir esta clase como servicio, añadiendo de nuevo un tag específico.</p>
+
+<p>``` yml
+services:</p>
+
+<pre><code>elcodi.core.rule.configuration.expression_language:
+    class: %elcodi.core.rule.configuration.expression_language.class%
+    arguments:
+        service_container: @service_container
+    tags:
+        - { name: elcodi.rule_expression_language_configuration }
+</code></pre>
+
+<p>```</p>
+
+<p>De esta forma, podríamos ejecutar esta expresión
+<code>service("my_service")-&gt;getValue(parameter("my_value"))</code> sin tener una Exception
+del tipo SyntaxException.</p>
+
+<p>El RuleManager controla cuando una expresión tiene una exceptión del tipo
+SyntaxException ya que tiene todo el contenido de evaluación dentro de un
+try/catch. El sentido de esto es que en caso que una expresión tenga un error
+porque, o bien el modelo ha cambiado o la propia implementación, debería seguir
+funcionando, evidentemente devolviendo <code>false</code> como resultado.</p>
+
+<h3>Cupones y Reglas</h3>
+
+<p>Dado que aún no tenemos implementado las reglas en los cupones, vamos a enumerar
+a nivel teórico como debería ser el comportamiento de este caso a nivel de
+ejemplificación.</p>
+
+<h4>Prerequisitos</h4>
 
 <ul>
-<li>E-commerce</li>
-<li><a href="https.//symfony.com">Symfony</a></li>
-<li><a href="https://github.com/elcodi/elcodi">Elcodi</a></li>
+<li>Tenemos una relación entre Coupon y AbstractRule de ManyToMany (Un Coupon puede
+tener tantos cupones como quiera, y una Regla puede estar en mas de un Cupón)</li>
+<li>El usuario, a partir del código de un cupón, intenta aplicar un descuento a su
+carrito. El cupón en cuestión tiene asignadas 3 Rules.</li>
 </ul>
 
 
-<p>Hace bastantes semanas que tenía ganas de formular una entrada al blog de
-éste índole. Normalmente intento hacer mis posts en inglés, pero me pareció
-adecuado hacer éste en español, dado que lo hago desde una perspectiva más de
-emprendedor que no de técnico.</p>
+<h4>Paso a paso</h4>
 
-<blockquote><p>Debo decir brevemente que no me gusta la palabra &ldquo;emprendedor&rdquo;. Durante los
-últimos años se le ha dado un significado demasiado Trending y se le ha
-asociado a figuras de visibilidad pública. Desde mi punto de vista,
-emprendedor es aquel que se desvive por su trabajo, sea cual sea, y que lo
-entiende como una forma de vida. Utilizaré esta palabra desde esta perspectiva</p></blockquote>
+<ul>
+<li>El usuario aplica el cupón</li>
+<li>Mediante el couponManager, se intenta aplicar el cupón al cart.</li>
+<li>Se dispara un evento PreApplyToCart</li>
+<li>Hay un eventListener suscrito a este evento que busca todas las Rules del cart
+y las evalúa</li>
+<li>Si una de ellas devuelve <code>false</code>, la evaluación conjunta devolverá <code>false</code>, por lo
+que se devolverá una Exception específica</li>
+<li>Por contra, si devuelve <code>true</code>, seguirá con el proceso natural (Se aplicará el
+cupón)</li>
+</ul>
 
-<p>Os quiero contar de forma bastante breve lo que, después de éste tiempo,
-considero son algunos puntos importantes de un emprendedor.
-Considerando que soy una persona formada de forma pura en el mundo técnico y que
-he experimentado una transición un poco brusca hacia el mundo de la
-emprendeduría empresarial, quiero dejar claro que estos son mis puntos de vista
-dada mi trayectoria, por lo que es probable que algunos no sean mundialmente
-compartidos por todos.</p>
 
-<h3>La Idea</h3>
+<h3>Conclusiones</h3>
 
-<p>Tengo la sensación que se le asigna demasiado valor a la idea. Como se suele
-decir, la idea no vale <strong>nada</strong>. Una semilla tal vez, nada más. El auténtico valor
-reside en considerar ésta misma idea importante durante el tiempo adecuado. El
-mérito está en mantener la expectativa y la motivación en su punto más álgido lo
-suficiente como para que la ejecución tome la mínima forma como para que sea
-algo real.</p>
+<p><code>RuleBundle</code> es una herramienta muy potente, no solo para trabajar con Reglas de
+cupones sino también para poder gestionar otras necesidades como Campañas de
+descuento, Grupos de usuarios, reglas de cart y reglas de producto.</p>
 
-<p>Es en este punto es donde te das cuenta que lo más fácil en realidad fue tener
-dicha idea, y que lo más cómodo hubiera sido dejar de lado la motivación para
-hacer algo más significativo a corto plazo.</p>
-
-<p>El auténtico emprendedor entiende de raíz que dicho esfuerzo, con su parte
-proporcional y proporcionada de suerte, ayuda y café, siempre acaba siendo más
-rentable para todo el mundo a largo plazo.</p>
-
-<h3>El Desarrollo</h3>
-
-<p>Todo proceso que te lleva de la mano de ésta idea amorfa hasta la definición y
-ejecución de la misma requiere un esfuerzo que, en la mayoría de los casos, te
-aísla de forma inconsciente de todo lo demás.</p>
-
-<blockquote><p>Quien dice emprendedor, dice luchador
-Luchador cuya soledad le invade en su lucha
-Y en medio del silencio oye su respiración
-Y entiende su existencia</p></blockquote>
-
-<p>Es un gran ejercicio de descubrimiento personal. Te das cuenta de lo que puedes,
-de los que sabes y de lo que eres capaz. Y cuando crees que no puedes saber más,
-te das cuenta que apenas sabes nada. Aprendes a aprender mientras aprendes a
-desaprender.</p>
-
-<p>Hasta aquí un intento descarado y fracasado de poesía. Ahora vuelvo a la simple
-y terrenal prosa, más digna de mi focalizado potencial&hellip;</p>
-
-<p>Ha sido el año más duro y a la vez delicioso de mi carrera profesional. He
-aprendido a lidiar con mentes completamente distintas a la mía, y esto me ha
-dado cierta capacidad de análisis teniendo múltiples puntos de vista, muy
-necesario para cualquiera con alguna aspiración empresarial.</p>
-
-<p>Debo decir que a día de hoy sigo sin entender muchas cosas, algo que me hace
-seguir siendo lo suficiente ingenuo como para estar demasiado ilusionado por
-todo.</p>
-
-<p>De todas formas, el camino sigue, y espero poder seguir teniendo este análisis
-absolutamente positivo año tras año&hellip; significará que seguiré en mi lucha por
-buscar algo realmente grande, aún habiéndolo encontrado.</p>
-
-<h3>Las Ganas</h3>
-
-<p>Y en éste camino, debo reconocer que el concepto <em>ganas</em>, mundialmente
-conocido por <em>motivación</em>, suele experimentar un movimiento sinusoidal más
-típico de una montaña rusa del siglo XXI.</p>
-
-<p>Mi único apunte sobre este tema, y es algo que yo he llegado a aprender con el
-tiempo, es que una buena técnica para poder sobrevivir a todo esto es teniendo
-en cuenta que tu cabeza no tiene siempre la razón. Me refiero a que hay días en
-los que los pensamientos negativos parecen la única materia generada por tu
-astuto cerebro.</p>
-
-<p>Bien, ignóralo.</p>
-
-<p>¿Días de estos en que, literalmente lo ves todo negro? Bien, quédate en
-casa, tómate un respiro y descansa. Te darás cuenta que ignorando estos
-pensamientos darás paso de nuevo a otros mejores. Seguro que el día siguiente
-puedes seguir como si nada.</p>
-
-<p>Debo decir que a mi me funciona. Mis ganas suelen regenerarse después de un alto
-desgaste debido a una frenética entrega o a una época difícil.</p>
-
-<h3>El Equipo</h3>
-
-<p>Y a todo esto hay que añadirle el ingrediente más importante.</p>
-
-<p>El equipo.</p>
-
-<p>De manual. Esta frase suele salir de forma prefabricada de la boca de cualquier
-persona que quiera ser algo trending. De todas formas, siempre he pensado que
-había otra forma de hacer las cosas que se saliera un poco de la tradicional a
-la que nos tienen acostumbrados.</p>
-
-<p>Debo decir que soy de ideas fuertes, y desde que salí de la carrera y durante
-mi <em>corta</em> trayectoria profesional me he cruzado con líderes y con jefes. Debo
-añadir de forma categórica que hubiera seguido a los líderes hasta los confines
-del fracaso, mientras que no hubiera dedicado un solo segundo a buscar el éxito
-al lado de ningún jefe.</p>
-
-<p>Y es que los líderes hacen girar el mundo. O dicho mejor, los líderes hacen que
-todos hagamos girar el mundo de una forma optimista y valiente.</p>
-
-<p>Dicho esto, y tras haberme cruzado con un poco de todo, decidí que era hora de
-poner a prueba mis teorías. El mejor equipo hace la mejor empresa, y para que
-sea así, la mejor empresa debe tener el mejor equipo. Y debo reconocer que, si
-de por sí no es nada fácil buscar gente para un equipo potente, menos lo es si
-tienes en cuenta ciertos parámetros de convivencia, motivación y encaje.</p>
-
-<p>Con el tiempo me he dado cuenta que algo merece gran cantidad de mi fuerza vital
-y esfuerzo es buscar un equipo con el que pasar las horas disfrutando de mi
-trabajo. Éste equipo será tu mano derecha y tu mano izquierda. Será tu apoyo en
-los mejores y peores momentos, y será tu mayor crítico cuando necesites de una
-voz sincera y dura.</p>
-
-<p>Mi equipo.</p>
-
-<p>El mejor equipo del mundo.</p>
-
-<h3>Conclusión</h3>
-
-<p>Como podéis ver, y termino, Elcodi es un proyecto sano. Debo reconocer que estoy
-abrumado por el equipo humano que tenemos en la empresa. Nuestra máxima
-prioridad es que en el día a día del equipo sea lo más agradable posible, y que
-el trabajo se convierta en algo realmente fascinante.</p>
-
-<p>Por mi parte estoy satisfecho por todo, con perspectivas de incalculable valor y
-rodeado de, literalmente, los mejores compañeros de viaje que uno podría tener.</p>
-
-<p>Mucha suerte y mucha fuerza a todos los que habéis decidido que el camino más
-largo y duro es el que mejor encaja en vuestra vida. Os mando mi energía y mis
-mayores deseos de éxito.</p>
+<p>Como siempre, esta es una aproximación a la solución, pues estamos abiertos a
+debate, mejoras y <a href="https://github.com/elcodi/elcodi/tree/master/src/Elcodi/RuleBundle">contribuciones</a>.</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Elcodi wants you]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/07/21/elcodi-wants-you/"/>
-    <updated>2014-07-21T21:28:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/07/21/elcodi-wants-you</id>
-    <content type="html"><![CDATA[<p>Right. Elcodi wants you.</p>
+    <title type="html"><![CDATA[What makes Elcodi different?]]></title>
+    <link href="http://mmoreram.com/blog/2014/05/15/what-makes-elcodi-different/"/>
+    <updated>2014-05-15T17:40:00+02:00</updated>
+    <id>http://mmoreram.com/blog/2014/05/15/what-makes-elcodi-different</id>
+    <content type="html"><![CDATA[<p>Well, the league of web development, in which we play, is a fussy league, I
+started to recieve the first questions about the project I find myself
+developing&hellip; ¿ Why a new project called Elcodi wants to cover the needs of
+ecommerce when there is something similar called Sylius?</p>
 
-<p><a href="http://elcodi.io">Elcodi Project</a></p>
+<p>Although I twitt that I would write a comparison between both platforms, I
+firmly believe that it is absurd to compare them, since Sylius is a
+very mature project and has lots of features we do not have ( nor will we have
+short-term ). So, this post is nothing more than a declaration of intentions
+about why we have decided to start a separated project from the existing
+options.</p>
 
-<p>And Elcodi wants you because you are ambitious, a fighter, a ninja developer
-eager to learn and to teach.</p>
+<p>Firstly, I want to express complete respect to Sylius. It&rsquo;s a project
+built by many different contributors, and I do not want to compare their
+results with our ambitions at all. I think they both are projects with
+different perspectives, and since one of our most important value ​​is humility,
+we start as a small project. Ambitious, but for now, small.</p>
 
-<p>Elcodi wants you because you are a follower of good practices and have a sound
-software craftsmanship mindset, because you are a perfectionist, because your
-inspiring work is a way of life.</p>
+<p>Secondly, I&rsquo;d like to share with the community what I think are the three basic
+pillars in our project. All three are equally important and we strongly believe
+that one feeds the others. We are very strict on these three aspects, and it
+will remain as it is throughout the years.</p>
 
-<p>Elcodi wants you because you firmly believe that an open-source environment is a
-trigger that can detonate personal and professional achievements.</p>
+<h2>Event-Driven Design</h2>
 
-<p>We believe we are doing a good job. We are not alone in believing it, many
-others do. This is why we have decided take it to the next level and start to
-evolve, growing the team and our vision.</p>
+<p>Elcodi is a completely event-oriented project. All components have a set of
+events, especially designed to customize the behavior of a specific action.</p>
 
-<p>We really aim to make things the right way by unfolding the power of
-collaborative software development and this is why we need your voice, your
-ideas, your enthusiasm and, of course, we need your hands. Skillful, experienced
-and visionary artisan hands.</p>
+<p>Not giving importance to this point means that many people will have to fork
+the project itself to implement their own behaviors, and this is not a good
+philosophy. A third party component should behave as such, giving a high degree
+of customization.</p>
 
-<p>If you share our vision and want to collaborate with a truly inspiring project,
-contact me at <code>yuhu@mmoreram.com</code></p>
+<h2>Clean Code</h2>
+
+<p>Our first and most important objective is to provide developers with a set of
+useful tools for working their own implementations. We do not claim to be the
+all-purpose and immediate solution for existing projects. Our desire is to
+provide a completely customizable workbench in order to solve those recurring
+ecommerce projects problems.</p>
+
+<p>For example, we can not deliver an all-inclusive Cart management solution for obvious reasons: each
+project has its own unique business needs. What we can do is to propose a
+simple common behavior, thus giving the opportunity to evolve by offering a
+completely customizable model, giving the opportunity to extend behaviors thanks
+to the proposed event structure and by offering a decent and growing documentation.</p>
+
+<p>In my view, realistically, since real needs generate from a heterogeneous community
+composed by people with different levels of skills and experience, we will just
+collect these needs. Consequently, we will take care of the programming style,
+clean code design and standardization so that every line of code can be understood
+by everyone.
+We are not die hard fans or disciples of any specific software development process
+or methodology, we won&rsquo;t be relentlessy chasing latest trends just for the sake of it.
+We just want to create a valuable project, both for developers who
+want something nifty and stable for small quick project and for those who believe
+that their e-commerce will grow much.</p>
+
+<p>Working on an Elcodi based project must be fun and healthy.</p>
+
+<h2>Business perspective</h2>
+
+<p>We are a technology project, but first and foremost we are a company. This means
+that though we aspire to be fully open source, we do have business model
+behind, defined by a financial structure, which is based on constant growing.</p>
+
+<p>As you can see on our website, our key role in the process is the Market. As said,
+one of the great advantages that event-driven architecture gives us is that it can
+easily be extended: third party modules will be simple to integrate.</p>
+
+<p>Moreover, a professional team of developers will be responsible for the project,
+to train interested people and review the quality of the extensions submitted
+to the market.</p>
+
+<p>At the same time, developers who wants to base their implementations on Elcodi
+will likely find it easy to cover their needs, through open-source modules, market
+extensions or by coding the solutions themselves (and of course selling it in the
+Market if it complies with Elcodi code rules!)</p>
+
+<p>Let me call this escenarios a win-win.</p>
+
+<h2>Final thoughts</h2>
+
+<p>I repeat myself. We do not want to compete with anyone. I understand that every
+project has its trajectory. What appears in this post is our. Cross-project
+collaboration is  essential, and we will commit to work alongside other projects,
+because at last, everyone gains :)</p>
+
+<p>Soon we will publish a roadmap, as well as a set of training modules
+for people who want to learn some cookie recipes of web architecture and a
+little more about our project.</p>
+
+<p>If you want to know about project updates, follow our activities in
+<a href="http://twitter.com/elcodi_dev">Twitter &ndash; @elcodi_dev</a> or follow Elcodi
+development in <a href="http://github.com/elcodi/elcodi">Github &ndash; @elcodi</a>.</p>
+
+<p>Obviously we want people to clone the project, inspect it, question us, discuss
+constructively and give us reviews on our implementations. Contributions to the
+project will be well received and appreciated :)</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Elcodi, a new Symfony adventure]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/04/29/elcodi-a-new-symfony-adventure/"/>
-    <updated>2014-04-29T16:10:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/04/29/elcodi-a-new-symfony-adventure</id>
-    <content type="html"><![CDATA[<p>Some changes are about to come. And it seems that they are good
-changes. I haven’t written in my blog for a few weeks, and the truth is
-I feel bad about it. I like to write about the things that happen to me at
-the company; about the problems we find and the solutions I come up
-with. The thing is that, for some months now, I’ve been really focused
-on the project that we are launching to the world today. Initially, it is
-a project by developers for developers, focused on meeting the actual
-needs of developers who design and program e-commerce.</p>
+    <title type="html"><![CDATA[Elcodi, una nueva aventura en Symfony2]]></title>
+    <link href="http://mmoreram.com/blog/2014/04/17/elcodi/"/>
+    <updated>2014-04-17T12:46:00+02:00</updated>
+    <id>http://mmoreram.com/blog/2014/04/17/elcodi</id>
+    <content type="html"><![CDATA[<p>Ciertos cambios están por llegar. Y parece ser que son cambios buenos. Llevo
+unas cuantas semanas sin escribir en el blog, y la verdad es que me sabe mal.
+Me gusta contar cosas que me van sucediendo en la empresa. Problemas que nos
+vamos encontrando y soluciones que se me van ocurriendo. El problema es que
+llevo unos meses muy centrado en el proyecto que justo hoy lanzamos al mundo.
+Es un proyecto inicialmente de desarrolladores para desarrolladores, centrado en
+cubrir necesidades reales de los developers destinados a diseñar y
+programar ecommerces.</p>
 
-<p>It is true that we have plenty of platforms and options to develop e-
-commerce around the world. I could name a few, and probably they all
-have outstanding metrics and KPIs.</p>
+<p>Es cierto que tenemos muchísimas plataformas y opciones para desarrollar
+ecommerces alrededor del mundo. Podría enumerar unos cuantos, y probablemente
+todos tengan unas métricas y unos KPIs magníficos.</p>
 
-<p>The problem with these platforms is that they are entirely B2B, so
-they only make sense when the end user just needs to have a good
-management, installation and configuration interface; and when
-technical departments want to develop, both horizontally (new features
-for things already in use, or just customization) and vertically (new
-features), these B2B platforms fall short, and so the company must
-either pay a lot of money in refactoring, or the existing code must be
-touched, contaminating it and putting its integrity at risk.</p>
+<p>Los problemas de estas plataformas es que son completamente B2B, por lo que tienen sentido cuando
+el usuario final simplemente debe tener una buena interfaz de administración,
+de instalación y de configuración; y que cuando los departamentos técnicos quieren
+desarrollar, tanto horizontalmente ( nuevas funcionalidades de
+aquello que ya se está utilizando, o simplemente customizar ) como verticalmente
+( nuevas funcionalidades ), estas plataformas B2B se quedan
+cortas, por lo que la empresa tiene que desembolsar una cantidad enorme de
+dinero en un refáctoring, o simplemente, se debe empezar a todar el código
+existente, ensuciándolo y haciendo peligrar su integridad.</p>
 
-<p>These platforms are usually not tested, and so each line added is
-potentially harmful for the whole system. Then, each development
-on these platforms usually results in collateral problems in the user
-experience itself.</p>
+<p>Estas plataformas no suelen estar testeadas, por lo que cada línea que se añade
+es una línea potencialmente dañina para todo el sistema, con lo que cada
+desarrollo sobre estas plataformas suelen derivar en problemas colaterales
+en la propia experiencia de usuario.</p>
 
-<p>As I see it, this is unacceptable in our times.
-We propose a platform conceived for developers, thought of and deeply
-reflected on. This does not mean that the code is right from the very
-start; our declaration of intent is simply to take this project to a certain
-point where companies can trust in the project in order to build their
-own.</p>
+<p>Desde mi punto de vista, en los tiempos que corren, esto es inaceptable.</p>
 
-<p>We present you <a href="http://elcodi.io">Elcodi</a>.</p>
+<p>Nosotros proponemos una plataforma pensada para los desarrolladores, pensada
+y profundamente reflexionada. Esto no implica que el código deba estar bien
+en una primera instancia, simplemente nuestra declaración de intenciones es
+llevar el proyecto a un punto donde las empresas puedan confiar en el proyecto
+para construir el suyo propio.</p>
 
-<p>We are just beginning to emerge with an approach divided into phases.
-Our roadmap is very clear to us, and so in the next few months we
-will develop the main features at a core level, as well as the necessary
-robustness in order to deal with any outsourcers who like the project in
-its initial stage and wish to join us in this journey, aimed at improving
-the lifestyle of developers.</p>
+<p>Os presentamos <a href="http://elcodi.io">Elcodi</a>.</p>
 
-<p>The platform is based on Symfony2 and, following the philosophy
-defined by its own framework, we have focused most of the
-architecture by using a strong layer of events, fully uncoupling most
-behaviours and components.</p>
+<p>En un planteamiento dividido en fases, justo estamos naciendo. Tenemos muy claro
+cual es nuestro roadmap, por lo que en los próximos meses se desarrollaran las
+principales features a nivel de core, así como la robustez necesaria como para
+poder lidiar con colaboradores externos, que les guste el proyecto en su estado
+inicial y que quieran acomparnos en este viaje, destinado a mejorar el estilo de
+vida de los developers.</p>
 
-<p>If you are a Symfony programmer, I suggest that you check it out. You
-will see errors, a thousand things left to develop and to improve; but,
-like with all projects, our greatest ambition is its own construction;
-therefore, it’s a matter of months, energy and development.
-Another of our objectives is building a good documentation.</p>
+<p>La plataforma está basada en Symfony2, y siguiendo la filosofía definida por el
+propio framework, hemos enfocado la mayor parte de la arquitectura utilizando
+una fuerte capa de eventos, desacoplando la mayoría de comportamientos y
+componentes completamente.</p>
 
-<p>Essentially, we have three documentation lines in mind. Firstly, we
-want to communicate our philosophy to other people; the direction
-the project will undoubtedly take, regardless of its implementation
-in a given moment. It is important to define this from the beginning,
-because to a great extent it links us to our target audience.
-Documentation is a slow process, which is also subject to collaboration,
-and at first it will be in English only.</p>
+<p>Si eres programador Symfony, te propongo que almenos le eches un vistazo.
+Verás errores, mil cosas a desarrollar y mil cosas a mejorar, pero como todo
+proyecto, nuestra mayor ambición es la propia construcción del mismo, por lo que
+es cuestión de meses, ganas y desarrollo.</p>
 
-<p>Finally, I should say that elcodi.com is a rapidly expanding company.
-We have good growth projections, and so we are certain that what we
-are starting today with such enthusiasm will not cease to grow.
-We want it to be useful; we want our proposal to be seen by everybody,
-to get your most constructive criticism, since only in this way we can
-really make an interesting project for us all.</p>
+<p>Otro de nuestros objetivos es llegar a construir una buena documentación.
+Tenemos esencialmente tres líneas de documentación en mente. Por un lado</p>
+
+<p>queremos transmitir a los demás nuestra filosofía. La dirección que, sin duda
+alguna, tomará el proyecto, independientemente de la implementación que este
+adquiera en un momento dado. Es importante definir esto inicialmente porque al
+final nos vincula muchísimo al target al que vamos destinados.</p>
+
+<p>La documentación es algo lento, también sujeta a colaboraciones, y en principio
+estará inicialmente solo en inglés.</p>
+
+<p>Finalmente decir que elcodi.com es una empresa en plena expansión. Tenemos
+buenas previsiones de crecimiento por lo que tenemos una garantía que lo que hoy
+con tanta ilusión estamos empezando, no dejará de crecer.</p>
+
+<p>Queremos que sea útil, queremos que nuestra propuesta esté a juicio de todo el
+mundo y que saque vuestras críticas mas constructivas, solo así podremos
+realmente hacer un proyecto interesante para todos.</p>
 ]]></content>
   </entry>
   

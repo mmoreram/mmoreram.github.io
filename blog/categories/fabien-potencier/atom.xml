@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Fabien Potencier | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/fabien-potencier/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2016-03-03T17:28:59+01:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/blog/categories/fabien-potencier/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2017-01-27T01:03:58+01:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Symfony Barcelona Event, September 2015]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/09/07/symfony-barcelona-event-september-2015/"/>
+    <link href="http://mmoreram.com/blog/2015/09/07/symfony-barcelona-event-september-2015/"/>
     <updated>2015-09-07T21:38:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/09/07/symfony-barcelona-event-september-2015</id>
+    <id>http://mmoreram.com/blog/2015/09/07/symfony-barcelona-event-september-2015</id>
     <content type="html"><![CDATA[<p>It is a pleasure for me to announce that next September 22nd we will have a
 great event in Barcelona. I&rsquo;ve talked many times about this local organization,
 but this time is pretty different. I&rsquo;ll explain you.</p>

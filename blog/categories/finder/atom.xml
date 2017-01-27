@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Finder | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/finder/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2016-03-03T17:28:59+01:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/blog/categories/finder/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2017-01-27T01:03:58+01:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Factory pattern in Symfony2]]></title>
-    <link href="http://mmoreram.github.io/blog/2013/12/23/factory-pattern-in-symfony2/"/>
+    <link href="http://mmoreram.com/blog/2013/12/23/factory-pattern-in-symfony2/"/>
     <updated>2013-12-23T12:10:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2013/12/23/factory-pattern-in-symfony2</id>
+    <id>http://mmoreram.com/blog/2013/12/23/factory-pattern-in-symfony2</id>
     <content type="html"><![CDATA[<h2>The pattern.</h2>
 
 <p>The factory pattern gives responsibility to create some instances of certain

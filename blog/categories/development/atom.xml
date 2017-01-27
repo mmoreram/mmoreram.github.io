@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Development | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/development/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2016-03-03T17:28:59+01:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/blog/categories/development/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2017-01-27T01:03:58+01:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[PDD, Pragmatic Driven Development, English version]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/10/26/pdd-pragmatic-driven-development-english/"/>
+    <link href="http://mmoreram.com/blog/2014/10/26/pdd-pragmatic-driven-development-english/"/>
     <updated>2014-10-26T19:51:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/10/26/pdd-pragmatic-driven-development-english</id>
+    <id>http://mmoreram.com/blog/2014/10/26/pdd-pragmatic-driven-development-english</id>
     <content type="html"><![CDATA[<p>This post is just a translation of one of my previous posts, written in Spanish,
 for Spaniard people. I just wanted to translate it and to propose my idea to the
 entirely world, even knowing not everyone will be agree with my point of view.</p>
@@ -98,9 +98,9 @@ great projects, no matter the framework, the language even the architecture.</p>
   
   <entry>
     <title type="html"><![CDATA[PDD, Pragmatic Driven Development]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/10/06/pdd/"/>
+    <link href="http://mmoreram.com/blog/2014/10/06/pdd/"/>
     <updated>2014-10-06T12:00:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/10/06/pdd</id>
+    <id>http://mmoreram.com/blog/2014/10/06/pdd</id>
     <content type="html"><![CDATA[<p>Hay una tendencia, a mi parecer, extremadamente molesta sobre como se tiene que
 trabajar en cualquier proyecto técnico. Hemos pasado de ser un sector con poca
 voz, a ser, desde hace un tiempo, un pequeño movimiento ególatra de pensamientos

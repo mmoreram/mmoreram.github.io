@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Because yes]]></title>
-  <link href="http://mmoreram.github.io/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2016-03-03T17:28:59+01:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2017-01-27T01:03:58+01:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -14,10 +14,392 @@
 
   
   <entry>
+    <title type="html"><![CDATA[BLDD, un DD para dominarlos a todos]]></title>
+    <link href="http://mmoreram.com/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/"/>
+    <updated>2017-01-26T19:54:00+01:00</updated>
+    <id>http://mmoreram.com/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos</id>
+    <content type="html"><![CDATA[<p><strong>BullshitLess Driven Development</strong></p>
+
+<p>Esta es una carta para tí, pequeño saltamontes programador, que ayer descubriste
+que un <em>if</em> es una instrucción muy molona que hace que puedas ejecutar un
+pequeño trozo de código según una condición predeterminada, y que mañana
+descubrirás muy probablemente qué es una función recursiva, qué es un objeto
+y que Singleton es un patrón de diseño, o al menos esto dicen por allí&hellip;</p>
+
+<p>Esta es una carta para tí, para que te acuerdes de ella en los momentos duros de
+tu vida como programador y para que busques un punto de partida en esta
+maravillosa corriente profesional, llena de letras verdes fosforito con
+significado de victoria, de horas extras impagadas y desagradecidas y de bugs
+indescifrables, más escondidos que la dignidad de los votantes del PP.</p>
+
+<p>Sonríele a la vida, afortunado. Alabado sea tu futuro!</p>
+
+<p>Y es que hoy, aquí, te quiero contar algunas situaciones que seguramente, tarde
+o temprano, y más temprano que tarde, vivirás en alguna de tus futuras hazañas.
+En estas situaciones hay monstruos, trampas mortales y hasta armas letales. Hay
+religiones inconexas, dobles morales y lo peor de todo, gilipolleces como para
+alimentar a medio Congo y sobrar para una cena de navidad donde toda Sierra
+Leona esté invitada. Barra libre de Moët incluida.</p>
+
+<p>Empecemos con algunas frasecillas del gremio&hellip;</p>
+
+<h3>Esto está mal</h3>
+
+<p>Si amigo.</p>
+
+<p>Aunque no lo creas, todo cuanto hagas en tu vida será una verdadera mierda para
+algunos. Da igual que lleves un día programando, o que tengas la muchas veces
+inevitable presión de aquellos que te pagan el sueldo, o simplemente que no lo
+sepas hacer mejor. No importa. Hagas lo que hagas, apestará a perro agusanado.</p>
+
+<p>Y posiblemente lo esté. Posiblemente tu creación será pobre y con muchos fallos,
+pero tenemos la suerte de que rodeados como estamos rodeados de almas
+constructivas y caritativas, muy pocas veces un <em>&ldquo;Está mal&rdquo;</em> vendrá acompañado
+de un <em>&ldquo;Si quieres me siento a tu lado y miramos como puede estar mejor&rdquo;</em>.</p>
+
+<p>No te ofusques, no estás solo.</p>
+
+<p>Somos la sociedad del <em>&ldquo;Tu no sabes&rdquo;</em> y no la del <em>&ldquo;Creo que puede mejorarse&rdquo;</em>,
+y estamos tan acomplejados con nuestras mierdas, que necesitamos poner al
+principio de nuestras frases un <strong>&ldquo;IMHO&rdquo;</strong> porque sino, puede que se note
+demasiado que creemos que toda linea de código que no sale de nuestros muñones
+es basura ipso facto.</p>
+
+<p>Los más educados han decidido enmascarar toda esta realidad con una palabreja
+de lo más interesante, y querido lector&hellip; grábatela en tu memoria desentrenada.</p>
+
+<p>Legacy Code.</p>
+
+<h3>Estos de producto&hellip;</h3>
+
+<p>Otra de las frasecillas que corren por la autopista de lo insultante es <em>&ldquo;estos
+de producto, que pesaos con los píxeles&rdquo;</em> o parecidas, normalmente con tono
+burlesco y desafiante.</p>
+
+<p>Si amigo, un clásico entre compañeros de departamento, muy habituales en
+cualquier empresa que se precie donde cuiden un poco sus ventas. No todas las
+empresas son tan modernas y liberales como para dejar a su libre albedrío
+métricas de ventas y ingresos&hellip;</p>
+
+<p>Ah&hellip; estos de producto que quieren jodernos la vida con chorradas como píxeles
+para los frontales, con cambios en la web aparentemente inútiles, o con
+integraciones con métodos de pago o de transporte. Cuando veas a toda esta
+gentuza, escúpeles en la cara, porque no nos respetan, a nosotros, a los
+programadores, a los que hacemos los proyectos que nos piden con tecnologías que
+desconocemos porque son guasonas y molonas, a los que decidimos que el nuevo
+proyecto de la empresa se hará con 378 capas distintas, a cada cual más inútil,
+porque un tal Pepito de los Palotes con sombrero y cuyos fans llevaban el libro
+de Clean Code tatuado en sus suaves nalgas, dijo que era lo último en
+Hipsterismo, a pesar de no saber qué estamos haciendo y el porqué lo estamos
+haciendo. A nosotros que hacemos un formulario en 5 días porque queremos que sea
+compatible con la GameBoy advance, con la pantallita del microondas y con el
+termostato de nuestra estufa. A nosotros que nadie nos impide estar todo el día
+con la nariz enganchada a los grupos online con ciertos parecidos a bacanales.</p>
+
+<p>A nosotros que somos tan responsables.</p>
+
+<p>Te diré un secreto.
+En voz bajita, que no nos oiga nadie.</p>
+
+<p>Si ellos supieran cada una de las cagadas que hacemos en el código que nos pagan
+por hacer, o si supieran cada una de las decisiones arquitecturales erróneas que
+tomamos por el mero hecho de querer molar cantidad, estaríamos todos despedidos.
+Todos.</p>
+
+<p>Aunque supongo que preferimos decir &ldquo;Estos de producto&hellip;&rdquo;, aparentar que no tan
+solo sabemos hacer un <em>foreach</em>, sino que también sabemos hacer el trabajo de
+media compañía, y seguir con nuestras vidas con la cabeza bien alta, dejando un
+rastro de Legacy Code, cual rastro en nuestras espaldas.</p>
+
+<h3>En mi empresa hacemos&hellip;</h3>
+
+<p>Esta es perla brillante, el zafiro de las frases, aunque para encontrarla
+tendrás que esforzarte un poco y dejar que la luz del sol alumbre tu tersa tez
+para salir de casa y relacionarte con otras personas de otras empresas.</p>
+
+<p><strong>Ánimo.</strong></p>
+
+<p>Y es que descubrirás que todas las otras empresas utilizan lo last de lo last.
+Mierda de la buena en su stack de tecnologías y droga de la dura en sus últimas
+incorporaciones (cuando no tienen un auténtico máquina en su departamento de
+backend, tienen un exfacebook en su departamento de sistemas o un súper crack
+como CTO llegado de las montañas de los elfos).</p>
+
+<p>Todas las empresas están tan bien dotadas tecnológicamente y con unas plantillas
+tan extremadamente potentes, que cuando entres en una empresa nueva, nunca,
+repito, nunca, jamás de los jamases, tendrás la impresión de haber empezado a
+trabajar en una escabechina llena de cadáveres, pudriéndose durante los últimos
+10 años.</p>
+
+<p>Nunca, en absoluto.</p>
+
+<p>Y es que amigo, parece que entre que todo nuestro código es una mierda, y los
+de producto están todo el día que si ponme este píxel, y ponme este banner,
+resulta que no tenemos tiempo de hacerlo bien. Pero eh! no es porque seamos
+todos unos auténticos chapuzas en la mayoría de los casos, no no, es porque no
+hemos tenido <em>tiempo</em>.</p>
+
+<h3>Es que resulta que Uncle Bob dice que&hellip;</h3>
+
+<p>Rápido y preciso.</p>
+
+<ul>
+<li>¿Está aquí Uncle Bob?</li>
+<li>¿Conoce Uncle Bob el proyecto?</li>
+<li>No, ¿verdad?</li>
+<li>Pues me importa una mierda lo que diga el tío Bob.</li>
+</ul>
+
+
+<p>Fin de la discusión.</p>
+
+<h2>La clave de todo, BLDD</h2>
+
+<p>Dicho esto, verás que el mundo es un lugar inhóspito, lleno de gente con pocas
+ganas de ayudarte y con muchas de joderte y hundirte, pero aún así tu tienes que
+hacer un <em>switch</em> porque dadas las circunstancias que sean no puedes o no sabes
+hacerlo mejor, o tienes que hacer un proyecto con pocos días y por desgracia no
+puedes hacerlo compatible con el manillar de tu bici.</p>
+
+<p>Te presento, humildemente, el <strong>BLDD</strong>, abreviación de <strong>BullshitLess-Driven
+Development</strong> (otra cosa que tienes que aprender es que aquí escribimos todos
+con abreviaciones, en inglés aunque estén hablando dos de Albacete, y que debes
+poner entre frase y frase la palabra <strong>Trade-off</strong>. Si no haces esto, no serás
+aceptado por los grandes círculos).</p>
+
+<p>El BLDD es una práctica muy sencilla, basada en el ignorar todas aquellas
+frecuencias que emitan gilipolleces en directo. Lo que vendría a ser el clásico
+mandar a esnifar plastidecor picado de toda la vida, pero con un nombre moderno
+y casual, de estos que nos hacen sentir a nosotros muy top.</p>
+
+<blockquote><p>Se recomienda primero hacer los tests, y luego implementar el BLDD. Si no lo
+haces así, eres un mierda.</p></blockquote>
+
+<p>Esta metodología contrarresta todas las demás que terminan en DD y es aplicable
+la mayor parte del tiempo útil de tu vida.</p>
+
+<ul>
+<li>Que alguien te dice que tu proyecto debería tener tests primero? BLDD.</li>
+<li>Que alguien te dice que estás muy acoplado a tu FW y solo quieres hacer tu
+currículum? BLDD</li>
+<li>Que alguien te dice que tu código es mierda y que él lo hace mejor en DDD?
+<del>a este le rompes la boca</del> BLDD</li>
+</ul>
+
+
+<p>Ya ves, funciona cual navaja suiza. Lo bueno de esta práctica es que ten claro
+que nunca nadie va a decir como debes practicarla. Un sinfín de fórmulas, cada
+cual más original, pueden formar parte del elenco de posibilidades a la hora de
+ejecutar el BLDD.</p>
+
+<h2>Algunos consejos para terminar</h2>
+
+<p>Para finalizar mi cookbook del buen programador, un escueto listado de ideas y
+miniconsejos de jardinería para que vayas pensando.</p>
+
+<ul>
+<li>IMHO, si algún día haces una presentación en público, súbete el libro rojo de
+DDD contigo, y al que se ponga en la primera fila y se ponga a mirar el móvil o
+a dormirse, se lo tiras. Le va a doler. Mucho. Y si sigue durmiendo, recuerda
+que aún tienes de otros colores&hellip;</li>
+<li>IMHO, una conversación se acaba cuando alguien dice la palabra <em>Annotation</em>.</li>
+<li>IMHO, para tener amigos en Twitter solo tienes que decir &ldquo;TDD is dead&rdquo;. Para
+tener haters, también.</li>
+<li>IMHO, los tests en tus proyectos es como el paro en españa. Lo importante
+es el coverage, no la calidad de los cases.</li>
+<li>IMHO, en Barcelona, de media los developers solemos cambiar de trabajo una vez
+al año, con subida salarial de forma recurrente. A los 40 años estarás cobrando
+120.000 euros y serás un fucking god en 20 lenguajes distintos. Seguirás sin
+poner bien el puto nombre a una variable y pondrás los comentarios en español.</li>
+<li>IMHO, a día de hoy, en enero de 2017 es mainstream el Event Sourcing. Si, si, está
+práctica tan jodidamente útil en todo nuestro sector. Así que calculo que
+aproximadamente en 2021, en alguna de las empresas en las que trabajes, te
+encontrarás un conjunto de código intratable, ilegible y profundamente
+indocumentado fruto de esta modilla. De nada.</li>
+</ul>
+
+
+<h2>Conclusiones</h2>
+
+<p>Finalmente decirte que mucha suerte, que aprendas mucho, que leas mucho, que
+preguntes y enseñes mucho, pero que nunca dejes que nadie te diga como tienes
+que hacer las cosas (menos si alguien te aconseja que no utilizes Prestashop. En
+este caso, hazle caso). Ten el suficiente criterio como para aceptar que muchas
+de las formas de trabajar que escucharás en conferencias, charlas de amiguetes o
+en hilos de Twitter ni tan solo sirven para tu proyecto.</p>
+
+<p>Trabaja duro, persigue tus objetivos y acuérdate de comprarte muchos libros
+técnicos, de sacar una foto cada vez que te compres uno y publicar en Twitter
+algo como <em>&ldquo;Ya tengo plan para este fin de semana&rdquo;</em>.</p>
+
+<p>Para todo lo demás, BLDD.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Symfony, que narices estás haciendo?]]></title>
+    <link href="http://mmoreram.com/blog/2017/01/11/symfony/"/>
+    <updated>2017-01-11T11:43:00+01:00</updated>
+    <id>http://mmoreram.com/blog/2017/01/11/symfony</id>
+    <content type="html"><![CDATA[<p>Si, esta es mi pregunta. Que narices está pasando?</p>
+
+<p>Desde hace unos meses te veo perdido, y es que durante mucho tiempo, y a pesar
+de las muchas voces que han pasado de quererte a odiarte en una fracción de
+segundo, bien por tu obvia complejidad o bien por tu carácter conservador en
+muchas partes de la tecnología, tu has sido la luz en muchos aspectos. Has
+fundado donde todo parecía estar perdido, y has iluminado donde todo parecía
+oscuro. ¿Y bien, que te ha pasado?</p>
+
+<p>Digo esto porque desde hace ya unas versiones tengo la sensación de que has
+cambiado. Tus objetivos, tus metas. Han cambiado. Como dirían algunos en tono
+sarcástico, tu antes molabas.</p>
+
+<p>Aqui te muestro algunos de los puntos que me preocupan de verdad.</p>
+
+<h3>Destrozando el DIC</h3>
+
+<p>Aunque el concepto de Inyección de dependencias ya existía cuando el componente
+de Symfony salió en Github hace ya unos cuandos años, reconozco que tu nos
+enseñaste a muchos como funcionaba esto del SOLID. Y lo recuerdo con mucho
+cariño, pues fue un antes y un después. Entendimos todos la importancia de
+trabajar con Interfaces, la importancia de inyectar librerías de las que
+dependemos y lo erroneo que es el hecho de inyectar el contenedor directamente
+en nuestras clases. Esto nos hizo y nos sigue haciendo mejores desarrolladores
+y arquitectos.</p>
+
+<p>Por esto y por mucho más, te doy solemnemente las gracias.</p>
+
+<p>Dicho esto, ¿puedes entender que el componente de Inyección de Dependencias
+puede que ya esté terminado? Me refiero a que, la función de dicho componente es
+uno y tan solo uno, y debería ser sencillo y fácil de entender. Durante muchos
+años hemos trabajado para que no tan solo el componente funcione en miles de
+proyectos en producción, sino que aún muchos más miles de personas lo entiendan
+y lo sepan utilizar. Se consiguió un modelo de definición de dependencias
+bastante bueno y con las que la gente sabía trabajar sin demasiados problemas.
+¿Y pues? ¿Que motivos tienes ahora para cambiar esto?</p>
+
+<p>Lo digo porque recientemente sacaste el Autowiring, y me parece una chapuza como
+pocas había visto en ti. No la implementación, en absoluto, hasta reconozco que
+ni me la he mirado, aunque no deja de ser una anotación como cualquier otra. Me
+parece una chapuza el hecho de que un proyecto como tú trates por un lado de
+evangelizar buenas praxis tales como el Testing, las &ldquo;buenas prácticas&rdquo;, y el
+mismo SOLID que en tantas charlas hemos oído hablar, y luego defendáis el hecho
+de que los servicios de nuestras aplicaciones lleven anotaciones.</p>
+
+<p>Yo mismo sigo defendiendo las anotaciones en controladores, pues creo que son el
+único sitio donde pueden tener sentido&hellip; ¿pero en los servicios? ¿anotaciones
+en los servicios? ¿hola? ¿es que nadie dirá nada?</p>
+
+<p>Desde luego, es una opción como cualquier otra, válida en algunos momentos,
+estúpida en muchos otros, pero no deberíamos tener la responsabilidad de hacer
+que los desarrolladores de apps basadas en Symfony fueran escalables a la vez
+que comprensibles? ¿Cuando de escalable véis en el hecho de que los servicios
+tengan anotaciones? ¿Como cuento yo ahora en mis clases de Symfony que esta
+aberración es posible?</p>
+
+<p>Por otro lado, nuevo en la versión ^3.3&hellip; definición de servicios por clase.
+Bien, vamos a ver un hermoso ejemplo.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">AppBundle\EventListener\UserManager</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// ...</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">editAction</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// before Symfony 3.3</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;app.manager.user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Symfony 3.3</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nx">UserManager</span><span class="o">::</span><span class="na">class</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Según el core de Symfony, esta nueva feature es opcional, por lo que si quieres
+puedes seguir utilizando la antigua, y añade&hellip; &ldquo;la antigua forma es obligatoria
+para cuando se quiera sobreescribir, aunque la nueva, juntamente con el
+Autowiring es muy útil para hacer RAD&rdquo;.</p>
+
+<p>Les voy a contar un secreto, pero no se lo contéis a nadie.</p>
+
+<blockquote><p>RAD !== SAD
+Rapid Application Development !== Shitty Application Development</p></blockquote>
+
+<p>Crear una app rápido no implica hacerla de tal forma que, de forma ipsofacta,
+sea inservible para otros entornos. Dicen que la antigua forma es obligatoria
+para cuando quieres sobreescribirlo. Pues bien, amigos, si tanto nos importa
+el hecho que la gente utilize internamente librerías como si 3rd party se
+tratara, si queremos que la gente cree librerías y bundles en sus empresas tan
+profesionales como sea posible, si queremos, al fín y al cabo, potenciar el
+hecho que la gente cree software de calidad, alguien puede comentarme el porqué
+Symfony ahora permite hacer las cosas de otra forma, aín añadir ningún tipo de
+valor a lo que ya existía? ¿Que se pretende? ¿Que la gente lo haga mal de buenas
+a primeras?</p>
+
+<p>Bien, creo que lo váis a conseguir.
+Felicidades.</p>
+
+<h3>Comunidades</h3>
+
+<p>Pasan los años y sigues sin saber que es lo realmente importante. Piensas que lo
+que te ha hecho grande es tu código, y no te negaré que no está mal, aunque es
+muy mejorable, solo hace falta que un PHPStorm entre en algunas de tus clases y
+se ponga a echar humo (namespaces que ya no se utilizan, métodos privados a los
+que nadie llama, bloques de PHPDoc inválidos o sin actualizar&hellip;), pero te
+equivocas.</p>
+
+<p>Desde el principio, mucha gente confió en ti. Nos cambiaste la vida (lo siento,
+soy un romántico, no puedo remediarlo) y nosotros te devolvimos el favor con
+meetups, conferencias, posts, Bundles&hellip;</p>
+
+<p>¿Y sigues pensando que lo más importante es tu código? Te equivocas. Lo más
+importante es el trabajo de toda esta gente que, a pesar de tus muchos pasos
+erroneos, hemos estado allí preparados para difundir tus últimas maravillas.
+Nuestro incansable esfuerzo ha hecho que hoy seas lo que eres, y tu aún más
+inagotable indiferencia hacia nosotros te ha limitado ser lo que realmente
+podrías haber sido.</p>
+
+<p>¿Quieres crecer? Haz de tus comunidades algo esencial, algo prioritario. Danos
+herramientas para ser una extensión de ti. Sé nuestro altavoz y haremos de tí
+algo grande&hellip; aunque algo me dice que esto no entra dentro de tus
+prioridades&hellip; me equivoco?</p>
+
+<h3>DX</h3>
+
+<p>Hace unos dias vi una issue en Symfony que me mosqueó. Javier Eguiluz comentaba
+con mucho acierto que la forma de trabajar con todo lo relacionado con la
+seguridad era tedioso, complicado, repetitivo y pesado. Tal vez estas no fueron
+sus palabras, pero si son las mias.</p>
+
+<p>Tras muchísimos proyectos en Symfony, uno se percata que siempre hace las mismas
+comprobaciones una y otra vez. Existe un Token? Existe un usuario? Porque un
+usuario tiene que saebr</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Symfony Catalunya]]></title>
-    <link href="http://mmoreram.github.io/blog/2016/03/03/symfony-catalunya/"/>
+    <link href="http://mmoreram.com/blog/2016/03/03/symfony-catalunya/"/>
     <updated>2016-03-03T17:00:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2016/03/03/symfony-catalunya</id>
+    <id>http://mmoreram.com/blog/2016/03/03/symfony-catalunya</id>
     <content type="html"><![CDATA[<p>Imagine yourself in front of the Barcelona&rsquo;s beach in July. It sounds good,
 right? Then, continue imagining yourself with a great Symfony environment, with
 a very cold beer, amazing people and even better topics to talk about.</p>
@@ -119,9 +501,9 @@ community.</p>
   
   <entry>
     <title type="html"><![CDATA[you probably need bundle dependencies]]></title>
-    <link href="http://mmoreram.github.io/blog/2016/02/09/you-probably-need-bundle-dependencies/"/>
+    <link href="http://mmoreram.com/blog/2016/02/09/you-probably-need-bundle-dependencies/"/>
     <updated>2016-02-09T12:23:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2016/02/09/you-probably-need-bundle-dependencies</id>
+    <id>http://mmoreram.com/blog/2016/02/09/you-probably-need-bundle-dependencies</id>
     <content type="html"><![CDATA[<p>This post tries to answer the Magnus Nordlander&rsquo;s
 <a href="https://blog.fervo.se/blog/2016/02/07/bundle-deps/">blog post</a>, and to explain
 why the <a href="https://github.com/mmoreram/symfony-bundle-dependencies">Symfony Bundle Dependencies</a>
@@ -185,9 +567,9 @@ instanced as well to complain services dependencies.</p>
   
   <entry>
     <title type="html"><![CDATA[Your packages dependencies]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/11/20/your-packages-dependencies/"/>
+    <link href="http://mmoreram.com/blog/2015/11/20/your-packages-dependencies/"/>
     <updated>2015-11-20T21:50:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/11/20/your-packages-dependencies</id>
+    <id>http://mmoreram.com/blog/2015/11/20/your-packages-dependencies</id>
     <content type="html"><![CDATA[<ul>
 <li>A component should add as dependency all needed packages to have a complete
 functionality</li>
@@ -851,9 +1233,9 @@ remember that all of us were inexperienced once.</p>
   
   <entry>
     <title type="html"><![CDATA[Composer install in CI]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/09/28/composer-install-in-ci/"/>
+    <link href="http://mmoreram.com/blog/2015/09/28/composer-install-in-ci/"/>
     <updated>2015-09-28T16:53:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/09/28/composer-install-in-ci</id>
+    <id>http://mmoreram.com/blog/2015/09/28/composer-install-in-ci</id>
     <content type="html"><![CDATA[<p>If you have a project with a lot of dependencies, then you might now what I am
 talking about. We all love composer, but we all know as well that, at least with
 current PHP versions, some composer.json are very heavy to compute and fulfill.
@@ -1020,9 +1402,9 @@ it under your current PHP version, right?</p>
   
   <entry>
     <title type="html"><![CDATA[Symfony UG, be our friend]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/09/14/symfony-ug-be-our-friend/"/>
+    <link href="http://mmoreram.com/blog/2015/09/14/symfony-ug-be-our-friend/"/>
     <updated>2015-09-14T10:57:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/09/14/symfony-ug-be-our-friend</id>
+    <id>http://mmoreram.com/blog/2015/09/14/symfony-ug-be-our-friend</id>
     <content type="html"><![CDATA[<p>Symfony Barcelona UG have been looking some sponsors for a while, and we have
 had a great response from the community. We are so proud and happy about that.</p>
 
@@ -1046,9 +1428,9 @@ world with tons of tiny and cute cats :)</p>
   
   <entry>
     <title type="html"><![CDATA[Symfony Barcelona Event, September 2015]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/09/07/symfony-barcelona-event-september-2015/"/>
+    <link href="http://mmoreram.com/blog/2015/09/07/symfony-barcelona-event-september-2015/"/>
     <updated>2015-09-07T21:38:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/09/07/symfony-barcelona-event-september-2015</id>
+    <id>http://mmoreram.com/blog/2015/09/07/symfony-barcelona-event-september-2015</id>
     <content type="html"><![CDATA[<p>It is a pleasure for me to announce that next September 22nd we will have a
 great event in Barcelona. I&rsquo;ve talked many times about this local organization,
 but this time is pretty different. I&rsquo;ll explain you.</p>
@@ -1094,9 +1476,9 @@ this post to allow everyone to know about it!</p>
   
   <entry>
     <title type="html"><![CDATA[EventListeners as collectors in Symfony]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/08/28/eventlisteners-as-collectors-in-symfony/"/>
+    <link href="http://mmoreram.com/blog/2015/08/28/eventlisteners-as-collectors-in-symfony/"/>
     <updated>2015-08-28T12:04:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/08/28/eventlisteners-as-collectors-in-symfony</id>
+    <id>http://mmoreram.com/blog/2015/08/28/eventlisteners-as-collectors-in-symfony</id>
     <content type="html"><![CDATA[<p>Some of my concerns during the last couple of years have been how to collect
 data from all installed bundles using available tools in Symfony packages.
 I say concerns because I don&rsquo;t really know if is there a tool for that.</p>
@@ -1537,9 +1919,9 @@ another one as long as people understand it and is easy to work with.</p>
   
   <entry>
     <title type="html"><![CDATA[Symfony in Barcelona]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/08/23/symfony-in-barcelona/"/>
+    <link href="http://mmoreram.com/blog/2015/08/23/symfony-in-barcelona/"/>
     <updated>2015-08-23T17:22:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/08/23/symfony-in-barcelona</id>
+    <id>http://mmoreram.com/blog/2015/08/23/symfony-in-barcelona</id>
     <content type="html"><![CDATA[<p>Barcelona, one of the best cities in the world.</p>
 
 <p>For you, Symfony lover. Do you know where is Barcelona, right?
@@ -1557,7 +1939,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#115;&#121;&#x6d;&#x66;&#111;&#110;&#x79;&#98;&#x61;&#x72;&#99;&#101;&#x6c;&#x6f;&#x6e;&#97;&#64;&#103;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#109;">&#115;&#x79;&#109;&#x66;&#x6f;&#110;&#x79;&#x62;&#x61;&#x72;&#x63;&#101;&#108;&#x6f;&#110;&#97;&#x40;&#x67;&#109;&#x61;&#105;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+<a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#x73;&#121;&#x6d;&#x66;&#x6f;&#110;&#121;&#98;&#97;&#114;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#97;&#x40;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#x73;&#121;&#109;&#102;&#111;&#x6e;&#121;&#x62;&#97;&#114;&#x63;&#x65;&#108;&#x6f;&#x6e;&#97;&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 ]]></content>
@@ -1565,9 +1947,9 @@ Group and you will be properly helped to move here with us. The group email is
   
   <entry>
     <title type="html"><![CDATA[Re-thinking Event Listeners]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/08/20/re-thinking-event-listeners/"/>
+    <link href="http://mmoreram.com/blog/2015/08/20/re-thinking-event-listeners/"/>
     <updated>2015-08-20T12:27:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/08/20/re-thinking-event-listeners</id>
+    <id>http://mmoreram.com/blog/2015/08/20/re-thinking-event-listeners</id>
     <content type="html"><![CDATA[<p>Let&rsquo;s talk about Event Listeners.
 Do you know what an Event Listener is?</p>
 
@@ -1997,9 +2379,9 @@ Twig extensions.</p>
   
   <entry>
     <title type="html"><![CDATA[Defeating Expression Language]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/05/18/defeating-expression-language/"/>
+    <link href="http://mmoreram.com/blog/2015/05/18/defeating-expression-language/"/>
     <updated>2015-05-18T09:53:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/05/18/defeating-expression-language</id>
+    <id>http://mmoreram.com/blog/2015/05/18/defeating-expression-language</id>
     <content type="html"><![CDATA[<p>How beautiful Expression Language definitions are, right? I mean, inserting that
 complex expressions in a Dependency Injection configuration file is so nice and
 fast if you need to inject the result of a method in a service (one of the
@@ -2121,9 +2503,9 @@ yourself&hellip;</p>
   
   <entry>
     <title type="html"><![CDATA[Crowdfunding Soundtrack - El Evento]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/05/08/crowdfunding-soundtrack-the-event/"/>
+    <link href="http://mmoreram.com/blog/2015/05/08/crowdfunding-soundtrack-the-event/"/>
     <updated>2015-05-08T17:29:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/05/08/crowdfunding-soundtrack-the-event</id>
+    <id>http://mmoreram.com/blog/2015/05/08/crowdfunding-soundtrack-the-event</id>
     <content type="html"><![CDATA[<blockquote><p>This post is written in Spanish, but I will translate it soon. Stay tuned for
 the translation :D</p></blockquote>
 
@@ -2258,9 +2640,9 @@ a escribir de forma periódica todas las actualizaciones sobre el evento.</p>
   
   <entry>
     <title type="html"><![CDATA[Lazy Commands in Symfony]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/05/08/lazy-commands-in-symfony/"/>
+    <link href="http://mmoreram.com/blog/2015/05/08/lazy-commands-in-symfony/"/>
     <updated>2015-05-08T11:04:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/05/08/lazy-commands-in-symfony</id>
+    <id>http://mmoreram.com/blog/2015/05/08/lazy-commands-in-symfony</id>
     <content type="html"><![CDATA[<p>Have you ever had this scenario?</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -2402,9 +2784,9 @@ maybe) to change this implementation for next Symfony 3 version.</p>
   
   <entry>
     <title type="html"><![CDATA[Montando a Pau Garcia-Milà]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/05/07/montando-a-pau-garcia-mila/"/>
+    <link href="http://mmoreram.com/blog/2015/05/07/montando-a-pau-garcia-mila/"/>
     <updated>2015-05-07T02:58:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/05/07/montando-a-pau-garcia-mila</id>
+    <id>http://mmoreram.com/blog/2015/05/07/montando-a-pau-garcia-mila</id>
     <content type="html"><![CDATA[<p>Hace apenas unas semanas, en un diario nacional español, aparecía un escrito
 inquietante, al menos a simple vista, sobre algunos puntos discutibles alrededor
 del ya más que conocido emprendedor Pau Garcia-Milà.</p>
@@ -2572,9 +2954,9 @@ marketinianas.</p>
   
   <entry>
     <title type="html"><![CDATA[Visithor, testing your routes without pain]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/05/04/visithor/"/>
+    <link href="http://mmoreram.com/blog/2015/05/04/visithor/"/>
     <updated>2015-05-04T13:11:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/05/04/visithor</id>
+    <id>http://mmoreram.com/blog/2015/05/04/visithor</id>
     <content type="html"><![CDATA[<p>Do you like testing? I like testing. Well, in fact I like testing once I have
 understood how the engine I am using works. Until this moment, everything is a
 completely disaster.</p>
@@ -2788,9 +3170,9 @@ here.</p>
   
   <entry>
     <title type="html"><![CDATA[Behat and data-test]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/04/25/behat-and-data-test/"/>
+    <link href="http://mmoreram.com/blog/2015/04/25/behat-and-data-test/"/>
     <updated>2015-04-25T16:31:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/04/25/behat-and-data-test</id>
+    <id>http://mmoreram.com/blog/2015/04/25/behat-and-data-test</id>
     <content type="html"><![CDATA[<p>Tests should be as robust as possible.</p>
 
 <p>I think you will agree with me with that phrase. If your tests are too coupled
@@ -2941,9 +3323,9 @@ with Behat or any kind of Behavioral Testing Tool.</p>
   
   <entry>
     <title type="html"><![CDATA[Reflexiones de un pequeño emprendedor]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor/"/>
+    <link href="http://mmoreram.com/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor/"/>
     <updated>2015-04-05T01:58:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor</id>
+    <id>http://mmoreram.com/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor</id>
     <content type="html"><![CDATA[<p>Ya hace un poco más de un año que estoy a bordo de este proyecto llamado Elcodi.
 Para los que no conozcáis el proyecto, solo unas simples pistas&hellip;</p>
 
@@ -3098,9 +3480,9 @@ mayores deseos de éxito.</p>
   
   <entry>
     <title type="html"><![CDATA[PDD Manifesto]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/01/10/pdd-manifesto/"/>
+    <link href="http://mmoreram.com/blog/2015/01/10/pdd-manifesto/"/>
     <updated>2015-01-10T18:40:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/01/10/pdd-manifesto</id>
+    <id>http://mmoreram.com/blog/2015/01/10/pdd-manifesto</id>
     <content type="html"><![CDATA[<p>Hi everyone.</p>
 
 <p>I&rsquo;ve been talking about PDD for a while. Pragmatism-Driven Development, a
@@ -3170,9 +3552,9 @@ projects.</p>
   
   <entry>
     <title type="html"><![CDATA[SymfonyWalk - c'est fini]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/11/25/symfony-walk-ends/"/>
+    <link href="http://mmoreram.com/blog/2014/11/25/symfony-walk-ends/"/>
     <updated>2014-11-25T12:13:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/11/25/symfony-walk-ends</id>
+    <id>http://mmoreram.com/blog/2014/11/25/symfony-walk-ends</id>
     <content type="html"><![CDATA[<p>90Km walked in 3 days. And it&rsquo;s over.</p>
 
 <p>I&rsquo;ve been walking through amazing and gorgeous places during the last 3 days. I
@@ -3211,121 +3593,6 @@ after goal.</p>
 event.</p>
 
 <p>PD: Ryan, my friend, I will also take a plane XD</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[SymfonyWalk - Sleeping bag]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/11/07/symfonywalk-sleeping-bag/"/>
-    <updated>2014-11-07T18:51:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/11/07/symfonywalk-sleeping-bag</id>
-    <content type="html"><![CDATA[<p>I expected it would be much easier. Indeed, it should be easier, but once again,
-the effort on something is just the beginning of something simply bigger called
-&ldquo;The plan&rdquo;.</p>
-
-<p>The problem is that I thought if would be much simple to sleep from Zaragoza to
-Madrid.</p>
-
-<p>It is not. Damn!</p>
-
-<p>So this is why I will have to sleep in a sleeping bag 9 days. I don&rsquo;t exactly
-know where will I be able to clean myself, or to eat something, or sleep. In
-fact this is what OpenSource is. All OpenSource developers are Walkers in a
-world without hostels, but nice people.</p>
-
-<p>I expect I will find some contributors around the adventure.</p>
-
-<ul>
-<li>Food Pull Requests?</li>
-<li>Bed Pull Requests?</li>
-<li>Water Pull Requests?</li>
-</ul>
-
-
-<p>7 days to go. I am ready. Am I?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PDD, Pragmatic Driven Development, English version]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/10/26/pdd-pragmatic-driven-development-english/"/>
-    <updated>2014-10-26T19:51:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/10/26/pdd-pragmatic-driven-development-english</id>
-    <content type="html"><![CDATA[<p>This post is just a translation of one of my previous posts, written in Spanish,
-for Spaniard people. I just wanted to translate it and to propose my idea to the
-entirely world, even knowing not everyone will be agree with my point of view.</p>
-
-<p>You will find the original one <a href="http://mmoreram.com/blog/2014/10/06/pdd/">here</a></p>
-
-<p>There is a trend, in my opinion, extremely annoying about how we should work in
-any technical project. We have gone from being a voiceless sector to, for a
-while, a small egomaniac movement with categorical thoughts, making some
-monothematic readings so boring for the reader, just because these topics
-iterated for the umpteenth time with a very theoretical speech, non practical at
-all, far from the real life.</p>
-
-<p>And that&rsquo;s what we all need, a great doses of reality. Because reality is
-practical, not logical.</p>
-
-<p>From my point of view, and given my small experience, I think this movement has
-to be eradicated to make way for a new movement of thought, maybe
-circumstantially called PDD, Pragmatic Driven Development (You know&hellip; I can
-also be so witty assigning new names and adding some cool tags to my Linkedin
-profile&hellip;). And the truth is that I am so tired seeing that some people is
-still telling me how I should do my job, what practices should I follow to make
-it &ldquo;the right way&rdquo; and what guidelines I should take to not being far from the
-real truth.</p>
-
-<p>The real truth does not exist, or at least should not. Every single speech
-should have an objective part, based in good practices, but also should have a
-subjective part, relative to the real circumstances and taking care about the
-needs of the project. So, this is not seemed to be understood by some people.
-Seems that, like an outdated political movement, The ego blinds some people to
-understand so much certainty (must be that we are too used to being treated like
-sheeps&hellip; BeEeEe BeEeEe).</p>
-
-<p>This is why I refuse to listen to such modernistic stupidity without solid
-arguments. I refuse to be near this hype, created from this people that don&rsquo;t
-have any other way to stand out than selling their unique thought like it was
-the entrance of the heaven of wisdom. We have reached an illness point.</p>
-
-<p>I personally always demand my attendees, or just the people that talk with me,
-to have an owning point of view, to treat my single one just like another point
-of view, even if they feel it is not correct, it is different or even distant
-from theirs, and to use it as a starting point of constructive discussion.</p>
-
-<p>Important, I&rsquo;m not telling that I disagree all these techniques, I&rsquo;m not telling
-that all this architectural knowledge is not useful, I&rsquo;m not telling that
-applying a great methodology is useless&hellip; I strongly think that all of them,
-born inside great minds and actually tested with great results, are very useful
-and really makes us better as developers, giving us more resources to work and
-making us better able to do our job successfully. I have to tell also that since
-I am actually practicing lot of them in my projects, like TDD, BDD and DDD, I
-feel better and more comfortable. I say thanks for that! What I am actually
-saying is that we are developers, not this kind of stupid people without
-capacity analysis. At the moment we lose this capacity, we lose our value.</p>
-
-<ul>
-<li>Hey, dude! I am actually working on that project! Do you like it?</li>
-<li>Well, I expect you are doing Hexagonal Architecture&hellip;</li>
-<li>Hmmm&hellip; I don&rsquo;t really need it&hellip;</li>
-<li>You don&rsquo;t need it? Sure you do!</li>
-<li>In fact, not.</li>
-<li>You are wrong!</li>
-<li>Ok.</li>
-</ul>
-
-
-<p>It is all about thinking things, and make sure about what we really need at each
-point, just ignoring everyone telling you, categorically, the way you need to do
-your job.</p>
-
-<p>I truly hope all this pantomime to be ended soon. I hope as well that one day we
-will be able to work all together as a community or a team, this is what we
-really need, keeping in mind what really matters: learning, teaching and doing
-great projects, no matter the framework, the language even the architecture.</p>
-
-<p>Have a really nice week, and enjoy your work :)</p>
 ]]></content>
   </entry>
   

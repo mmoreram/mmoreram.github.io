@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: visithor | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/visithor/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2016-03-03T17:28:59+01:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/blog/categories/visithor/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2017-01-27T01:03:58+01:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Visithor, testing your routes without pain]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/05/04/visithor/"/>
+    <link href="http://mmoreram.com/blog/2015/05/04/visithor/"/>
     <updated>2015-05-04T13:11:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/05/04/visithor</id>
+    <id>http://mmoreram.com/blog/2015/05/04/visithor</id>
     <content type="html"><![CDATA[<p>Do you like testing? I like testing. Well, in fact I like testing once I have
 understood how the engine I am using works. Until this moment, everything is a
 completely disaster.</p>

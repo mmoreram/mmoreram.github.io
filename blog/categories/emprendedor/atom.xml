@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: emprendedor | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/emprendedor/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2016-03-03T17:28:59+01:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/blog/categories/emprendedor/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2017-01-27T01:03:58+01:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Crowdfunding Soundtrack - El Evento]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/05/08/crowdfunding-soundtrack-the-event/"/>
+    <link href="http://mmoreram.com/blog/2015/05/08/crowdfunding-soundtrack-the-event/"/>
     <updated>2015-05-08T17:29:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/05/08/crowdfunding-soundtrack-the-event</id>
+    <id>http://mmoreram.com/blog/2015/05/08/crowdfunding-soundtrack-the-event</id>
     <content type="html"><![CDATA[<blockquote><p>This post is written in Spanish, but I will translate it soon. Stay tuned for
 the translation :D</p></blockquote>
 
@@ -152,9 +152,9 @@ a escribir de forma periódica todas las actualizaciones sobre el evento.</p>
   
   <entry>
     <title type="html"><![CDATA[Montando a Pau Garcia-Milà]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/05/07/montando-a-pau-garcia-mila/"/>
+    <link href="http://mmoreram.com/blog/2015/05/07/montando-a-pau-garcia-mila/"/>
     <updated>2015-05-07T02:58:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/05/07/montando-a-pau-garcia-mila</id>
+    <id>http://mmoreram.com/blog/2015/05/07/montando-a-pau-garcia-mila</id>
     <content type="html"><![CDATA[<p>Hace apenas unas semanas, en un diario nacional español, aparecía un escrito
 inquietante, al menos a simple vista, sobre algunos puntos discutibles alrededor
 del ya más que conocido emprendedor Pau Garcia-Milà.</p>
@@ -322,9 +322,9 @@ marketinianas.</p>
   
   <entry>
     <title type="html"><![CDATA[Reflexiones de un pequeño emprendedor]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor/"/>
+    <link href="http://mmoreram.com/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor/"/>
     <updated>2015-04-05T01:58:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor</id>
+    <id>http://mmoreram.com/blog/2015/04/05/reflexiones-de-un-pequeno-emprendedor</id>
     <content type="html"><![CDATA[<p>Ya hace un poco más de un año que estoy a bordo de este proyecto llamado Elcodi.
 Para los que no conozcáis el proyecto, solo unas simples pistas&hellip;</p>
 

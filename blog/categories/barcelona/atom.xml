@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: barcelona | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/barcelona/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2016-03-03T17:28:59+01:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <link href="http://mmoreram.com/blog/categories/barcelona/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2017-01-27T01:03:58+01:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Symfony Catalunya]]></title>
-    <link href="http://mmoreram.github.io/blog/2016/03/03/symfony-catalunya/"/>
+    <link href="http://mmoreram.com/blog/2016/03/03/symfony-catalunya/"/>
     <updated>2016-03-03T17:00:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2016/03/03/symfony-catalunya</id>
+    <id>http://mmoreram.com/blog/2016/03/03/symfony-catalunya</id>
     <content type="html"><![CDATA[<p>Imagine yourself in front of the Barcelona&rsquo;s beach in July. It sounds good,
 right? Then, continue imagining yourself with a great Symfony environment, with
 a very cold beer, amazing people and even better topics to talk about.</p>
@@ -119,9 +119,9 @@ community.</p>
   
   <entry>
     <title type="html"><![CDATA[Symfony UG, be our friend]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/09/14/symfony-ug-be-our-friend/"/>
+    <link href="http://mmoreram.com/blog/2015/09/14/symfony-ug-be-our-friend/"/>
     <updated>2015-09-14T10:57:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/09/14/symfony-ug-be-our-friend</id>
+    <id>http://mmoreram.com/blog/2015/09/14/symfony-ug-be-our-friend</id>
     <content type="html"><![CDATA[<p>Symfony Barcelona UG have been looking some sponsors for a while, and we have
 had a great response from the community. We are so proud and happy about that.</p>
 
@@ -145,9 +145,9 @@ world with tons of tiny and cute cats :)</p>
   
   <entry>
     <title type="html"><![CDATA[Symfony Barcelona Event, September 2015]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/09/07/symfony-barcelona-event-september-2015/"/>
+    <link href="http://mmoreram.com/blog/2015/09/07/symfony-barcelona-event-september-2015/"/>
     <updated>2015-09-07T21:38:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/09/07/symfony-barcelona-event-september-2015</id>
+    <id>http://mmoreram.com/blog/2015/09/07/symfony-barcelona-event-september-2015</id>
     <content type="html"><![CDATA[<p>It is a pleasure for me to announce that next September 22nd we will have a
 great event in Barcelona. I&rsquo;ve talked many times about this local organization,
 but this time is pretty different. I&rsquo;ll explain you.</p>
@@ -193,9 +193,9 @@ this post to allow everyone to know about it!</p>
   
   <entry>
     <title type="html"><![CDATA[Symfony in Barcelona]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/08/23/symfony-in-barcelona/"/>
+    <link href="http://mmoreram.com/blog/2015/08/23/symfony-in-barcelona/"/>
     <updated>2015-08-23T17:22:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/08/23/symfony-in-barcelona</id>
+    <id>http://mmoreram.com/blog/2015/08/23/symfony-in-barcelona</id>
     <content type="html"><![CDATA[<p>Barcelona, one of the best cities in the world.</p>
 
 <p>For you, Symfony lover. Do you know where is Barcelona, right?
@@ -213,7 +213,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#x73;&#121;&#109;&#102;&#x6f;&#x6e;&#121;&#98;&#x61;&#114;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#97;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#121;&#x6d;&#102;&#111;&#x6e;&#121;&#98;&#x61;&#x72;&#x63;&#x65;&#x6c;&#x6f;&#110;&#97;&#64;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#46;&#99;&#111;&#109;</a></p>
+<a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x73;&#x79;&#109;&#102;&#111;&#110;&#x79;&#x62;&#97;&#114;&#99;&#101;&#108;&#111;&#x6e;&#97;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#115;&#x79;&#109;&#102;&#x6f;&#x6e;&#121;&#98;&#x61;&#114;&#99;&#101;&#x6c;&#111;&#110;&#x61;&#64;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#46;&#x63;&#x6f;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 ]]></content>
@@ -221,9 +221,9 @@ Group and you will be properly helped to move here with us. The group email is
   
   <entry>
     <title type="html"><![CDATA[Symfony Barcelona]]></title>
-    <link href="http://mmoreram.github.io/blog/2014/06/25/symfony-barcelona/"/>
+    <link href="http://mmoreram.com/blog/2014/06/25/symfony-barcelona/"/>
     <updated>2014-06-25T11:46:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2014/06/25/symfony-barcelona</id>
+    <id>http://mmoreram.com/blog/2014/06/25/symfony-barcelona</id>
     <content type="html"><![CDATA[<p>Queridos developers de Barcelona y alrededores.</p>
 
 <p>Como ya sabréis algunos, en Barcelona tenemos una comunidad muy interesante de

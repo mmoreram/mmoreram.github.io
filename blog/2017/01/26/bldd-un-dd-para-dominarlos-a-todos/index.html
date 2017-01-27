@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>BLDD, un DD para dominarlos a todos - Because yes</title>
+  <meta name="author" content="Marc Morera">
+
+  
+  <meta name="description" content="BullshitLess Driven Development Esta es una carta para tí, pequeño saltamontes programador, que ayer descubriste
+que un if es una instrucción muy &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mmoreram.com/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Because yes" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic|Istok+Web:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41917921-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+  <div id="header-container">
+    <div id="header">
+      <div class="wrapper">
+        <header role="banner"><hgroup>
+  <h1><a href="/">Because yes</a></h1>
+</hgroup>
+
+</header>
+        <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mmoreram.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+      </div>
+    </div>
+  </div>
+  <div id="body"   >
+    <div id="main">
+      <div id="content">
+	<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">BLDD, Un DD Para Dominarlos a Todos</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-01-26T19:54:00+01:00" pubdate data-updated="true">Jan 26<span>th</span>, 2017</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><strong>BullshitLess Driven Development</strong></p>
+
+<p>Esta es una carta para tí, pequeño saltamontes programador, que ayer descubriste
+que un <em>if</em> es una instrucción muy molona que hace que puedas ejecutar un
+pequeño trozo de código según una condición predeterminada, y que mañana
+descubrirás muy probablemente qué es una función recursiva, qué es un objeto
+y que Singleton es un patrón de diseño, o al menos esto dicen por allí&hellip;</p>
+
+<p>Esta es una carta para tí, para que te acuerdes de ella en los momentos duros de
+tu vida como programador y para que busques un punto de partida en esta
+maravillosa corriente profesional, llena de letras verdes fosforito con
+significado de victoria, de horas extras impagadas y desagradecidas y de bugs
+indescifrables, más escondidos que la dignidad de los votantes del PP.</p>
+
+<p>Sonríele a la vida, afortunado. Alabado sea tu futuro!</p>
+
+<p>Y es que hoy, aquí, te quiero contar algunas situaciones que seguramente, tarde
+o temprano, y más temprano que tarde, vivirás en alguna de tus futuras hazañas.
+En estas situaciones hay monstruos, trampas mortales y hasta armas letales. Hay
+religiones inconexas, dobles morales y lo peor de todo, gilipolleces como para
+alimentar a medio Congo y sobrar para una cena de navidad donde toda Sierra
+Leona esté invitada. Barra libre de Moët incluida.</p>
+
+<p>Empecemos con algunas frasecillas del gremio&hellip;</p>
+
+<h3>Esto está mal</h3>
+
+<p>Si amigo.</p>
+
+<p>Aunque no lo creas, todo cuanto hagas en tu vida será una verdadera mierda para
+algunos. Da igual que lleves un día programando, o que tengas la muchas veces
+inevitable presión de aquellos que te pagan el sueldo, o simplemente que no lo
+sepas hacer mejor. No importa. Hagas lo que hagas, apestará a perro agusanado.</p>
+
+<p>Y posiblemente lo esté. Posiblemente tu creación será pobre y con muchos fallos,
+pero tenemos la suerte de que rodeados como estamos rodeados de almas
+constructivas y caritativas, muy pocas veces un <em>&ldquo;Está mal&rdquo;</em> vendrá acompañado
+de un <em>&ldquo;Si quieres me siento a tu lado y miramos como puede estar mejor&rdquo;</em>.</p>
+
+<p>No te ofusques, no estás solo.</p>
+
+<p>Somos la sociedad del <em>&ldquo;Tu no sabes&rdquo;</em> y no la del <em>&ldquo;Creo que puede mejorarse&rdquo;</em>,
+y estamos tan acomplejados con nuestras mierdas, que necesitamos poner al
+principio de nuestras frases un <strong>&ldquo;IMHO&rdquo;</strong> porque sino, puede que se note
+demasiado que creemos que toda linea de código que no sale de nuestros muñones
+es basura ipso facto.</p>
+
+<p>Los más educados han decidido enmascarar toda esta realidad con una palabreja
+de lo más interesante, y querido lector&hellip; grábatela en tu memoria desentrenada.</p>
+
+<p>Legacy Code.</p>
+
+<h3>Estos de producto&hellip;</h3>
+
+<p>Otra de las frasecillas que corren por la autopista de lo insultante es <em>&ldquo;estos
+de producto, que pesaos con los píxeles&rdquo;</em> o parecidas, normalmente con tono
+burlesco y desafiante.</p>
+
+<p>Si amigo, un clásico entre compañeros de departamento, muy habituales en
+cualquier empresa que se precie donde cuiden un poco sus ventas. No todas las
+empresas son tan modernas y liberales como para dejar a su libre albedrío
+métricas de ventas y ingresos&hellip;</p>
+
+<p>Ah&hellip; estos de producto que quieren jodernos la vida con chorradas como píxeles
+para los frontales, con cambios en la web aparentemente inútiles, o con
+integraciones con métodos de pago o de transporte. Cuando veas a toda esta
+gentuza, escúpeles en la cara, porque no nos respetan, a nosotros, a los
+programadores, a los que hacemos los proyectos que nos piden con tecnologías que
+desconocemos porque son guasonas y molonas, a los que decidimos que el nuevo
+proyecto de la empresa se hará con 378 capas distintas, a cada cual más inútil,
+porque un tal Pepito de los Palotes con sombrero y cuyos fans llevaban el libro
+de Clean Code tatuado en sus suaves nalgas, dijo que era lo último en
+Hipsterismo, a pesar de no saber qué estamos haciendo y el porqué lo estamos
+haciendo. A nosotros que hacemos un formulario en 5 días porque queremos que sea
+compatible con la GameBoy advance, con la pantallita del microondas y con el
+termostato de nuestra estufa. A nosotros que nadie nos impide estar todo el día
+con la nariz enganchada a los grupos online con ciertos parecidos a bacanales.</p>
+
+<p>A nosotros que somos tan responsables.</p>
+
+<p>Te diré un secreto.
+En voz bajita, que no nos oiga nadie.</p>
+
+<p>Si ellos supieran cada una de las cagadas que hacemos en el código que nos pagan
+por hacer, o si supieran cada una de las decisiones arquitecturales erróneas que
+tomamos por el mero hecho de querer molar cantidad, estaríamos todos despedidos.
+Todos.</p>
+
+<p>Aunque supongo que preferimos decir &ldquo;Estos de producto&hellip;&rdquo;, aparentar que no tan
+solo sabemos hacer un <em>foreach</em>, sino que también sabemos hacer el trabajo de
+media compañía, y seguir con nuestras vidas con la cabeza bien alta, dejando un
+rastro de Legacy Code, cual rastro en nuestras espaldas.</p>
+
+<h3>En mi empresa hacemos&hellip;</h3>
+
+<p>Esta es perla brillante, el zafiro de las frases, aunque para encontrarla
+tendrás que esforzarte un poco y dejar que la luz del sol alumbre tu tersa tez
+para salir de casa y relacionarte con otras personas de otras empresas.</p>
+
+<p><strong>Ánimo.</strong></p>
+
+<p>Y es que descubrirás que todas las otras empresas utilizan lo last de lo last.
+Mierda de la buena en su stack de tecnologías y droga de la dura en sus últimas
+incorporaciones (cuando no tienen un auténtico máquina en su departamento de
+backend, tienen un exfacebook en su departamento de sistemas o un súper crack
+como CTO llegado de las montañas de los elfos).</p>
+
+<p>Todas las empresas están tan bien dotadas tecnológicamente y con unas plantillas
+tan extremadamente potentes, que cuando entres en una empresa nueva, nunca,
+repito, nunca, jamás de los jamases, tendrás la impresión de haber empezado a
+trabajar en una escabechina llena de cadáveres, pudriéndose durante los últimos
+10 años.</p>
+
+<p>Nunca, en absoluto.</p>
+
+<p>Y es que amigo, parece que entre que todo nuestro código es una mierda, y los
+de producto están todo el día que si ponme este píxel, y ponme este banner,
+resulta que no tenemos tiempo de hacerlo bien. Pero eh! no es porque seamos
+todos unos auténticos chapuzas en la mayoría de los casos, no no, es porque no
+hemos tenido <em>tiempo</em>.</p>
+
+<h3>Es que resulta que Uncle Bob dice que&hellip;</h3>
+
+<p>Rápido y preciso.</p>
+
+<ul>
+<li>¿Está aquí Uncle Bob?</li>
+<li>¿Conoce Uncle Bob el proyecto?</li>
+<li>No, ¿verdad?</li>
+<li>Pues me importa una mierda lo que diga el tío Bob.</li>
+</ul>
+
+
+<p>Fin de la discusión.</p>
+
+<h2>La clave de todo, BLDD</h2>
+
+<p>Dicho esto, verás que el mundo es un lugar inhóspito, lleno de gente con pocas
+ganas de ayudarte y con muchas de joderte y hundirte, pero aún así tu tienes que
+hacer un <em>switch</em> porque dadas las circunstancias que sean no puedes o no sabes
+hacerlo mejor, o tienes que hacer un proyecto con pocos días y por desgracia no
+puedes hacerlo compatible con el manillar de tu bici.</p>
+
+<p>Te presento, humildemente, el <strong>BLDD</strong>, abreviación de <strong>BullshitLess-Driven
+Development</strong> (otra cosa que tienes que aprender es que aquí escribimos todos
+con abreviaciones, en inglés aunque estén hablando dos de Albacete, y que debes
+poner entre frase y frase la palabra <strong>Trade-off</strong>. Si no haces esto, no serás
+aceptado por los grandes círculos).</p>
+
+<p>El BLDD es una práctica muy sencilla, basada en el ignorar todas aquellas
+frecuencias que emitan gilipolleces en directo. Lo que vendría a ser el clásico
+mandar a esnifar plastidecor picado de toda la vida, pero con un nombre moderno
+y casual, de estos que nos hacen sentir a nosotros muy top.</p>
+
+<blockquote><p>Se recomienda primero hacer los tests, y luego implementar el BLDD. Si no lo
+haces así, eres un mierda.</p></blockquote>
+
+<p>Esta metodología contrarresta todas las demás que terminan en DD y es aplicable
+la mayor parte del tiempo útil de tu vida.</p>
+
+<ul>
+<li>Que alguien te dice que tu proyecto debería tener tests primero? BLDD.</li>
+<li>Que alguien te dice que estás muy acoplado a tu FW y solo quieres hacer tu
+currículum? BLDD</li>
+<li>Que alguien te dice que tu código es mierda y que él lo hace mejor en DDD?
+<del>a este le rompes la boca</del> BLDD</li>
+</ul>
+
+
+<p>Ya ves, funciona cual navaja suiza. Lo bueno de esta práctica es que ten claro
+que nunca nadie va a decir como debes practicarla. Un sinfín de fórmulas, cada
+cual más original, pueden formar parte del elenco de posibilidades a la hora de
+ejecutar el BLDD.</p>
+
+<h2>Algunos consejos para terminar</h2>
+
+<p>Para finalizar mi cookbook del buen programador, un escueto listado de ideas y
+miniconsejos de jardinería para que vayas pensando.</p>
+
+<ul>
+<li>IMHO, si algún día haces una presentación en público, súbete el libro rojo de
+DDD contigo, y al que se ponga en la primera fila y se ponga a mirar el móvil o
+a dormirse, se lo tiras. Le va a doler. Mucho. Y si sigue durmiendo, recuerda
+que aún tienes de otros colores&hellip;</li>
+<li>IMHO, una conversación se acaba cuando alguien dice la palabra <em>Annotation</em>.</li>
+<li>IMHO, para tener amigos en Twitter solo tienes que decir &ldquo;TDD is dead&rdquo;. Para
+tener haters, también.</li>
+<li>IMHO, los tests en tus proyectos es como el paro en españa. Lo importante
+es el coverage, no la calidad de los cases.</li>
+<li>IMHO, en Barcelona, de media los developers solemos cambiar de trabajo una vez
+al año, con subida salarial de forma recurrente. A los 40 años estarás cobrando
+120.000 euros y serás un fucking god en 20 lenguajes distintos. Seguirás sin
+poner bien el puto nombre a una variable y pondrás los comentarios en español.</li>
+<li>IMHO, a día de hoy, en enero de 2017 es mainstream el Event Sourcing. Si, si, está
+práctica tan jodidamente útil en todo nuestro sector. Así que calculo que
+aproximadamente en 2021, en alguna de las empresas en las que trabajes, te
+encontrarás un conjunto de código intratable, ilegible y profundamente
+indocumentado fruto de esta modilla. De nada.</li>
+</ul>
+
+
+<h2>Conclusiones</h2>
+
+<p>Finalmente decirte que mucha suerte, que aprendas mucho, que leas mucho, que
+preguntes y enseñes mucho, pero que nunca dejes que nadie te diga como tienes
+que hacer las cosas (menos si alguien te aconseja que no utilizes Prestashop. En
+este caso, hazle caso). Ten el suficiente criterio como para aceptar que muchas
+de las formas de trabajar que escucharás en conferencias, charlas de amiguetes o
+en hilos de Twitter ni tan solo sirven para tu proyecto.</p>
+
+<p>Trabaja duro, persigue tus objetivos y acuérdate de comprarte muchos libros
+técnicos, de sacar una foto cada vez que te compres uno y publicar en Twitter
+algo como <em>&ldquo;Ya tengo plan para este fin de semana&rdquo;</em>.</p>
+
+<p>Para todo lo demás, BLDD.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marc Morera</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-01-26T19:54:00+01:00" pubdate data-updated="true">Jan 26<span>th</span>, 2017</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bldd/'>BLDD</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mmoreram.com/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/" data-via="mmoreram" data-counturl="http://mmoreram.com/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2017/01/11/symfony/" title="Previous Post: Symfony, que narices estás haciendo?">&laquo; Symfony, que narices estás haciendo?</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/">BLDD, un DD para dominarlos a todos</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/01/11/symfony/">Symfony, que narices estás haciendo?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/03/symfony-catalunya/">Symfony Catalunya</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/09/you-probably-need-bundle-dependencies/">you probably need bundle dependencies</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/20/your-packages-dependencies/">Your packages dependencies</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/mmoreram">@mmoreram</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mmoreram',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+      </div>
+    </div>
+    <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Marc Morera -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>.</span>
+</p>
+
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'mmoreram';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mmoreram.com/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/';
+        var disqus_url = 'http://mmoreram.com/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>

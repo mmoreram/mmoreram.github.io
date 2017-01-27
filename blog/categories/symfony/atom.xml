@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: symfony | Because yes]]></title>
-  <link href="http://mmoreram.github.io/blog/categories/symfony/atom.xml" rel="self"/>
-  <link href="http://mmoreram.github.io/"/>
-  <updated>2016-03-03T17:28:59+01:00</updated>
-  <id>http://mmoreram.github.io/</id>
+  <title><![CDATA[Category: Symfony | Because yes]]></title>
+  <link href="http://mmoreram.com/blog/categories/symfony/atom.xml" rel="self"/>
+  <link href="http://mmoreram.com/"/>
+  <updated>2017-01-27T01:03:58+01:00</updated>
+  <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
     <email><![CDATA[yuhu@mmoreram.com]]></email>
@@ -14,1045 +14,1052 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Symfony Catalunya]]></title>
-    <link href="http://mmoreram.github.io/blog/2016/03/03/symfony-catalunya/"/>
-    <updated>2016-03-03T17:00:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2016/03/03/symfony-catalunya</id>
-    <content type="html"><![CDATA[<p>Imagine yourself in front of the Barcelona&rsquo;s beach in July. It sounds good,
-right? Then, continue imagining yourself with a great Symfony environment, with
-a very cold beer, amazing people and even better topics to talk about.</p>
+    <title type="html"><![CDATA[Re-thinking Event Listeners]]></title>
+    <link href="http://mmoreram.com/blog/2015/08/20/re-thinking-event-listeners/"/>
+    <updated>2015-08-20T12:27:00+02:00</updated>
+    <id>http://mmoreram.com/blog/2015/08/20/re-thinking-event-listeners</id>
+    <content type="html"><![CDATA[<p>Let&rsquo;s talk about Event Listeners.
+Do you know what an Event Listener is?</p>
 
-<p>Isn&rsquo;t it the best plan ever?</p>
+<p>Well, if you are used to working with Symfony, then you should know what is
+intended for. If you don&rsquo;t, don&rsquo;t hesitate to take a look at the Symfony
+documentation.</p>
 
-<p>Well, if you feel that you need it, then you should continue reading this
-post&hellip;</p>
+<p>This post aims to start a small discussion about how an Event Listener should
+look like if we really want to keep things decoupled.</p>
 
-<p>I&rsquo;m very very pleased to tell you that this plan is going to happen this summer.
-The Symfony Barcelona Association is working very hard on this first edition of
-<a href="http://symfony.cat">Symfony Catalunya</a>, an international Symfony event placed
-in our city. This event is 100% in english and is going to be very focused on
-how Symfony can help us in our day by day and in our jobs.</p>
-
-<p><a href="http://symfony.cat"><img src="http://symfony.cat/images/symfony-catalunya-poster.png" alt="Symfony Catalunya 2016" /></a></p>
-
-<p>What does it really mean? Let me explain you properly:</p>
+<h2>TL;DR</h2>
 
 <ul>
-<li><strong>0 smoke</strong>. This doesn&rsquo;t mean that we will not talk about new concepts, like
-React for example, but everything will be constructive and focused on your next
-day work.</li>
-<li><strong>New talks</strong>. Don&rsquo;t you feel that all events are populated with same talks year
-after year? In this event you will find <strong>only</strong> new talks.</li>
-<li><strong>Amazing speakers</strong>. Speakers are selected because their communication skills.
-The speaker quality is as important as the talk quality, don&rsquo;t you think?</li>
-<li>Community to Community. We will not make any money with that event. All earned
-gains will be invested in you somehow.</li>
-<li><strong>50 euros</strong> early bird ticket. <a href="http://symfony.cat/#tickets">Get yours</a> as soon
-as possible and join us :)</li>
-<li>Take some breath. 7 talks per day, one after another is never a good option.
-With 4 talks per day you will be able to enjoy the city and the people.</li>
-<li>Eat whatever you want, whenever you need. Your ticket doesn&rsquo;t include food,
-but the venue is in front of great placed for having lunch and coffee.</li>
-<li>Lighting talks. If you feel that you have something to show us, bring your 8
-minutes speech.</li>
+<li>If we place our business logic inside the Event Listeners, we will not be able
+to use this logic from other points, for example sending a &ldquo;Order created&rdquo; email
+by hand from our Admin using a simple button.</li>
+<li>What we could do is place ALL the logic inside a service that ONLY sends that
+email, exposing a simple and documented api.</li>
+<li>Then, considering that this service is injectable using any Dependency
+Injection implementation, we can inject it into the Event Listener.</li>
+<li>So, EventListeners are only a point of entry to your service layer</li>
 </ul>
 
 
-<p>Of course, and because you&rsquo;re able to buy early bird tickets, we have published
-4 of our 8 speakers in our website.</p>
+<h2>Using Event Listeners</h2>
 
-<ul>
-<li><a href="https://github.com/matthiasnoback">Matthias Noback</a></li>
-<li><a href="https://github.com/acasademont">Albert Casademont</a></li>
-<li><a href="https://github.com/weaverryan">Ryan Weaver</a></li>
-<li><a href="https://github.com/jmikola">Jeremy Mikola</a></li>
-</ul>
+<p>To understand what I am talking about, let&rsquo;s use an small example to make things
+more clear&hellip;</p>
 
+<p>```
+Scenario: You buy something in an e-commerce, so, internally, your Cart became
+an Order. Of course, and because user experience is important in that cases, you
+want to send an email to the user with some Order information, so you need to
+send an email to the Customer.</p>
 
-<h2>Companies</h2>
+<p>Problem: You want to create this feature in a very decoupled way, of course. The
+e-commerce framework provides you that way, by proposing you an event once the
+Order is created. You can access the Order itself and the Customer.</p>
 
-<p>Are you a company placed in some part of the world? Do you like Symfony? Then
-this may interest you&hellip;</p>
+<p>Solution: Create a new Event Listener object, subscribed to this event called
+order.oncreate, and sending that email.
+```</p>
 
-<p>For only 300 euros you will be able to</p>
+<p>Let&rsquo;s see a small example about how this Event Listener should look like. We
+will follow the simple way, only focusing about sending that email in a
+decoupled way with the action.</p>
 
-<ul>
-<li>Put your logo everywhere. We will mention you in our media channels at least
-once.</li>
-<li>You will be able to add whatever you want in our Conference Attendee bag</li>
-<li>You will get one free ticket for the conference</li>
-<li>We will work very very hard to provide you an stand during the conference.</li>
-<li>You will have the satisfaction to be helping the Symfony Environment, a very
-important part if you are looking for Symfony developers</li>
-</ul>
+<p>``` php
+class OrderEmailEventListener
+{</p>
 
+<pre><code>/**
+ * We send an email to the Customer once an order is created
+ *
+ * @param OrderOnCreatedEvent $event Event
+ */
+public function sendEmail(OrderOnCreatedEvent $event)
+{
+    $order = $event-&gt;getOrder();
+    $customer = $event-&gt;getCustomer();
 
-<p>We really appreciate companies sponsoring, and we strongly think that should
-always be that cheaper.</p>
+    /**
+     * Send the email
+     */
+}
+</code></pre>
 
-<h2>Communities</h2>
+<p>}
+```</p>
 
-<p>Are you a PHP or Symfony community? Well, you can help us too by spreading the
-word. In exchange of that, we will consider you part of our sponsoring group,
-adding your logo in our list as well.</p>
+<p>And we could use this configuration in our bundle.</p>
 
-<p>And is free!</p>
+<p>``` yaml
+services:</p>
 
-<p>How can you help us?
-Well, for each new sponsor we have because of you, we will give you one free
-ticket for the conference. You will be able to raffle this ticket among your
-community.</p>
+<pre><code>#
+# Event Listeners
+#
+project.event_listener.order_created_email:
+    class: My\Bundle\EventListener\OrderCreatedEmailEventListener
+    tags:
+        - { name: kernel.event_listener, event: order.oncreate, method: sendEmail }
+</code></pre>
 
-<h2>Join us</h2>
+<p>```</p>
 
-<p>Do you like that? Then&hellip;</p>
+<p>So this could be a simple implementation. I&rsquo;ve been using it since the beginning
+of times as this could be considered a good practice. But, during this time
+doing more and more Event Listeners, some questions have come to my mind.</p>
 
-<ul>
-<li><a href="http://symfony.cat/#tickets">Join Symfony Catalunya now!</a></li>
-</ul>
+<h2>Decoupling from the Event</h2>
 
+<p>Let&rsquo;s consider that our project has an admin panel. Of course, we should be able
+to send this email any time we need (for example, our email server was down
+during the order conversion and we must re-send it). Is this possible with this
+implementation?</p>
 
-<p>To be aware of our news, follow our Twitter account
-(<a href="http://twitter.com/symfonycat">@symfonycat</a>) and say hello :)</p>
+<p>Yes. Let&rsquo;s do this considering that we have injected our EventListener and this
+one is accessible locally!</p>
+
+<p>```php
+$event = new OrderCreatedEmailEventListener(</p>
+
+<pre><code>$order,
+$customer
+</code></pre>
+
+<p>);
+$orderCreatedEmailEventListener->sendEmail($event);
+```</p>
+
+<p>Well, this piece of code will really send the email&hellip; but is this
+implementation enough right? I don&rsquo;t think so&hellip;</p>
+
+<p>This Event should only be dispatched when the real event happens. It has no
+sense to create a new <code>OrderEmailEventListener</code> instance without using the
+event dispatcher. This means that, indeed, any Order has been created.</p>
+
+<p>So first of all, creating a new Event out of turn, is not a good practice at
+all.</p>
+
+<p>For solving this, We could do that.</p>
+
+<p>``` php
+class OrderCreatedEmailEventListener
+{</p>
+
+<pre><code>/**
+ * We send an email to the Customer once an order is created
+ *
+ * @param OrderOnCreatedEvent $event Event
+ */
+public function sendEmail(OrderOnCreatedEvent $event)
+{
+    $order = $event-&gt;getOrder();
+    $customer = $event-&gt;getCustomer();
+
+    $this-&gt;sendOrderCreatedEmail(
+        $order,
+        $customer
+    );
+}
+
+/**
+ * We send an email to the Customer once an order is created, given the 
+ * order and the customer
+ *
+ * @param OrderInterface    $order    Order
+ * @param CustomerInterface $customer Customer
+ */
+public function sendOrderCreatedEmail(
+    OrderInterface $order,
+    CustomerInterface $customer
+) {
+    /**
+     * Send the email
+     */
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>And then, we could do this</p>
+
+<p>```php
+$orderCreatedEmailEventListener->sendOrderCreatedEmail(</p>
+
+<pre><code>$order,
+$customer
+</code></pre>
+
+<p>);
+```</p>
+
+<p>Much better, right?
+But is this good enough? No is not.</p>
+
+<h2>Decoupling from the Listener</h2>
+
+<p>We are using an instance of an Event Listener to send an email. Our analysis
+could be exactly the same than before&hellip; Should we use an Event Listener even
+when an event is not dispatched?</p>
+
+<p>No we should not.</p>
+
+<p>An Event Listener is an event listener. Listens one event, and that should be
+all its work. So, we should never inject any event listener, anywhere. Let&rsquo;s do
+some refactor here!</p>
+
+<p>First of all, let&rsquo;s isolate our business logic in a new service. This service
+will <strong>only</strong> do one thing; sending this email.</p>
+
+<p>``` php
+class OrderCreatedEmailSender
+{</p>
+
+<pre><code>/**
+ * We send an email to the Customer once an order is created, given the 
+ * order and the customer
+ *
+ * @param OrderInterface    $order    Order
+ * @param CustomerInterface $customer Customer
+ */
+public function sendEmail(
+    OrderInterface $order,
+    CustomerInterface $customer
+) {
+    /**
+     * Send the email
+     */
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This service has only one mission. Sending this email, no matter what event
+executes it, no matter its environment. So if we take a look at what the Event
+Listener implementation should look like now&hellip;</p>
+
+<p>``` php
+class OrderCreatedEmailEventListener
+{</p>
+
+<pre><code>/**
+ * @var OrderCreatedEmailSender
+ *
+ * Order created email sender
+ */
+private $orderCreatedEmailSender;
+
+/**
+ * Constructor
+ *
+ * @param OrderCreatedEmailSender $orderCreatedEmailSender
+ */
+public function __construct(OrderCreatedEmailSender $orderCreatedEmailSender)
+{
+    $this-&gt;orderCreatedEmailSender = $orderCreatedEmailSender;
+}
+
+/**
+ * We send an email to the Customer once an order is created
+ *
+ * @param OrderOnCreatedEvent $event Event
+ */
+public function sendEmail(OrderOnCreatedEvent $event)
+{
+    $order = $event-&gt;getOrder();
+    $customer = $event-&gt;getCustomer();
+
+    $this
+        -&gt;orderCreatedEmailSender
+        -&gt;sendEmail(
+            $order,
+            $customer
+        );
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Finally, we should refactor as well the way we have defined our service in the
+DependencyInjection config file.</p>
+
+<p>``` yaml
+services:</p>
+
+<pre><code>#
+# Business layer
+#
+project.business.order_created_email_sender:
+    class: My\Bundle\Business\OrderCreatedEmailSender
+
+#
+# Event Listeners
+#
+project.event_listener.order_created_email:
+    class: My\Bundle\EventListener\OrderCreatedEmailEventListener
+    arguments:
+        - @project.business.order_created_email_sender
+    tags:
+        - { name: kernel.event_listener, event: order.oncreate, method: sendEmail }
+</code></pre>
+
+<p>```</p>
+
+<p>And that&rsquo;s all.
+This example is so easy and simple, but I am sure that if you take a look at
+your project, you will find a lot of logic inside your Event Listeners. Maybe
+could be a good idea start moving all this logic out of the box, treating these
+listeners as real entry points, like we do with our Commands, Controllers or
+Twig extensions.</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Your packages dependencies]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/11/20/your-packages-dependencies/"/>
-    <updated>2015-11-20T21:50:00+01:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/11/20/your-packages-dependencies</id>
-    <content type="html"><![CDATA[<ul>
-<li>A component should add as dependency all needed packages to have a complete
-functionality</li>
-<li>A bundle should add as dependency as well all these bundles that define other
-services used in your own service definitions</li>
-<li>Take care of your version policy. Being too restrictive reduces the
-compatibility with other packages.</li>
-</ul>
+    <title type="html"><![CDATA[Defeating Expression Language]]></title>
+    <link href="http://mmoreram.com/blog/2015/05/18/defeating-expression-language/"/>
+    <updated>2015-05-18T09:53:00+02:00</updated>
+    <id>http://mmoreram.com/blog/2015/05/18/defeating-expression-language</id>
+    <content type="html"><![CDATA[<p>How beautiful Expression Language definitions are, right? I mean, inserting that
+complex expressions in a Dependency Injection configuration file is so nice and
+fast if you need to inject the result of a method in a service (one of the
+multiple examples we can see)</p>
 
+<p>Let&rsquo;s see a simple example of how we use this library.</p>
 
-<h2>Responsibilities</h2>
+<p>``` yaml
+services:</p>
+
+<pre><code>#
+# My managers
+#
+some_manager:
+    class: This\Is\My\Manager
+    arguments:
+        - @=service("another_manager").someCall("value")
+        - @=service("yet_another_manager").getInjectableInstance(parameter("my_parameter"))
+</code></pre>
+
+<p>```</p>
+
+<p>This is not a bad idea, really, but because we are engineers and we should have
+as much information as possible in order to be able to choose between the best
+option, always, I will show you another way of defining this piece of code.</p>
+
+<p>Let&rsquo;s do that!</p>
+
+<h3>Factories</h3>
+
+<p>Remember the <a href="http://mmoreram.com/blog/2013/12/23/factory-pattern-in-symfony2/">Factory pattern in Symfony2</a>
+post I wrote some time ago? I talked about how this pattern can be implemented
+in your Symfony projects.</p>
+
+<p>Well, just for your information, most of your Expression Language definitions
+can be nicely done using Factories.</p>
+
+<p>Let&rsquo;s reproduce the same example using factories.</p>
+
+<p>``` yaml
+services:</p>
+
+<pre><code>#
+# My managers
+#
+some_manager:
+    class: This\Is\My\Manager
+    arguments:
+        - @my_injectable_value
+        - @my_injectable_service
+
+my_injectable_value:
+    class: StdClass
+    factory: 
+        - @another_manager
+        - someCall
+    arguments:
+        - value
+
+my_injectable_service:
+    class: This\Is\My\Injectable\Class
+    factory: 
+        - @yet_another_manager
+        - getInjectableInstance
+    arguments:
+        - %my_parameter%
+</code></pre>
+
+<p>```</p>
+
+<h3>Dependency</h3>
+
+<p>Take a look and realise that we&rsquo;ve removed a package dependency from your
+project, as you don&rsquo;t need <code>symfony/expression-language</code> anymore, and your DIC
+definition will be easily exportable to another format if someday is needed.</p>
+
+<h3>Reflexion</h3>
+
+<p>Is Expression Language a bad choice? Well, only you should be able to know if
+using this library is a good choice or not, because only you know your needs and
+your resources, but every time you add a new Expression Language line, just ask
+yourself&hellip;</p>
+
+<p>Can I use simple DI definitions here? Is the only way I can do that?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lazy Commands in Symfony]]></title>
+    <link href="http://mmoreram.com/blog/2015/05/08/lazy-commands-in-symfony/"/>
+    <updated>2015-05-08T11:04:00+02:00</updated>
+    <id>http://mmoreram.com/blog/2015/05/08/lazy-commands-in-symfony</id>
+    <content type="html"><![CDATA[<p>Have you ever had this scenario?</p>
+
+<p>``` bash
+$ php app/console doctrine:database:drop &mdash;force
+$ php app/console doctrine:database:create</p>
+
+<pre><code>[Doctrine\DBAL\Exception\ConnectionException]                                     
+An exception occured in driver: SQLSTATE[42000] [1049] Unknown database 'mydatabase'
+</code></pre>
+
+<p>```</p>
+
+<p>Well, it happens and I will tell you why.</p>
+
+<h2>Command as a Service</h2>
+
+<p>Since Symfony version 2.4 you can define your controllers and commands as
+services. This is so useful as long as you need to treat your classes as much
+decoupled as possible. You can check some information about how to define them
+as services in
+<a href="http://symfony.com/doc/current/cookbook/console/commands_as_services.html">Symfony Documentation</a>.</p>
+
+<p>Then, let&rsquo;s figure out that our command is intended to check an entity from your
+database. Of course, your command should be as empty as possible, placing all
+your business logic inside your service layer (this is not the only strategy, of
+course, but there is no strategy where you lace your logic inside your command).</p>
+
+<p>Then, using commands as services, you will have this</p>
 
 <ul>
-<li>Hi. I&rsquo;m Marc and I am an open source addict</li>
-<li>Hi Marc, welcome!</li>
+<li>ObjectManager as a service (or Repository)</li>
+<li>Your service, intended to do whatever you need to do, for example, check that
+your entities are all enabled. Your ObjectManager or Repository will be injected
+here</li>
+<li>Your command, intended to work as the simple layer between your cli interface
+and your service layer. Your service will be injected here.</li>
 </ul>
 
 
-<p>That is a reality in fact. I&rsquo;m part of this group of people that consider
-themselves addicts to open source. Big part of our work is created to be shared
-by everyone, and like Spider-man&rsquo;s uncle said once&hellip; &ldquo;With great power comes
-great responsibility&rdquo;.</p>
+<p>Given this schema, when we require this command through the DI Container, of
+course a new Service instance will be created in order to inject it through the
+command constructor, and the object will have to be created as well to be
+injected inside the service.</p>
 
-<p>But what are those responsibilities we should take care of during our
-development? What parts of our application should we really take care of and
-which are more vulnerable over the time? Testing, documentation, clearness of
-our code, abstraction, extension capabilities&hellip; we could talk about them all,
-and for sure, each one can have enough material for an entire blog or a book.</p>
+<p>It means create a new connection to the database. Fair enough till now :)</p>
 
-<p>In that case, I want to expose my personal experiences about what I learned over
-the time by leading an open source project, several small open source bundles
-and PHP libraries, and I want to do it by explaining how we should take care of
-our Symfony bundles or PHP component dependencies.</p>
+<h2>Commands list</h2>
 
-<h2>PHP Component Dependencies</h2>
+<p>Let me show you some lines of code. This method is placed in a class called
+<code>Application</code> inside the bundle <code>FrameworkBundle</code>. This class is intended to add
+the possibility of adding Commands as services in the main Application class of
+Command Component.</p>
 
-<p>When we talk about PHP components, we talk about framework agnostic packages,
-only coupled to the language itself, in that case PHP, and to some other
-libraries. Having said that, we could start by trying to understand how the
-components and bundles are split in some projects, for example
-<a href="http://github.com/symfony/symfony">Symfony</a> or
-<a href="http://github.com/elcodi/elcodi">Elcodi</a>. Both projects have components and
-bundles, providing the chance to all frameworks to work with their business
-logic.</p>
-
-<ul>
-<li>So do we place all the business logic in components?</li>
-<li>Yes. The <em>why</em> of your project is placed in libraries. This will be your
-service layer, and it should be covered with unit tests.</li>
-</ul>
-
-
-<p>In regard to dependencies, components should only have dependencies on other
-components. But how can I discover what packages I really depend on? In that
-case it&rsquo;s very simple, so we&rsquo;re not working with any kind of magic. Because our
-packages are simple PHP classes, checking the usage of all external classes
-should be enough to know on which libraries we depend.</p>
-
-<p>In that case, I always write code with <code>use</code> statements, so is much easier to
-check my external classes usage. Just by checking the first lines of all my
-classes I can guess what packages I should add in my composer.</p>
+<p><a href="https://github.com/symfony/symfony/blob/2.7/src/Symfony/Bundle/FrameworkBundle/Console/Application.php">Symfony\Bundle\FrameworkBundle\Console\Application</a></p>
 
 <p>``` php
-namespace Elcodi\Component\User\EventListener;</p>
+protected function registerCommands()
+{</p>
 
-<p>use Symfony\Component\Security\Core\Event\AuthenticationEvent;
-use Doctrine\Common\Persistence\ObjectManager;
-use Elcodi\Component\Cart\Entity\Interfaces\CartInterface;
-use Elcodi\Component\Cart\Wrapper\CartWrapper;
-use Elcodi\Component\User\Entity\Interfaces\CustomerInterface;</p>
-
-<p>/<em>*
- * Class UpdateCartWithUserListener
- </em>/
-class UpdateCartWithUserListener
-```</p>
-
-<p>This piece of code makes you depend on four packages at least. Please, don&rsquo;t
-focus on the versions, but only on the libraries.</p>
-
-<p>``` json
-&ldquo;require&rdquo;: {</p>
-
-<pre><code>"php": "*",
-
-"symfony/security": "*",
-"doctrine/common": "*",
-"elcodi/cart": "*",
-"elcodi/user": "*"
+<pre><code>$container = $this-&gt;kernel-&gt;getContainer();
+foreach ($this-&gt;kernel-&gt;getBundles() as $bundle) {
+    if ($bundle instanceof Bundle) {
+        $bundle-&gt;registerCommands($this);
+    }
+}
+if ($container-&gt;hasParameter('console.command.ids')) {
+    foreach ($container-&gt;getParameter('console.command.ids') as $id) {
+        $this-&gt;add($container-&gt;get($id));
+    }
+}
 </code></pre>
 
 <p>}
 ```</p>
 
-<h3>Dependencies of Dependencies</h3>
+<p>Oh, wait&hellip; what?</p>
 
-<p>Your package must manage ALL of its dependencies, even if they are as well
-dependencies of your dependencies.</p>
+<p>Register a command means instantiate it! So if we have a command with a service
+injected which has an object manager injected&hellip; then we have a problem. If we
+don&rsquo;t have the database created we will not be able to create it using the
+Doctrine command.</p>
+
+<p><em>~ironic~ Perfect scenario for deployment ~/ironic~</em></p>
+
+<h2>Using Lazy services</h2>
+
+<p>Of course we should find a solution for this scenario, in order to be able to
+call this command when is needed.</p>
+
+<p>When we define as lazy a service, this is not instanced when is injected, but
+only when is accessed. You can find some information about lazy services in
+<a href="http://symfony.com/doc/current/components/dependency_injection/lazy_services.html">Symfony Documentation</a>.</p>
+
+<p>The point here is to define our service intended to work with the model as lazy.
+The result will be that when we instance the Command, then a proxy object is
+created and injected with all the service information.</p>
+
+<p>Because our command will not be used as long as we don&rsquo;t need it, then the
+service will not be instanced and the ObjectManager not created. We will be able
+to list all the commands, and finally, call
+<code>php app/console doctrine:database:create</code> properly.</p>
+
+<h2>Implementation</h2>
+
+<p>Some tips here&hellip;</p>
 
 <ul>
-<li>Your package A uses B and C.</li>
-<li>Your package A requires B.</li>
-<li>Package B requires C.</li>
-<li>Then, your package A has both B and C. Enough.</li>
+<li>Why instancing all services when we just need them to be listed? Is it really
+necessary? Doing than we are forcing some service to be defined as lazy just
+because of it, and this is not and will never be a good practice.</li>
+<li>If the command needs to be instanced to be listed, and assuming that this
+information <del>should</del> could be cached, then, is it necessary to call the
+constructor? We could get the class, build the object using <code>\ReflectionClass</code>
+and request all the needed information.</li>
 </ul>
 
 
-<p>Well, that&rsquo;s not true at all, because you cannot depend never of the
-dependencies of your dependencies. Maybe now they require a package, but maybe
-this package won&rsquo;t be required by your dependency anymore in the future. In that
-case, even if you still need it, your package will disappear from your vendor
-folder.</p>
+<p>I invoke the community for some feedback on that. If this is really a need for
+some people, we should do some push (and organize us for an implementation,
+maybe) to change this implementation for next Symfony 3 version.</p>
+
+<p>Feedback, feedback :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Bye Bye Symfony]]></title>
+    <link href="http://mmoreram.com/blog/2014/09/01/bye-bye-symfony/"/>
+    <updated>2014-09-01T00:00:00+02:00</updated>
+    <id>http://mmoreram.com/blog/2014/09/01/bye-bye-symfony</id>
+    <content type="html"><![CDATA[<p>Don&rsquo;t be afraid. You know what I think about the Symfony components and how I
+love them. Until now any circumstance has changed my mind about using them in my
+projects, and over the time, after discover every hidden single piece of code, I
+have turned more amazed of their power.</p>
+
+<p>The reason of this post is just to tell you, with a simple example, how to say
+<em>Bye Bye, Symfony!</em> and say <em>Hi PHP!</em>. This really means uncouple from Symfony
+Components and still use them as the default implementation, while we can
+securely remove, from the composer <em>require</em> block, our Symfony dependencies.</p>
+
+<p>One of the poor things I have heard these last months has been the word <em>you must</em>
+or <em>you should</em> event without knowing exactly what is the real direction of my
+project, so every word in this post will be just an idea you could have in mind
+when you design your own architecture, thinking about your real needs, far from
+the things you should or you must do.</p>
+
+<p>To explain that, how we can say goodbye to Symfony, we will start with a simple
+example. A simple class we could find in every project. Our class will have no
+sense but will be useful in our specific example, helping us to understand what
+is all this about.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * Feel free to edit as you please, and have fun.
+ *
+ * @author Marc Morera <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#121;&#x75;&#x68;&#x75;&#x40;&#x6d;&#109;&#x6f;&#x72;&#x65;&#114;&#97;&#x6d;&#x2e;&#99;&#111;&#x6d;">&#121;&#117;&#104;&#117;&#x40;&#x6d;&#x6d;&#111;&#114;&#101;&#x72;&#97;&#x6d;&#46;&#99;&#x6f;&#x6d;</a>
+ </em>/</p>
+
+<p>namespace Package\Generator;</p>
+
+<p>use Symfony\Component\Routing\Generator\UrlGeneratorInterface;</p>
+
+<p>/<em>*
+ * Class UrlPrinter
+ </em>/
+class UrlPrinter
+{</p>
+
+<pre><code>/**
+ * @var UrlGeneratorInterface
+ *
+ * Url generator
+ */
+protected $urlGenerator;
+
+/**
+ * Construct method
+ *
+ * @param UrlGeneratorInterface $urlGenerator Url generator
+ */
+public function __construct(UrlGeneratorInterface $urlGenerator)
+{
+    $this-&gt;urlGenerator = $urlGenerator;
+}
+
+/**
+ * Generates Homepage route and print complete path
+ *
+ * @return string Route path
+ */
+public function printHomePageRoute()
+{
+    return $this
+        -&gt;urlGenerator
+        -&gt;generate('homepage');
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>As we can see, use this class means use <code>UrlGeneratorInterface</code>. This class is
+part of the Symfony Routing Component, so is a really bad idea if you really
+want to make your project multi-environment</p>
+
+<p>Is that good? Well, it depends on your both product requirements and technical
+requirements. If you want to use always the Symfony router component, this piece
+of code is good enough. Otherwise, If you want to use another router, you have a
+problem.</p>
+
+<p>Say your project must work with and without Symfony. Our class should not depend
+on this interface. One of the strategies to uncouple external implementations is
+using ports and adapters.</p>
+
+<p>I will explain how it works and how we can implement it.</p>
+
+<h2>Real life example</h2>
+
+<p>Let&rsquo;s imagine we want to sell an USB device. We have decided in our product
+definition that this device will connect to external devices using USB Standard
+A (the big one). One of the possible approaches would be to design our device
+with the external connector coupled. This means selling it with the USB wire
+(like an USB camera, for example).</p>
+
+<p>But why coupling our device with an specific output? Do you know what it really
+means?</p>
 
 <ul>
-<li>Your package A uses B and C.</li>
-<li>Your package A requires B and C.</li>
-<li>Package B requires C.</li>
-<li>Then, your package A has both B and C.</li>
-<li>Package B does not require C anymore.</li>
-<li>You still have B and C.</li>
+<li>If the wire breaks, we must change all the device.</li>
+<li>You can connect with devices that accept only USB-A</li>
+<li>Wire improvements means new device versions.</li>
 </ul>
 
 
-<p>Remember that&hellip; Require <strong>ALL</strong> your dependencies. All of them! That can make
-the difference.</p>
+<p>What would be an alternative decision? Well, why don&rsquo;t we focus our efforts in
+the camera and we just let other companies to help us with the wire? This means
+more flexibility for the final user and capability of removing and changing the
+cable when is broken. And&hellip; they could connect their camera to many different
+formats, even for the most adventurous, their own formats.</p>
 
-<h3>Adapters</h3>
+<p>So, in fact, our device should have one female USB port with an specification
+of how connect it with another device. The wire would be just an adapter of our
+device so many of them could be plugged-in.</p>
 
-<p>If our application is super decoupled from other libraries, and you have used
-adapters for those integrations, then things change. Because the use of adapters
-allows you to decouple from other packages literally, we should find another
-mechanism to say&hellip; <em>hey, maybe you can depend on this package&hellip;</em>. Composer
-proposes that mechanism, by using the <code>suggest</code> section.</p>
+<p>We have talked about devices, ports, adapters, specifications, but&hellip; how can
+this help me with my project? Is that hard?</p>
 
-<p>``` json
+<p>The answer is No.</p>
+
+<h2>Solution</h2>
+
+<p>Our goal is to create an specification for URL generators and force each adapter
+to implement it in their own way. As we know, the OOP languages resolve the
+specification with the interfaces.</p>
+
+<p>Let&rsquo;s create our specification.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * Feel free to edit as you please, and have fun.
+ *
+ * @author Marc Morera <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#121;&#117;&#104;&#117;&#64;&#x6d;&#x6d;&#111;&#x72;&#x65;&#x72;&#97;&#109;&#46;&#99;&#x6f;&#x6d;">&#x79;&#x75;&#104;&#117;&#64;&#x6d;&#x6d;&#x6f;&#114;&#101;&#x72;&#97;&#109;&#46;&#99;&#111;&#x6d;</a>
+ </em>/</p>
+
+<p>namespace Package\Specification;</p>
+
+<p>/<em>*
+ * Interface PackageUrlGeneratorInterface
+ </em>/
+interface PackageUrlGeneratorInterface
+{</p>
+
+<pre><code>/**
+ * Generates a route given its name.
+ *
+ * @return string Route path
+ */
+public function generateUrl($routeName);
+</code></pre>
+
+<p>}
+<code>``
+We are just specifying. We want that, whatever is the implementation, each
+adapter must fulfill this rule: Has a method called</code>generateRoute` that, given
+the route name, will return its complete path.</p>
+
+<p>Let&rsquo;s adapt our UrlPrinter to work with specification instead of implementation.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * Feel free to edit as you please, and have fun.
+ *
+ * @author Marc Morera <a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#121;&#x75;&#x68;&#117;&#x40;&#109;&#x6d;&#x6f;&#x72;&#101;&#x72;&#x61;&#x6d;&#46;&#x63;&#x6f;&#109;">&#121;&#x75;&#104;&#x75;&#64;&#109;&#109;&#111;&#x72;&#101;&#114;&#97;&#x6d;&#46;&#99;&#111;&#x6d;</a>
+ </em>/</p>
+
+<p>namespace Package\Generator;</p>
+
+<p>use Package\Specification\PackageUrlGeneratorInterface;</p>
+
+<p>/<em>*
+ * Class UrlPrinter
+ </em>/
+class UrlPrinter
+{</p>
+
+<pre><code>/**
+ * @var PackageUrlGeneratorInterface
+ *
+ * Url generator
+ */
+protected $urlGenerator;
+
+/**
+ * Construct method
+ *
+ * @param UrlGeneratorInterface $urlGenerator Url generator
+ */
+public function __construct(PackageUrlGeneratorInterface $urlGenerator)
+{
+    $this-&gt;urlGenerator = $urlGenerator;
+}
+
+/**
+ * Generates Homepage route and print complete path
+ *
+ * @return string Route path
+ */
+public function printHomePageRoute()
+{
+    return $this
+        -&gt;urlGenerator
+        -&gt;generateUrl('homepage');
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Now, our UrlPrinter does not depends on any external library. Goal reached!</p>
+
+<p>But, now what? I mean, we should implement our adapter, am I right? What is a
+camera with a great specification and without wire plugged in? (A wireless
+camera, welcome to the twenty century ^^. Just joking)</p>
+
+<p>Our UrlPrinter needs a <em>PackageUrlGeneratorInterface</em> implementation to be
+built, so we have to implement an adapter. And because we still want to work with
+Symfony Routing Component as my first option, we will create the Symfony Adapter
+for my specification.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * Feel free to edit as you please, and have fun.
+ *
+ * @author Marc Morera <a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#x79;&#117;&#x68;&#117;&#x40;&#x6d;&#109;&#111;&#114;&#x65;&#x72;&#97;&#x6d;&#x2e;&#x63;&#111;&#x6d;">&#x79;&#117;&#104;&#x75;&#64;&#109;&#x6d;&#x6f;&#x72;&#101;&#x72;&#97;&#x6d;&#x2e;&#x63;&#111;&#109;</a>
+ </em>/</p>
+
+<p>namespace Package\Adapter;</p>
+
+<p>use Package\Specification\PackageUrlGeneratorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;</p>
+
+<p>/<em>*
+ * Class SymfonyUrlGeneratorAdapter
+ </em>/
+class SymfonyUrlGeneratorAdapter implements PackageUrlGeneratorInterface
+{</p>
+
+<pre><code>/**
+ * @var UrlGeneratorInterface
+ *
+ * Url generator
+ */
+protected $urlGenerator;
+
+/**
+ * Construct method
+ *
+ * @param UrlGeneratorInterface $urlGenerator Url generator
+ */
+public function __construct(UrlGeneratorInterface $urlGenerator)
+{
+    $this-&gt;urlGenerator = $urlGenerator;
+}
+
+/**
+ * Generates a route given its name
+ *
+ * @return string Route path
+ */
+public function generateUrl($routeName)
+{
+    $this
+        -&gt;urlGenerator
+        -&gt;generate($routeName);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This an adapter, my friends. Each adapter has one mission, and is just transform
+the way we understand the method <code>generateUrl</code> must work (specification) to the
+way each external project understands it (implementation). In this case, very
+easy, our <code>generateUrl</code> is the same as Symfony Router Component&rsquo;s <code>generate</code>.</p>
+
+<p>Symfony Component is now required by this adapter, but because we are not
+required to use this adapter (Maybe we can use a dummy one for our tests, or a
+mocked one), Symfony Component is not required by our package anymore, just
+suggested.</p>
+
+<p>Let&rsquo;s see another Adapter implementation, requiring another external library.</p>
+
+<p>``` php
+&lt;?php</p>
+
+<p>/<em>*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * Feel free to edit as you please, and have fun.
+ *
+ * @author Marc Morera <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#121;&#117;&#104;&#x75;&#x40;&#x6d;&#109;&#111;&#x72;&#101;&#114;&#97;&#109;&#x2e;&#x63;&#111;&#x6d;">&#121;&#117;&#x68;&#x75;&#x40;&#x6d;&#x6d;&#x6f;&#114;&#x65;&#x72;&#97;&#x6d;&#46;&#99;&#x6f;&#109;</a>
+ </em>/</p>
+
+<p>namespace Package\Adapter;</p>
+
+<p>use Package\Specification\PackageUrlGeneratorInterface;
+use AnotherProject\UrlGeneratorInterface;</p>
+
+<p>/<em>*
+ * Class SymfonyUrlGeneratorAdapter
+ </em>/
+class SymfonyUrlGeneratorAdapter implements PackageUrlGeneratorInterface
+{</p>
+
+<pre><code>/**
+ * @var UrlGeneratorInterface
+ *
+ * Url generator
+ */
+protected $urlGenerator;
+
+/**
+ * Construct method
+ *
+ * @param UrlGeneratorInterface $urlGenerator Url generator
+ */
+public function __construct(UrlGeneratorInterface $urlGenerator)
+{
+    $this-&gt;urlGenerator = $urlGenerator;
+}
+
+/**
+ * Generates a route given its name
+ *
+ * @return string Route path
+ */
+public function generateUrl($routeName)
+{
+    $routeName = '_' . $routeName;
+
+    $this
+        -&gt;urlGenerator
+        -&gt;anotherGenerateMethod($routeName);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Both adapters would be placed in the <code>Adapter/</code> folder, and the final user
+should be able to switch them and even implement new ones.</p>
+
+<h2>From require to suggest</h2>
+
+<p>With our changes, we can remove &ldquo;symfony/routing&rdquo; from the require block and add
+it into the suggest block in <code>composer.json</code> file.</p>
+
+<p>``` yml
+&ldquo;require&rdquo;: {</p>
+
+<pre><code>"php": "&gt;=5.4",
+...
+</code></pre>
+
+<p>},
 &ldquo;suggest&rdquo;: {</p>
 
-<pre><code>"some/package": "Use ^2.5 for integration with Some Package"
-</code></pre>
-
-<p>}
-```</p>
-
-<p>Of course, this is not the only way of doing that. In this example we assume
-that our package will offer all the adapters implementing an interface, and this
-is just an option. In my case, I&rsquo;ve been working for so long with a library
-called <a href="https://github.com/KnpLabs/Gaufrette">Gaufrette</a>, and I really enjoy the
-way these kind of packages work.</p>
-
-<blockquote><p>Some of you could say&hellip; oh, but by doing that, then you&rsquo;re not defining
-dependencies but only suggestions (sounds the same as saying nothing, in
-fact), but when we define a requirement is when our package cannot exist
-without this package. When it is a MUST.</p></blockquote>
-
-<p>Other kind of implementations don&rsquo;t take into account the possibility of using the
-<code>suggest</code> section in composer, because they don&rsquo;t really solve the dependencies
-problem. This implementation forces having 1+<code>n</code> packages, the first one
-containing the interface and the common content, and the other <code>n</code> containing
-each specific implementation, all of them requiring the first one as a
-dependency and the specific third-party package.</p>
-
-<p>``` json
-&ldquo;require&rdquo;: {</p>
-
-<pre><code>"myself/core": "*",
-"some/package": "^2.5 "
-</code></pre>
-
-<p>}
-```</p>
-
-<p>This is much more heavy to maintain, and only works if you only offer one port
-with <code>n</code> adapters in your package. In the case of Gaufrette, this could be a
-reality, so they only offer one port with <code>n</code> adapters, but of course, having
-this structure is more difficult to maintain.</p>
-
-<h3>Versions</h3>
-
-<p>That is a very complex topic. I will not talk about composer, but firstly, I
-will share some basic concepts that are used a lot when defining dependencies
-between packages.</p>
-
-<ul>
-<li><code>~2.5.4</code> means equal and bigger than <code>2.5.4</code> but smaller than <code>2.6</code></li>
-<li><code>~2.5</code> means equal and bigger than <code>2.5.0</code> but smaller than <code>3.0.0</code></li>
-<li><code>^2.5.4</code> means equal and bigger than <code>2.5.4</code> but smaller than <code>3.0.0</code></li>
-<li><code>^2.5</code> means equal and bigger than <code>2.5.0</code> but smaller than <code>3.0.0</code></li>
-</ul>
-
-
-<p>The only thing I can say about that is that if your library aims to be usable by
-a biggest community as possible, then please consider checking your dependencies
-deeply, offering as much version-compatibility as possible.</p>
-
-<p>The following composer requirements&hellip;</p>
-
-<p>``` json
-&ldquo;require&rdquo;: {</p>
-
-<pre><code>"php": "5.4.2",
-
-"symfony/security": "~2.7.3",
-"doctrine/common": "~2.7.3",
-"elcodi/cart": "~1.0.4",
-"elcodi/user": "~1.0.4"
-</code></pre>
-
-<p>}
-```</p>
-
-<p>are more restrictive than the following ones&hellip;</p>
-
-<p>``` json
-&ldquo;require&rdquo;: {</p>
-
-<pre><code>"php": "^5.3.9",
-
-"symfony/security": "^2.3",
-"doctrine/common": "^2.3",
-"elcodi/cart": "^1.0",
-"elcodi/user": "^1.0"
-</code></pre>
-
-<p>}
-```</p>
-
-<p>Of course, you should add requirement compliance as long as they really cover
-your library needs. If you use Traits, then you should use <code>^5.4</code>, or if you&rsquo;re
-using some Symfony features introduced in a specific version, then you become
-dependent, at least, on this version</p>
-
-<p>``` json
-&ldquo;require&rdquo;: {</p>
-
-<pre><code>"php": "^5.4",
-
-"symfony/security": "^2.7",
-"doctrine/common": "^2.3",
-"elcodi/cart": "^1.0",
-"elcodi/user": "^1.0"
-</code></pre>
-
-<p>}
-```</p>
-
-<p>Consider as well the compatibility with new major versions, as soon as they
-confirm their roadmap strategy and feature list. In that case, we could add
-compatibility with Symfony <code>^3.0</code> if we have removed all deprecated elements
-from old versions, or PHP <code>^7.0</code> if we don&rsquo;t use any <code>^5.6</code> deprecated function.</p>
-
-<p>``` json
-&ldquo;require&rdquo;: {</p>
-
-<pre><code>"php": "^5.4|^7.0",
-
-"symfony/security": "^2.7|^3.0",
-"doctrine/common": "^2.3|^3.0",
-"elcodi/cart": "^1.0",
-"elcodi/user": "^1.0"
-</code></pre>
-
-<p>}
-```</p>
-
-<p>This is very important, because if you don&rsquo;t offer this kind of compatibility,
-no one using your package will be able to evolve properly, and when I mean
-someone using your package I mean anyone using any package that, recursively,
-uses your package.</p>
-
-<p>That can be tons of projects.</p>
-
-<h2>Symfony bundle dependencies</h2>
-
-<p>Once we have talked about PHP components, let&rsquo;s talk about Symfony bundles. This
-is something much more complicated, because a Symfony Bundle is a PHP library
-that is co-existing in a framework, so it is not as easy to check all our PHP
-class dependencies.</p>
-
-<p>The question we must ask ourselves when trying to resolve any Symfony bundle
-dependency map is&hellip; <em>What do I really need to make this bundle work in any
-Symfony project?</em></p>
-
-<h3>Other bundles</h3>
-
-<p>This is one of the things Symfony doesn&rsquo;t solve yet. How can a bundle depend on
-another bundle, but not only in the composer layer but as well in the
-application layer?</p>
-
-<p>Well, there is a package for that (remember to <strong>star</strong> it if turns out useful
-for you).</p>
-
-<p><a href="https://github.com/mmoreram/symfony-bundle-dependencies">Symfony Bundle Dependencies</a></p>
-
-<p>This package allows you to create bundles with other bundle dependencies very
-easily. By using this package you will be able to say&hellip; <em>okay composer,
-download this bundles, I need them to instantiate my bundle&hellip; and Symfony
-application, as soon you instantiate my bundle, please, install these other
-bundles as well before</em> without any need to modify the kernel. Of course, this
-is only possible if the project works with that package as well.</p>
-
-<p>``` php
-use Mmoreram\SymfonyBundleDependencies\DependentBundleInterface;</p>
-
-<p>/<em>*
- * My Bundle
- </em>/
-class MyBundle implements DependentBundleInterface
-{</p>
-
-<pre><code>/**
- * Create instance of current bundle, and return dependent bundle namespaces
- *
- * @return array Bundle instances
- */
-public static function getBundleDependencies(KernelInterface $kernel)
-{
-    return [
-        'Another\Bundle\AnotherBundle',
-        'My\Great\Bundle\MyGreatBundle',
-        new \Yet\Another\Bundle\YetAnotherBundle($kernel),
-        new \Even\Another\Bundle\EvenAnotherBundle($kernel, true),
-    ];
-}
-</code></pre>
-
-<p>}
-```</p>
-
-<p>If the project is not using this package, then the behavior of your bundle won&rsquo;t
-change at all.</p>
-
-<h3>DIC Services</h3>
-
-<p>To resolve all your bundle dependencies you need to take a look as well at your
-Dependency Injection definition. Let&rsquo;s imagine we have a bundle with this
-DIC definition.</p>
-
-<p>``` yaml
-services:</p>
-
-<pre><code>my_service:
-    class: My\Service\Class
-    arguments:
-        - @twig
-        - my_other_service
-        - @event_dispatcher
-</code></pre>
-
-<p>```</p>
-
-<p>When Symfony tries to resolve this file, it needs as well all the definitions
-of the arguments (dependencies). The bundles that have these definitions
-automatically become your bundle dependencies.</p>
-
-<p>The hard work here is to know which bundles have all these service definitions,
-and that is not always that simple. In that case, for example&hellip; Which package
-has the <code>@twig</code> service? We could think easily&hellip; well, <code>twig/twig</code> for sure has
-the class we are injecting here.</p>
-
-<p>And you&rsquo;re right, so if any of your classes, in that case <code>My\Service\Class</code>
-needs a class from the package <code>twig/twig</code>, this package will have to be
-required by your bundle.</p>
-
-<p>But is that the real answer we need right now? Not at all. The question is not
-which package provides me with the Twig class, but with the <code>@twig</code> service, and
-this one is not <code>twig\twig</code> as this is only a PHP library, framework agnostic.</p>
-
-<p>For this reason, we have a bundle called
-<a href="http://github.com/symfony/TwigBundle">TwigBundle</a>. This bundle, as well as
-other needed things, creates a new service called <code>twig</code>. This Bundle is
-required not only because we need the code under our vendor folder, but also
-because it has to be instantiated when our bundle is instantiated.</p>
-
-<p>``` json
-&ldquo;require&rdquo;: {</p>
-
-<pre><code>"symfony/twig-bundle": "^2.7"
-</code></pre>
-
-<p>}
-```</p>
-
-<p>If you decide to work with the symfony bundle dependency package, then this code
-is for you.</p>
-
-<p>``` php
-use Mmoreram\SymfonyBundleDependencies\DependentBundleInterface;</p>
-
-<p>/<em>*
- * My Bundle
- </em>/
-class MyBundle implements DependentBundleInterface
-{</p>
-
-<pre><code>/**
- * Create instance of current bundle, and return dependent bundle namespaces
- *
- * @return array Bundle instances
- */
-public static function getBundleDependencies(KernelInterface $kernel)
-{
-    return [
-        'Symfony\Bundle\TwigBundle\TwigBundle',
-    ];
-}
-</code></pre>
-
-<p>}
-```</p>
-
-<p>If you don&rsquo;t use this package, then you should add the TwigBundle instance in
-your AppKernel.</p>
-
-<h3>Requiring the Framework</h3>
-
-<p>How about this services file? What dependencies do you think your package has?</p>
-
-<p>``` yaml
-services:</p>
-
-<pre><code>my_service:
-    class: My\Service\Class
-    arguments:
-        - @event_dispatcher
-</code></pre>
-
-<p>```</p>
-
-<p>Some people can say if quickly&hellip; the EventDispatcher is a requirement&hellip; but we
-have the same problem as before. The Event Dispatcher is a Symfony component,
-and has nothing to do with the exposure of their classes in the Symfony
-Framework dependency injection definition.</p>
-
-<p>Symfony provides as well a bundle called
-<a href="https://github.com/symfony/framework-bundle">FrameworkBundle</a>. Its mission is,
-in addition to creating all the working environment for your project (the
-framework itself), to expose all needed services to the DIC. One of them is the
-Event Dispatcher from the component (if you check the composer.json file of that
-bundle you will discover that the symfony/event-dispatcher package is a
-requirement).</p>
-
-<p>So, some of your bundle services should require as well this bundle.</p>
-
-<p>``` json
-&ldquo;require&rdquo;: {</p>
-
-<pre><code>"symfony/framework-bundle": "^2.7|^3.0"
-</code></pre>
-
-<p>}
-```</p>
-
-<p>This bundle is almost always required by all bundles (at least, it should), so
-make sure you&rsquo;re really tolerant with its version, or you will make your
-bundle less usable than it could be.</p>
-
-<h3>Symfony ^3.0.0</h3>
-
-<p>Many packages are actually requiring a very restrictive version of Symfony. This
-fact has not been a problem during the latest 4 years, but nowadays Symfony
-<code>v3.0.0</code> is going to be a reality soon, so all these packages need to make two
-easy things</p>
-
-<ul>
-<li>Check if your bundle introduces a Symfony <code>~2.8</code> deprecated feature.</li>
-<li>If it does, update your bundle to avoid this deprecation</li>
-<li>Update your requirements to work as well with Symfony <code>^3.0</code>.</li>
-</ul>
-
-
-<p>Check that your Symfony requirements then are still valid. For example:</p>
-
-<p>``` json
-&ldquo;require&rdquo;: {</p>
-
-<pre><code>"symfony/framework-bundle": "^2.2|^3.0"
-</code></pre>
-
-<p>}
-```</p>
-
-<p>Applying this new requirement with Symfony <code>^3.0</code> maybe you had to use a new
-feature that was introduced in Symfony <code>^2.7.3</code>. In that case, your
-composer.json is invalid, and if you have covered your class with tests and you
-run your tests with <code>--prefer-lowest</code>, then you will have some fails there.</p>
-
-<p>You will have to update your dependency properly.</p>
-
-<p>``` json
-&ldquo;require&rdquo;: {</p>
-
-<pre><code>"symfony/framework-bundle": "^2.7.3|^3.0"
-</code></pre>
-
-<p>}
-```</p>
-
-<h2>Development Dependencies</h2>
-
-<p>As you may already noticed, development dependencies are not loaded recursively.
-This means that the <code>require-dev</code> block of your <code>require-dev</code> packages is
-completely ignored.</p>
-
-<p>In some way, this is great because you can define specifically what packages you
-need for your development (testing, mostly), without being worried about all the
-packages that require you.</p>
-
-<p>In some other way, this can be bad&hellip; well, yes, you must know exactly all your
-dependencies for testing (there should be only a few&hellip;), so in that case, just
-make sure you know your application :)</p>
-
-<h3>Requiring PHPUnit</h3>
-
-<p>And then the question is&hellip; should I require PHPUnit or other testing libraries,
-as well as lints and formatters?</p>
-
-<p>Again, some people will tell you&hellip; don&rsquo;t do that! Your development and testing
-deployment will require more disk and more resources for composer. Well, sure,
-but if you depend on the pre-installed PHPUnit version, then you can have some
-trouble when testing.</p>
-
-<p>``` json
-&ldquo;require-dev&rdquo;: {</p>
-
-<pre><code>"fabpot/php-cs-fixer": "1.4.2",
-"mmoreram/php-formatter": "1.1.0",
-"phpunit/phpunit": "4.5.0"
+<pre><code>"symfony/routing": "Required if using Routing adapter",
+"mmoreram/another-project": Required if using AnotherProject Routing adapter"
 </code></pre>
 
 <p>},
 ```</p>
 
-<p>I really need these versions. No others but these. For example, some lints can
-add some logic, or even change it. Because we&rsquo;re responsible for our bundles,
-components or code, we should trust as less as possible in what other people can
-do to our dependencies (somehow we really trust a lot of packages by adding the
-<code>^2.2</code> symbol, but in that case we do it not for us but for our users). In
-testing mode, and because fortunately <code>require-dev</code> block is not recursive, we
-can perfectly be restrictive with the version we want, and as long as we
-want/need to change it&hellip; just do it :)</p>
+<p>We will only require the packages needed by the adapter we are using.</p>
 
-<h2>Trust</h2>
+<h2>What we win</h2>
 
-<p>Trusting open source is something you cannot do blindly. Your project is your
-business, and you need to know that is safe from third party version errors and
-issues.</p>
+<p>Much. We win maximum implementation flexibility and minimum coupling. Would be
+wise to say that a PHP project should tend to this thought, but once again, it
+depends on many factors.</p>
 
-<p>If you trust a package, like I do for example in Symfony, then use the
-semantic version notation in your requirements. Believe that the community will
-never allow back compatibilities breaks, or they will fix them all as soon as
-possible when introduced.</p>
+<h2>What we lose</h2>
 
-<p>If you trust a library because it is tested, but you don&rsquo;t trust their
-version policy, then just block the version (knowing that this restricts the
-compatibility with other packages), or make some push to this community for a
-really semantic version policy.</p>
+<p>It Depends. If you want your project to be understandable by a lot of developing
+knowledge levels, this architecture goes away from the comprehensibility of a
+simple code. You also can lose by having lot of files, so you should respect
+some kind of best practices code, to make people working on your project
+comfortable dealing with it.</p>
 
-<p>If you don&rsquo;t trust a library at all, then don&rsquo;t use it. That simple.</p>
+<h2>Best practices</h2>
 
-<h2>Conclusion</h2>
+<p>I should talk about <em>Marc practices</em> instead of <em>Best practices</em>. I am used to
+adding my adapters always in the folder <code>/Adapter/{PortName}/</code>, being <em>PortName</em>
+the name of the port we are dealing with in camel case format. In this case, we
+should add both adapters in <code>/Adapter/UrlGenerator/</code>.</p>
 
-<p>So, that&rsquo;s it.</p>
+<p>Given this format we can determine what adapters we can use in our project in a
+very agile way.</p>
 
-<p>I highly recommend you, open source lover, to take as much care as possible of
-your package dependencies. A healthy and useful package is a package used by
-tons of people. Offer them some confidence and you will get a lot of feedback in
-return.</p>
+<h2>Reference projects</h2>
 
-<p>Share your work as much as you can, and don&rsquo;t be afraid of your errors, they
-will be your biggest reasons for being a better developer day after day, and
-remember that all of us were inexperienced once.</p>
+<p>First project that comes in my mind when I think about Ports/Adapters is
+<a href="https://github.com/KnpLabs/Gaufrette/tree/master/src/Gaufrette">Gaufrette</a>, a
+filesystem abstraction layer with a lot of adapters implemented.</p>
 
-<p><em>Error is first step to success</em></p>
+<p>In <a href="https://github.com/elcodi/elcodi">Elcodi</a> we are actually using this
+library and its really awesome how easy is using it.</p>
+
+<p>We have also implemented internally some features using this architecture, for
+example, the <a href="https://github.com/elcodi/elcodi/tree/master/src/Elcodi/Component/Geo/Adapter/Populator">Geo Schema Populator</a>,
+a new feature under development that will allow you to populate all Geo schema
+using some adapters. Right now only GeoData adapter is implemented.</p>
+
+<p>Another example, the
+<a href="https://github.com/elcodi/elcodi/tree/master/src/Elcodi/Component/Currency/Adapter/CurrencyExchangeRatesProvider">Currency Exchange Rates Populator</a>
+with OpenExchangeRates implementation already done.</p>
+
+<h2>Final thoughts</h2>
+
+<p>Using ports and adapters is really a great tool for those who want to uncouple
+from implementations and a great pattern if you develop open source. Open source
+should satisfy as people as possible, so remember, specify and then implement.</p>
+
+<p>Try it and then tell us your experience :)</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Symfony UG, be our friend]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/09/14/symfony-ug-be-our-friend/"/>
-    <updated>2015-09-14T10:57:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/09/14/symfony-ug-be-our-friend</id>
-    <content type="html"><![CDATA[<p>Symfony Barcelona UG have been looking some sponsors for a while, and we have
-had a great response from the community. We are so proud and happy about that.</p>
-
-<p>As a User Group, we want to be a community group for all the community, so from
-today, you can be our UG friend :)</p>
-
-<p>If you are a Symfony UG around the world and you want to be part of it, very
-easy. Just send an email to
-<a href="symfonybarcelona@gmail.com">symfonybarcelona@gmail.com</a> or just a simple tweet
-with <a href="http://twitter.com/symfony_bcn">@symfony_bcn</a>. We will add your logo in
-our website and you will appear in our next event.</p>
-
-<p>Then, we will be friends :)</p>
-
-<p>Please, share this post on your social networks, and help us making a better
-world with tons of tiny and cute cats :)</p>
-
-<p>Have a nice week!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Symfony Barcelona Event, September 2015]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/09/07/symfony-barcelona-event-september-2015/"/>
-    <updated>2015-09-07T21:38:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/09/07/symfony-barcelona-event-september-2015</id>
-    <content type="html"><![CDATA[<p>It is a pleasure for me to announce that next September 22nd we will have a
-great event in Barcelona. I&rsquo;ve talked many times about this local organization,
-but this time is pretty different. I&rsquo;ll explain you.</p>
-
-<p>This year Barcelona hosts the
-<a href="https://events.drupal.org/barcelona2015">DrupalCon Europe 2015</a>, and this is
-super exciting. Many people from around the world will visit our great and
-amazing streets and will attend to a great and big event, related with Drupal,
-Symfony and other interesting topics, always, related to the Drupal world.</p>
-
-<p>This is very interesting from the point of view of Symfony, because as you may
-know, new version of drupal, Drupal8, is build using some Symfony components.
-This is one of the examples I refer when I talk about sharing technologies
-between PHP projects and when I talk about open source, community and other
-related topics. We&rsquo;ve seen these synergies between other PHP projects and
-Symfony as well with Laravel, eZ Publish, Magento and Joomla (and many more,
-indeed)</p>
-
-<p>So, this is a call to all the community coming to Barcelona next September 21st.
-We will host Fabien Potencier, the creator of Symfony, and Lukas Kahwe Smith, an
-amazing and super active PHP developer, member, for example, of the PHP-FIG
-group.</p>
-
-<p><a href="http://symfony-barcelona.es">http://symfony-barcelona.es</a></p>
-
-<p>Isn&rsquo;t it interesting? Indeed, but this is not all!</p>
-
-<p>We are planning to overcome our last assistance record, which is 140 attendees.
-This time, we want to fill an auditorium of 600 seats and show you what really
-is Barcelona, and how amazing can be :)</p>
-
-<p>Our sponsors are ready<br/>
-The community is ready<br/>
-The organization is ready<br/>
-Only one thing is missing here&hellip;</p>
-
-<p><strong>You!</strong></p>
-
-<p><a href="http://symfony-barcelona.es#register">Join us now for free!</a> and please share
-this post to allow everyone to know about it!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[EventListeners as collectors in Symfony]]></title>
-    <link href="http://mmoreram.github.io/blog/2015/08/28/eventlisteners-as-collectors-in-symfony/"/>
-    <updated>2015-08-28T12:04:00+02:00</updated>
-    <id>http://mmoreram.github.io/blog/2015/08/28/eventlisteners-as-collectors-in-symfony</id>
-    <content type="html"><![CDATA[<p>Some of my concerns during the last couple of years have been how to collect
-data from all installed bundles using available tools in Symfony packages.
-I say concerns because I don&rsquo;t really know if is there a tool for that.</p>
-
-<p>Some people have told me that the
-<a href="http://symfony.com/doc/current/components/event_dispatcher/introduction.html">EventDispatcher component</a>
-can do this work greatly, but then I have the same question once and again&hellip; is
-this component designed for such?</p>
-
-<p>Let&rsquo;s review some tiny concepts here.</p>
-
-<h2>Event immutability</h2>
-
-<p>Try to think what really is an event. Something that happens. For example, I
-wake up. Once I wake up, an event is dispatched called <code>mmoreram.wake_up</code>. This
-event, of course, is immutable. Nothing can change the fact that I woke up, so
-the event should be treated as an immutable object, with only reading actions.</p>
-
-<p>One single property of the event is injected once is created. Did I wake up
-rested enough for a new crazy day with all cool guys from my office?</p>
-
-<p>``` php
-namespace Mmoreram;</p>
-
-<p>use Symfony\Component\EventDispatcher\Event;</p>
-
-<p>/<em>*
- * Marc woke up event
- </em>/
-class MmoreramWakeUpEvent extends Event
-{</p>
-
-<pre><code>/**
- * @var boolean
- *
- * Marc woke up rested
- */
-private $rested;
-
-/**
- * Construct method
- *
- * @var boolean $rested Marc woke up rested
- */
-public function __construct($rested)
-{
-    $this-&gt;rested = $rested;
-}
-
-/**
- * Get if Marc is rested enough
- *
- * @return boolean Marc is rested enough
- */
-public function isRested()
-{
-    return $this-&gt;rested;
-}
-</code></pre>
-
-<p>}
-```</p>
-
-<p>Of course, no one should be able to change the value of rested, because no one
-has the <strong>power</strong> to change the fact I woke up tired this night.</p>
-
-<p>The main intention of an event is notify the world that something just happened,
-so any extra implementation changing this paradigm should be avoided in order to
-not corrupt the real meaning of the component.</p>
-
-<p>Said that, and before continuing with the post&hellip; a question related to this
-topic. Just make sure that you can take some time to think about that.</p>
-
-<p>If we talk about decoupling between components&hellip; is the concept of <code>priority</code>
-helpful? If any actor must know the priorities of all listeners in order to know
-its own&hellip; then can we consider that all event listeners are really decoupled
-between them? And how bad is that?</p>
-
-<h2>Collector</h2>
-
-<p>Let&rsquo;s figure out that the system need to collect some feelings when I wake up.
-Let&rsquo;s figure out as well that we don&rsquo;t really care about how these feelings are
-sorted, so the problem of priority is not a problem anymore: we can ignore it
-completely.</p>
-
-<p>We can change our event with this new implementation.</p>
-
-<p>``` php
-namespace Mmoreram;</p>
-
-<p>use Symfony\Component\EventDispatcher\Event;
-use Mmoreram\Feeling;</p>
-
-<p>/<em>*
- * Marc woke up event
- </em>/
-class MmoreramWakeUpEvent extends Event
-{</p>
-
-<pre><code>/**
- * @var boolean
- *
- * Marc woke up rested
- */
-private $rested;
-
-/**
- * @var Feeling[]
- *
- * Array of feelings
- */
-private $feelings;
-
-/**
- * Construct method
- *
- * @var boolean $rested Marc woke up rested
- */
-public function __construct($rested)
-{
-    $this-&gt;rested = $rested;
-    $this-&gt;feelings = [];
-}
-
-/**
- * Add new feeling
- *
- * @param Feeling $feeling New feeling to be added
- *
- * @return $this Self object
- */
-public function addFeeling(Feeling $feeling)
-{
-    $this-&gt;feelings[] = $feeling;
-
-    return $this;
-}
-
-/**
- * Get if Marc is rested enough
- *
- * @return boolean Marc is rested enough
- */
-public function isRested()
-{
-    return $this-&gt;rested;
-}
-
-/**
- * Get all feelings
- *
- * @return Feeling[] Set of feelings
- */
-public function getFeelings()
-{
-    return $this-&gt;feelings;
-}
-</code></pre>
-
-<p>}
-```</p>
-
-<p>Of course, in our domain we must dispatch this event one I really wake up (for
-example a service called <code>MmoreramVitalActions</code></p>
-
-<p>``` php
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\Event;
-use Mmoreram\MmoreramWakeUpEvent;</p>
-
-<p>/<em>*
- * Marc vital actions
- </em>/
-class MmoreramVitalActions
-{</p>
-
-<pre><code>/**
- * Marc wakes up
- *
- * @return Feeling[] Set of feelings resulting of the action of waking up
- */
-public function wakeUp()
-{
-    $rested = $this-&gt;didMarcRestedProperly();
-    $eventDispatcher = new EventDispatcher();
-    $event = new MmoreramWakeUpEvent($rested);
-
-    $dispatcher
-        -&gt;dispatch(
-            'mmoreram.wake_up',
-            $event
-        );
-
-    return $event-&gt;getFeelings();
-}
-
-/**
- * Get if Marc rested properly
- *
- * @return boolean Marc rested properly
- */
-private function didMarcRestedProperly();
-</code></pre>
-
-<p>}
-```</p>
-
-<p>As you can see, after dispatching the event you should be able to get all
-collected feelings. This means that the one in charge to fulfill this
-information related to my feelings should be any event listener interested in
-adding it&rsquo;s own related feeling.</p>
-
-<p>For example, an Event Listener will have the responsibility to add a feeling
-related to the temperature of my room.</p>
-
-<p>``` php
-use Mmoreram\MmoreramWakeUpEvent;</p>
-
-<p>/<em>*
- * Marc wake up event listener related to temperature.
- * This class is intended to add a feeling depending on local temperature
- </em>/
-class TemperatureMmoreramWakeUpEventListener
-{</p>
-
-<pre><code>/**
- * Marc wakes up listener
- *
- * @param MmoreramWakeUpEvent $event Marc wake up event
- *
- * @return $this Self object
- */
-public function addTemperatureFeeling(MmoreramWakeUpEvent $event)
-{
-    $feeling = $this-&gt;getTemperatureFeeling();
-    $event-&gt;addFeeling($feeling);
-
-    return $this;
-}
-
-/**
- * Get feeling related to the temperature
- *
- * @return Feeling Feeling related to temperature
- */
-private function getTemperatureFeeling();
-</code></pre>
-
-<p>}
-```</p>
-
-<p>Of course, you must add this event listener using tags in the Dependency
-Injection Symfony configuration.</p>
-
-<p><a href="http://symfony.com/doc/current/reference/dic_tags.html">Using tags for our listeners definition</a></p>
-
-<p>At this point, you can see that maybe this is useful. This is a very easy and
-fast collector implementation, but not enough good. The event is not immutable
-anymore and you can change if from any event dispatcher, very far from the real
-intention of the component.</p>
-
-<h2>Solution</h2>
-
-<p>I am using this approach in order to be as much pragmatic as possible. Of course
-this works properly by adding an extra definition and documentation layer, but
-I wonder if other people is concerned about that in Symfony.</p>
-
-<p>I don&rsquo;t really think that yet another component called Collector would be
-necessary at all unless there is an abstraction between both components (they
-share some common things related to the fact of broadcasting and subscribing).</p>
-
-<p>Of course, again, simple theory and personal thoughts brought to the community.
-I will continue using this approach even knowing that should be solved using
-another one as long as people understand it and is easy to work with.</p>
-
-<p>Feedback and people thoughts will be appreciated, as always :)</p>
+    <title type="html"><![CDATA[Elcodi, una nueva aventura en Symfony2]]></title>
+    <link href="http://mmoreram.com/blog/2014/04/17/elcodi/"/>
+    <updated>2014-04-17T12:46:00+02:00</updated>
+    <id>http://mmoreram.com/blog/2014/04/17/elcodi</id>
+    <content type="html"><![CDATA[<p>Ciertos cambios están por llegar. Y parece ser que son cambios buenos. Llevo
+unas cuantas semanas sin escribir en el blog, y la verdad es que me sabe mal.
+Me gusta contar cosas que me van sucediendo en la empresa. Problemas que nos
+vamos encontrando y soluciones que se me van ocurriendo. El problema es que
+llevo unos meses muy centrado en el proyecto que justo hoy lanzamos al mundo.
+Es un proyecto inicialmente de desarrolladores para desarrolladores, centrado en
+cubrir necesidades reales de los developers destinados a diseñar y
+programar ecommerces.</p>
+
+<p>Es cierto que tenemos muchísimas plataformas y opciones para desarrollar
+ecommerces alrededor del mundo. Podría enumerar unos cuantos, y probablemente
+todos tengan unas métricas y unos KPIs magníficos.</p>
+
+<p>Los problemas de estas plataformas es que son completamente B2B, por lo que tienen sentido cuando
+el usuario final simplemente debe tener una buena interfaz de administración,
+de instalación y de configuración; y que cuando los departamentos técnicos quieren
+desarrollar, tanto horizontalmente ( nuevas funcionalidades de
+aquello que ya se está utilizando, o simplemente customizar ) como verticalmente
+( nuevas funcionalidades ), estas plataformas B2B se quedan
+cortas, por lo que la empresa tiene que desembolsar una cantidad enorme de
+dinero en un refáctoring, o simplemente, se debe empezar a todar el código
+existente, ensuciándolo y haciendo peligrar su integridad.</p>
+
+<p>Estas plataformas no suelen estar testeadas, por lo que cada línea que se añade
+es una línea potencialmente dañina para todo el sistema, con lo que cada
+desarrollo sobre estas plataformas suelen derivar en problemas colaterales
+en la propia experiencia de usuario.</p>
+
+<p>Desde mi punto de vista, en los tiempos que corren, esto es inaceptable.</p>
+
+<p>Nosotros proponemos una plataforma pensada para los desarrolladores, pensada
+y profundamente reflexionada. Esto no implica que el código deba estar bien
+en una primera instancia, simplemente nuestra declaración de intenciones es
+llevar el proyecto a un punto donde las empresas puedan confiar en el proyecto
+para construir el suyo propio.</p>
+
+<p>Os presentamos <a href="http://elcodi.io">Elcodi</a>.</p>
+
+<p>En un planteamiento dividido en fases, justo estamos naciendo. Tenemos muy claro
+cual es nuestro roadmap, por lo que en los próximos meses se desarrollaran las
+principales features a nivel de core, así como la robustez necesaria como para
+poder lidiar con colaboradores externos, que les guste el proyecto en su estado
+inicial y que quieran acomparnos en este viaje, destinado a mejorar el estilo de
+vida de los developers.</p>
+
+<p>La plataforma está basada en Symfony2, y siguiendo la filosofía definida por el
+propio framework, hemos enfocado la mayor parte de la arquitectura utilizando
+una fuerte capa de eventos, desacoplando la mayoría de comportamientos y
+componentes completamente.</p>
+
+<p>Si eres programador Symfony, te propongo que almenos le eches un vistazo.
+Verás errores, mil cosas a desarrollar y mil cosas a mejorar, pero como todo
+proyecto, nuestra mayor ambición es la propia construcción del mismo, por lo que
+es cuestión de meses, ganas y desarrollo.</p>
+
+<p>Otro de nuestros objetivos es llegar a construir una buena documentación.
+Tenemos esencialmente tres líneas de documentación en mente. Por un lado</p>
+
+<p>queremos transmitir a los demás nuestra filosofía. La dirección que, sin duda
+alguna, tomará el proyecto, independientemente de la implementación que este
+adquiera en un momento dado. Es importante definir esto inicialmente porque al
+final nos vincula muchísimo al target al que vamos destinados.</p>
+
+<p>La documentación es algo lento, también sujeta a colaboraciones, y en principio
+estará inicialmente solo en inglés.</p>
+
+<p>Finalmente decir que elcodi.com es una empresa en plena expansión. Tenemos
+buenas previsiones de crecimiento por lo que tenemos una garantía que lo que hoy
+con tanta ilusión estamos empezando, no dejará de crecer.</p>
+
+<p>Queremos que sea útil, queremos que nuestra propuesta esté a juicio de todo el
+mundo y que saque vuestras críticas mas constructivas, solo así podremos
+realmente hacer un proyecto interesante para todos.</p>
 ]]></content>
   </entry>
   

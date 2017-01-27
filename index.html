@@ -9,8 +9,8 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="Imagine yourself in front of the Barcelona&rsquo;s beach in July. It sounds good,
-right? Then, continue imagining yourself with a great Symfony &hellip;">
+  <meta name="description" content="BullshitLess Driven Development Esta es una carta para tí, pequeño saltamontes programador, que ayer descubriste
+que un if es una instrucción muy &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@ right? Then, continue imagining yourself with a great Symfony &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mmoreram.github.io/">
+  <link rel="canonical" href="http://mmoreram.com/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -62,7 +62,7 @@ right? Then, continue imagining yourself with a great Symfony &hellip;">
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:mmoreram.github.io" />
+    <input type="hidden" name="q" value="site:mmoreram.com" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -81,6 +81,446 @@ right? Then, continue imagining yourself with a great Symfony &hellip;">
       <div id="content">
 	<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/">BLDD, Un DD Para Dominarlos a Todos</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-01-26T19:54:00+01:00" pubdate data-updated="true">Jan 26<span>th</span>, 2017</time>
+        
+         | <a href="/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>BullshitLess Driven Development</strong></p>
+
+<p>Esta es una carta para tí, pequeño saltamontes programador, que ayer descubriste
+que un <em>if</em> es una instrucción muy molona que hace que puedas ejecutar un
+pequeño trozo de código según una condición predeterminada, y que mañana
+descubrirás muy probablemente qué es una función recursiva, qué es un objeto
+y que Singleton es un patrón de diseño, o al menos esto dicen por allí&hellip;</p>
+
+<p>Esta es una carta para tí, para que te acuerdes de ella en los momentos duros de
+tu vida como programador y para que busques un punto de partida en esta
+maravillosa corriente profesional, llena de letras verdes fosforito con
+significado de victoria, de horas extras impagadas y desagradecidas y de bugs
+indescifrables, más escondidos que la dignidad de los votantes del PP.</p>
+
+<p>Sonríele a la vida, afortunado. Alabado sea tu futuro!</p>
+
+<p>Y es que hoy, aquí, te quiero contar algunas situaciones que seguramente, tarde
+o temprano, y más temprano que tarde, vivirás en alguna de tus futuras hazañas.
+En estas situaciones hay monstruos, trampas mortales y hasta armas letales. Hay
+religiones inconexas, dobles morales y lo peor de todo, gilipolleces como para
+alimentar a medio Congo y sobrar para una cena de navidad donde toda Sierra
+Leona esté invitada. Barra libre de Moët incluida.</p>
+
+<p>Empecemos con algunas frasecillas del gremio&hellip;</p>
+
+<h3>Esto está mal</h3>
+
+<p>Si amigo.</p>
+
+<p>Aunque no lo creas, todo cuanto hagas en tu vida será una verdadera mierda para
+algunos. Da igual que lleves un día programando, o que tengas la muchas veces
+inevitable presión de aquellos que te pagan el sueldo, o simplemente que no lo
+sepas hacer mejor. No importa. Hagas lo que hagas, apestará a perro agusanado.</p>
+
+<p>Y posiblemente lo esté. Posiblemente tu creación será pobre y con muchos fallos,
+pero tenemos la suerte de que rodeados como estamos rodeados de almas
+constructivas y caritativas, muy pocas veces un <em>&ldquo;Está mal&rdquo;</em> vendrá acompañado
+de un <em>&ldquo;Si quieres me siento a tu lado y miramos como puede estar mejor&rdquo;</em>.</p>
+
+<p>No te ofusques, no estás solo.</p>
+
+<p>Somos la sociedad del <em>&ldquo;Tu no sabes&rdquo;</em> y no la del <em>&ldquo;Creo que puede mejorarse&rdquo;</em>,
+y estamos tan acomplejados con nuestras mierdas, que necesitamos poner al
+principio de nuestras frases un <strong>&ldquo;IMHO&rdquo;</strong> porque sino, puede que se note
+demasiado que creemos que toda linea de código que no sale de nuestros muñones
+es basura ipso facto.</p>
+
+<p>Los más educados han decidido enmascarar toda esta realidad con una palabreja
+de lo más interesante, y querido lector&hellip; grábatela en tu memoria desentrenada.</p>
+
+<p>Legacy Code.</p>
+
+<h3>Estos de producto&hellip;</h3>
+
+<p>Otra de las frasecillas que corren por la autopista de lo insultante es <em>&ldquo;estos
+de producto, que pesaos con los píxeles&rdquo;</em> o parecidas, normalmente con tono
+burlesco y desafiante.</p>
+
+<p>Si amigo, un clásico entre compañeros de departamento, muy habituales en
+cualquier empresa que se precie donde cuiden un poco sus ventas. No todas las
+empresas son tan modernas y liberales como para dejar a su libre albedrío
+métricas de ventas y ingresos&hellip;</p>
+
+<p>Ah&hellip; estos de producto que quieren jodernos la vida con chorradas como píxeles
+para los frontales, con cambios en la web aparentemente inútiles, o con
+integraciones con métodos de pago o de transporte. Cuando veas a toda esta
+gentuza, escúpeles en la cara, porque no nos respetan, a nosotros, a los
+programadores, a los que hacemos los proyectos que nos piden con tecnologías que
+desconocemos porque son guasonas y molonas, a los que decidimos que el nuevo
+proyecto de la empresa se hará con 378 capas distintas, a cada cual más inútil,
+porque un tal Pepito de los Palotes con sombrero y cuyos fans llevaban el libro
+de Clean Code tatuado en sus suaves nalgas, dijo que era lo último en
+Hipsterismo, a pesar de no saber qué estamos haciendo y el porqué lo estamos
+haciendo. A nosotros que hacemos un formulario en 5 días porque queremos que sea
+compatible con la GameBoy advance, con la pantallita del microondas y con el
+termostato de nuestra estufa. A nosotros que nadie nos impide estar todo el día
+con la nariz enganchada a los grupos online con ciertos parecidos a bacanales.</p>
+
+<p>A nosotros que somos tan responsables.</p>
+
+<p>Te diré un secreto.
+En voz bajita, que no nos oiga nadie.</p>
+
+<p>Si ellos supieran cada una de las cagadas que hacemos en el código que nos pagan
+por hacer, o si supieran cada una de las decisiones arquitecturales erróneas que
+tomamos por el mero hecho de querer molar cantidad, estaríamos todos despedidos.
+Todos.</p>
+
+<p>Aunque supongo que preferimos decir &ldquo;Estos de producto&hellip;&rdquo;, aparentar que no tan
+solo sabemos hacer un <em>foreach</em>, sino que también sabemos hacer el trabajo de
+media compañía, y seguir con nuestras vidas con la cabeza bien alta, dejando un
+rastro de Legacy Code, cual rastro en nuestras espaldas.</p>
+
+<h3>En mi empresa hacemos&hellip;</h3>
+
+<p>Esta es perla brillante, el zafiro de las frases, aunque para encontrarla
+tendrás que esforzarte un poco y dejar que la luz del sol alumbre tu tersa tez
+para salir de casa y relacionarte con otras personas de otras empresas.</p>
+
+<p><strong>Ánimo.</strong></p>
+
+<p>Y es que descubrirás que todas las otras empresas utilizan lo last de lo last.
+Mierda de la buena en su stack de tecnologías y droga de la dura en sus últimas
+incorporaciones (cuando no tienen un auténtico máquina en su departamento de
+backend, tienen un exfacebook en su departamento de sistemas o un súper crack
+como CTO llegado de las montañas de los elfos).</p>
+
+<p>Todas las empresas están tan bien dotadas tecnológicamente y con unas plantillas
+tan extremadamente potentes, que cuando entres en una empresa nueva, nunca,
+repito, nunca, jamás de los jamases, tendrás la impresión de haber empezado a
+trabajar en una escabechina llena de cadáveres, pudriéndose durante los últimos
+10 años.</p>
+
+<p>Nunca, en absoluto.</p>
+
+<p>Y es que amigo, parece que entre que todo nuestro código es una mierda, y los
+de producto están todo el día que si ponme este píxel, y ponme este banner,
+resulta que no tenemos tiempo de hacerlo bien. Pero eh! no es porque seamos
+todos unos auténticos chapuzas en la mayoría de los casos, no no, es porque no
+hemos tenido <em>tiempo</em>.</p>
+
+<h3>Es que resulta que Uncle Bob dice que&hellip;</h3>
+
+<p>Rápido y preciso.</p>
+
+<ul>
+<li>¿Está aquí Uncle Bob?</li>
+<li>¿Conoce Uncle Bob el proyecto?</li>
+<li>No, ¿verdad?</li>
+<li>Pues me importa una mierda lo que diga el tío Bob.</li>
+</ul>
+
+
+<p>Fin de la discusión.</p>
+
+<h2>La clave de todo, BLDD</h2>
+
+<p>Dicho esto, verás que el mundo es un lugar inhóspito, lleno de gente con pocas
+ganas de ayudarte y con muchas de joderte y hundirte, pero aún así tu tienes que
+hacer un <em>switch</em> porque dadas las circunstancias que sean no puedes o no sabes
+hacerlo mejor, o tienes que hacer un proyecto con pocos días y por desgracia no
+puedes hacerlo compatible con el manillar de tu bici.</p>
+
+<p>Te presento, humildemente, el <strong>BLDD</strong>, abreviación de <strong>BullshitLess-Driven
+Development</strong> (otra cosa que tienes que aprender es que aquí escribimos todos
+con abreviaciones, en inglés aunque estén hablando dos de Albacete, y que debes
+poner entre frase y frase la palabra <strong>Trade-off</strong>. Si no haces esto, no serás
+aceptado por los grandes círculos).</p>
+
+<p>El BLDD es una práctica muy sencilla, basada en el ignorar todas aquellas
+frecuencias que emitan gilipolleces en directo. Lo que vendría a ser el clásico
+mandar a esnifar plastidecor picado de toda la vida, pero con un nombre moderno
+y casual, de estos que nos hacen sentir a nosotros muy top.</p>
+
+<blockquote><p>Se recomienda primero hacer los tests, y luego implementar el BLDD. Si no lo
+haces así, eres un mierda.</p></blockquote>
+
+<p>Esta metodología contrarresta todas las demás que terminan en DD y es aplicable
+la mayor parte del tiempo útil de tu vida.</p>
+
+<ul>
+<li>Que alguien te dice que tu proyecto debería tener tests primero? BLDD.</li>
+<li>Que alguien te dice que estás muy acoplado a tu FW y solo quieres hacer tu
+currículum? BLDD</li>
+<li>Que alguien te dice que tu código es mierda y que él lo hace mejor en DDD?
+<del>a este le rompes la boca</del> BLDD</li>
+</ul>
+
+
+<p>Ya ves, funciona cual navaja suiza. Lo bueno de esta práctica es que ten claro
+que nunca nadie va a decir como debes practicarla. Un sinfín de fórmulas, cada
+cual más original, pueden formar parte del elenco de posibilidades a la hora de
+ejecutar el BLDD.</p>
+
+<h2>Algunos consejos para terminar</h2>
+
+<p>Para finalizar mi cookbook del buen programador, un escueto listado de ideas y
+miniconsejos de jardinería para que vayas pensando.</p>
+
+<ul>
+<li>IMHO, si algún día haces una presentación en público, súbete el libro rojo de
+DDD contigo, y al que se ponga en la primera fila y se ponga a mirar el móvil o
+a dormirse, se lo tiras. Le va a doler. Mucho. Y si sigue durmiendo, recuerda
+que aún tienes de otros colores&hellip;</li>
+<li>IMHO, una conversación se acaba cuando alguien dice la palabra <em>Annotation</em>.</li>
+<li>IMHO, para tener amigos en Twitter solo tienes que decir &ldquo;TDD is dead&rdquo;. Para
+tener haters, también.</li>
+<li>IMHO, los tests en tus proyectos es como el paro en españa. Lo importante
+es el coverage, no la calidad de los cases.</li>
+<li>IMHO, en Barcelona, de media los developers solemos cambiar de trabajo una vez
+al año, con subida salarial de forma recurrente. A los 40 años estarás cobrando
+120.000 euros y serás un fucking god en 20 lenguajes distintos. Seguirás sin
+poner bien el puto nombre a una variable y pondrás los comentarios en español.</li>
+<li>IMHO, a día de hoy, en enero de 2017 es mainstream el Event Sourcing. Si, si, está
+práctica tan jodidamente útil en todo nuestro sector. Así que calculo que
+aproximadamente en 2021, en alguna de las empresas en las que trabajes, te
+encontrarás un conjunto de código intratable, ilegible y profundamente
+indocumentado fruto de esta modilla. De nada.</li>
+</ul>
+
+
+<h2>Conclusiones</h2>
+
+<p>Finalmente decirte que mucha suerte, que aprendas mucho, que leas mucho, que
+preguntes y enseñes mucho, pero que nunca dejes que nadie te diga como tienes
+que hacer las cosas (menos si alguien te aconseja que no utilizes Prestashop. En
+este caso, hazle caso). Ten el suficiente criterio como para aceptar que muchas
+de las formas de trabajar que escucharás en conferencias, charlas de amiguetes o
+en hilos de Twitter ni tan solo sirven para tu proyecto.</p>
+
+<p>Trabaja duro, persigue tus objetivos y acuérdate de comprarte muchos libros
+técnicos, de sacar una foto cada vez que te compres uno y publicar en Twitter
+algo como <em>&ldquo;Ya tengo plan para este fin de semana&rdquo;</em>.</p>
+
+<p>Para todo lo demás, BLDD.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/01/11/symfony/">Symfony, Que Narices Estás Haciendo?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-01-11T11:43:00+01:00" pubdate data-updated="true">Jan 11<span>th</span>, 2017</time>
+        
+         | <a href="/blog/2017/01/11/symfony/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Si, esta es mi pregunta. Que narices está pasando?</p>
+
+<p>Desde hace unos meses te veo perdido, y es que durante mucho tiempo, y a pesar
+de las muchas voces que han pasado de quererte a odiarte en una fracción de
+segundo, bien por tu obvia complejidad o bien por tu carácter conservador en
+muchas partes de la tecnología, tu has sido la luz en muchos aspectos. Has
+fundado donde todo parecía estar perdido, y has iluminado donde todo parecía
+oscuro. ¿Y bien, que te ha pasado?</p>
+
+<p>Digo esto porque desde hace ya unas versiones tengo la sensación de que has
+cambiado. Tus objetivos, tus metas. Han cambiado. Como dirían algunos en tono
+sarcástico, tu antes molabas.</p>
+
+<p>Aqui te muestro algunos de los puntos que me preocupan de verdad.</p>
+
+<h3>Destrozando el DIC</h3>
+
+<p>Aunque el concepto de Inyección de dependencias ya existía cuando el componente
+de Symfony salió en Github hace ya unos cuandos años, reconozco que tu nos
+enseñaste a muchos como funcionaba esto del SOLID. Y lo recuerdo con mucho
+cariño, pues fue un antes y un después. Entendimos todos la importancia de
+trabajar con Interfaces, la importancia de inyectar librerías de las que
+dependemos y lo erroneo que es el hecho de inyectar el contenedor directamente
+en nuestras clases. Esto nos hizo y nos sigue haciendo mejores desarrolladores
+y arquitectos.</p>
+
+<p>Por esto y por mucho más, te doy solemnemente las gracias.</p>
+
+<p>Dicho esto, ¿puedes entender que el componente de Inyección de Dependencias
+puede que ya esté terminado? Me refiero a que, la función de dicho componente es
+uno y tan solo uno, y debería ser sencillo y fácil de entender. Durante muchos
+años hemos trabajado para que no tan solo el componente funcione en miles de
+proyectos en producción, sino que aún muchos más miles de personas lo entiendan
+y lo sepan utilizar. Se consiguió un modelo de definición de dependencias
+bastante bueno y con las que la gente sabía trabajar sin demasiados problemas.
+¿Y pues? ¿Que motivos tienes ahora para cambiar esto?</p>
+
+<p>Lo digo porque recientemente sacaste el Autowiring, y me parece una chapuza como
+pocas había visto en ti. No la implementación, en absoluto, hasta reconozco que
+ni me la he mirado, aunque no deja de ser una anotación como cualquier otra. Me
+parece una chapuza el hecho de que un proyecto como tú trates por un lado de
+evangelizar buenas praxis tales como el Testing, las &ldquo;buenas prácticas&rdquo;, y el
+mismo SOLID que en tantas charlas hemos oído hablar, y luego defendáis el hecho
+de que los servicios de nuestras aplicaciones lleven anotaciones.</p>
+
+<p>Yo mismo sigo defendiendo las anotaciones en controladores, pues creo que son el
+único sitio donde pueden tener sentido&hellip; ¿pero en los servicios? ¿anotaciones
+en los servicios? ¿hola? ¿es que nadie dirá nada?</p>
+
+<p>Desde luego, es una opción como cualquier otra, válida en algunos momentos,
+estúpida en muchos otros, pero no deberíamos tener la responsabilidad de hacer
+que los desarrolladores de apps basadas en Symfony fueran escalables a la vez
+que comprensibles? ¿Cuando de escalable véis en el hecho de que los servicios
+tengan anotaciones? ¿Como cuento yo ahora en mis clases de Symfony que esta
+aberración es posible?</p>
+
+<p>Por otro lado, nuevo en la versión ^3.3&hellip; definición de servicios por clase.
+Bien, vamos a ver un hermoso ejemplo.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">AppBundle\EventListener\UserManager</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// ...</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">editAction</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// before Symfony 3.3</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;app.manager.user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Symfony 3.3</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nx">UserManager</span><span class="o">::</span><span class="na">class</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Según el core de Symfony, esta nueva feature es opcional, por lo que si quieres
+puedes seguir utilizando la antigua, y añade&hellip; &ldquo;la antigua forma es obligatoria
+para cuando se quiera sobreescribir, aunque la nueva, juntamente con el
+Autowiring es muy útil para hacer RAD&rdquo;.</p>
+
+<p>Les voy a contar un secreto, pero no se lo contéis a nadie.</p>
+
+<blockquote><p>RAD !== SAD
+Rapid Application Development !== Shitty Application Development</p></blockquote>
+
+<p>Crear una app rápido no implica hacerla de tal forma que, de forma ipsofacta,
+sea inservible para otros entornos. Dicen que la antigua forma es obligatoria
+para cuando quieres sobreescribirlo. Pues bien, amigos, si tanto nos importa
+el hecho que la gente utilize internamente librerías como si 3rd party se
+tratara, si queremos que la gente cree librerías y bundles en sus empresas tan
+profesionales como sea posible, si queremos, al fín y al cabo, potenciar el
+hecho que la gente cree software de calidad, alguien puede comentarme el porqué
+Symfony ahora permite hacer las cosas de otra forma, aín añadir ningún tipo de
+valor a lo que ya existía? ¿Que se pretende? ¿Que la gente lo haga mal de buenas
+a primeras?</p>
+
+<p>Bien, creo que lo váis a conseguir.
+Felicidades.</p>
+
+<h3>Comunidades</h3>
+
+<p>Pasan los años y sigues sin saber que es lo realmente importante. Piensas que lo
+que te ha hecho grande es tu código, y no te negaré que no está mal, aunque es
+muy mejorable, solo hace falta que un PHPStorm entre en algunas de tus clases y
+se ponga a echar humo (namespaces que ya no se utilizan, métodos privados a los
+que nadie llama, bloques de PHPDoc inválidos o sin actualizar&hellip;), pero te
+equivocas.</p>
+
+<p>Desde el principio, mucha gente confió en ti. Nos cambiaste la vida (lo siento,
+soy un romántico, no puedo remediarlo) y nosotros te devolvimos el favor con
+meetups, conferencias, posts, Bundles&hellip;</p>
+
+<p>¿Y sigues pensando que lo más importante es tu código? Te equivocas. Lo más
+importante es el trabajo de toda esta gente que, a pesar de tus muchos pasos
+erroneos, hemos estado allí preparados para difundir tus últimas maravillas.
+Nuestro incansable esfuerzo ha hecho que hoy seas lo que eres, y tu aún más
+inagotable indiferencia hacia nosotros te ha limitado ser lo que realmente
+podrías haber sido.</p>
+
+<p>¿Quieres crecer? Haz de tus comunidades algo esencial, algo prioritario. Danos
+herramientas para ser una extensión de ti. Sé nuestro altavoz y haremos de tí
+algo grande&hellip; aunque algo me dice que esto no entra dentro de tus
+prioridades&hellip; me equivoco?</p>
+
+<h3>DX</h3>
+
+<p>Hace unos dias vi una issue en Symfony que me mosqueó. Javier Eguiluz comentaba
+con mucho acierto que la forma de trabajar con todo lo relacionado con la
+seguridad era tedioso, complicado, repetitivo y pesado. Tal vez estas no fueron
+sus palabras, pero si son las mias.</p>
+
+<p>Tras muchísimos proyectos en Symfony, uno se percata que siempre hace las mismas
+comprobaciones una y otra vez. Existe un Token? Existe un usuario? Porque un
+usuario tiene que saebr</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1854,623 +2294,9 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#115;&#121;&#x6d;&#x66;&#111;&#110;&#x79;&#98;&#x61;&#x72;&#99;&#101;&#x6c;&#x6f;&#x6e;&#97;&#64;&#103;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#109;">&#115;&#x79;&#109;&#x66;&#x6f;&#110;&#x79;&#x62;&#x61;&#x72;&#x63;&#101;&#108;&#x6f;&#110;&#97;&#x40;&#x67;&#109;&#x61;&#105;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+<a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#x73;&#121;&#x6d;&#x66;&#x6f;&#110;&#121;&#98;&#97;&#114;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#97;&#x40;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#x73;&#121;&#109;&#102;&#111;&#x6e;&#121;&#x62;&#97;&#114;&#x63;&#x65;&#108;&#x6f;&#x6e;&#97;&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/20/re-thinking-event-listeners/">Re-thinking Event Listeners</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-08-20T12:27:00+02:00" pubdate data-updated="true">Aug 20<span>th</span>, 2015</time>
-        
-         | <a href="/blog/2015/08/20/re-thinking-event-listeners/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Let&rsquo;s talk about Event Listeners.
-Do you know what an Event Listener is?</p>
-
-<p>Well, if you are used to working with Symfony, then you should know what is
-intended for. If you don&rsquo;t, don&rsquo;t hesitate to take a look at the Symfony
-documentation.</p>
-
-<p>This post aims to start a small discussion about how an Event Listener should
-look like if we really want to keep things decoupled.</p>
-
-<h2>TL;DR</h2>
-
-<ul>
-<li>If we place our business logic inside the Event Listeners, we will not be able
-to use this logic from other points, for example sending a &ldquo;Order created&rdquo; email
-by hand from our Admin using a simple button.</li>
-<li>What we could do is place ALL the logic inside a service that ONLY sends that
-email, exposing a simple and documented api.</li>
-<li>Then, considering that this service is injectable using any Dependency
-Injection implementation, we can inject it into the Event Listener.</li>
-<li>So, EventListeners are only a point of entry to your service layer</li>
-</ul>
-
-
-<h2>Using Event Listeners</h2>
-
-<p>To understand what I am talking about, let&rsquo;s use an small example to make things
-more clear&hellip;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: You buy something in an e-commerce, so, internally, your Cart became 
-</span><span class='line'>an Order. Of course, and because user experience is important in that cases, you 
-</span><span class='line'>want to send an email to the user with some Order information, so you need to 
-</span><span class='line'>send an email to the Customer.
-</span><span class='line'>
-</span><span class='line'>Problem: You want to create this feature in a very decoupled way, of course. The
-</span><span class='line'>e-commerce framework provides you that way, by proposing you an event once the
-</span><span class='line'>Order is created. You can access the Order itself and the Customer.
-</span><span class='line'>
-</span><span class='line'>Solution: Create a new Event Listener object, subscribed to this event called
-</span><span class='line'>order.oncreate, and sending that email.</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Let&rsquo;s see a small example about how this Event Listener should look like. We
-will follow the simple way, only focusing about sending that email in a
-decoupled way with the action.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">OrderEmailEventListener</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * We send an email to the Customer once an order is created</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param OrderOnCreatedEvent $event Event</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">sendEmail</span><span class="p">(</span><span class="nx">OrderOnCreatedEvent</span> <span class="nv">$event</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$order</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getOrder</span><span class="p">();</span>
-</span><span class='line'>        <span class="nv">$customer</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getCustomer</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="sd">/**</span>
-</span><span class='line'><span class="sd">         * Send the email</span>
-</span><span class='line'><span class="sd">         */</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And we could use this configuration in our bundle.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="c1"># Event Listeners</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">project.event_listener.order_created_email</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\EventListener\OrderCreatedEmailEventListener</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="p-Indicator">{</span> <span class="nv">name</span><span class="p-Indicator">:</span> <span class="nv">kernel.event_listener</span><span class="p-Indicator">,</span> <span class="nv">event</span><span class="p-Indicator">:</span> <span class="nv">order.oncreate</span><span class="p-Indicator">,</span> <span class="nv">method</span><span class="p-Indicator">:</span> <span class="nv">sendEmail</span> <span class="p-Indicator">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So this could be a simple implementation. I&rsquo;ve been using it since the beginning
-of times as this could be considered a good practice. But, during this time
-doing more and more Event Listeners, some questions have come to my mind.</p>
-
-<h2>Decoupling from the Event</h2>
-
-<p>Let&rsquo;s consider that our project has an admin panel. Of course, we should be able
-to send this email any time we need (for example, our email server was down
-during the order conversion and we must re-send it). Is this possible with this
-implementation?</p>
-
-<p>Yes. Let&rsquo;s do this considering that we have injected our EventListener and this
-one is accessible locally!</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">OrderCreatedEmailEventListener</span><span class="p">(</span>
-</span><span class='line'>    <span class="nv">$order</span><span class="p">,</span>
-</span><span class='line'>    <span class="nv">$customer</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'><span class="nv">$orderCreatedEmailEventListener</span><span class="o">-&gt;</span><span class="na">sendEmail</span><span class="p">(</span><span class="nv">$event</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Well, this piece of code will really send the email&hellip; but is this
-implementation enough right? I don&rsquo;t think so&hellip;</p>
-
-<p>This Event should only be dispatched when the real event happens. It has no
-sense to create a new <code>OrderEmailEventListener</code> instance without using the
-event dispatcher. This means that, indeed, any Order has been created.</p>
-
-<p>So first of all, creating a new Event out of turn, is not a good practice at
-all.</p>
-
-<p>For solving this, We could do that.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">OrderCreatedEmailEventListener</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * We send an email to the Customer once an order is created</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param OrderOnCreatedEvent $event Event</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">sendEmail</span><span class="p">(</span><span class="nx">OrderOnCreatedEvent</span> <span class="nv">$event</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$order</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getOrder</span><span class="p">();</span>
-</span><span class='line'>        <span class="nv">$customer</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getCustomer</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">sendOrderCreatedEmail</span><span class="p">(</span>
-</span><span class='line'>            <span class="nv">$order</span><span class="p">,</span>
-</span><span class='line'>            <span class="nv">$customer</span>
-</span><span class='line'>        <span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * We send an email to the Customer once an order is created, given the </span>
-</span><span class='line'><span class="sd">     * order and the customer</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param OrderInterface    $order    Order</span>
-</span><span class='line'><span class="sd">     * @param CustomerInterface $customer Customer</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">sendOrderCreatedEmail</span><span class="p">(</span>
-</span><span class='line'>        <span class="nx">OrderInterface</span> <span class="nv">$order</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">CustomerInterface</span> <span class="nv">$customer</span>
-</span><span class='line'>    <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="sd">/**</span>
-</span><span class='line'><span class="sd">         * Send the email</span>
-</span><span class='line'><span class="sd">         */</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And then, we could do this</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$orderCreatedEmailEventListener</span><span class="o">-&gt;</span><span class="na">sendOrderCreatedEmail</span><span class="p">(</span>
-</span><span class='line'>    <span class="nv">$order</span><span class="p">,</span>
-</span><span class='line'>    <span class="nv">$customer</span>
-</span><span class='line'><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Much better, right?
-But is this good enough? No is not.</p>
-
-<h2>Decoupling from the Listener</h2>
-
-<p>We are using an instance of an Event Listener to send an email. Our analysis
-could be exactly the same than before&hellip; Should we use an Event Listener even
-when an event is not dispatched?</p>
-
-<p>No we should not.</p>
-
-<p>An Event Listener is an event listener. Listens one event, and that should be
-all its work. So, we should never inject any event listener, anywhere. Let&rsquo;s do
-some refactor here!</p>
-
-<p>First of all, let&rsquo;s isolate our business logic in a new service. This service
-will <strong>only</strong> do one thing; sending this email.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">OrderCreatedEmailSender</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * We send an email to the Customer once an order is created, given the </span>
-</span><span class='line'><span class="sd">     * order and the customer</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param OrderInterface    $order    Order</span>
-</span><span class='line'><span class="sd">     * @param CustomerInterface $customer Customer</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">sendEmail</span><span class="p">(</span>
-</span><span class='line'>        <span class="nx">OrderInterface</span> <span class="nv">$order</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">CustomerInterface</span> <span class="nv">$customer</span>
-</span><span class='line'>    <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="sd">/**</span>
-</span><span class='line'><span class="sd">         * Send the email</span>
-</span><span class='line'><span class="sd">         */</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This service has only one mission. Sending this email, no matter what event
-executes it, no matter its environment. So if we take a look at what the Event
-Listener implementation should look like now&hellip;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">OrderCreatedEmailEventListener</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * @var OrderCreatedEmailSender</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * Order created email sender</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$orderCreatedEmailSender</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Constructor</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param OrderCreatedEmailSender $orderCreatedEmailSender</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">OrderCreatedEmailSender</span> <span class="nv">$orderCreatedEmailSender</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">orderCreatedEmailSender</span> <span class="o">=</span> <span class="nv">$orderCreatedEmailSender</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * We send an email to the Customer once an order is created</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param OrderOnCreatedEvent $event Event</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">sendEmail</span><span class="p">(</span><span class="nx">OrderOnCreatedEvent</span> <span class="nv">$event</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$order</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getOrder</span><span class="p">();</span>
-</span><span class='line'>        <span class="nv">$customer</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getCustomer</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nv">$this</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">orderCreatedEmailSender</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">sendEmail</span><span class="p">(</span>
-</span><span class='line'>                <span class="nv">$order</span><span class="p">,</span>
-</span><span class='line'>                <span class="nv">$customer</span>
-</span><span class='line'>            <span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally, we should refactor as well the way we have defined our service in the
-DependencyInjection config file.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="c1"># Business layer</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">project.business.order_created_email_sender</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\Business\OrderCreatedEmailSender</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="c1"># Event Listeners</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">project.event_listener.order_created_email</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\EventListener\OrderCreatedEmailEventListener</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">project.business.order_created_email_sender</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="p-Indicator">{</span> <span class="nv">name</span><span class="p-Indicator">:</span> <span class="nv">kernel.event_listener</span><span class="p-Indicator">,</span> <span class="nv">event</span><span class="p-Indicator">:</span> <span class="nv">order.oncreate</span><span class="p-Indicator">,</span> <span class="nv">method</span><span class="p-Indicator">:</span> <span class="nv">sendEmail</span> <span class="p-Indicator">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And that&rsquo;s all.
-This example is so easy and simple, but I am sure that if you take a look at
-your project, you will find a lot of logic inside your Event Listeners. Maybe
-could be a good idea start moving all this logic out of the box, treating these
-listeners as real entry points, like we do with our Commands, Controllers or
-Twig extensions.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/18/defeating-expression-language/">Defeating Expression Language</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-18T09:53:00+02:00" pubdate data-updated="true">May 18<span>th</span>, 2015</time>
-        
-         | <a href="/blog/2015/05/18/defeating-expression-language/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>How beautiful Expression Language definitions are, right? I mean, inserting that
-complex expressions in a Dependency Injection configuration file is so nice and
-fast if you need to inject the result of a method in a service (one of the
-multiple examples we can see)</p>
-
-<p>Let&rsquo;s see a simple example of how we use this library.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="c1"># My managers</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">some_manager</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Manager</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">=service(&quot;another_manager&quot;).someCall(&quot;value&quot;)</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">=service(&quot;yet_another_manager&quot;).getInjectableInstance(parameter(&quot;my_parameter&quot;))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is not a bad idea, really, but because we are engineers and we should have
-as much information as possible in order to be able to choose between the best
-option, always, I will show you another way of defining this piece of code.</p>
-
-<p>Let&rsquo;s do that!</p>
-
-<h3>Factories</h3>
-
-<p>Remember the <a href="http://mmoreram.com/blog/2013/12/23/factory-pattern-in-symfony2/">Factory pattern in Symfony2</a>
-post I wrote some time ago? I talked about how this pattern can be implemented
-in your Symfony projects.</p>
-
-<p>Well, just for your information, most of your Expression Language definitions
-can be nicely done using Factories.</p>
-
-<p>Let&rsquo;s reproduce the same example using factories.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="c1"># My managers</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">some_manager</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Manager</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">my_injectable_value</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">my_injectable_service</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="l-Scalar-Plain">my_injectable_value</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">StdClass</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">factory</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">another_manager</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">someCall</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">value</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="l-Scalar-Plain">my_injectable_service</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This\Is\My\Injectable\Class</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">factory</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">yet_another_manager</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">getInjectableInstance</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">%</span><span class="l-Scalar-Plain">my_parameter%</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Dependency</h3>
-
-<p>Take a look and realise that we&rsquo;ve removed a package dependency from your
-project, as you don&rsquo;t need <code>symfony/expression-language</code> anymore, and your DIC
-definition will be easily exportable to another format if someday is needed.</p>
-
-<h3>Reflexion</h3>
-
-<p>Is Expression Language a bad choice? Well, only you should be able to know if
-using this library is a good choice or not, because only you know your needs and
-your resources, but every time you add a new Expression Language line, just ask
-yourself&hellip;</p>
-
-<p>Can I use simple DI definitions here? Is the only way I can do that?</p>
 </div>
   
   
@@ -2493,6 +2319,14 @@ yourself&hellip;</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/">BLDD, un DD para dominarlos a todos</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/01/11/symfony/">Symfony, que narices estás haciendo?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/03/symfony-catalunya/">Symfony Catalunya</a>
       </li>
     
@@ -2502,14 +2336,6 @@ yourself&hellip;</p>
     
       <li class="post">
         <a href="/blog/2015/11/20/your-packages-dependencies/">Your packages dependencies</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/28/composer-install-in-ci/">Composer install in CI</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/14/symfony-ug-be-our-friend/">Symfony UG, be our friend</a>
       </li>
     
   </ul>
@@ -2554,7 +2380,7 @@ yourself&hellip;</p>
       </div>
     </div>
     <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - Marc Morera -
+  Copyright &copy; 2017 - Marc Morera -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>.</span>
 </p>
 
