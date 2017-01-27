@@ -4,7 +4,7 @@
   <title><![CDATA[Because yes]]></title>
   <link href="http://mmoreram.com/atom.xml" rel="self"/>
   <link href="http://mmoreram.com/"/>
-  <updated>2017-01-27T01:03:58+01:00</updated>
+  <updated>2017-01-27T01:44:28+01:00</updated>
   <id>http://mmoreram.com/</id>
   <author>
     <name><![CDATA[Marc Morera]]></name>
@@ -233,165 +233,6 @@ técnicos, de sacar una foto cada vez que te compres uno y publicar en Twitter
 algo como <em>&ldquo;Ya tengo plan para este fin de semana&rdquo;</em>.</p>
 
 <p>Para todo lo demás, BLDD.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Symfony, que narices estás haciendo?]]></title>
-    <link href="http://mmoreram.com/blog/2017/01/11/symfony/"/>
-    <updated>2017-01-11T11:43:00+01:00</updated>
-    <id>http://mmoreram.com/blog/2017/01/11/symfony</id>
-    <content type="html"><![CDATA[<p>Si, esta es mi pregunta. Que narices está pasando?</p>
-
-<p>Desde hace unos meses te veo perdido, y es que durante mucho tiempo, y a pesar
-de las muchas voces que han pasado de quererte a odiarte en una fracción de
-segundo, bien por tu obvia complejidad o bien por tu carácter conservador en
-muchas partes de la tecnología, tu has sido la luz en muchos aspectos. Has
-fundado donde todo parecía estar perdido, y has iluminado donde todo parecía
-oscuro. ¿Y bien, que te ha pasado?</p>
-
-<p>Digo esto porque desde hace ya unas versiones tengo la sensación de que has
-cambiado. Tus objetivos, tus metas. Han cambiado. Como dirían algunos en tono
-sarcástico, tu antes molabas.</p>
-
-<p>Aqui te muestro algunos de los puntos que me preocupan de verdad.</p>
-
-<h3>Destrozando el DIC</h3>
-
-<p>Aunque el concepto de Inyección de dependencias ya existía cuando el componente
-de Symfony salió en Github hace ya unos cuandos años, reconozco que tu nos
-enseñaste a muchos como funcionaba esto del SOLID. Y lo recuerdo con mucho
-cariño, pues fue un antes y un después. Entendimos todos la importancia de
-trabajar con Interfaces, la importancia de inyectar librerías de las que
-dependemos y lo erroneo que es el hecho de inyectar el contenedor directamente
-en nuestras clases. Esto nos hizo y nos sigue haciendo mejores desarrolladores
-y arquitectos.</p>
-
-<p>Por esto y por mucho más, te doy solemnemente las gracias.</p>
-
-<p>Dicho esto, ¿puedes entender que el componente de Inyección de Dependencias
-puede que ya esté terminado? Me refiero a que, la función de dicho componente es
-uno y tan solo uno, y debería ser sencillo y fácil de entender. Durante muchos
-años hemos trabajado para que no tan solo el componente funcione en miles de
-proyectos en producción, sino que aún muchos más miles de personas lo entiendan
-y lo sepan utilizar. Se consiguió un modelo de definición de dependencias
-bastante bueno y con las que la gente sabía trabajar sin demasiados problemas.
-¿Y pues? ¿Que motivos tienes ahora para cambiar esto?</p>
-
-<p>Lo digo porque recientemente sacaste el Autowiring, y me parece una chapuza como
-pocas había visto en ti. No la implementación, en absoluto, hasta reconozco que
-ni me la he mirado, aunque no deja de ser una anotación como cualquier otra. Me
-parece una chapuza el hecho de que un proyecto como tú trates por un lado de
-evangelizar buenas praxis tales como el Testing, las &ldquo;buenas prácticas&rdquo;, y el
-mismo SOLID que en tantas charlas hemos oído hablar, y luego defendáis el hecho
-de que los servicios de nuestras aplicaciones lleven anotaciones.</p>
-
-<p>Yo mismo sigo defendiendo las anotaciones en controladores, pues creo que son el
-único sitio donde pueden tener sentido&hellip; ¿pero en los servicios? ¿anotaciones
-en los servicios? ¿hola? ¿es que nadie dirá nada?</p>
-
-<p>Desde luego, es una opción como cualquier otra, válida en algunos momentos,
-estúpida en muchos otros, pero no deberíamos tener la responsabilidad de hacer
-que los desarrolladores de apps basadas en Symfony fueran escalables a la vez
-que comprensibles? ¿Cuando de escalable véis en el hecho de que los servicios
-tengan anotaciones? ¿Como cuento yo ahora en mis clases de Symfony que esta
-aberración es posible?</p>
-
-<p>Por otro lado, nuevo en la versión ^3.3&hellip; definición de servicios por clase.
-Bien, vamos a ver un hermoso ejemplo.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">AppBundle\EventListener\UserManager</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// ...</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">editAction</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// ...</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// before Symfony 3.3</span>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;app.manager.user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Symfony 3.3</span>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nx">UserManager</span><span class="o">::</span><span class="na">class</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// ...</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Según el core de Symfony, esta nueva feature es opcional, por lo que si quieres
-puedes seguir utilizando la antigua, y añade&hellip; &ldquo;la antigua forma es obligatoria
-para cuando se quiera sobreescribir, aunque la nueva, juntamente con el
-Autowiring es muy útil para hacer RAD&rdquo;.</p>
-
-<p>Les voy a contar un secreto, pero no se lo contéis a nadie.</p>
-
-<blockquote><p>RAD !== SAD
-Rapid Application Development !== Shitty Application Development</p></blockquote>
-
-<p>Crear una app rápido no implica hacerla de tal forma que, de forma ipsofacta,
-sea inservible para otros entornos. Dicen que la antigua forma es obligatoria
-para cuando quieres sobreescribirlo. Pues bien, amigos, si tanto nos importa
-el hecho que la gente utilize internamente librerías como si 3rd party se
-tratara, si queremos que la gente cree librerías y bundles en sus empresas tan
-profesionales como sea posible, si queremos, al fín y al cabo, potenciar el
-hecho que la gente cree software de calidad, alguien puede comentarme el porqué
-Symfony ahora permite hacer las cosas de otra forma, aín añadir ningún tipo de
-valor a lo que ya existía? ¿Que se pretende? ¿Que la gente lo haga mal de buenas
-a primeras?</p>
-
-<p>Bien, creo que lo váis a conseguir.
-Felicidades.</p>
-
-<h3>Comunidades</h3>
-
-<p>Pasan los años y sigues sin saber que es lo realmente importante. Piensas que lo
-que te ha hecho grande es tu código, y no te negaré que no está mal, aunque es
-muy mejorable, solo hace falta que un PHPStorm entre en algunas de tus clases y
-se ponga a echar humo (namespaces que ya no se utilizan, métodos privados a los
-que nadie llama, bloques de PHPDoc inválidos o sin actualizar&hellip;), pero te
-equivocas.</p>
-
-<p>Desde el principio, mucha gente confió en ti. Nos cambiaste la vida (lo siento,
-soy un romántico, no puedo remediarlo) y nosotros te devolvimos el favor con
-meetups, conferencias, posts, Bundles&hellip;</p>
-
-<p>¿Y sigues pensando que lo más importante es tu código? Te equivocas. Lo más
-importante es el trabajo de toda esta gente que, a pesar de tus muchos pasos
-erroneos, hemos estado allí preparados para difundir tus últimas maravillas.
-Nuestro incansable esfuerzo ha hecho que hoy seas lo que eres, y tu aún más
-inagotable indiferencia hacia nosotros te ha limitado ser lo que realmente
-podrías haber sido.</p>
-
-<p>¿Quieres crecer? Haz de tus comunidades algo esencial, algo prioritario. Danos
-herramientas para ser una extensión de ti. Sé nuestro altavoz y haremos de tí
-algo grande&hellip; aunque algo me dice que esto no entra dentro de tus
-prioridades&hellip; me equivoco?</p>
-
-<h3>DX</h3>
-
-<p>Hace unos dias vi una issue en Symfony que me mosqueó. Javier Eguiluz comentaba
-con mucho acierto que la forma de trabajar con todo lo relacionado con la
-seguridad era tedioso, complicado, repetitivo y pesado. Tal vez estas no fueron
-sus palabras, pero si son las mias.</p>
-
-<p>Tras muchísimos proyectos en Symfony, uno se percata que siempre hace las mismas
-comprobaciones una y otra vez. Existe un Token? Existe un usuario? Porque un
-usuario tiene que saebr</p>
 ]]></content>
   </entry>
   
@@ -1939,7 +1780,7 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#x73;&#121;&#x6d;&#x66;&#x6f;&#110;&#121;&#98;&#97;&#114;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#97;&#x40;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#x73;&#121;&#109;&#102;&#111;&#x6e;&#121;&#x62;&#97;&#114;&#x63;&#x65;&#108;&#x6f;&#x6e;&#97;&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#x73;&#x79;&#x6d;&#102;&#111;&#x6e;&#x79;&#x62;&#x61;&#114;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#97;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;">&#x73;&#x79;&#x6d;&#x66;&#x6f;&#110;&#121;&#98;&#x61;&#114;&#x63;&#101;&#108;&#111;&#110;&#97;&#x40;&#103;&#109;&#x61;&#105;&#x6c;&#46;&#99;&#x6f;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
 ]]></content>
@@ -3593,6 +3434,38 @@ after goal.</p>
 event.</p>
 
 <p>PD: Ryan, my friend, I will also take a plane XD</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SymfonyWalk - Sleeping bag]]></title>
+    <link href="http://mmoreram.com/blog/2014/11/07/symfonywalk-sleeping-bag/"/>
+    <updated>2014-11-07T18:51:00+01:00</updated>
+    <id>http://mmoreram.com/blog/2014/11/07/symfonywalk-sleeping-bag</id>
+    <content type="html"><![CDATA[<p>I expected it would be much easier. Indeed, it should be easier, but once again,
+the effort on something is just the beginning of something simply bigger called
+&ldquo;The plan&rdquo;.</p>
+
+<p>The problem is that I thought if would be much simple to sleep from Zaragoza to
+Madrid.</p>
+
+<p>It is not. Damn!</p>
+
+<p>So this is why I will have to sleep in a sleeping bag 9 days. I don&rsquo;t exactly
+know where will I be able to clean myself, or to eat something, or sleep. In
+fact this is what OpenSource is. All OpenSource developers are Walkers in a
+world without hostels, but nice people.</p>
+
+<p>I expect I will find some contributors around the adventure.</p>
+
+<ul>
+<li>Food Pull Requests?</li>
+<li>Bed Pull Requests?</li>
+<li>Water Pull Requests?</li>
+</ul>
+
+
+<p>7 days to go. I am ready. Am I?</p>
 ]]></content>
   </entry>
   

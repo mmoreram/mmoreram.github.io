@@ -339,194 +339,6 @@ algo como <em>&ldquo;Ya tengo plan para este fin de semana&rdquo;</em>.</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2017/01/11/symfony/">Symfony, Que Narices Estás Haciendo?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2017-01-11T11:43:00+01:00" pubdate data-updated="true">Jan 11<span>th</span>, 2017</time>
-        
-         | <a href="/blog/2017/01/11/symfony/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Si, esta es mi pregunta. Que narices está pasando?</p>
-
-<p>Desde hace unos meses te veo perdido, y es que durante mucho tiempo, y a pesar
-de las muchas voces que han pasado de quererte a odiarte en una fracción de
-segundo, bien por tu obvia complejidad o bien por tu carácter conservador en
-muchas partes de la tecnología, tu has sido la luz en muchos aspectos. Has
-fundado donde todo parecía estar perdido, y has iluminado donde todo parecía
-oscuro. ¿Y bien, que te ha pasado?</p>
-
-<p>Digo esto porque desde hace ya unas versiones tengo la sensación de que has
-cambiado. Tus objetivos, tus metas. Han cambiado. Como dirían algunos en tono
-sarcástico, tu antes molabas.</p>
-
-<p>Aqui te muestro algunos de los puntos que me preocupan de verdad.</p>
-
-<h3>Destrozando el DIC</h3>
-
-<p>Aunque el concepto de Inyección de dependencias ya existía cuando el componente
-de Symfony salió en Github hace ya unos cuandos años, reconozco que tu nos
-enseñaste a muchos como funcionaba esto del SOLID. Y lo recuerdo con mucho
-cariño, pues fue un antes y un después. Entendimos todos la importancia de
-trabajar con Interfaces, la importancia de inyectar librerías de las que
-dependemos y lo erroneo que es el hecho de inyectar el contenedor directamente
-en nuestras clases. Esto nos hizo y nos sigue haciendo mejores desarrolladores
-y arquitectos.</p>
-
-<p>Por esto y por mucho más, te doy solemnemente las gracias.</p>
-
-<p>Dicho esto, ¿puedes entender que el componente de Inyección de Dependencias
-puede que ya esté terminado? Me refiero a que, la función de dicho componente es
-uno y tan solo uno, y debería ser sencillo y fácil de entender. Durante muchos
-años hemos trabajado para que no tan solo el componente funcione en miles de
-proyectos en producción, sino que aún muchos más miles de personas lo entiendan
-y lo sepan utilizar. Se consiguió un modelo de definición de dependencias
-bastante bueno y con las que la gente sabía trabajar sin demasiados problemas.
-¿Y pues? ¿Que motivos tienes ahora para cambiar esto?</p>
-
-<p>Lo digo porque recientemente sacaste el Autowiring, y me parece una chapuza como
-pocas había visto en ti. No la implementación, en absoluto, hasta reconozco que
-ni me la he mirado, aunque no deja de ser una anotación como cualquier otra. Me
-parece una chapuza el hecho de que un proyecto como tú trates por un lado de
-evangelizar buenas praxis tales como el Testing, las &ldquo;buenas prácticas&rdquo;, y el
-mismo SOLID que en tantas charlas hemos oído hablar, y luego defendáis el hecho
-de que los servicios de nuestras aplicaciones lleven anotaciones.</p>
-
-<p>Yo mismo sigo defendiendo las anotaciones en controladores, pues creo que son el
-único sitio donde pueden tener sentido&hellip; ¿pero en los servicios? ¿anotaciones
-en los servicios? ¿hola? ¿es que nadie dirá nada?</p>
-
-<p>Desde luego, es una opción como cualquier otra, válida en algunos momentos,
-estúpida en muchos otros, pero no deberíamos tener la responsabilidad de hacer
-que los desarrolladores de apps basadas en Symfony fueran escalables a la vez
-que comprensibles? ¿Cuando de escalable véis en el hecho de que los servicios
-tengan anotaciones? ¿Como cuento yo ahora en mis clases de Symfony que esta
-aberración es posible?</p>
-
-<p>Por otro lado, nuevo en la versión ^3.3&hellip; definición de servicios por clase.
-Bien, vamos a ver un hermoso ejemplo.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">AppBundle\EventListener\UserManager</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// ...</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">editAction</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// ...</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// before Symfony 3.3</span>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;app.manager.user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Symfony 3.3</span>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nx">UserManager</span><span class="o">::</span><span class="na">class</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// ...</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Según el core de Symfony, esta nueva feature es opcional, por lo que si quieres
-puedes seguir utilizando la antigua, y añade&hellip; &ldquo;la antigua forma es obligatoria
-para cuando se quiera sobreescribir, aunque la nueva, juntamente con el
-Autowiring es muy útil para hacer RAD&rdquo;.</p>
-
-<p>Les voy a contar un secreto, pero no se lo contéis a nadie.</p>
-
-<blockquote><p>RAD !== SAD
-Rapid Application Development !== Shitty Application Development</p></blockquote>
-
-<p>Crear una app rápido no implica hacerla de tal forma que, de forma ipsofacta,
-sea inservible para otros entornos. Dicen que la antigua forma es obligatoria
-para cuando quieres sobreescribirlo. Pues bien, amigos, si tanto nos importa
-el hecho que la gente utilize internamente librerías como si 3rd party se
-tratara, si queremos que la gente cree librerías y bundles en sus empresas tan
-profesionales como sea posible, si queremos, al fín y al cabo, potenciar el
-hecho que la gente cree software de calidad, alguien puede comentarme el porqué
-Symfony ahora permite hacer las cosas de otra forma, aín añadir ningún tipo de
-valor a lo que ya existía? ¿Que se pretende? ¿Que la gente lo haga mal de buenas
-a primeras?</p>
-
-<p>Bien, creo que lo váis a conseguir.
-Felicidades.</p>
-
-<h3>Comunidades</h3>
-
-<p>Pasan los años y sigues sin saber que es lo realmente importante. Piensas que lo
-que te ha hecho grande es tu código, y no te negaré que no está mal, aunque es
-muy mejorable, solo hace falta que un PHPStorm entre en algunas de tus clases y
-se ponga a echar humo (namespaces que ya no se utilizan, métodos privados a los
-que nadie llama, bloques de PHPDoc inválidos o sin actualizar&hellip;), pero te
-equivocas.</p>
-
-<p>Desde el principio, mucha gente confió en ti. Nos cambiaste la vida (lo siento,
-soy un romántico, no puedo remediarlo) y nosotros te devolvimos el favor con
-meetups, conferencias, posts, Bundles&hellip;</p>
-
-<p>¿Y sigues pensando que lo más importante es tu código? Te equivocas. Lo más
-importante es el trabajo de toda esta gente que, a pesar de tus muchos pasos
-erroneos, hemos estado allí preparados para difundir tus últimas maravillas.
-Nuestro incansable esfuerzo ha hecho que hoy seas lo que eres, y tu aún más
-inagotable indiferencia hacia nosotros te ha limitado ser lo que realmente
-podrías haber sido.</p>
-
-<p>¿Quieres crecer? Haz de tus comunidades algo esencial, algo prioritario. Danos
-herramientas para ser una extensión de ti. Sé nuestro altavoz y haremos de tí
-algo grande&hellip; aunque algo me dice que esto no entra dentro de tus
-prioridades&hellip; me equivoco?</p>
-
-<h3>DX</h3>
-
-<p>Hace unos dias vi una issue en Symfony que me mosqueó. Javier Eguiluz comentaba
-con mucho acierto que la forma de trabajar con todo lo relacionado con la
-seguridad era tedioso, complicado, repetitivo y pesado. Tal vez estas no fueron
-sus palabras, pero si son las mias.</p>
-
-<p>Tras muchísimos proyectos en Symfony, uno se percata que siempre hace las mismas
-comprobaciones una y otra vez. Existe un Token? Existe un usuario? Porque un
-usuario tiene que saebr</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2016/03/03/symfony-catalunya/">Symfony Catalunya</a></h1>
     
     
@@ -2294,9 +2106,470 @@ want to be one of the bests, then Barcelona can be your new home :)</p>
 
 <p>If you want to know more about it, just send an email to Symfony Barcelona User
 Group and you will be properly helped to move here with us. The group email is
-<a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#x73;&#121;&#x6d;&#x66;&#x6f;&#110;&#121;&#98;&#97;&#114;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#97;&#x40;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#x73;&#121;&#109;&#102;&#111;&#x6e;&#121;&#x62;&#97;&#114;&#x63;&#x65;&#108;&#x6f;&#x6e;&#97;&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#x73;&#x79;&#x6d;&#102;&#111;&#x6e;&#x79;&#x62;&#x61;&#114;&#99;&#x65;&#x6c;&#x6f;&#x6e;&#97;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;">&#x73;&#x79;&#x6d;&#x66;&#x6f;&#110;&#121;&#98;&#x61;&#114;&#x63;&#101;&#108;&#111;&#110;&#97;&#x40;&#103;&#109;&#x61;&#105;&#x6c;&#46;&#99;&#x6f;&#x6d;</a></p>
 
 <p>You want to join us, but you don&rsquo;t know it yet :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/20/re-thinking-event-listeners/">Re-thinking Event Listeners</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-20T12:27:00+02:00" pubdate data-updated="true">Aug 20<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/08/20/re-thinking-event-listeners/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Let&rsquo;s talk about Event Listeners.
+Do you know what an Event Listener is?</p>
+
+<p>Well, if you are used to working with Symfony, then you should know what is
+intended for. If you don&rsquo;t, don&rsquo;t hesitate to take a look at the Symfony
+documentation.</p>
+
+<p>This post aims to start a small discussion about how an Event Listener should
+look like if we really want to keep things decoupled.</p>
+
+<h2>TL;DR</h2>
+
+<ul>
+<li>If we place our business logic inside the Event Listeners, we will not be able
+to use this logic from other points, for example sending a &ldquo;Order created&rdquo; email
+by hand from our Admin using a simple button.</li>
+<li>What we could do is place ALL the logic inside a service that ONLY sends that
+email, exposing a simple and documented api.</li>
+<li>Then, considering that this service is injectable using any Dependency
+Injection implementation, we can inject it into the Event Listener.</li>
+<li>So, EventListeners are only a point of entry to your service layer</li>
+</ul>
+
+
+<h2>Using Event Listeners</h2>
+
+<p>To understand what I am talking about, let&rsquo;s use an small example to make things
+more clear&hellip;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: You buy something in an e-commerce, so, internally, your Cart became 
+</span><span class='line'>an Order. Of course, and because user experience is important in that cases, you 
+</span><span class='line'>want to send an email to the user with some Order information, so you need to 
+</span><span class='line'>send an email to the Customer.
+</span><span class='line'>
+</span><span class='line'>Problem: You want to create this feature in a very decoupled way, of course. The
+</span><span class='line'>e-commerce framework provides you that way, by proposing you an event once the
+</span><span class='line'>Order is created. You can access the Order itself and the Customer.
+</span><span class='line'>
+</span><span class='line'>Solution: Create a new Event Listener object, subscribed to this event called
+</span><span class='line'>order.oncreate, and sending that email.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&rsquo;s see a small example about how this Event Listener should look like. We
+will follow the simple way, only focusing about sending that email in a
+decoupled way with the action.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">OrderEmailEventListener</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * We send an email to the Customer once an order is created</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param OrderOnCreatedEvent $event Event</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">sendEmail</span><span class="p">(</span><span class="nx">OrderOnCreatedEvent</span> <span class="nv">$event</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$order</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getOrder</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$customer</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getCustomer</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Send the email</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And we could use this configuration in our bundle.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># Event Listeners</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">project.event_listener.order_created_email</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\EventListener\OrderCreatedEmailEventListener</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="p-Indicator">{</span> <span class="nv">name</span><span class="p-Indicator">:</span> <span class="nv">kernel.event_listener</span><span class="p-Indicator">,</span> <span class="nv">event</span><span class="p-Indicator">:</span> <span class="nv">order.oncreate</span><span class="p-Indicator">,</span> <span class="nv">method</span><span class="p-Indicator">:</span> <span class="nv">sendEmail</span> <span class="p-Indicator">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So this could be a simple implementation. I&rsquo;ve been using it since the beginning
+of times as this could be considered a good practice. But, during this time
+doing more and more Event Listeners, some questions have come to my mind.</p>
+
+<h2>Decoupling from the Event</h2>
+
+<p>Let&rsquo;s consider that our project has an admin panel. Of course, we should be able
+to send this email any time we need (for example, our email server was down
+during the order conversion and we must re-send it). Is this possible with this
+implementation?</p>
+
+<p>Yes. Let&rsquo;s do this considering that we have injected our EventListener and this
+one is accessible locally!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">OrderCreatedEmailEventListener</span><span class="p">(</span>
+</span><span class='line'>    <span class="nv">$order</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$customer</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="nv">$orderCreatedEmailEventListener</span><span class="o">-&gt;</span><span class="na">sendEmail</span><span class="p">(</span><span class="nv">$event</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Well, this piece of code will really send the email&hellip; but is this
+implementation enough right? I don&rsquo;t think so&hellip;</p>
+
+<p>This Event should only be dispatched when the real event happens. It has no
+sense to create a new <code>OrderEmailEventListener</code> instance without using the
+event dispatcher. This means that, indeed, any Order has been created.</p>
+
+<p>So first of all, creating a new Event out of turn, is not a good practice at
+all.</p>
+
+<p>For solving this, We could do that.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">OrderCreatedEmailEventListener</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * We send an email to the Customer once an order is created</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param OrderOnCreatedEvent $event Event</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">sendEmail</span><span class="p">(</span><span class="nx">OrderOnCreatedEvent</span> <span class="nv">$event</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$order</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getOrder</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$customer</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getCustomer</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">sendOrderCreatedEmail</span><span class="p">(</span>
+</span><span class='line'>            <span class="nv">$order</span><span class="p">,</span>
+</span><span class='line'>            <span class="nv">$customer</span>
+</span><span class='line'>        <span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * We send an email to the Customer once an order is created, given the </span>
+</span><span class='line'><span class="sd">     * order and the customer</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param OrderInterface    $order    Order</span>
+</span><span class='line'><span class="sd">     * @param CustomerInterface $customer Customer</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">sendOrderCreatedEmail</span><span class="p">(</span>
+</span><span class='line'>        <span class="nx">OrderInterface</span> <span class="nv">$order</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">CustomerInterface</span> <span class="nv">$customer</span>
+</span><span class='line'>    <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Send the email</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And then, we could do this</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$orderCreatedEmailEventListener</span><span class="o">-&gt;</span><span class="na">sendOrderCreatedEmail</span><span class="p">(</span>
+</span><span class='line'>    <span class="nv">$order</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$customer</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Much better, right?
+But is this good enough? No is not.</p>
+
+<h2>Decoupling from the Listener</h2>
+
+<p>We are using an instance of an Event Listener to send an email. Our analysis
+could be exactly the same than before&hellip; Should we use an Event Listener even
+when an event is not dispatched?</p>
+
+<p>No we should not.</p>
+
+<p>An Event Listener is an event listener. Listens one event, and that should be
+all its work. So, we should never inject any event listener, anywhere. Let&rsquo;s do
+some refactor here!</p>
+
+<p>First of all, let&rsquo;s isolate our business logic in a new service. This service
+will <strong>only</strong> do one thing; sending this email.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">OrderCreatedEmailSender</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * We send an email to the Customer once an order is created, given the </span>
+</span><span class='line'><span class="sd">     * order and the customer</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param OrderInterface    $order    Order</span>
+</span><span class='line'><span class="sd">     * @param CustomerInterface $customer Customer</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">sendEmail</span><span class="p">(</span>
+</span><span class='line'>        <span class="nx">OrderInterface</span> <span class="nv">$order</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">CustomerInterface</span> <span class="nv">$customer</span>
+</span><span class='line'>    <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Send the email</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This service has only one mission. Sending this email, no matter what event
+executes it, no matter its environment. So if we take a look at what the Event
+Listener implementation should look like now&hellip;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">OrderCreatedEmailEventListener</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * @var OrderCreatedEmailSender</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * Order created email sender</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$orderCreatedEmailSender</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Constructor</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param OrderCreatedEmailSender $orderCreatedEmailSender</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">OrderCreatedEmailSender</span> <span class="nv">$orderCreatedEmailSender</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">orderCreatedEmailSender</span> <span class="o">=</span> <span class="nv">$orderCreatedEmailSender</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * We send an email to the Customer once an order is created</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @param OrderOnCreatedEvent $event Event</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">sendEmail</span><span class="p">(</span><span class="nx">OrderOnCreatedEvent</span> <span class="nv">$event</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$order</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getOrder</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$customer</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getCustomer</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$this</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">orderCreatedEmailSender</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">sendEmail</span><span class="p">(</span>
+</span><span class='line'>                <span class="nv">$order</span><span class="p">,</span>
+</span><span class='line'>                <span class="nv">$customer</span>
+</span><span class='line'>            <span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, we should refactor as well the way we have defined our service in the
+DependencyInjection config file.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># Business layer</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">project.business.order_created_email_sender</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\Business\OrderCreatedEmailSender</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># Event Listeners</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">project.event_listener.order_created_email</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\EventListener\OrderCreatedEmailEventListener</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">arguments</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="err">@</span><span class="l-Scalar-Plain">project.business.order_created_email_sender</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="p-Indicator">{</span> <span class="nv">name</span><span class="p-Indicator">:</span> <span class="nv">kernel.event_listener</span><span class="p-Indicator">,</span> <span class="nv">event</span><span class="p-Indicator">:</span> <span class="nv">order.oncreate</span><span class="p-Indicator">,</span> <span class="nv">method</span><span class="p-Indicator">:</span> <span class="nv">sendEmail</span> <span class="p-Indicator">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And that&rsquo;s all.
+This example is so easy and simple, but I am sure that if you take a look at
+your project, you will find a lot of logic inside your Event Listeners. Maybe
+could be a good idea start moving all this logic out of the box, treating these
+listeners as real entry points, like we do with our Commands, Controllers or
+Twig extensions.</p>
 </div>
   
   
@@ -2323,10 +2596,6 @@ Group and you will be properly helped to move here with us. The group email is
       </li>
     
       <li class="post">
-        <a href="/blog/2017/01/11/symfony/">Symfony, que narices estás haciendo?</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2016/03/03/symfony-catalunya/">Symfony Catalunya</a>
       </li>
     
@@ -2336,6 +2605,10 @@ Group and you will be properly helped to move here with us. The group email is
     
       <li class="post">
         <a href="/blog/2015/11/20/your-packages-dependencies/">Your packages dependencies</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/28/composer-install-in-ci/">Composer install in CI</a>
       </li>
     
   </ul>
