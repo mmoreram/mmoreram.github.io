@@ -9,8 +9,9 @@
   <meta name="author" content="Marc Morera">
 
   
-  <meta name="description" content="Queridos developers de Barcelona y alrededores. Como ya sabréis algunos, en Barcelona tenemos una comunidad muy interesante de
-developers interesados &hellip;">
+  <meta name="description" content="Few days ago, at the bimonthly meeting of Symfony2 Barcelona, attendees
+began to discuss the annotations. Obviously, given that it is a
+practice that &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +82,543 @@ developers interesados &hellip;">
       <div id="content">
 	<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/30/controller-extra-bundle/">ControllerExtraBundle, Some Useful Controller Annotations</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-30T17:03:00+02:00" pubdate data-updated="true">Jun 30<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/06/30/controller-extra-bundle/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Few days ago, at the bimonthly meeting of Symfony2 Barcelona, attendees
+began to discuss the annotations. Obviously, given that it is a
+practice that goes against many many philosophies or architectural strategies ,
+many people were against them, and some people where I include myself, were in
+favor.</p>
+
+<p>Being in favor of annotations does not mean wanting to use everywhere
+but take them into account when the occasion required it is.</p>
+
+<p>We could divide Symfony2 project into two blocks in this case. the
+first is the model, a set of elements that implement our domain.
+Doctrine has some annotations to define how this model maps to the
+database, and I admit that at the first, when you are in the lower part
+and elemental learning curve, are very positive elements for all developers.</p>
+
+<p>However, at the time that you must have actual control of your domain, and
+the time domain may be used in more than one project and more than
+a framework, we have a problem. So, and I will not go into details,
+I conclude that annotations never should be used in the domain model.</p>
+
+<p>On the other hand, we have the application, the entry point. The controllers.</p>
+
+<p>Let me ask you a question.</p>
+
+<p>Do you think your application will change its framework someday? And given that
+the answer is affirmative&hellip; Do you think you will maintain your controllers?</p>
+
+<p>Both questions can be answered affirmatively, but is a very very rarely
+situation where, surely, most of you will never have to manage. So I think that
+we should thread Controllers in a very different way than Model.</p>
+
+<p>IMHO, I am used to using annotations, because simplifies a lot some repetitive
+processes, and gives me a very visual definition of what my action is responding
+against, and what configuration are being applied.</p>
+
+<p>Maybe is not the best of the options in some cases, but if the annotations is
+well documented and defined, maybe could be useful in lot of cases.</p>
+
+<p>In Symfony Controllers we have those annotations (Surely there are more, but I
+consider that those are the most useful of them)</p>
+
+<ul>
+<li>ParamConverter &ndash; Good annotation. The code is a little bit messy but I am very
+thankful. At the point I needed to define the namespace of the entity through a
+container parameter, this annotations became useless.</li>
+<li>Method, Router y Template &ndash; Very useful for non-customizable projects. Worth
+considering in our projects if we really do not need any kind of customization,
+like custom routes.</li>
+<li>Secure &ndash; Static. Very useful if you accept your controllers will never change
+its secure definition.</li>
+</ul>
+
+
+<p>Given my little devotion for these controller annotations, some months ago I
+decided to detect some needs I had in some personal projects, needs to repeat
+some code once and again, code that had nothing to do with my business. I tried
+to implement my annotations as flexible as possible.</p>
+
+<p>For that I created <a href="https://github.com/mmoreram/ControllerExtraBundle">ControllerExtraBundle</a>.
+This bundle, in addition to provide a set of Symfony2 annotations for
+controllers, provides you a platform and a documentation to implement yourself
+your own needs.</p>
+
+<p>Actually this bundle is stable at version <code>v.1.1.2</code> and have this annotations</p>
+
+<h2>@Paginator</h2>
+
+<p><a href="https://github.com/mmoreram/ControllerExtraBundle#paginator">@Paginator Documentation</a></p>
+
+<p>Allows you to inject a Doctrine Paginator given a route and a configuration. Is
+very flexible but has to evolve even more.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Simple controller method</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * This Controller matches pattern /paginate/nb/{limit}/{page}</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * Where:</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * * limit = 10</span>
+</span><span class='line'><span class="sd"> * * page = 1</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @PaginatorAnnotation(</span>
+</span><span class='line'><span class="sd"> *      class = (</span>
+</span><span class='line'><span class="sd"> *          factoryClass = &quot;Mmoreram\ControllerExtraBundle\Factory\EntityFactory&quot;,</span>
+</span><span class='line'><span class="sd"> *          factoryMethod = &quot;create&quot;,</span>
+</span><span class='line'><span class="sd"> *          factoryStatic = true</span>
+</span><span class='line'><span class="sd"> *      ),</span>
+</span><span class='line'><span class="sd"> *      page = &quot;~page~&quot;,</span>
+</span><span class='line'><span class="sd"> *      limit = &quot;~limit~&quot;,</span>
+</span><span class='line'><span class="sd"> *      orderBy = {</span>
+</span><span class='line'><span class="sd"> *          { &quot;x&quot;, &quot;createdAt&quot;, &quot;ASC&quot; },</span>
+</span><span class='line'><span class="sd"> *          { &quot;x&quot;, &quot;updatedAt&quot;, &quot;DESC&quot; },</span>
+</span><span class='line'><span class="sd"> *          { &quot;x&quot;, &quot;id&quot;, &quot;0&quot;, {</span>
+</span><span class='line'><span class="sd"> *              &quot;1&quot; = &quot;ASC&quot;,</span>
+</span><span class='line'><span class="sd"> *              &quot;2&quot; = &quot;DESC&quot;,</span>
+</span><span class='line'><span class="sd"> *          }}</span>
+</span><span class='line'><span class="sd"> *      },</span>
+</span><span class='line'><span class="sd"> *      wheres = {</span>
+</span><span class='line'><span class="sd"> *          { &quot;x&quot;, &quot;enabled&quot; , &quot;=&quot;, true }</span>
+</span><span class='line'><span class="sd"> *      },</span>
+</span><span class='line'><span class="sd"> *      leftJoins = {</span>
+</span><span class='line'><span class="sd"> *          { &quot;x&quot;, &quot;relation&quot;, &quot;r&quot; },</span>
+</span><span class='line'><span class="sd"> *          { &quot;x&quot;, &quot;relation2&quot;, &quot;r2&quot; },</span>
+</span><span class='line'><span class="sd"> *          { &quot;x&quot;, &quot;relation5&quot;, &quot;r5&quot;, true },</span>
+</span><span class='line'><span class="sd"> *      },</span>
+</span><span class='line'><span class="sd"> *      innerJoins = {</span>
+</span><span class='line'><span class="sd"> *          { &quot;x&quot;, &quot;relation3&quot;, &quot;r3&quot; },</span>
+</span><span class='line'><span class="sd"> *          { &quot;x&quot;, &quot;relation4&quot;, &quot;r4&quot;, true },</span>
+</span><span class='line'><span class="sd"> *      },</span>
+</span><span class='line'><span class="sd"> *      notNulls = {</span>
+</span><span class='line'><span class="sd"> *          {&quot;x&quot;, &quot;address1&quot;},</span>
+</span><span class='line'><span class="sd"> *          {&quot;x&quot;, &quot;address2&quot;},</span>
+</span><span class='line'><span class="sd"> *      }</span>
+</span><span class='line'><span class="sd"> * )</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">(</span><span class="nx">Paginator</span> <span class="nv">$paginator</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>@Entity</h2>
+
+<p><a href="https://github.com/mmoreram/ControllerExtraBundle#entity">@Entity Documentation</a></p>
+
+<p>Generates a new entity instance, given an entity definition. This definition can
+be given a namespace, a container parameter, a doctrine shortcut or a factory
+definition.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Annotation\Entity</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Entity\User</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Simple controller method</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * This Controller matches pattern /user/edit/{id}/{username}</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @Entity(</span>
+</span><span class='line'><span class="sd"> *      class = {</span>
+</span><span class='line'><span class="sd"> *          &quot;factory&quot; = &quot;my.factory.service&quot;,</span>
+</span><span class='line'><span class="sd"> *          &quot;method&quot;  = &quot;generate&quot;,</span>
+</span><span class='line'><span class="sd"> *          &quot;static&quot;  = false,</span>
+</span><span class='line'><span class="sd"> *      },</span>
+</span><span class='line'><span class="sd"> *      name  = &quot;user&quot;</span>
+</span><span class='line'><span class="sd"> * )</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">(</span><span class="nx">User</span> <span class="nv">$user</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// $user is an empty instance</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can also, and since some days ago, not only inject an empty entity instance
+but retrieve an existing mapped instance like ParamConverter does, but in a very
+easy way.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Annotation\Entity</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Entity\User</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Simple controller method</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * This Controller matches pattern /user/edit/{id}/{username}</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @Entity(</span>
+</span><span class='line'><span class="sd"> *      class = &quot;MmoreramCustomBundle:User&quot;,</span>
+</span><span class='line'><span class="sd"> *      name  = &quot;user&quot;,</span>
+</span><span class='line'><span class="sd"> *      mapping = {</span>
+</span><span class='line'><span class="sd"> *          &quot;id&quot;: &quot;~id~&quot;,</span>
+</span><span class='line'><span class="sd"> *          &quot;username&quot;: &quot;~username~&quot;</span>
+</span><span class='line'><span class="sd"> *      }</span>
+</span><span class='line'><span class="sd"> * )</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">(</span><span class="nx">User</span> <span class="nv">$user</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// $user is a mapped entity</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>@Form</h2>
+
+<p><a href="https://github.com/mmoreram/ControllerExtraBundle#form">@Form Documentation</a></p>
+
+<p>Generates a simple FormType, FormInterface of FormView instance, given a form
+definition. You can also configure it to create given a mapped or a new entity
+instance and you can also handleRequest it and validate.</p>
+
+<p>To create it given a mapped or a new entity instance, you can combine it using
+both @ParamConverter or @Entity annotations.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\Route</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\Form\Form</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Annotation\Form</span> <span class="k">as</span> <span class="nx">AnnotationForm</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Entity\User</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Simple controller method</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @Route(</span>
+</span><span class='line'><span class="sd"> *      path = &quot;/user/{id}&quot;,</span>
+</span><span class='line'><span class="sd"> *      name = &quot;view_user&quot;</span>
+</span><span class='line'><span class="sd"> * )</span>
+</span><span class='line'><span class="sd"> * @Entity(</span>
+</span><span class='line'><span class="sd"> *      class = &quot;MmoreramCustomBundle:User&quot;,</span>
+</span><span class='line'><span class="sd"> *      name  = &quot;user&quot;,</span>
+</span><span class='line'><span class="sd"> *      mapping = {</span>
+</span><span class='line'><span class="sd"> *          &quot;id&quot;: &quot;~id~&quot;</span>
+</span><span class='line'><span class="sd"> *      }</span>
+</span><span class='line'><span class="sd"> * )</span>
+</span><span class='line'><span class="sd"> * @AnnotationForm(</span>
+</span><span class='line'><span class="sd"> *      class         = &quot;user_type&quot;,</span>
+</span><span class='line'><span class="sd"> *      entity        = &quot;user&quot;</span>
+</span><span class='line'><span class="sd"> *      handleRequest = true,</span>
+</span><span class='line'><span class="sd"> *      name          = &quot;userForm&quot;,</span>
+</span><span class='line'><span class="sd"> *      validate      = &quot;isValid&quot;,</span>
+</span><span class='line'><span class="sd"> * )</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">(</span><span class="nx">User</span> <span class="nv">$user</span><span class="p">,</span> <span class="nx">Form</span> <span class="nv">$userForm</span><span class="p">,</span> <span class="nv">$isValid</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>@Flush</h2>
+
+<p><a href="https://github.com/mmoreram/ControllerExtraBundle#flush">@Flush Documentation</a></p>
+
+<p>Allows you to automate a flush every time a response is returned. There are
+some real philosophies that say that a single flush should be executed always
+at the end of the request.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Annotation\Flush</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Entity\Address</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Entity\User</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Simple controller method</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @ParamConverter(&quot;user&quot;, class=&quot;MmoreramCustomBundle:User&quot;)</span>
+</span><span class='line'><span class="sd"> * @ParamConverter(&quot;address&quot;, class=&quot;MmoreramCustomBundle:Address&quot;)</span>
+</span><span class='line'><span class="sd"> * @Flush(</span>
+</span><span class='line'><span class="sd"> *      entity = {</span>
+</span><span class='line'><span class="sd"> *          &quot;user&quot;,</span>
+</span><span class='line'><span class="sd"> *          &quot;address&quot;</span>
+</span><span class='line'><span class="sd"> *      }</span>
+</span><span class='line'><span class="sd"> * )</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">(</span><span class="nx">User</span> <span class="nv">$user</span><span class="p">,</span> <span class="nx">Address</span> <span class="nv">$address</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>@JsonResponse</h2>
+
+<p><a href="https://github.com/mmoreram/ControllerExtraBundle#jsonresponse">@JsonResponse Documentation</a></p>
+
+<p>This annotation converts your controller return value in a single response,
+using your data serialized with php <code>json_encode()</code>. This follows same way
+@Template does.</p>
+
+<p>IMHO, very useful.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Annotation\JsonResponse</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Simple controller method</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @JsonResponse</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">(</span><span class="nx">User</span> <span class="nv">$user</span><span class="p">,</span> <span class="nx">Address</span> <span class="nv">$address</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>        <span class="s1">&#39;This is my response&#39;</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>@Log</h2>
+
+<p><a href="https://github.com/mmoreram/ControllerExtraBundle#log">@Log Documentation</a></p>
+
+<p>Automatic log system for controller methods. You can define level of your log
+and the moment you want to do it (before, after, both)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Annotation\Flush</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Simple controller method</span>
+</span><span class='line'><span class="sd"> *</span>
+</span><span class='line'><span class="sd"> * @Log(</span>
+</span><span class='line'><span class="sd"> *      value   = &quot;Executing index Action&quot;,</span>
+</span><span class='line'><span class="sd"> *      level   = @Log::LVL_WARNING</span>
+</span><span class='line'><span class="sd"> * )</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2023,376 +2561,6 @@ realmente hacer un proyecto interesante para todos.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/11/custom-controller-annotations/">Custom Controller Annotations</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-11T20:21:00+01:00" pubdate data-updated="true">Feb 11<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/02/11/custom-controller-annotations/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The goal is easy: To provide a very intuitive and easy way of creating
-controller annotations in Symfony2.</p>
-
-<p><a href="https://github.com/mmoreram/ControllerExtraBundle">ControllerExtraBundle</a>
-is both a set of annotations and a platform for creating new custom ones.
-Actually, the bundle can create a new Entity, like ParamConverter does, with in
-this case is just an empty Entity. The bundle also can create FormTypes, Forms
-and FormViews with several options. Can also automate the doctrine <code>flush()</code>
-action after the method execution or log something before / after every desired
-action.</p>
-
-<p>Bundle is still being tested in production environments, all feedback will be
-very very useful.</p>
-
-<p>Let&rsquo;s see how can we create our Annotations.</p>
-
-<ul>
-<li>Annotation</li>
-<li>Resolver</li>
-<li>Definition</li>
-<li>Registration</li>
-</ul>
-
-
-<h2>Annotation</h2>
-
-<p>The annotation object. You need to define the fields your custom annotation
-will contain.
-Must extends <code>Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation</code>
-abstract class.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle\Annotation</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Entity annotation driver</span>
-</span><span class='line'><span class="sd"> *</span>
-</span><span class='line'><span class="sd"> * @Annotation</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">MyCustomAnnotation</span> <span class="k">extends</span> <span class="nx">Annotation</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * @var string</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * Dummy field</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$field</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Get Dummy field</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return string Dummy field</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getField</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">field</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Resolver</h2>
-
-<p>Once you have defined your own annotation, you have to resolve how this
-annotation works in a controller. You can manage this using a Resolver. Must
-extend <code>Mmoreram\ControllerExtraBundle\Resolver\Interfaces\AnnotationResolverInterface;</code>
-abstract class.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle\Resolver</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Resolver\Interfaces\AnnotationResolverInterface</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">Mmoreram\ControllerExtraBundle\Annotation\Abstracts\Annotation</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * MyCustomAnnotation Resolver</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">MyCustomAnnotationResolver</span> <span class="k">implements</span> <span class="nx">AnnotationResolverInterface</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Specific annotation evaluation.</span>
-</span><span class='line'><span class="sd">     * This method MUST be implemented because is defined in the interface</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @param Request          $request    Request</span>
-</span><span class='line'><span class="sd">     * @param Annotation       $annotation Annotation</span>
-</span><span class='line'><span class="sd">     * @param ReflectionMethod $method     Method</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     * @return MyCustomAnnotationResolver self Object</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">evaluateAnnotation</span><span class="p">(</span>
-</span><span class='line'>                                        <span class="nx">Request</span> <span class="nv">$request</span><span class="p">,</span>
-</span><span class='line'>                                        <span class="nx">Annotation</span> <span class="nv">$annotation</span><span class="p">,</span>
-</span><span class='line'>                                        <span class="nx">ReflectionMethod</span> <span class="nv">$method</span> <span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="sd">/**</span>
-</span><span class='line'><span class="sd">         * You can now manage your annotation.</span>
-</span><span class='line'><span class="sd">         * You can acced to its fields using public methods.</span>
-</span><span class='line'><span class="sd">         * </span>
-</span><span class='line'><span class="sd">         * Annotation fields can be public and can be acceded directly,</span>
-</span><span class='line'><span class="sd">         * but is better for testing to use getters; they can be mocked.</span>
-</span><span class='line'><span class="sd">         */</span>
-</span><span class='line'>        <span class="nv">$field</span> <span class="o">=</span> <span class="nv">$annotation</span><span class="o">-&gt;</span><span class="na">getField</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="sd">/**</span>
-</span><span class='line'><span class="sd">         * You can also access to existing method parameters.</span>
-</span><span class='line'><span class="sd">         * </span>
-</span><span class='line'><span class="sd">         * Available parameters are:</span>
-</span><span class='line'><span class="sd">         * </span>
-</span><span class='line'><span class="sd">         * # ParamConverter parameters ( See `resolver_priority` config value )</span>
-</span><span class='line'><span class="sd">         * # All method defined parameters, included Request object if is set.</span>
-</span><span class='line'><span class="sd">         */</span>
-</span><span class='line'>        <span class="nv">$entity</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">attributes</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;entity&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="sd">/**</span>
-</span><span class='line'><span class="sd">         * And you can now place new elements in the controller action.</span>
-</span><span class='line'><span class="sd">         * In this example we are creating new method parameter</span>
-</span><span class='line'><span class="sd">         * called $myNewField with some value</span>
-</span><span class='line'><span class="sd">         */</span>
-</span><span class='line'>        <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">attributes</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span>
-</span><span class='line'>            <span class="s1">&#39;myNewField&#39;</span><span class="p">,</span>
-</span><span class='line'>            <span class="k">new</span> <span class="nv">$field</span><span class="p">()</span>
-</span><span class='line'>        <span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This class will be defined as a service, so this method is computed just
-before executing current controller. You can also subscribe to some kernel
-events and do whatever you need to do ( You can check
-<code>Mmoreram\ControllerExtraBundle\Resolver\LogAnnotationResolver</code> for some
-examples.</p>
-
-<h2>Definition</h2>
-
-<p>Once Resolver is done, we need to define our service as an Annotation
-Resolver. We will use a custom <code>tag</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">parameters</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="c1"># Resolvers</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">my.bundle.resolvers.my_custom_annotation_resolver.class</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My\Bundle\Resolver\MyCustomAnnotationResolver</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="c1"># Resolvers</span>
-</span><span class='line'>    <span class="c1">#</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">my.bundle.resolvers.my_custom_annotation_resolver</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span> <span class="err">%</span><span class="l-Scalar-Plain">my.bundle.resolvers.my_custom_annotation_resolver.class%</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="p-Indicator">-</span> <span class="p-Indicator">{</span> <span class="nv">name</span><span class="p-Indicator">:</span> <span class="nv">controller_extra.annotation</span> <span class="p-Indicator">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Registration</h2>
-
-<p>We need to register our annotation inside our application. We can just do it in
-the <code>boot()</code> method of <code>bundle.php</code> file.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">My\Bundle</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">Symfony\Component\HttpKernel\Bundle\Bundle</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">Doctrine\Common\Annotations\AnnotationRegistry</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * MyBundle</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">ControllerExtraBundle</span> <span class="k">extends</span> <span class="nx">Bundle</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     * Boots the Bundle.</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">boot</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$kernel</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">container</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;kernel&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nx">AnnotationRegistry</span><span class="o">::</span><span class="na">registerFile</span><span class="p">(</span><span class="nv">$kernel</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">locateResource</span><span class="p">(</span><span class="s2">&quot;@MyBundle/Annotation/MyCustomAnnotation.php&quot;</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em>Et voilà!</em>  We can now use our custom Annotation in our project controllers.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -2410,6 +2578,10 @@ the <code>boot()</code> method of <code>bundle.php</code> file.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/02/04/el-peligro-de-hablar-espanol-en-catalunya/">El peligro de hablar español en Catalunya</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/01/26/bldd-un-dd-para-dominarlos-a-todos/">BLDD, un DD para dominarlos a todos</a>
       </li>
     
@@ -2423,10 +2595,6 @@ the <code>boot()</code> method of <code>bundle.php</code> file.</p>
     
       <li class="post">
         <a href="/blog/2015/11/20/your-packages-dependencies/">Your packages dependencies</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/28/composer-install-in-ci/">Composer install in CI</a>
       </li>
     
   </ul>
