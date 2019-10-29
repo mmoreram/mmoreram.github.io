@@ -2114,3 +2114,16 @@ textarea.form-control {
     display: block;
     text-align: center;
     font-weight: 700; }
+
+.checkout-button {
+  background-color:#e1b12c;
+  color:#FFF;
+  padding:0 12px;
+  border:0;
+  border-radius:4px;
+  font-size:1em;
+}
+
+.checkout-button.sold-out {
+  background-color: #ff6848;
+}
